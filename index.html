@@ -63,7 +63,7 @@
     .side-card strong { display: block; font-size: .9rem; }
     .side-card p { margin: 5px 0 13px; color: #aebedd; font-size: .77rem; }
     .side-progress { height: 7px; overflow: hidden; border-radius: 20px; background: rgba(255,255,255,.12); }
-    .side-progress i { display: block; width: 16.67%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--yellow), #ffe28a); }
+    .side-progress i { display: block; width: 25%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--yellow), #ffe28a); }
     .side-stat { display: flex; justify-content: space-between; margin-top: 8px; color: #c9d5eb; font-size: .72rem; font-weight: 750; }
 
     .main { min-width: 0; }
@@ -227,12 +227,16 @@
       <nav class="side-nav">
         <a href="buoi-01-google-docs.html"><span class="nav-icon">01</span>Làm quen Google Docs</a>
         <a href="buoi-02-chinh-sua-van-ban.html"><span class="nav-icon">02</span>Chỉnh sửa văn bản</a>
+        <a href="buoi-02-game.html"><span class="nav-icon">🎮</span>Mini Game Buổi 2</a>
+        <a href="buoi-03-dinh-dang-van-ban.html"><span class="nav-icon">03</span>Định dạng văn bản</a>
+        <a href="buoi-04-styles-va-heading.html"><span class="nav-icon">04</span>Styles và Heading</a>
+        <a href="buoi-04-bai-tap.html"><span class="nav-icon">📝</span>Bài tập Buổi 4</a>
       </nav>
       <div class="side-card">
         <strong>Học liệu đã sẵn sàng</strong>
-        <p>2 buổi trong tổng số 12 buổi.</p>
-        <div class="side-progress" aria-label="2 trên 12 buổi đã sẵn sàng"><i></i></div>
-        <div class="side-stat"><span>2/12 buổi</span><span>17%</span></div>
+        <p>4 buổi trong tổng số 12 buổi.</p>
+        <div class="side-progress" aria-label="4 trên 12 buổi đã sẵn sàng"><i style="width: 33%"></i></div>
+        <div class="side-stat"><span>4/12 buổi</span><span>33%</span></div>
       </div>
     </aside>
     <div class="overlay" id="overlay"></div>
@@ -260,7 +264,7 @@
             </div>
           </div>
           <div class="course-brief" aria-label="Tóm tắt khóa học">
-            <div class="ring"><div class="ring-value"><b>2/12</b><span>Đã xây dựng</span></div></div>
+            <div class="ring"><div class="ring-value"><b>4/12</b><span>Đã xây dựng</span></div></div>
             <div class="brief-list">
               <div class="brief-item"><span>Đối tượng</span><strong>11–15 tuổi</strong></div>
               <div class="brief-item"><span>Mỗi buổi</span><strong>100 phút</strong></div>
@@ -306,25 +310,33 @@
               <div class="lesson-top"><span class="lesson-number">02</span><span class="status ready"><i></i>Sẵn sàng</span></div>
               <h3>Chỉnh sửa văn bản</h3>
               <p>Sắp xếp, sao chép và sửa nội dung nhanh bằng Cut, Copy, Paste, Undo, Find & Replace.</p>
-              <div class="tags"><span class="tag">Copy & Paste</span><span class="tag">Undo</span><span class="tag">Find</span></div>
-              <div class="lesson-actions single" aria-label="Học liệu Buổi 2"><a class="resource-link ready-link" href="buoi-02-chinh-sua-van-ban.html">Mở bài giảng</a></div>
-              <div class="lesson-foot"><span class="lesson-time">100 phút · 1 học liệu</span><span class="pending-label">Bài giảng</span></div>
+              <div class="tags"><span class="tag">Copy & Paste</span><span class="tag">Undo</span><span class="tag">Find & Replace</span><span class="tag">Mini Game</span></div>
+              <div class="lesson-actions" aria-label="Học liệu Buổi 2">
+                <a class="resource-link primary" href="buoi-02-chinh-sua-van-ban.html">Mở bài giảng</a>
+                <a class="resource-link" href="buoi-02-game.html" style="background:#10b981;border-color:#10b981;color:white">🎮 Mini Game</a>
+              </div>
+              <div class="lesson-foot"><span class="lesson-time">100 phút · 2 học liệu</span><span class="pending-label" style="color:#08704d">Slide + Game</span></div>
             </article>
 
-            <article class="lesson-card" data-status="planned">
-              <div class="lesson-top"><span class="lesson-number">03</span><span class="status"><i></i>Sắp xây dựng</span></div>
+            <article class="lesson-card" data-status="ready">
+              <div class="lesson-top"><span class="lesson-number">03</span><span class="status ready"><i></i>Sẵn sàng</span></div>
               <h3>Định dạng văn bản</h3>
               <p>Biến nội dung thô thành tài liệu rõ đẹp với font, màu, căn chỉnh, giãn dòng và danh sách.</p>
               <div class="tags"><span class="tag">Font</span><span class="tag">Alignment</span><span class="tag">Bullet</span></div>
-              <div class="lesson-foot"><span class="lesson-time">100 phút</span><span class="pending-label">Chưa có học liệu</span></div>
+              <div class="lesson-actions single" aria-label="Học liệu Buổi 3"><a class="resource-link ready-link" href="buoi-03-dinh-dang-van-ban.html">Mở bài giảng</a></div>
+              <div class="lesson-foot"><span class="lesson-time">100 phút · 1 học liệu</span><span class="pending-label">Bài giảng</span></div>
             </article>
 
-            <article class="lesson-card" data-status="planned">
-              <div class="lesson-top"><span class="lesson-number">04</span><span class="status"><i></i>Sắp xây dựng</span></div>
+            <article class="lesson-card" data-status="ready">
+              <div class="lesson-top"><span class="lesson-number">04</span><span class="status ready"><i></i>Sẵn sàng</span></div>
               <h3>Styles và Heading</h3>
               <p>Xây “bộ xương” cho tài liệu bằng Title, Heading 1–3 và sao chép định dạng với Paint Format.</p>
-              <div class="tags"><span class="tag">Title</span><span class="tag">Heading</span><span class="tag">Paint Format</span></div>
-              <div class="lesson-foot"><span class="lesson-time">100 phút</span><span class="pending-label">Chưa có học liệu</span></div>
+              <div class="tags"><span class="tag">Title</span><span class="tag">Heading</span><span class="tag">Paint Format</span><span class="tag">Thực hành</span></div>
+              <div class="lesson-actions" aria-label="Học liệu Buổi 4">
+                <a class="resource-link primary" href="buoi-04-styles-va-heading.html">Mở bài giảng 3D</a>
+                <a class="resource-link" href="buoi-04-bai-tap.html" style="background:#2563eb;border-color:#2563eb;color:white">📝 Phiếu bài tập</a>
+              </div>
+              <div class="lesson-foot"><span class="lesson-time">100 phút · 2 học liệu</span><span class="pending-label" style="color:#08704d">Slide + Bài tập</span></div>
             </article>
 
             <article class="lesson-card" data-status="planned">

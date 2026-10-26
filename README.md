@@ -13,6 +13,8 @@ Hệ thống giao diện học liệu & slide tương tác chuẩn hóa cho khó
 | :--- | :--- | :--- |
 | **Buổi 01** | Làm quen với Google Docs & Quản lý Drive | [Bài giảng Buổi 1](buoi-01-google-docs.html) · [Quiz 20 câu](buoi-01-quiz.html) |
 | **Buổi 02** | Chỉnh sửa văn bản thông minh (Select, Cut, Copy, Paste, Undo, Redo, Find/Replace) | [Bài giảng Buổi 2](buoi-02-chinh-sua-van-ban.html) |
+| **Buổi 03** | Định dạng văn bản: Từ văn bản thường thành văn bản đẹp | [Bài giảng 3D Impress](buoi-03-dinh-dang-van-ban.html) |
+| **Buổi 04** | Styles và Heading: Xây dựng bộ xương cho tài liệu | [Bài giảng 3D Impress](buoi-04-styles-va-heading.html) · [Phiếu bài tập & Thực hành](buoi-04-bai-tap.html) |
 | **Tổng quan** | Lộ trình chi tiết 12 buổi & Tài liệu giáo án | [Cổng trung tâm khóa học](index.html) |
 
 ---

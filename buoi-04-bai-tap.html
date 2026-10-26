@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Phiếu bài tập thực hành & bài tập về nhà Buổi 4: Styles và Heading — Xây dựng bộ xương cho tài liệu (Google Docs THCS). Kèm dữ liệu mẫu, Before/After, gợi ý và thang điểm 30 điểm.">
+  <title>Bài tập & Thực hành Buổi 4 · Styles và Heading (Docs Lab THCS)</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='10' y='5' width='44' height='54' rx='10' fill='%232563eb'/%3E%3Cpath d='M20 18h16M20 28h24M20 38h18' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='48' cy='48' r='11' fill='%23f59e0b'/%3E%3Cpath d='m44 48 3 3 5-6' fill='none' stroke='%230f172a' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #0b152d;
+      --navy-light: #162a54;
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --blue-border: #bfdbfe;
+      --amber: #f59e0b;
+      --amber-soft: #fffbeb;
+      --green: #10b981;
+      --green-soft: #ecfdf5;
+      --red: #ef4444;
+      --red-soft: #fff1f2;
+      --purple: #8b5cf6;
+      --purple-soft: #f5f3ff;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --soft: #f8fafc;
+      --paper: #ffffff;
+      --shadow: 0 16px 45px rgba(11, 21, 45, 0.08);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.08), transparent 30rem), #f8fafc;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    button, a { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid rgba(37, 99, 235, 0.4); outline-offset: 3px; }
+
+    /* Topbar */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: 18px;
+      min-height: 70px; padding: 10px clamp(16px, 4vw, 48px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-family: 'Outfit', sans-serif; font-size: 1.15rem; }
+    .mark {
+      display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px;
+      color: white; background: linear-gradient(135deg, var(--blue), #1d4ed8); font-weight: 900;
+    }
+    .crumb { color: var(--muted); font-size: 0.85rem; }
+    .crumb b { color: var(--ink); }
+    .top-actions { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+    .top-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 38px; padding: 0 14px;
+      border: 1px solid var(--line); border-radius: 11px;
+      background: white; font-size: 0.82rem; font-weight: 700;
+      transition: all 0.18s ease;
+    }
+    .top-link:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+    .top-link.highlight { background: var(--blue-soft); border-color: var(--blue-border); color: var(--blue); }
+    .top-link.primary { background: var(--amber); border-color: var(--amber); color: var(--navy); }
+
+    /* Page Layout */
+    .page { width: min(1200px, 100%); margin: auto; padding: 28px clamp(16px, 4vw, 40px) 70px; }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #0b152d 0%, #152952 60%, #1e3a8a 100%);
+      border-radius: 24px; padding: clamp(28px, 4vw, 42px);
+      color: white; margin-bottom: 26px;
+      box-shadow: 0 20px 50px rgba(11, 21, 45, 0.25);
+      position: relative; overflow: hidden;
+    }
+    .hero-banner::after {
+      content: ""; position: absolute; right: -40px; bottom: -40px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #93c5fd; font-size: 0.76rem; font-weight: 850;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .hero-banner h1 {
+      margin: 4px 0 12px; font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1.15; letter-spacing: -0.03em;
+    }
+    .hero-banner p { margin: 0 0 20px; color: #cbd5e1; max-width: 800px; font-size: 0.98rem; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+    .pill {
+      padding: 6px 12px; border-radius: 99px;
+      background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.78rem; font-weight: 750; color: #e2e8f0;
+    }
+    .pill.gold { background: rgba(245, 158, 11, 0.25); border-color: rgba(245, 158, 11, 0.45); color: #fbbf24; }
+
+    .banner-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 42px; padding: 0 20px; border-radius: 12px;
+      font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 800;
+      cursor: pointer; border: 0; transition: all 0.18s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.primary { background: var(--amber); color: var(--navy); box-shadow: 0 6px 18px rgba(245, 158, 11, 0.3); }
+    .btn.ghost { background: rgba(255, 255, 255, 0.12); color: white; border: 1px solid rgba(255, 255, 255, 0.25); }
+    .btn.blue { background: var(--blue); color: white; box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25); }
+    .btn.success { background: var(--green); color: white; }
+
+    /* Tabs Navigation */
+    .tabs-bar {
+      display: flex; gap: 6px; overflow-x: auto;
+      padding: 6px; background: white;
+      border: 1px solid var(--line); border-radius: 16px;
+      margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    .tab-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: 11px;
+      border: 0; background: transparent;
+      color: var(--muted); font-size: 0.86rem; font-weight: 800;
+      cursor: pointer; white-space: nowrap; transition: all 0.18s ease;
+    }
+    .tab-btn:hover { color: var(--ink); background: var(--soft); }
+    .tab-btn.active { color: white; background: var(--navy); }
+    .tab-badge {
+      display: inline-block; padding: 2px 7px; border-radius: 99px;
+      font-size: 0.7rem; font-weight: 900; background: rgba(0,0,0,0.08);
+    }
+    .tab-btn.active .tab-badge { background: var(--amber); color: var(--navy); }
+
+    /* Tab Panels */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Cards */
+    .card {
+      background: white; border: 1px solid var(--line);
+      border-radius: var(--radius); padding: clamp(22px, 3.5vw, 36px);
+      box-shadow: var(--shadow); margin-bottom: 24px;
+    }
+    .card-title-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 14px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .card-kicker {
+      font-size: 0.74rem; font-weight: 900; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--blue);
+    }
+    .card h2 {
+      margin: 4px 0 0; font-family: 'Outfit', sans-serif;
+      font-size: 1.55rem; color: var(--navy); font-weight: 800;
+    }
+
+    .info-box {
+      background: var(--amber-soft); border: 1.5px solid #fde68a;
+      border-radius: 14px; padding: 16px 20px; margin-bottom: 20px;
+    }
+    .info-box.blue { background: var(--blue-soft); border-color: var(--blue-border); }
+    .info-box.green { background: var(--green-soft); border-color: #a7f3d0; }
+    .info-box b { display: block; color: var(--navy); margin-bottom: 4px; font-size: 0.95rem; }
+    .info-box p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 18px 0; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 18px 0; }
+
+    /* Sample Document Box with 1-Click Copy */
+    .sample-doc-box {
+      border: 1.5px solid #cbd5e1; border-radius: 16px;
+      background: #fafcff; padding: 22px 26px; position: relative;
+      margin: 20px 0;
+    }
+    .sample-doc-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px dashed #cbd5e1;
+    }
+    .sample-doc-title {
+      font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 850;
+      color: var(--navy); text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 9px; border: 1px solid #bfdbfe;
+      background: white; color: var(--blue); font-size: 0.78rem; font-weight: 800;
+      cursor: pointer; transition: all 0.18s ease;
+    }
+    .copy-btn:hover { background: var(--blue); color: white; }
+    .doc-text-content {
+      font-family: 'Inter', monospace, sans-serif;
+      font-size: 0.95rem; line-height: 1.85; color: #334155;
+      white-space: pre-wrap;
+    }
+
+    /* Checklist */
+    .checklist { display: grid; gap: 10px; margin: 18px 0; }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 13px 18px; border: 1.5px solid var(--line);
+      border-radius: 14px; background: white; cursor: pointer; transition: all 0.18s ease;
+    }
+    .check-item:hover { border-color: #93c5fd; background: #fafcff; }
+    .check-item.done {
+      border-color: #86efac; background: #f0fdf4;
+    }
+    .check-icon {
+      width: 24px; height: 24px; border-radius: 7px;
+      border: 2px solid #cbd5e1; display: grid; place-items: center;
+      flex: 0 0 24px; font-size: 0.82rem; color: white; margin-top: 2px;
+      transition: all 0.18s ease;
+    }
+    .check-item.done .check-icon { background: var(--green); border-color: var(--green); }
+    .check-text b { display: block; font-size: 0.92rem; color: var(--navy); }
+    .check-text span { font-size: 0.82rem; color: var(--muted); }
+
+    /* Before vs After Columns */
+    .before-after-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 20px 0;
+    }
+    .ba-column {
+      border: 1.5px solid var(--line); border-radius: 16px; padding: 22px;
+      background: white;
+    }
+    .ba-column.before { border-color: #fecdd3; background: #fff5f5; }
+    .ba-column.after { border-color: #bbf7d0; background: #f0fdf4; }
+    .ba-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .ba-badge {
+      font-size: 0.74rem; font-weight: 900; padding: 4px 10px; border-radius: 99px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .ba-column.before .ba-badge { background: #fee2e2; color: #b91c1c; }
+    .ba-column.after .ba-badge { background: #dcfce7; color: #15803d; }
+    .ba-body { font-size: 0.92rem; line-height: 1.75; color: #334155; }
+    .ba-body mark.bad { background: #fecaca; color: #991b1b; padding: 2px 5px; border-radius: 4px; font-weight: 700; }
+    .ba-body mark.good { background: #bbf7d0; color: #166534; padding: 2px 5px; border-radius: 4px; font-weight: 700; }
+
+    /* Rubric Table */
+    .rubric-table {
+      width: 100%; border-collapse: collapse; margin: 20px 0;
+      font-size: 0.9rem; text-align: left;
+    }
+    .rubric-table th, .rubric-table td {
+      padding: 13px 18px; border: 1px solid var(--line);
+    }
+    .rubric-table th { background: var(--soft); color: var(--navy); font-weight: 850; font-family: 'Outfit', sans-serif; }
+    .rubric-table tr:nth-child(even) { background: #fafcff; }
+    .pts-badge {
+      display: inline-block; padding: 4px 9px; border-radius: 6px;
+      background: var(--blue-soft); color: var(--blue); font-weight: 900; font-size: 0.82rem;
+    }
+
+    /* Hint Collapsible */
+    .q-item {
+      border: 1.5px solid var(--line); border-radius: 14px; padding: 20px;
+      background: white; margin-bottom: 16px;
+    }
+    .q-item-num {
+      display: inline-block; padding: 3px 9px; border-radius: 6px;
+      background: var(--navy); color: white; font-size: 0.76rem; font-weight: 900; margin-bottom: 8px;
+    }
+    .q-hint {
+      display: none; margin-top: 12px; padding: 14px 16px;
+      border-radius: 12px; background: var(--blue-soft); border-left: 4px solid var(--blue);
+      color: #1e3a8a; font-size: 0.88rem; line-height: 1.6;
+    }
+    .q-hint.show { display: block; }
+    .toggle-hint-btn {
+      padding: 6px 12px; border-radius: 8px; border: 1px solid #cbd5e1;
+      background: white; color: var(--muted); font-size: 0.78rem; font-weight: 800; cursor: pointer;
+    }
+    .toggle-hint-btn:hover { color: var(--blue); border-color: var(--blue); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 99;
+      background: var(--navy); color: white; padding: 12px 22px;
+      border-radius: 12px; font-size: 0.9rem; font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      display: none; align-items: center; gap: 10px;
+    }
+    .toast.show { display: flex; animation: slideUp 0.2s ease; }
+    @keyframes slideUp { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    @media (max-width: 820px) {
+      .grid-2, .grid-3, .before-after-grid { grid-template-columns: 1fr; }
+      .crumb { display: none; }
+      .top-actions .top-link:not(.primary) { display: none; }
+    }
+
+    @media print {
+      .topbar, .tabs-bar, .banner-actions, .copy-btn, .toggle-hint-btn, .toast { display: none !important; }
+      body { background: white; color: black; font-size: 12pt; }
+      .page { width: 100%; padding: 0; margin: 0; }
+      .hero-banner { background: #0b152d !important; color: white !important; -webkit-print-color-adjust: exact; }
+      .tab-panel { display: block !important; margin-bottom: 40px; page-break-after: always; }
+      .card { border: 1px solid #ccc; box-shadow: none; padding: 15px; }
+      .q-hint { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="mark">D</span>
+      <span>Docs Lab</span>
+    </a>
+    <div class="crumb"><b>Buổi 4</b> · Phiếu bài tập & Thực hành chuyên sâu</div>
+    <nav class="top-actions">
+      <a class="top-link" href="buoi-04-styles-va-heading.html">📖 Slide 3D Impress</a>
+      <a class="top-link highlight" href="buoi-03-dinh-dang-van-ban.html">⏮️ Buổi 3: Định dạng</a>
+      <button class="top-link primary" onclick="window.print()">🖨️ In phiếu bài tập</button>
+    </nav>
+  </header>
+
+  <main class="page">
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+      <span class="eyebrow">Docs Lab · Kỹ năng Google Docs THCS · Buổi 04</span>
+      <h1>Phiếu Bài Tập Thực Hành: Styles & Heading</h1>
+      <p>Bộ 4 phần bài tập thực chiến: Khởi động nhận diện cây phác thảo, Phòng thí nghiệm con lăn sơn Paint Format, Dự án tổng hợp "Thế giới quanh em" và Thang điểm Rubric 30 điểm cho giáo viên & học sinh.</p>
+      
+      <div class="pills">
+        <span class="pill gold">👑 1 Title duy nhất</span>
+        <span class="pill">📑 Heading 1 – 2 – 3</span>
+        <span class="pill">🖌️ Con lăn sơn Paint Format</span>
+        <span class="pill">📑 Document Outline tự động</span>
+        <span class="pill gold">🎯 Thang điểm 30 điểm</span>
+      </div>
+
+      <div class="banner-actions">
+        <a class="btn primary" href="buoi-04-styles-va-heading.html">🚀 Mở Slide bài giảng 3D</a>
+        <button class="btn ghost" onclick="document.querySelectorAll('.check-item').forEach(i=>i.classList.toggle('done'))">✓ Đánh dấu tất cả hoàn thành</button>
+      </div>
+    </section>
+
+    <!-- Tabs Bar -->
+    <nav class="tabs-bar" role="tablist">
+      <button class="tab-btn active" data-tab="tab-part1" role="tab" aria-selected="true">
+        <span>Phần 1: Nhận diện & Cây phác thảo</span>
+        <span class="tab-badge">2 Bài</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-part2" role="tab" aria-selected="false">
+        <span>Phần 2: Con lăn sơn & Thực hành lớp</span>
+        <span class="tab-badge">2 Bài</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-part3" role="tab" aria-selected="false">
+        <span>Phần 3: Bài tập về nhà (Dự án lớn)</span>
+        <span class="tab-badge">2 Đề</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-rubric" role="tab" aria-selected="false">
+        <span>Phần 4: Thang điểm 30đ & Đáp án</span>
+        <span class="tab-badge">Rubric</span>
+      </button>
+    </nav>
+
+    <!-- ============================================================
+         TAB 1: NHẬN DIỆN & CÂY PHÁC THẢO
+         ============================================================ -->
+    <section class="tab-panel active" id="tab-part1" role="tabpanel">
+      <div class="card">
+        <div class="card-title-row">
+          <div>
+            <span class="card-kicker">Khởi động tư duy</span>
+            <h2>Bài tập 1: Phân cấp cây gia phả thông tin</h2>
+          </div>
+          <span class="pill gold">10 Điểm</span>
+        </div>
+
+        <div class="info-box blue">
+          <b>🎯 Mục tiêu:</b> Rèn luyện phản xạ xác định đúng cấp độ: <strong>Title</strong> (Tên bài viết), <strong>Heading 1</strong> (Chương lớn), <strong>Heading 2</strong> (Mục nhỏ), và <strong>Normal Text</strong> (Nội dung mô tả).
+        </div>
+
+        <div class="q-list">
+          <!-- Tình huống 1 -->
+          <div class="q-item">
+            <span class="q-item-num">Tình huống 1.1</span>
+            <h3>Chủ đề: "HỆ MẶT TRỜI VÀ CÁC HÀNH TINH"</h3>
+            <p style="color: var(--muted); margin: 0 0 10px;">Em hãy ghép từng mục dưới đây với cấp độ Styles phù hợp nhất:</p>
+            
+            <div class="sample-doc-box" style="margin: 10px 0;">
+              <div class="doc-text-content">1. KHÁM PHÁ HỆ MẶT TRỜI VÀ VŨ TRỤ
+2. Nhóm hành tinh đá (vòng trong)
+3. Sao Thủy
+4. Sao Kim
+5. Trái Đất của chúng ta
+6. Trái Đất là hành tinh thứ ba tính từ Mặt Trời, có nước ở thể lỏng và sự sống sinh sôi.
+7. Nhóm hành tinh khí khổng lồ (vòng ngoài)
+8. Sao Mộc
+9. Sao Thổ</div>
+            </div>
+
+            <button class="toggle-hint-btn" data-target="hint1_1">💡 Xem gợi ý phân cấp chuẩn</button>
+            <div class="q-hint" id="hint1_1">
+              <strong>Đáp án chuẩn:</strong><br>
+              • Dòng 1: <strong>Title</strong> (Tên cả tài liệu)<br>
+              • Dòng 2 & 7: <strong>Heading 1</strong> (Hai nhóm hành tinh lớn)<br>
+              • Dòng 3, 4, 5, 8, 9: <strong>Heading 2</strong> (Các hành tinh con trong từng nhóm)<br>
+              • Dòng 6: <strong>Normal Text</strong> (Đoạn văn mô tả chi tiết về Trái Đất).
+            </div>
+          </div>
+
+          <!-- Tình huống 2 -->
+          <div class="q-item">
+            <span class="q-item-num">Tình huống 1.2</span>
+            <h3>Bắt bệnh 3 văn bản bị lỗi cấu trúc Styles</h3>
+            <p style="color: var(--muted); margin: 0 0 10px;">Đọc 3 trường hợp thực tế dưới đây và chỉ ra lỗi sai kèm cách khắc phục:</p>
+
+            <div class="grid-3">
+              <div style="background: #fff5f5; border: 1px solid #fecdd3; border-radius: 12px; padding: 14px;">
+                <b style="color: var(--red);">Bệnh nhân A</b>
+                <p style="font-size: 0.85rem; color: #475569; margin: 6px 0;">Sau khi gõ tiêu đề Heading 1, bạn nhấn Enter rồi gõ tiếp đoạn văn 15 dòng. Nhưng cả 15 dòng đều có chữ to khổng lồ!</p>
+                <span style="font-size: 0.78rem; color: var(--red); font-weight: 700;">Nguyên nhân & Cách sửa?</span>
+              </div>
+              <div style="background: #fff5f5; border: 1px solid #fecdd3; border-radius: 12px; padding: 14px;">
+                <b style="color: var(--red);">Bệnh nhân B</b>
+                <p style="font-size: 0.85rem; color: #475569; margin: 6px 0;">Tài liệu có 5 chương, bạn ấy gán cả 5 chương đều là kiểu "Title".</p>
+                <span style="font-size: 0.78rem; color: var(--red); font-weight: 700;">Hậu quả & Cách sửa?</span>
+              </div>
+              <div style="background: #fff5f5; border: 1px solid #fecdd3; border-radius: 12px; padding: 14px;">
+                <b style="color: var(--red);">Bệnh nhân C</b>
+                <p style="font-size: 0.85rem; color: #475569; margin: 6px 0;">Bạn bôi đen tiêu đề rồi chỉnh cỡ chữ 24pt và đổi màu đỏ. Nhưng cột Document Outline bên trái hoàn toàn trống trơn!</p>
+                <span style="font-size: 0.78rem; color: var(--red); font-weight: 700;">Vì sao máy không hiểu?</span>
+              </div>
+            </div>
+
+            <button class="toggle-hint-btn" data-target="hint1_2">💡 Xem đơn thuốc chữa trị</button>
+            <div class="q-hint" id="hint1_2">
+              <strong>Đơn thuốc của bác sĩ Docs Lab:</strong><br>
+              • <strong>Bệnh nhân A:</strong> Quên chuyển về Normal Text. <em>Cách sửa:</em> Chọn cả 15 dòng đó, mở menu Styles và bấm chọn <strong>Normal Text</strong>.<br>
+              • <strong>Bệnh nhân B:</strong> Nhầm Title với Heading 1. <em>Cách sửa:</em> Chỉ giữ Title cho tên bài viết ở trang 1; đổi cả 5 chương thành <strong>Heading 1</strong>.<br>
+              • <strong>Bệnh nhân C:</strong> Chỉnh tay thủ công thay vì dùng Styles. <em>Cách sửa:</em> Đặt con trỏ vào tiêu đề, chọn menu Styles → chọn <strong>Heading 1</strong> (hoặc Title).
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TAB 2: CON LĂN SƠN & THỰC HÀNH LỚP
+         ============================================================ -->
+    <section class="tab-panel" id="tab-part2" role="tabpanel">
+      <div class="card">
+        <div class="card-title-row">
+          <div>
+            <span class="card-kicker">Thực hành trên lớp</span>
+            <h2>Bài tập 2: Thử thách Con lăn sơn (Paint Format Roller Race)</h2>
+          </div>
+          <span class="pill gold">10 Điểm</span>
+        </div>
+
+        <div class="info-box blue">
+          <b>📋 Hướng dẫn làm bài:</b> Bấm nút sao chép văn bản thô bên dưới, dán vào một tài liệu Google Docs mới. Sau đó làm theo checklist để hoàn thành bài tập trong <strong>dưới 5 phút</strong>!
+        </div>
+
+        <!-- Sample text box -->
+        <div class="sample-doc-box">
+          <div class="sample-doc-head">
+            <span class="sample-doc-title">Dữ liệu thô thực hành Paint Format</span>
+            <button class="copy-btn" id="copySampleBtn1">📋 Sao chép văn bản thô</button>
+          </div>
+          <div class="doc-text-content" id="sampleText1">CẨM NANG HỌC TỐT MÔN TIN HỌC THCS
+
+PHẦN 1: KỸ NĂNG SOẠN THẢO VĂN BẢN
+Làm chủ bàn phím và 10 ngón gõ chuẩn.
+Biết sử dụng phím tắt thông minh thay cho chuột.
+Áp dụng phân cấp Styles để xây dựng bộ xương tài liệu.
+
+PHẦN 2: KỸ NĂNG XỬ LÝ BẢNG BIỂU VÀ ĐA PHƯƠNG TIỆN
+Chèn hình ảnh minh họa sắc nét và bố trí Wrap Text hài hòa.
+Tạo thời khóa biểu khoa học bằng công cụ Table.
+Thêm liên kết Hyperlink tra cứu thông tin nhanh chóng.
+
+PHẦN 3: KỸ NĂNG LÀM VIỆC NHÓM TRÊN GOOGLE DRIVE
+Chia sẻ tài liệu phân quyền Xem, Nhận xét, Chỉnh sửa.
+Làm việc cùng lúc trong thời gian thực với bạn bè.
+Kiểm tra lịch sử phiên bản để khôi phục khi cần thiết.</div>
+        </div>
+
+        <h3 style="margin: 20px 0 12px; font-family: 'Outfit', sans-serif;">Checklist nhiệm vụ học sinh:</h3>
+        <div class="checklist">
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <div class="check-icon">✓</div>
+            <div class="check-text">
+              <b>Bước 1: Thiết lập Title chính</b>
+              <span>Chọn dòng "CẨM NANG HỌC TỐT MÔN TIN HỌC THCS" → Gán kiểu <strong>Title</strong>, cỡ 22pt, căn giữa.</span>
+            </div>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <div class="check-icon">✓</div>
+            <div class="check-text">
+              <b>Bước 2: Tạo mẫu chuẩn cho PHẦN 1</b>
+              <span>Gán kiểu <strong>Heading 1</strong> cho dòng "PHẦN 1: KỸ NĂNG SOẠN THẢO VĂN BẢN" → Đổi màu xanh dương đậm, in đậm.</span>
+            </div>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <div class="check-icon">✓</div>
+            <div class="check-text">
+              <b>Bước 3: Dùng Paint Format sao chép siêu tốc</b>
+              <span>Đặt con trỏ vào dòng Phần 1 → <strong>Nhấp đúp chuột (Double-click)</strong> vào biểu tượng con lăn sơn → Quét qua Phần 2 và Phần 3 → Nhấn <strong>Esc</strong>.</span>
+            </div>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <div class="check-icon">✓</div>
+            <div class="check-text">
+              <b>Bước 4: Định dạng danh sách gạch đầu dòng (Bullet)</b>
+              <span>Bôi đen các dòng con bên dưới mỗi phần và chuyển thành <strong>Bullet</strong> tự động.</span>
+            </div>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <div class="check-icon">✓</div>
+            <div class="check-text">
+              <b>Bước 5: Kiểm tra thanh Document Outline</b>
+              <span>Bấm biểu tượng Document Outline ở mép trái màn hình Docs. Đảm bảo hiển thị đủ 1 Title và 3 nhánh Phần 1, 2, 3!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TAB 3: BÀI TẬP VỀ NHÀ (DỰ ÁN LỚN)
+         ============================================================ -->
+    <section class="tab-panel" id="tab-part3" role="tabpanel">
+      <div class="card">
+        <div class="card-title-row">
+          <div>
+            <span class="card-kicker">Dự án về nhà</span>
+            <h2>Bài tập 3: Dự án "Môn học em yêu thích"</h2>
+          </div>
+          <span class="pill gold">10 Điểm</span>
+        </div>
+
+        <div class="info-box green">
+          <b>🎯 Đề bài:</b> Mỗi học sinh tự chọn 1 môn học mà em say mê nhất (ví dụ: Tin học, Tiếng Anh, Toán học, Lịch sử, Mỹ thuật...) và thiết kế một tài liệu giới thiệu chuẩn cấu trúc phân tầng.
+        </div>
+
+        <!-- Before / After đối sánh -->
+        <h3 style="font-family: 'Outfit', sans-serif; margin: 20px 0 10px;">Đối sánh Before & After:</h3>
+        <div class="before-after-grid">
+          <div class="ba-column before">
+            <div class="ba-header">
+              <b style="color: var(--red);">❌ Trước khi làm (Bản thô không có Styles)</b>
+              <span class="ba-badge">Bản lỗi</span>
+            </div>
+            <div class="ba-body">
+              <mark class="bad">MÔN TOÁN HỌC KỲ THÚ</mark><br><br>
+              <mark class="bad">1. Vì sao em thích môn Toán</mark><br>
+              Toán học rèn luyện tư duy logic, giúp em giải quyết các bài toán khó và thấy cuộc sống ngăn nắp hơn.<br><br>
+              <mark class="bad">Đại số và các con số</mark><br>
+              Em thích tìm x và giải phương trình.<br><br>
+              <mark class="bad">Hình học không gian</mark><br>
+              Những hình khối tam giác, tứ giác rất sinh động.<br><br>
+              <mark class="bad">2. Bí quyết học tốt của em</mark><br>
+              Làm bài tập đầy đủ mỗi ngày và không ngại hỏi thầy cô.
+            </div>
+          </div>
+
+          <div class="ba-column after">
+            <div class="ba-header">
+              <b style="color: var(--green);">✅ Sau khi chuẩn hóa (Có bộ xương Styles)</b>
+              <span class="ba-badge">Bản chuẩn 10đ</span>
+            </div>
+            <div class="ba-body">
+              <div style="font-size: 1.25rem; font-weight: 800; color: var(--navy); text-align: center; border-bottom: 2px solid var(--blue); padding-bottom: 6px; margin-bottom: 12px;">
+                <mark class="good">TITLE</mark> MÔN TOÁN HỌC KỲ THÚ
+              </div>
+              <div style="font-size: 1.05rem; font-weight: 800; color: var(--blue); margin: 8px 0 4px;">
+                <mark class="good">HEADING 1</mark> 1. Vì sao em say mê môn Toán?
+              </div>
+              <p style="margin: 0 0 8px; font-size: 0.88rem; color: #475569;">
+                Toán học không khô khan như nhiều người nghĩ. Với em, mỗi bài toán là một câu đố thú vị cần tìm chìa khóa mở ra kho báu.
+              </p>
+              <div style="font-size: 0.95rem; font-weight: 700; color: #0284c7; margin-left: 18px;">
+                <mark class="good">HEADING 2</mark> 1.1. Vẻ đẹp của Đại số
+              </div>
+              <p style="margin: 0 0 8px 18px; font-size: 0.85rem; color: #64748b;">
+                Tìm ẩn số x giống như làm thám tử truy tìm manh mối bí ẩn.
+              </p>
+              <div style="font-size: 0.95rem; font-weight: 700; color: #0284c7; margin-left: 18px;">
+                <mark class="good">HEADING 2</mark> 1.2. Thế giới Hình học trực quan
+              </div>
+              <p style="margin: 0 0 12px 18px; font-size: 0.85rem; color: #64748b;">
+                Hình khối và compa giúp em vẽ nên những góc nhìn đối xứng kỳ diệu.
+              </p>
+              <div style="font-size: 1.05rem; font-weight: 800; color: var(--blue); margin: 8px 0 4px;">
+                <mark class="good">HEADING 1</mark> 2. Phương pháp học tập hiệu quả
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin: 24px 0 12px; font-family: 'Outfit', sans-serif;">Yêu cầu nộp sản phẩm:</h3>
+        <div class="checklist">
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <div class="check-icon">✓</div>
+            <div class="check-text">
+              <b>1 Title nổi bật</b>
+              <span>Tên môn học viết hoa trang trọng, căn giữa, cỡ 20–24pt.</span>
+            </div>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <div class="check-icon">✓</div>
+            <div class="check-text">
+              <b>3 Heading 1</b>
+              <span>Ít nhất 3 phần: (1) Giới thiệu môn học · (2) Những điều em thích · (3) Cách em học tốt.</span>
+            </div>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <div class="check-icon">✓</div>
+            <div class="check-text">
+              <b>Mỗi Heading 1 có ít nhất 1–2 Heading 2</b>
+              <span>Tạo các mục nhỏ phân cấp bên trong từng chương.</span>
+            </div>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <div class="check-icon">✓</div>
+            <div class="check-text">
+              <b>Thân bài dùng Normal Text</b>
+              <span>Tuyệt đối không để nội dung thân bài bị dính kiểu Heading to tướng.</span>
+            </div>
+          </div>
+          <div class="check-item" onclick="this.classList.toggle('done')">
+            <div class="check-icon">✓</div>
+            <div class="check-text">
+              <b>Nộp link Google Docs chia sẻ</b>
+              <span>Đặt tên file đúng chuẩn: <code>B04_HoVaTen_MonHocYeuThich</code> và bật quyền "Bất kỳ ai có liên kết - Người nhận xét".</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TAB 4: THANG ĐIỂM & ĐÁP ÁN GIÁO VIÊN
+         ============================================================ -->
+    <section class="tab-panel" id="tab-rubric" role="tabpanel">
+      <div class="card">
+        <div class="card-title-row">
+          <div>
+            <span class="card-kicker">Đánh giá sư phạm</span>
+            <h2>Thang điểm chuẩn 30 điểm & Tiêu chí chấm chi tiết</h2>
+          </div>
+          <span class="pill gold">Dành cho Giáo viên & Học sinh</span>
+        </div>
+
+        <p style="color: var(--muted); margin: 0 0 16px;">
+          Bộ tiêu chí chấm điểm minh bạch giúp học sinh tự kiểm tra chất lượng sản phẩm trước khi nộp, và giáo viên phản hồi chính xác từng năng lực.
+        </p>
+
+        <table class="rubric-table">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Tiêu chí đánh giá</th>
+              <th style="width: 15%;">Điểm tối đa</th>
+              <th style="width: 60%;">Mô tả chi tiết mức đạt chuẩn</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>1. Cấu trúc Title duy nhất</b></td>
+              <td><span class="pts-badge">5 Điểm</span></td>
+              <td>Chỉ có duy nhất 1 dòng Title ở đầu trang, định dạng trang nhã, phân biệt rõ ràng với các đề mục chương bên dưới.</td>
+            </tr>
+            <tr>
+              <td><b>2. Phân cấp Heading 1 & 2 logic</b></td>
+              <td><span class="pts-badge">10 Điểm</span></td>
+              <td>Đủ 3 Heading 1 và ít nhất 4–6 Heading 2. Các mục con nằm đúng nhánh phân cấp, không nhảy cóc cấp độ (ví dụ từ Title nhảy xuống Heading 3).</td>
+            </tr>
+            <tr>
+              <td><b>3. Thân bài Normal Text chuẩn</b></td>
+              <td><span class="pts-badge">5 Điểm</span></td>
+              <td>Toàn bộ các đoạn mô tả bên dưới đều là Normal Text, không bị dính Heading; cỡ chữ 11–12pt dễ đọc, giãn dòng 1.15 hoặc 1.5.</td>
+            </tr>
+            <tr>
+              <td><b>4. Kỹ năng Paint Format & Đồng bộ</b></td>
+              <td><span class="pts-badge">5 Điểm</span></td>
+              <td>Các Heading cùng cấp có màu sắc, kiểu font và kích thước hoàn toàn nhất quán (chứng minh học sinh đã dùng Paint Format hoặc Update to match).</td>
+            </tr>
+            <tr>
+              <td><b>5. Cây phác thảo Document Outline</b></td>
+              <td><span class="pts-badge">5 Điểm</span></td>
+              <td>Mở thanh Outline bên trái hiển thị cây sơ đồ hoàn chỉnh, phân cấp thụt thò rõ ràng và bấm nhảy đến các trang mượt mà.</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr style="background: var(--amber-soft); font-weight: 850;">
+              <td>TỔNG ĐIỂM CHUẨN ĐẦU RA</td>
+              <td><span class="pts-badge" style="background: var(--amber); color: var(--navy); font-size: 0.95rem;">30 Điểm</span></td>
+              <td>Từ 25 điểm trở lên: Đạt danh hiệu "Kiến trúc sư văn bản xuất sắc".</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <!-- Download & Print Callout -->
+        <div class="info-box" style="margin-top: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <b>🖨️ In ra giấy hoặc lưu PDF bài tập</b>
+            <p>Trang web đã tối ưu sẵn bản in. Bấm nút bên cạnh để xuất bản in sạch đẹp không dính thanh menu.</p>
+          </div>
+          <button class="btn primary" onclick="window.print()">In phiếu bài tập này</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Message -->
+  <div class="toast" id="toastBox">
+    <span>📋 Đã sao chép văn bản thô vào Clipboard!</span>
+  </div>
+
+  <script>
+    // Tab switching logic
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.tab-btn').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        const tabId = btn.dataset.tab;
+        document.getElementById(tabId).classList.add('active');
+      };
+    });
+
+    // Copy sample text to clipboard
+    const copyBtn1 = document.getElementById('copySampleBtn1');
+    const toastBox = document.getElementById('toastBox');
+    let toastTimer;
+
+    function showToast(msg) {
+      toastBox.querySelector('span').textContent = msg;
+      toastBox.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastBox.classList.remove('show'), 2600);
+    }
+
+    if (copyBtn1) {
+      copyBtn1.onclick = () => {
+        const text = document.getElementById('sampleText1').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('📋 Đã sao chép 16 dòng văn bản thô vào Clipboard!');
+        });
+      };
+    }
+
+    // Toggle Hints
+    document.querySelectorAll('.toggle-hint-btn').forEach(btn => {
+      btn.onclick = () => {
+        const targetId = btn.dataset.target;
+        const targetEl = document.getElementById(targetId);
+        const isShown = targetEl.classList.toggle('show');
+        btn.textContent = isShown ? 'Ẩn lời giải' : '💡 Xem gợi ý / đáp án';
+      };
+    });
+  </script>
+</body>
+</html>

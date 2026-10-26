@@ -8,7 +8,7 @@
 <style>
 :root{--navy:#10224a;--blue:#2f6fea;--yellow:#ffca45;--green:#159b69;--red:#df4c58;--ink:#16233d;--muted:#66758e;--line:#dce5f3;--soft:#f3f7fe;--shadow:0 18px 55px rgba(32,67,128,.12)}*{box-sizing:border-box}html{height:100%;scroll-behavior:smooth}body{margin:0;min-height:100%;color:var(--ink);font-family:Inter,"Segoe UI",system-ui,sans-serif;background:radial-gradient(circle at 12% 10%,rgba(47,111,234,.11),transparent 25rem),radial-gradient(circle at 90% 85%,rgba(21,155,105,.09),transparent 25rem),#f6f8fc;overflow-x:hidden}button,a,input{font:inherit}button{border:0;cursor:pointer}a{color:inherit;text-decoration:none}:focus-visible{outline:4px solid rgba(47,111,234,.3);outline-offset:3px}
 .topbar{position:fixed;inset:0 0 auto;z-index:50;height:70px;display:grid;grid-template-columns:auto minmax(180px,560px) auto;align-items:center;gap:20px;padding:0 clamp(14px,3.5vw,42px);border-bottom:1px solid var(--line);background:rgba(255,255,255,.93);backdrop-filter:blur(18px);box-shadow:0 5px 20px rgba(30,55,100,.06)}.brand{display:flex;align-items:center;gap:10px;font-weight:900}.brand-mark{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;color:white;background:linear-gradient(135deg,var(--blue),#174caf)}.brand small{padding:3px 7px;border-radius:99px;color:var(--blue);background:#eaf1ff;font-size:.66rem}.progress-meta{display:flex;justify-content:space-between;margin-bottom:5px;color:var(--muted);font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}.progress-meta b{color:var(--blue)}.track{height:7px;overflow:hidden;border-radius:99px;background:#e5ebf5}.bar{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .3s}.top-actions{display:flex;gap:7px}.icon-btn{display:grid;place-items:center;min-width:39px;height:39px;padding:0 11px;border-radius:11px;color:var(--blue);background:#edf3ff;font-weight:850}.icon-btn[aria-pressed=true]{color:white;background:var(--navy)}
-.deck{min-height:100vh;padding-top:70px}.slide{display:none;min-height:calc(100vh - 70px);padding:clamp(22px,3.3vw,46px) clamp(16px,4vw,58px) 110px;align-items:center;justify-content:center;opacity:0}.slide.active{display:flex;animation:enter .32s ease forwards}@keyframes enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}.inner{width:min(1180px,100%);margin:auto}.narrow{width:min(950px,100%)}.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,52px);align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--blue);font-size:.74rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.eyebrow:before{content:"";width:23px;height:4px;border-radius:99px;background:var(--yellow)}h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.12}h1{max-width:900px;margin-bottom:18px;font-size:clamp(2.45rem,6vw,5.2rem)}h2{margin:4px 0 12px;font-size:clamp(1.9rem,4vw,3.35rem)}h3{font-size:clamp(1.05rem,1.7vw,1.35rem)}.lead{max-width:820px;color:var(--muted);font-size:clamp(1rem,1.5vw,1.23rem)}.accent{color:var(--blue)}.marker{padding:0 .12em;background:linear-gradient(transparent 62%,rgba(255,202,69,.6) 62%)}
+.deck{min-height:100vh;padding-top:70px}.slide{display:none;min-height:calc(100vh - 70px);padding:clamp(22px,3.3vw,46px) clamp(16px,4vw,58px) 110px;align-items:center;justify-content:center;opacity:1}.slide.active{display:flex;opacity:1}.inner{width:min(1180px,100%);margin:auto}.narrow{width:min(950px,100%)}.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,52px);align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;color:#1853db;font-size:.74rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.eyebrow:before{content:"";width:23px;height:4px;border-radius:99px;background:var(--yellow)}h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.12}h1{max-width:900px;margin-bottom:18px;font-size:clamp(2.45rem,6vw,5.2rem)}h2{margin:4px 0 12px;font-size:clamp(1.9rem,4vw,3.35rem)}h3{font-size:clamp(1.05rem,1.7vw,1.35rem)}.lead{max-width:820px;color:#35496a;font-size:clamp(1rem,1.5vw,1.23rem)}.accent{color:#1853db}.marker{padding:0 .12em;background:linear-gradient(transparent 62%,rgba(255,202,69,.6) 62%)}
 .hero-card{min-height:350px;padding:28px;border-radius:28px;color:white;background:linear-gradient(145deg,#173664,#0e2047);box-shadow:0 25px 70px rgba(16,34,74,.2)}.doc{padding:18px;border:1px solid rgba(255,255,255,.15);border-radius:18px;background:rgba(255,255,255,.09)}.dots{display:flex;gap:6px;margin-bottom:16px}.dots i{width:9px;height:9px;border-radius:50%;background:#ff7b76}.dots i:nth-child(2){background:var(--yellow)}.dots i:nth-child(3){background:#43d49c}.line{height:13px;margin:12px 0;border-radius:5px;background:rgba(255,255,255,.18)}.line.blue{width:80%;background:#6fa5ff}.line.yellow{width:55%;background:var(--yellow)}.pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:23px}.pill,.badge{padding:7px 10px;border-radius:9px;color:#31527f;background:#edf3fc;font-size:.75rem;font-weight:800}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:23px}.card{padding:20px;border:1px solid var(--line);border-radius:18px;background:white;box-shadow:0 10px 34px rgba(39,76,139,.06)}.num{display:grid;place-items:center;width:38px;height:38px;margin-bottom:13px;border-radius:12px;color:var(--blue);background:#edf3ff;font-weight:900}.card p{margin:5px 0 0;color:var(--muted);font-size:.84rem}.agenda{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:20px}.agenda div{padding:13px;border:1px solid var(--line);border-radius:13px;background:white}.agenda b{display:block;color:var(--blue);font-size:.77rem}.agenda span{color:var(--muted);font-size:.74rem}
 .panel{padding:24px;border:1px solid var(--line);border-radius:22px;background:white;box-shadow:var(--shadow)}.bad{font-size:clamp(1.05rem,1.8vw,1.35rem);line-height:1.8}.wrong{padding:2px 5px;border-radius:6px;color:#a62331;background:#ffe1e4;text-decoration:underline wavy var(--red)}.choices,.controls,.cta-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.choice,.btn{min-height:42px;padding:0 14px;border-radius:11px;font-weight:850}.choice{border:1px solid var(--line);background:white}.choice.good{border-color:#8acbae;background:#eaf8f3}.feedback{min-height:50px;margin-top:14px;padding:13px 15px;border-radius:12px;color:#375174;background:#edf3fc;font-size:.85rem}.rules{display:grid;gap:9px}.rule{display:flex;gap:11px;padding:14px;border:1px solid var(--line);border-radius:13px;background:white}.rule i{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:9px;color:var(--blue);background:#edf3ff;font-style:normal;font-weight:900}.rule b{display:block}.rule span{color:var(--muted);font-size:.8rem}.selected{padding:3px 5px;border-radius:5px;color:white;background:var(--blue)}
 .flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:center;margin-top:24px}.flow-card{min-height:160px;padding:20px;border:1px solid var(--line);border-radius:19px;background:white;text-align:center}.flow-card .emo{font-size:2.1rem}.flow-card p{color:var(--muted);font-size:.82rem}.arrow{color:var(--blue);font-size:1.7rem;font-weight:900}.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px}.compare div{padding:17px;border:1px solid var(--line);border-radius:16px;background:#f8fbff}.compare p{margin-bottom:0;color:var(--muted);font-size:.82rem}.keys{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;margin-top:24px}.key{padding:19px 10px;border:1px solid var(--line);border-radius:16px;background:white;text-align:center}kbd{display:inline-block;padding:8px;border:1px solid #bdc9db;border-bottom-width:4px;border-radius:8px;background:#fbfcff;font-weight:900}.key b{display:block;margin-top:10px}.key span{color:var(--muted);font-size:.7rem}
@@ -17,37 +17,1421 @@
 .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:20px}.step{padding:16px;border:1px solid var(--line);border-radius:15px;background:white}.step.on{color:white;border-color:var(--blue);background:var(--blue)}.step small{display:block;margin-bottom:5px;color:var(--muted);font-weight:800}.step.on small{color:#d9e7ff}.findbar{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:13px}.findbar input{min-width:0;padding:11px;border:1px solid #bdcce2;border-radius:10px}.document{min-height:130px;padding:18px;border:1px solid var(--line);border-radius:14px;background:#fbfdff;line-height:1.85}.document mark{padding:2px 3px;border-radius:4px;background:#ffe071}.count{margin-top:9px;color:var(--muted);font-size:.78rem}.mistakes{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-top:20px}.mistake{padding:17px;border:1px solid var(--line);border-radius:16px;background:white}.mistake b{display:block;margin-bottom:5px;color:var(--red)}.mistake p{margin:0;color:var(--green);font-size:.8rem}.rubric{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:15px}.rubric div{padding:13px;border-radius:13px;color:#29466f;background:rgba(255,255,255,.12)}.rubric b{display:block;color:var(--yellow)}
 .quiz{display:grid;grid-template-columns:1fr 250px;gap:17px}.question{margin:10px 0 17px;font-size:clamp(1.12rem,2vw,1.45rem);font-weight:850}.options{display:grid;gap:8px}.option{display:flex;gap:10px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:11px;text-align:left;background:#fbfdff}.option.correct{border-color:#74c8a8;background:#eaf8f3}.option.wrong{border-color:#ef9aa3;background:#fff0f1}.letter{display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:8px;color:var(--blue);background:#eaf1ff;font-weight:900}.quiz-side{padding:19px;border-radius:20px;color:white;background:var(--navy)}.score{margin:8px 0;color:var(--yellow);font-size:2.1rem;font-weight:900}.dots-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:14px}.qdot{display:grid;place-items:center;height:30px;border-radius:8px;background:rgba(255,255,255,.1);font-size:.7rem}.qdot.done{background:var(--green)}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:22px}.summary div{padding:19px;border:1px solid var(--line);border-radius:17px;background:white}.summary b{display:block;margin-bottom:5px;color:var(--blue)}.summary span{color:var(--muted);font-size:.8rem}.cta{display:inline-flex;align-items:center;min-height:45px;padding:0 16px;border-radius:11px;color:white;background:var(--blue);font-weight:850}.cta.yellow{color:var(--navy);background:var(--yellow)}.cta.ghost{color:var(--blue);border:1px solid #aac2ea;background:white}
 .nav{position:fixed;z-index:45;left:50%;bottom:18px;transform:translateX(-50%);display:grid;grid-template-columns:auto auto auto;align-items:center;gap:9px;padding:8px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.95);backdrop-filter:blur(15px);box-shadow:var(--shadow)}.nav button{min-height:41px;padding:0 14px;border-radius:10px;color:#31527d;background:#edf3fc;font-weight:850}.nav button.primary{color:white;background:var(--blue)}.nav button:disabled{opacity:.35}.counter{min-width:84px;text-align:center;color:var(--muted);font-size:.77rem;font-weight:850}.counter b{color:var(--blue)}.notes{position:fixed;z-index:60;top:82px;right:18px;width:min(390px,calc(100vw - 36px));padding:19px;border:1px solid var(--line);border-radius:17px;background:white;box-shadow:var(--shadow);transform:translateX(calc(100% + 40px));transition:.25s}.notes.open{transform:none}.notes p{margin:0;color:var(--muted);font-size:.84rem;line-height:1.65}.toast{position:fixed;z-index:90;left:50%;bottom:88px;transform:translate(-50%,18px);max-width:90vw;padding:11px 15px;border-radius:11px;color:white;background:var(--navy);opacity:0;transition:.2s;font-weight:750;font-size:.82rem}.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:900px){.topbar{grid-template-columns:auto 1fr}.progress{display:none}.two,.quiz{grid-template-columns:1fr}.grid3,.summary{grid-template-columns:repeat(2,1fr)}.keys{grid-template-columns:repeat(3,1fr)}.agenda,.rubric{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.brand span,.label{display:none}.topbar{padding-inline:11px}.slide{padding-inline:14px}.grid3,.summary,.mistakes,.compare{grid-template-columns:1fr}.keys{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.timeline{grid-template-columns:repeat(2,1fr)}.findbar{grid-template-columns:1fr 1fr}.findbar input:first-child{grid-column:1/-1}.challenge-head{display:block}.timer{margin-top:10px}.nav button span{display:none}}
+/* SELECT LAB & DOCS STUDIO ENHANCEMENTS */
+.select-guide-col{display:flex;flex-direction:column;gap:14px}
+.select-steps-title{display:flex;justify-content:space-between;align-items:center;font-size:.73rem;font-weight:850;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.select-steps-title small{color:var(--blue);font-size:.72rem;text-transform:none;font-weight:700}
+.interactive-steps{display:grid;gap:9px}
+.istep{display:flex;align-items:center;gap:13px;padding:12px 15px;border:1.5px solid var(--line);border-radius:14px;background:white;cursor:pointer;transition:all .22s ease;position:relative}
+.istep:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 22px rgba(47,111,234,.12)}
+.istep.active{border-color:var(--blue);background:linear-gradient(145deg,#fff,#f0f6ff);box-shadow:0 8px 24px rgba(47,111,234,.16)}
+.istep-icon{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:10px;background:#edf3fc;color:var(--blue);font-weight:900;font-size:.92rem;transition:all .2s ease}
+.istep.active .istep-icon{background:var(--blue);color:white;box-shadow:0 4px 12px rgba(47,111,234,.35)}
+.istep-body{flex:1}
+.istep-body b{display:block;font-size:.9rem;color:var(--navy);margin-bottom:2px}
+.istep-body span{font-size:.79rem;color:var(--muted);line-height:1.45;display:block}
+.istep-badge{font-size:.67rem;font-weight:800;padding:3px 8px;border-radius:99px;background:#edf3ff;color:var(--blue);letter-spacing:.05em}
+
+/* Quick tricks card */
+.quick-tricks-card{padding:15px;border:1px solid var(--line);border-radius:16px;background:white;box-shadow:0 10px 30px rgba(32,67,128,.05)}
+.quick-tricks-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.72rem;font-weight:850;letter-spacing:.08em;color:var(--navy)}
+.pulse-tag{background:#fff8e6;color:#b58105;border:1px solid #ffdf8d;font-size:.67rem;padding:2px 7px;border-radius:99px;font-weight:800;animation:pulseTag 2s infinite}
+@keyframes pulseTag{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.75;transform:scale(.96)}}
+.tricks-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.trick-btn{display:flex;flex-direction:column;align-items:flex-start;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:#fafcff;text-align:left;cursor:pointer;transition:all .2s ease}
+.trick-btn:hover{border-color:var(--blue);background:#edf4ff;transform:translateY(-2px);box-shadow:0 6px 18px rgba(47,111,234,.12)}
+.trick-key{font-size:.73rem;font-weight:850;color:var(--blue);margin-bottom:2px}
+.trick-btn b{font-size:.84rem;color:var(--navy)}
+.trick-btn small{font-size:.69rem;color:var(--muted);margin-top:1px}
+
+/* DOCS STUDIO WINDOW */
+.docs-studio-container{display:flex;flex-direction:column;position:relative}
+.docs-studio-window{display:flex;flex-direction:column;border:1.5px solid #cfdcf0;border-radius:20px;background:#f8fafe;box-shadow:0 20px 60px rgba(20,48,98,.14);overflow:hidden}
+.docs-win-head{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;background:white;border-bottom:1px solid var(--line)}
+.docs-win-brand{display:flex;align-items:center;gap:10px}
+.docs-file-icon{font-size:1.5rem;line-height:1}
+.docs-file-meta{display:flex;flex-direction:column}
+.docs-file-title{font-size:.86rem;font-weight:800;color:var(--navy);line-height:1.2}
+.docs-file-sub{display:flex;align-items:center;gap:8px;font-size:.7rem;color:var(--muted);margin-top:3px}
+.docs-file-sub span:hover{color:var(--blue);cursor:pointer}
+.cloud-status{color:#108e5a!important;font-weight:700;background:#e6f7f0;padding:1px 6px;border-radius:4px}
+.docs-win-actions{display:flex;align-items:center;gap:7px}
+.win-btn-demo{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:9px;background:linear-gradient(135deg,var(--blue),#184ea6);color:white;font-size:.77rem;font-weight:800;box-shadow:0 4px 12px rgba(47,111,234,.28);transition:all .2s ease}
+.win-btn-demo:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(47,111,234,.4)}
+.win-btn-reset{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:#edf3fc;color:var(--muted);font-weight:800;font-size:.9rem;transition:all .2s}
+.win-btn-reset:hover{background:#dfe9f8;color:var(--navy)}
+
+/* Toolbar */
+.docs-win-toolbar{display:flex;align-items:center;gap:4px;padding:6px 12px;background:#f1f4f9;border-bottom:1px solid #dce4f0;overflow-x:auto}
+.tb-group{display:flex;align-items:center;gap:2px}
+.tb-sep{width:1px;height:18px;background:#cbd6e8;margin:0 5px}
+.tb-btn{display:grid;place-items:center;min-width:28px;height:28px;padding:0 6px;border-radius:6px;background:transparent;color:#334862;font-size:.78rem;font-weight:800;transition:all .15s ease}
+.tb-btn:hover{background:#dce5f3;color:var(--navy)}
+.tb-btn.active{background:var(--blue);color:white}
+.tb-btn.action-cut:hover{background:#ffe3e6;color:#c92a3a}
+.tb-btn.action-copy:hover{background:#e6f0ff;color:var(--blue)}
+.tb-btn.action-del:hover{background:#ffebeb;color:#c92a3a}
+.tb-dropdown{display:flex;align-items:center;padding:3px 7px;border-radius:6px;background:white;border:1px solid #cfdbe9;font-size:.73rem;font-weight:700;color:#2b3e55;cursor:pointer}
+
+/* Ruler */
+.docs-ruler{height:16px;background:#eef2f8;border-bottom:1px solid #dae3f0;padding:0 20px;display:flex;align-items:center;position:relative}
+.ruler-line{width:100%;height:9px;background:#fff;border:1px solid #d1dcec;border-radius:2px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;position:relative}
+.ruler-mark{font-size:7px;color:#2f6fea;user-select:none}
+.ruler-ticks{width:100%;height:100%;background:repeating-linear-gradient(90deg,transparent,transparent 14px,#c3d2e6 14px,#c3d2e6 15px)}
+
+/* Document Paper Viewport */
+.docs-paper-viewport{position:relative;background:#eef2f7;padding:20px 24px;min-height:260px;display:flex;justify-content:center;align-items:flex-start;overflow:hidden}
+.docs-editable-paper{width:100%;max-width:580px;background:white;border-radius:6px;padding:22px 26px;box-shadow:0 6px 25px rgba(22,45,85,.08),0 1px 3px rgba(22,45,85,.05);min-height:200px;outline:none;line-height:1.8;font-size:.94rem;color:#1a2538;transition:all .25s ease;user-select:text}
+.docs-editable-paper.glow-success{box-shadow:0 0 0 3px #10b981,0 10px 30px rgba(16,185,129,.2)}
+.paper-title{font-size:1.12rem;font-weight:850;color:#10224a;margin-bottom:10px;border-bottom:1.5px solid #edf2f9;padding-bottom:7px}
+.paper-paragraph{margin-bottom:12px}
+.interactive-word{display:inline;padding:1px 2px;border-radius:3px;transition:background .15s ease,color .15s ease;cursor:text}
+.interactive-word.selected-word{background:#2f6fea!important;color:white!important;border-radius:3px}
+.interactive-word.yellow-highlight{background:#fff072!important;color:#1a2538!important}
+
+/* Floating Inspector */
+.floating-selection-inspector{position:absolute;top:8px;left:50%;transform:translateX(-50%) translateY(-10px);opacity:0;pointer-events:none;background:rgba(16,34,74,.95);backdrop-filter:blur(12px);color:white;padding:7px 13px;border-radius:12px;box-shadow:0 12px 36px rgba(10,24,52,.35);display:flex;align-items:center;gap:12px;z-index:25;transition:all .22s cubic-bezier(.16,1,.3,1);white-space:nowrap}
+.floating-selection-inspector.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.inspector-badge{display:flex;align-items:center;gap:7px;font-size:.78rem}
+.inspector-dot{width:8px;height:8px;border-radius:50%;background:#38ef7d;box-shadow:0 0 8px #38ef7d;animation:pulseDot 1.8s infinite}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.inspector-actions{display:flex;gap:5px}
+.inspector-btn{padding:4px 9px;border-radius:7px;background:rgba(255,255,255,.16);color:white;font-size:.72rem;font-weight:750;transition:all .15s}
+.inspector-btn:hover{background:rgba(255,255,255,.3);transform:scale(1.04)}
+
+/* Virtual Animated Cursor */
+.virtual-cursor{position:absolute;top:60px;left:80px;z-index:30;pointer-events:none;display:none;align-items:center;gap:6px;transition:top .45s ease-out,left .45s ease-out}
+.virtual-cursor.show{display:flex}
+.cursor-tooltip{background:#1e293b;color:#fff;font-size:.68rem;font-weight:800;padding:3px 7px;border-radius:6px;box-shadow:0 4px 10px rgba(0,0,0,.2);white-space:nowrap}
+
+/* Mission Footer */
+.docs-mission-footer{padding:13px 16px;background:white;border-top:1px solid var(--line)}
+.mission-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.mission-title{font-size:.73rem;font-weight:850;letter-spacing:.08em;color:var(--navy)}
+.mission-xp{font-size:.74rem;font-weight:850;color:#108e5a;background:#e6f7f0;padding:3px 8px;border-radius:99px}
+.mission-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:7px}
+.mchip{display:flex;align-items:center;gap:7px;padding:7px 9px;border:1px solid var(--line);border-radius:10px;background:#fbfdff;font-size:.76rem;font-weight:750;color:var(--navy);cursor:pointer;text-align:left;transition:all .2s ease}
+.mchip:hover{border-color:var(--blue);background:#eef5ff}
+.mchip.completed{border-color:#8bd3b1;background:#edf9f3;color:#0b7849}
+.mchip-num{display:grid;place-items:center;flex:0 0 20px;height:20px;border-radius:6px;background:#edf3ff;color:var(--blue);font-size:.68rem;font-weight:900}
+.mchip.completed .mchip-num{background:#10b981;color:white}
+.mission-feedback{font-size:.78rem;color:var(--muted);line-height:1.45;padding-top:2px}
+
+/* Enhanced 3D Keycaps & Flow Cards */
+.key{cursor:pointer;transition:all .18s ease;position:relative;user-select:none}
+.key:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(47,111,234,.15);border-color:var(--blue)}
+.key:active,.key.pressed{transform:translateY(2px);box-shadow:0 2px 6px rgba(47,111,234,.2);border-color:var(--blue);background:#edf5ff}
+.key.pressed kbd{border-bottom-width:1px;transform:translateY(2px);background:#2f6fea;color:white}
+.flow-card{cursor:pointer;transition:all .2s ease}
+.flow-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(47,111,234,.15);border-color:var(--blue)}
+.flow-card:active{transform:scale(.98)}
+
+/* ALL SLIDES RICH INTERACTIVE STYLES */
+.time-compare-box{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;text-align:left}
+.compare-pill{padding:13px 15px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.compare-pill.good-way{background:rgba(16,185,129,.16);border-color:rgba(16,185,129,.4)}
+.compare-pill b{display:block;font-size:.85rem;margin-bottom:3px}
+.compare-pill span{font-size:.76rem;color:#cbd5e1}
+
+.goal-card-item{cursor:pointer;user-select:none;transition:all .2s ease}
+.goal-card-item:hover{transform:translateY(-3px);border-color:var(--blue)}
+.goal-card-item.checked{border-color:#10b981;background:#f0fdf4}
+.goal-card-item.checked .num{background:#10b981;color:white}
+
+.sim-preview-box{background:#f8fafc;border:1.5px solid var(--line);border-radius:14px;padding:16px 20px;margin-top:16px;font-size:1.05rem;line-height:1.8;min-height:75px}
+.sim-preview-box mark{padding:2px 6px;border-radius:4px;font-weight:750}
+
+.clip-lab-grid{display:grid;grid-template-columns:1fr auto 1.1fr auto 1fr;align-items:center;gap:12px;margin-top:20px}
+.clip-box-card{background:white;border:1.5px solid var(--line);border-radius:16px;padding:18px 16px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.04);transition:all .25s ease}
+.clip-box-card.active-tray{border-color:#f59e0b;background:#fffbeb;box-shadow:0 8px 25px rgba(245,158,11,.25)}
+.clip-source-text{padding:8px 10px;border-radius:8px;background:#f1f5f9;font-size:.84rem;font-weight:750;color:var(--navy);margin:10px 0}
+.clip-action-btns{display:flex;justify-content:center;gap:8px;margin-top:18px}
+
+.key-action-display{margin-top:18px;padding:14px 20px;border-radius:14px;background:#f0f6ff;border:1.5px solid #bdd7fa;display:flex;align-items:center;gap:14px}
+.key-action-icon{width:44px;height:44px;border-radius:12px;background:var(--blue);color:white;display:grid;place-items:center;font-size:1.4rem;flex:0 0 44px}
+.key-action-meta b{display:block;color:var(--navy);font-size:.95rem}
+.key-action-meta span{font-size:.82rem;color:#475569}
+
+.puzzle-card-item{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border:1.5px solid rgba(255,255,255,.2);border-radius:12px;background:rgba(255,255,255,.12);margin-bottom:8px;cursor:pointer;transition:all .2s}
+.puzzle-card-item:hover{background:rgba(255,255,255,.22);transform:translateX(4px)}
+.puzzle-card-item.selected-swap{border-color:var(--yellow);background:rgba(255,202,69,.25)}
+.puzzle-arrow-btns button{padding:4px 8px;border-radius:6px;background:rgba(255,255,255,.25);color:white;font-weight:850;font-size:.75rem;margin-left:4px}
+
+.time-machine-viewport{margin-top:18px;padding:22px 24px;border-radius:16px;background:white;border:1.5px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,.06);min-height:120px}
+.tm-title{font-size:1.15rem;font-weight:850;color:var(--navy);margin-bottom:8px}
+.tm-body{font-size:.95rem;line-height:1.7;color:#334155}
+
+.find-nav-badge{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:850;color:var(--blue)}
+.find-nav-btn{width:28px;height:28px;border-radius:6px;background:#edf3ff;color:var(--blue);font-weight:900;display:grid;place-items:center}
+
+.mistake-card-box{padding:18px 20px;border:1.5px solid #fecaca;border-radius:16px;background:#fff5f5;transition:all .2s}
+.mistake-card-box:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(239,68,68,.12)}
+.mistake-card-box b{display:flex;align-items:center;gap:8px;color:#dc2626;font-size:.94rem;margin-bottom:6px}
+.mistake-card-box p{color:#15803d;font-size:.84rem;font-weight:700;margin:0}
+
+.rubric-interactive-card{padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);cursor:pointer;transition:all .2s}
+.rubric-interactive-card:hover{background:rgba(255,255,255,.22)}
+.rubric-interactive-card.scored{background:rgba(16,185,129,.3);border-color:#34d399}
+.rubric-interactive-card b{color:var(--yellow);font-size:.95rem}
+.rubric-interactive-card span{font-size:.78rem;color:#f1f5f9;display:block;margin-top:2px}
+
+.game-launch-banner{background:linear-gradient(135deg,#1e1b4b,#312e81 60%,#1e3a8a);border:2px solid #6366f1;border-radius:20px;padding:24px 30px;margin-top:22px;display:flex;align-items:center;justify-content:space-between;color:white;box-shadow:0 16px 40px rgba(49,46,129,.35);flex-wrap:wrap;gap:16px}
+.game-launch-info h3{font-size:1.25rem;font-weight:850;color:#ffca45;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.game-launch-info p{font-size:.88rem;color:#cbd5e1;margin:0}
+.game-launch-btn{padding:13px 26px;border-radius:12px;background:linear-gradient(135deg,#ffca45,#f59e0b);color:#0e1c3e;font-weight:850;font-size:.95rem;display:inline-flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(245,158,11,.4);transition:all .2s ease}
+.game-launch-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(245,158,11,.55)}
 </style>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">D</span><span>Docs Lab</span><small>Buổi 02</small></a><div class="progress"><div class="progress-meta"><span id="section">Giới thiệu</span><b id="time">0–2 phút</b></div><div class="track"><div class="bar" id="bar"></div></div></div><div class="top-actions"><button class="icon-btn" id="notesBtn" aria-pressed="false" title="Ghi chú giáo viên">☷ <span class="label">Ghi chú</span></button><button class="icon-btn" id="fullBtn" title="Toàn màn hình">⛶</button><a class="icon-btn" href="index.html" title="Trang khóa học">⌂</a></div></header>
+<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">D</span><span>Docs Lab</span><small>Buổi 02</small></a><div class="progress"><div class="progress-meta"><span id="section">Giới thiệu</span><b id="time">0–2 phút</b></div><div class="track"><div class="bar" id="bar"></div></div></div><div class="top-actions"><button class="icon-btn" id="soundBtn" title="Bật/Tắt âm thanh tương tác">🔊</button><button class="icon-btn" id="notesBtn" aria-pressed="false" title="Ghi chú giáo viên">☷ <span class="label">Ghi chú</span></button><button class="icon-btn" id="fullBtn" title="Toàn màn hình">⛶</button><a class="icon-btn" href="index.html" title="Trang khóa học">⌂</a></div></header>
 <main class="deck">
-<section class="slide active" data-section="Giới thiệu" data-time="0–2 phút" data-notes="Gợi lại Buổi 1: tài liệu đã tạo và lưu an toàn. Hôm nay ta sửa nhanh mà không xóa hết rồi gõ lại."><div class="inner two"><div><span class="eyebrow">Buổi 02 · 100 phút</span><h1>Chỉnh sửa văn bản <span class="accent">thông minh.</span></h1><p class="lead">Chọn đúng phần, di chuyển nội dung, sửa lỗi hàng loạt và luôn có “nút quay lại” khi lỡ tay.</p><div class="pills"><span class="pill">Select</span><span class="pill">Cut · Copy · Paste</span><span class="pill">Undo · Redo</span><span class="pill">Find & Replace</span></div></div><div class="hero-card"><div class="doc"><div class="dots"><i></i><i></i><i></i></div><div class="line blue"></div><div class="line"></div><div class="line yellow"></div><div class="line"></div><div class="line" style="width:70%"></div><h3 style="margin-top:28px">Sửa nhanh hơn gõ lại ✨</h3></div></div></div></section>
-<section class="slide" data-section="Mục tiêu" data-time="2–5 phút" data-notes="Giới thiệu lộ trình. Nhấn mạnh học sinh phải thực hành chứ không chỉ ghi nhớ phím tắt."><div class="inner"><span class="eyebrow">Đích đến hôm nay</span><h2>Từ “biết nút” đến <span class="marker">chọn đúng thao tác</span></h2><div class="grid3"><article class="card"><span class="num">1</span><h3>Chọn & xử lý</h3><p>Select, Delete, Cut, Copy và Paste đúng phần.</p></article><article class="card"><span class="num">2</span><h3>Sửa sai an toàn</h3><p>Dùng Undo và Redo khi lỡ tay.</p></article><article class="card"><span class="num">3</span><h3>Sửa lỗi hàng loạt</h3><p>Tìm nhanh và thay thế chính xác.</p></article></div><div class="agenda"><div><b>0–20'</b><span>Chọn, cắt, sao chép</span></div><div><b>20–50'</b><span>Demo + thực hành 1</span></div><div><b>50–90'</b><span>Find/Replace + bài lớn</span></div><div><b>90–100'</b><span>Quiz + tổng kết</span></div></div></div></section>
-<section class="slide" data-section="Khởi động" data-time="5–10 phút" data-notes="Cho học sinh đọc đoạn lỗi trong 30 giây và chọn cách xử lý. Chỉnh sửa thông minh là thay đổi đúng phần, không phá phần đã đúng."><div class="inner narrow"><span class="eyebrow">Khởi động · Em sẽ làm gì?</span><h2>Có cần <span class="accent">gõ lại từ đầu?</span></h2><div class="panel"><p class="bad">Em <span class="wrong">thức dậy lúc 7 giờ</span>. Em ăn sáng. Em đánh răng và rửa mặt. Em đi học lúc <span class="wrong">6 giờ</span>.</p><div class="choices"><button class="choice" data-warm="bad">A. Xóa hết rồi gõ lại</button><button class="choice" data-warm="good">B. Chọn từng phần và sửa</button><button class="choice" data-warm="bad">C. Để nguyên vì sợ mất chữ</button></div><div class="feedback" id="warmFeedback">Chọn cách nhanh và an toàn nhất.</div></div></div></section>
-<section class="slide" data-section="Kỹ năng nền" data-time="10–15 phút" data-notes="Demo kéo chuột chọn một cụm từ. Nêu nguyên tắc: chọn trước, ra lệnh sau."><div class="inner two"><div><span class="eyebrow">Kỹ năng số 1</span><h2><span class="accent">Select</span> — chọn trước, sửa sau</h2><p class="lead">Mọi lệnh chỉ tác động vào phần đang được chọn.</p><div class="rules"><div class="rule"><i>1</i><div><b>Đặt con trỏ</b><span>Đưa chuột đến đầu phần cần chọn.</span></div></div><div class="rule"><i>2</i><div><b>Giữ và kéo</b><span>Kéo đến cuối từ, câu hoặc đoạn.</span></div></div><div class="rule"><i>3</i><div><b>Kiểm tra vùng xanh</b><span>Chỉ ra lệnh khi phạm vi đã đúng.</span></div></div></div></div><div class="panel"><span class="badge">Mô phỏng vùng chọn</span><p class="bad">Em hãy <span class="selected">chọn đúng cụm từ này</span> trước khi Cut, Copy hoặc Delete.</p><p class="hint">Mẹo: nháy đúp thường chọn một từ.</p></div></div></section>
-<section class="slide" data-section="Kiến thức" data-time="15–20 phút" data-notes="Copy giữ bản gốc; Cut lấy khỏi vị trí cũ; Paste đặt nội dung trong clipboard vào vị trí mới."><div class="inner"><span class="eyebrow">Bộ ba chỉnh sửa</span><h2>Cut, Copy, Paste như một <span class="marker">chiếc khay tạm</span></h2><div class="flow"><div class="flow-card"><div class="emo">✂️</div><h3>Cut</h3><p>Lấy phần đã chọn khỏi chỗ cũ.</p></div><div class="arrow">→</div><div class="flow-card"><div class="emo">📋</div><h3>Clipboard</h3><p>Giữ nội dung vừa Cut hoặc Copy.</p></div><div class="arrow">→</div><div class="flow-card"><div class="emo">📌</div><h3>Paste</h3><p>Dán tại vị trí con trỏ.</p></div></div><div class="compare"><div><h3>Copy · Ctrl+C</h3><p>Giữ bản gốc, tạo thêm một bản giống hệt.</p></div><div><h3>Cut · Ctrl+X</h3><p>Di chuyển nội dung khỏi vị trí cũ.</p></div></div></div></section>
-<section class="slide" data-section="Phím tắt" data-time="20–25 phút" data-notes="Cho lớp đọc đồng thanh tên và công dụng. Mac thường dùng Command thay Ctrl."><div class="inner"><span class="eyebrow">Bàn phím siêu tốc</span><h2>Năm phím tắt cần nhớ bằng <span class="accent">hành động</span></h2><div class="keys"><div class="key"><kbd>Ctrl+C</kbd><b>Copy</b><span>Sao chép</span></div><div class="key"><kbd>Ctrl+X</kbd><b>Cut</b><span>Cắt</span></div><div class="key"><kbd>Ctrl+V</kbd><b>Paste</b><span>Dán</span></div><div class="key"><kbd>Ctrl+Z</kbd><b>Undo</b><span>Quay lại</span></div><div class="key"><kbd>Ctrl+F</kbd><b>Find</b><span>Tìm</span></div></div><div class="feedback"><b>Nhịp ghi nhớ:</b> C = Copy · X giống chiếc kéo · V đặt xuống · Z quay lại · F = Find.</div></div></section>
+<section class="slide active" data-section="Giới thiệu" data-time="0–2 phút" data-notes="Gợi lại Buổi 1: tài liệu đã tạo và lưu an toàn. Hôm nay ta sửa nhanh mà không xóa hết rồi gõ lại."><div class="inner two" style="gap:32px"><div><span class="eyebrow">Buổi 02 · 100 phút</span><h1>Chỉnh sửa văn bản <span class="accent">thông minh.</span></h1><p class="lead">Chọn đúng phần, di chuyển nội dung, sửa lỗi hàng loạt và luôn có “nút quay lại” khi lỡ tay.</p><div class="pills"><span class="pill">⚡ Select</span><span class="pill">✂️ Cut · Copy · Paste</span><span class="pill">↶ Undo · Redo</span><span class="pill">🔍 Find & Replace</span></div><div style="display:flex;gap:10px;margin-top:22px;flex-wrap:wrap"><button class="btn" onclick="render(1)" style="font-size:.92rem;padding:12px 22px">🚀 Khám phá mục tiêu bài học →</button><a class="btn secondary" href="buoi-02-game.html" style="font-size:.92rem;padding:12px 18px;display:inline-flex;align-items:center;gap:6px">🎮 Chơi Mini Game</a></div></div><div class="hero-card" style="padding:28px 30px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><span style="font-size:.75rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase;color:#93c5fd">⚡ SO SÁNH HIỆU QUẢ THỰC TẾ</span><span style="background:rgba(255,202,69,.2);color:#ffca45;font-size:.7rem;font-weight:800;padding:3px 8px;border-radius:99px">Tiết kiệm 94%</span></div><div class="time-compare-box"><div class="compare-pill"><b>🐢 Gõ lại từ đầu</b><span>Mất 15 phút · Dễ sai lỗi mới · Mất sạch định dạng cũ</span></div><div class="compare-pill good-way"><b style="color:#34d399">⚡ Chỉnh sửa thông minh</b><span>Chỉ mất 30 giây · Giữ nguyên định dạng · An toàn 100%</span></div></div><div class="doc" style="margin-top:20px"><div class="dots"><i></i><i></i><i></i></div><div class="line blue"></div><div class="line"></div><div class="line yellow"></div><div class="line" style="width:70%"></div><h4 style="margin-top:18px;font-size:1.05rem;color:#fff">Sửa nhanh hơn gõ lại ✨</h4></div></div></div></section>
+<section class="slide" data-section="Mục tiêu" data-time="2–5 phút" data-notes="Giới thiệu lộ trình. Nhấn mạnh học sinh phải thực hành chứ không chỉ ghi nhớ phím tắt. Bấm vào từng thẻ mục tiêu để tick hoàn thành."><div class="inner"><span class="eyebrow">Đích đến hôm nay</span><h2>Từ “biết nút” đến <span class="marker">chọn đúng thao tác</span></h2><p class="lead" style="margin-bottom:20px">Nhấp vào từng mục tiêu để đánh dấu trạng thái sẵn sàng của em!</p><div class="grid3"><article class="card goal-card-item" id="goal1"><span class="num">1</span><h3>Chọn & xử lý chuẩn xác</h3><p>Thành thạo Select, Delete, Cut, Copy và Paste đúng vùng văn bản.</p><small style="display:block;margin-top:10px;color:var(--blue);font-weight:800">[✓ Bấm để tick]</small></article><article class="card goal-card-item" id="goal2"><span class="num">2</span><h3>Sửa sai an toàn tuyệt đối</h3><p>Làm chủ "Lưới an toàn" với Undo và Redo khi lỡ tay xóa nhầm.</p><small style="display:block;margin-top:10px;color:var(--blue);font-weight:800">[✓ Bấm để tick]</small></article><article class="card goal-card-item" id="goal3"><span class="num">3</span><h3>Sửa lỗi hàng loạt thần tốc</h3><p>Tìm nhanh bằng Ctrl+F và dùng Replace All sửa sạch lỗi lặp.</p><small style="display:block;margin-top:10px;color:var(--blue);font-weight:800">[✓ Bấm để tick]</small></article></div><div class="agenda"><div><b>0–20'</b><span>Chọn, cắt, sao chép</span></div><div><b>20–50'</b><span>Demo + thực hành 1</span></div><div><b>50–90'</b><span>Find/Replace + bài lớn</span></div><div><b>90–100'</b><span>Quiz + Mini Game</span></div></div></div></section>
+<section class="slide" data-section="Khởi động" data-time="5–10 phút" data-notes="Cho học sinh đọc đoạn lỗi trong 30 giây và chọn cách xử lý. Chỉnh sửa thông minh là thay đổi đúng phần, không phá phần đã đúng."><div class="inner narrow"><span class="eyebrow">Khởi động · Em sẽ làm gì?</span><h2>Có cần <span class="accent">gõ lại từ đầu?</span></h2><p class="lead" style="margin-bottom:16px">Đoạn văn dưới đây có 2 vị trí thời gian bị đảo ngược logic:</p><div class="panel"><p class="bad" id="warmOriginalText">Em <span class="wrong">thức dậy lúc 7 giờ</span>. Em ăn sáng. Em đánh răng và rửa mặt. Em đi học lúc <span class="wrong">6 giờ</span>.</p><div class="choices"><button class="choice" data-warm="bad" id="btnWarmA">A. Xóa hết rồi gõ lại</button><button class="choice" data-warm="good" id="btnWarmB">B. Chọn từng phần và sửa</button><button class="choice" data-warm="bad" id="btnWarmC">C. Để nguyên vì sợ mất chữ</button></div><div class="sim-preview-box" id="warmSimPreview">💡 <b>Gợi ý:</b> Bấm đáp án B để xem phép màu của chỉnh sửa thông minh!</div><div class="feedback" id="warmFeedback">Chọn cách nhanh và an toàn nhất.</div></div></div></section>
+<section class="slide" data-section="Kỹ năng nền" data-time="10–15 phút" data-notes="Demo kéo chuột chọn một cụm từ. Nêu nguyên tắc: chọn trước, ra lệnh sau. Hướng dẫn học sinh nháy đúp để chọn từ, nháy 3 lần chọn đoạn.">
+  <div class="inner two" style="align-items: stretch; gap: 26px;">
+    <!-- CỘT TRÁI: QUY TRÌNH 3 BƯỚC + BÍ KÍP CHỌN -->
+    <div class="select-guide-col">
+      <div>
+        <span class="eyebrow">Kỹ năng nền tảng số 1</span>
+        <h2><span class="accent">Select</span> — Chọn trước, sửa sau</h2>
+        <p class="lead" style="font-size: 0.95rem; margin-bottom: 0;">
+          Mọi lệnh (Cắt, Chép, Xóa, Đổi màu) <b>chỉ tác động</b> vào phần đang được bôi xanh. Vùng chọn chính là "tấm khiên" bảo toàn các phần còn lại!
+        </p>
+      </div>
+
+      <!-- 3 Bước Chuẩn Tương Tác -->
+      <div>
+        <div class="select-steps-title" style="margin-bottom: 8px;">
+          <span>📍 QUY TRÌNH 3 BƯỚC CHUẨN</span>
+          <small>Bấm từng bước để xem minh họa</small>
+        </div>
+        <div class="interactive-steps" id="selectSteps">
+          <div class="istep active" data-step="1" id="step1Btn">
+            <div class="istep-icon">1</div>
+            <div class="istep-body">
+              <b>Đặt con trỏ (Position)</b>
+              <span>Đưa chuột tới đầu ký tự cần chọn. Con trỏ chuyển thành dạng chữ <code>I</code>.</span>
+            </div>
+            <span class="istep-badge">Bước 1</span>
+          </div>
+          <div class="istep" data-step="2" id="step2Btn">
+            <div class="istep-icon">2</div>
+            <div class="istep-body">
+              <b>Nhấn giữ & Rê chuột (Drag)</b>
+              <span>Nhấn giữ chuột trái và kéo lướt qua các từ cần xử lý. Vệt xanh xuất hiện.</span>
+            </div>
+            <span class="istep-badge">Bước 2</span>
+          </div>
+          <div class="istep" data-step="3" id="step3Btn">
+            <div class="istep-icon">3</div>
+            <div class="istep-body">
+              <b>Kiểm tra vùng xanh (Verify)</b>
+              <span>Không lẹm dấu cách, không thiếu chữ cuối trước khi ra lệnh cắt/xóa.</span>
+            </div>
+            <span class="istep-badge">Bước 3</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Bí kíp chọn nhanh -->
+      <div class="quick-tricks-card">
+        <div class="quick-tricks-head">
+          <span>⚡ 4 BÍ KÍP CHỌN SIÊU TỐC</span>
+          <span class="pulse-tag">Bấm thử ngay</span>
+        </div>
+        <div class="tricks-grid">
+          <button class="trick-btn" id="trickWord" title="Thử chọn 1 từ">
+            <span class="trick-key">✌️ Nháy đúp</span>
+            <b>Chọn 1 từ</b>
+            <small>Nhanh gấp 3 lần kéo chuột</small>
+          </button>
+          <button class="trick-btn" id="trickParagraph" title="Thử chọn cả đoạn">
+            <span class="trick-key">🤟 Nháy 3 lần</span>
+            <b>Chọn cả đoạn</b>
+            <small>Bôi trọn vẹn đoạn văn</small>
+          </button>
+          <button class="trick-btn" id="trickAll" title="Thử chọn toàn bộ">
+            <span class="trick-key">⌨️ Ctrl + A</span>
+            <b>Chọn tất cả</b>
+            <small>Toàn bộ trang tài liệu</small>
+          </button>
+          <button class="trick-btn" id="trickShift" title="Thử chọn bằng Shift">
+            <span class="trick-key">⇧ Shift + Click</span>
+            <b>Chọn A → B</b>
+            <small>Chính xác tuyệt đối</small>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CỘT PHẢI: GOOGLE DOCS MINI STUDIO -->
+    <div class="docs-studio-container">
+      <div class="docs-studio-window">
+        <!-- Window Top Header -->
+        <div class="docs-win-head">
+          <div class="docs-win-brand">
+            <span class="docs-file-icon">📄</span>
+            <div class="docs-file-meta">
+              <div class="docs-file-title">Thực hành bôi xanh văn bản · Docs Lab</div>
+              <div class="docs-file-sub">
+                <span>Tệp</span><span>Chỉnh sửa</span><span>Xem</span><span>Chèn</span><span>Định dạng</span>
+                <span class="cloud-status">☁️ Đã lưu Drive</span>
+              </div>
+            </div>
+          </div>
+          <div class="docs-win-actions">
+            <button class="win-btn-demo" id="btnAutoDemo" title="Xem mô phỏng chuột kéo chọn">
+              <span>🎬 Xem chuột ảo</span>
+            </button>
+            <button class="win-btn-reset" id="btnResetDocs" title="Khôi phục trạng thái ban đầu">↺</button>
+          </div>
+        </div>
+
+        <!-- Google Docs Toolbar -->
+        <div class="docs-win-toolbar">
+          <div class="tb-group">
+            <button class="tb-btn" id="tbUndo" title="Undo (Ctrl+Z)">↶</button>
+            <button class="tb-btn" id="tbRedo" title="Redo (Ctrl+Y)">↷</button>
+            <button class="tb-btn" title="In ấn">🖨️</button>
+          </div>
+          <div class="tb-sep"></div>
+          <div class="tb-group">
+            <div class="tb-dropdown">Arial ▾</div>
+            <div class="tb-dropdown" style="min-width: 42px;">12 ▾</div>
+          </div>
+          <div class="tb-sep"></div>
+          <div class="tb-group">
+            <button class="tb-btn" id="tbBold" title="In đậm (Ctrl+B)"><b>B</b></button>
+            <button class="tb-btn" id="tbItalic" title="In nghiêng (Ctrl+I)"><i>I</i></button>
+            <button class="tb-btn" id="tbUnderline" title="Gạch chân (Ctrl+U)"><u>U</u></button>
+            <button class="tb-btn" id="tbColor" title="Đổi màu chữ" style="color:#2f6fea;"><b>A</b></button>
+          </div>
+          <div class="tb-sep"></div>
+          <div class="tb-group">
+            <button class="tb-btn action-cut" id="tbCut" title="Cut (Ctrl+X)">✂️ Cut</button>
+            <button class="tb-btn action-copy" id="tbCopy" title="Copy (Ctrl+C)">📋 Copy</button>
+            <button class="tb-btn action-del" id="tbDelete" title="Delete">🗑️ Xóa</button>
+          </div>
+        </div>
+
+        <!-- Ruler (Thước đo) -->
+        <div class="docs-ruler">
+          <div class="ruler-line">
+            <span class="ruler-mark">▼</span>
+            <div class="ruler-ticks"></div>
+            <span class="ruler-mark">▼</span>
+          </div>
+        </div>
+
+        <!-- Paper Viewport -->
+        <div class="docs-paper-viewport" id="docsPaperViewport">
+          <!-- Floating Inspector -->
+          <div class="floating-selection-inspector" id="floatingInspector">
+            <div class="inspector-badge">
+              <span class="inspector-dot"></span>
+              <span id="inspectorInfo">Đang chọn: <b>"chọn đúng cụm từ này"</b> (5 từ)</span>
+            </div>
+            <div class="inspector-actions">
+              <button class="inspector-btn" id="inspCut">✂️ Cắt</button>
+              <button class="inspector-btn" id="inspCopy">📋 Chép</button>
+              <button class="inspector-btn" id="inspHighlight">✨ Tô vàng</button>
+            </div>
+          </div>
+
+          <!-- Virtual Animated Cursor -->
+          <div class="virtual-cursor" id="virtualCursor">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M4 3L17.5 13.5L11.5 14.5L15 21L12.5 22L9 15.5L4 19.5V3Z" fill="#1e293b" stroke="#ffffff" stroke-width="2"/>
+            </svg>
+            <span class="cursor-tooltip" id="cursorTip">Chuột ảo</span>
+          </div>
+
+          <!-- Document Paper -->
+          <div class="docs-editable-paper" id="docsContentArea">
+            <h3 class="paper-title" id="paperTitle">Kỹ Năng Chỉnh Sửa Văn Bản Thông Minh</h3>
+            <p class="paper-paragraph" id="paperPara1">
+              Trong soạn thảo văn bản, em hãy <span class="interactive-word" data-w="1">chọn</span> <span class="interactive-word" data-w="2">đúng</span> <span class="interactive-word" data-w="3">cụm</span> <span class="interactive-word" data-w="4">từ</span> <span class="interactive-word" data-w="5">này</span> trước khi thực hiện các lệnh Cut, Copy hoặc Delete.
+            </p>
+            <p class="paper-paragraph" id="paperPara2">
+              Nếu gõ sai một từ, hãy <span class="interactive-word" data-w="6">bôi</span> <span class="interactive-word" data-w="7">xanh</span> <span class="interactive-word" data-w="8">chính</span> <span class="interactive-word" data-w="9">xác</span> phần lỗi để sửa ngay, tuyệt đối không xóa cả đoạn văn rồi gõ lại từ đầu!
+            </p>
+          </div>
+        </div>
+
+        <!-- Mission Challenge Footer -->
+        <div class="docs-mission-footer">
+          <div class="mission-header">
+            <span class="mission-title">🎯 THỬ THÁCH THỰC HÀNH TẠI CHỖ:</span>
+            <span class="mission-xp" id="missionScore">0 / 3 Hoàn thành</span>
+          </div>
+          <div class="mission-chips">
+            <button class="mchip" id="mchip1">
+              <span class="mchip-num">1</span>
+              <span>Nháy đúp chọn từ "chọn"</span>
+            </button>
+            <button class="mchip" id="mchip2">
+              <span class="mchip-num">2</span>
+              <span>Quét cụm 5 từ mẫu</span>
+            </button>
+            <button class="mchip" id="mchip3">
+              <span class="mchip-num">3</span>
+              <span>Nháy 3 lần chọn cả đoạn</span>
+            </button>
+          </div>
+          <div class="mission-feedback" id="missionFeedback">
+            💡 <b>Mẹo:</b> Em có thể dùng chuột thực tế quét bôi xanh trực tiếp trên trang giấy ở trên!
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<section class="slide" data-section="Kiến thức" data-time="15–20 phút" data-notes="Copy giữ bản gốc; Cut lấy khỏi vị trí cũ; Paste đặt nội dung trong clipboard vào vị trí mới. Thử nghiệm trên Khay nhớ tạm trực tiếp."><div class="inner"><span class="eyebrow">Bộ ba thao tác vàng</span><h2>Cut, Copy, Paste như một <span class="marker">chiếc khay tạm</span></h2><p class="lead">Clipboard là vùng nhớ tạm thời trên máy tính, lưu trữ mẩu văn bản gần nhất em vừa Cut hoặc Copy.</p><div class="clip-lab-grid"><div class="clip-box-card" id="sourceBox"><span style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase">1. Văn bản gốc</span><div class="clip-source-text" id="sourceTextSnippet">⭐ Ý tưởng sáng tạo</div><small style="color:var(--muted);font-size:.72rem">Vị trí ban đầu trong bài</small></div><div style="font-size:1.6rem;color:var(--blue);font-weight:900">➔</div><div class="clip-box-card active-tray" id="trayBox"><span style="font-size:.75rem;font-weight:900;color:#d97706;text-transform:uppercase">📋 Khay nhớ Clipboard</span><div class="clip-source-text" id="trayContentDisplay" style="background:#fef3c7;color:#92400e;border:1px dashed #f59e0b">[Khay đang trống]</div><small style="color:#b45309;font-size:.72rem">Chỉ lưu 1 mẩu gần nhất</small></div><div style="font-size:1.6rem;color:var(--blue);font-weight:900">➔</div><div class="clip-box-card" id="destBox"><span style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase">3. Vị trí dán mới</span><div class="clip-source-text" id="destTextSnippet" style="background:#ecfdf5;color:#047857">[Đang chờ dán...]</div><small style="color:var(--muted);font-size:.72rem">Nơi con trỏ đang đứng</small></div></div><div class="clip-action-btns"><button class="btn danger" id="labBtnCut">✂️ Thử lệnh Cut (Ctrl+X)</button><button class="btn secondary" id="labBtnCopy">📋 Thử lệnh Copy (Ctrl+C)</button><button class="btn" id="labBtnPaste">📌 Thử lệnh Paste (Ctrl+V)</button><button class="btn secondary" id="labBtnReset">↺ Đặt lại mẫu</button></div><div class="compare" style="margin-top:20px"><div><h3 style="color:var(--blue)">📋 Copy · Ctrl + C (Sao chép)</h3><p>Bản gốc <b>vẫn còn nguyên</b> tại chỗ cũ, tạo thêm 1 bản giống hệt vào khay tạm.</p></div><div><h3 style="color:#dc2626">✂️ Cut · Ctrl + X (Cắt / Di chuyển)</h3><p>Bản gốc <b>biến mất khỏi chỗ cũ</b> và được cất vào khay tạm để dời sang nơi khác.</p></div></div></div></section>
+<section class="slide" data-section="Phím tắt" data-time="20–25 phút" data-notes="Cho lớp đọc đồng thanh tên và công dụng. Bấm vào phím hoặc gõ phím thật trên bàn phím để nghe tiếng clicky và xem giải nghĩa."><div class="inner"><span class="eyebrow">Bàn phím siêu tốc</span><h2>Năm phím tắt cần nhớ bằng <span class="accent">hành động</span></h2><p class="lead">Nhấp chuột vào từng phím hoặc <b>gõ trực tiếp trên bàn phím máy tính</b> để trải nghiệm:</p><div class="keys"><div class="key" data-k="c" id="keyC"><kbd>Ctrl + C</kbd><b>Copy</b><span>Sao chép</span></div><div class="key" data-k="x" id="keyX"><kbd>Ctrl + X</kbd><b>Cut</b><span>Cắt</span></div><div class="key" data-k="v" id="keyV"><kbd>Ctrl + V</kbd><b>Paste</b><span>Dán</span></div><div class="key" data-k="z" id="keyZ"><kbd>Ctrl + Z</kbd><b>Undo</b><span>Quay lại</span></div><div class="key" data-k="f" id="keyF"><kbd>Ctrl + F</kbd><b>Find</b><span>Tìm kiếm</span></div></div><div class="key-action-display" id="keyShowcaseBox"><div class="key-action-icon" id="keyShowcaseIcon">⌨️</div><div class="key-action-meta"><b id="keyShowcaseTitle">Bấm vào bất kỳ phím nào ở trên</b><span id="keyShowcaseDesc">Mẹo ghi nhớ: C = Copy · X hình chiếc kéo · V chiếc ghim cắm xuống · Z quay về quá khứ · F = Find (Tìm kiếm).</span></div></div></div></section>
 <section class="slide" data-section="Demo" data-time="25–35 phút" data-notes="Mời học sinh thao tác trên mô phỏng: chọn câu, Cut, rồi Paste. Clipboard chỉ giữ nội dung gần nhất."><div class="inner"><span class="eyebrow">Demo tương tác</span><h2>“Cắt” một câu và <span class="accent">dán xuống cuối</span></h2><div class="panel"><h3>Đoạn văn mô phỏng</h3><p class="hint">Bấm một câu để chọn trước.</p><div class="zone" id="zone"></div><div class="controls"><button class="btn secondary" id="copyBtn">Copy</button><button class="btn danger" id="cutBtn">Cut</button><button class="btn" id="pasteBtn">Paste cuối đoạn</button><button class="btn secondary" id="resetClip">Làm lại</button></div><div class="clipboard" id="clipView">📋 Clipboard đang trống.</div></div></div></section>
-<section class="slide" data-section="Thực hành 1" data-time="35–50 phút" data-notes="Học sinh dùng Cut/Paste để sắp xếp 4 câu. Không xóa toàn bộ rồi gõ lại. Bấm bắt đầu để chạy 15 phút."><div class="inner"><div class="challenge"><div class="challenge-head"><div><span class="eyebrow" style="color:#c8dbff">Mini Challenge 1</span><h2>Sắp xếp “Buổi sáng của em”</h2><p>Chỉ dùng <b>Cut/Paste</b>, không gõ lại câu.</p></div><div class="timer"><strong id="timer1">15:00</strong><span>THỜI GIAN CÒN LẠI</span></div></div><div class="tasks"><div class="task"><i>1</i><span>Em đi học vào lúc 7 giờ.</span></div><div class="task"><i>2</i><span>Em đánh răng và rửa mặt.</span></div><div class="task"><i>3</i><span>Em thức dậy lúc 6 giờ.</span></div><div class="task"><i>4</i><span>Em ăn sáng.</span></div></div><div class="controls"><button class="btn" data-timer="timer1" data-min="15">▶ Bắt đầu</button><button class="btn secondary" data-reveal="answer1">Xem đáp án</button></div><div class="answer" id="answer1"><b>Thứ tự đúng:</b> Thức dậy → Đánh răng và rửa mặt → Ăn sáng → Đi học.</div></div></div></section>
-<section class="slide" data-section="Sửa sai" data-time="50–55 phút" data-notes="Làm mẫu xóa nhầm, Undo, rồi Redo. Undo có thể bấm nhiều lần nhưng phải nhìn sau mỗi lần."><div class="inner"><span class="eyebrow">Lưới an toàn</span><h2>Undo & Redo — quay lại đúng <span class="accent">một bước</span></h2><div class="timeline"><button class="step on" data-step="0"><small>Bước 1</small><b>Mở tài liệu</b></button><button class="step" data-step="1"><small>Bước 2</small><b>Gõ tiêu đề</b></button><button class="step" data-step="2"><small>Bước 3</small><b>Dán một đoạn</b></button><button class="step" data-step="3"><small>Bước 4</small><b>Xóa nhầm câu</b></button></div><div class="controls"><button class="btn secondary" id="undoBtn">↶ Undo · Ctrl+Z</button><button class="btn" id="redoBtn">↷ Redo</button></div><div class="feedback" id="historyStatus">Hiện tại: Bước 1 — Mở tài liệu.</div></div></section>
-<section class="slide" data-section="Tìm kiếm" data-time="55–60 phút" data-notes="Demo Ctrl+F. Find chỉ giúp tìm và di chuyển qua kết quả, không tự sửa nội dung."><div class="inner two"><div><span class="eyebrow">Kỹ năng số 2</span><h2><span class="accent">Find</span> tìm kim trong đống chữ</h2><p class="lead">Ctrl+F tìm mọi nơi một từ xuất hiện.</p><div class="rules"><div class="rule"><i>1</i><div><b>Nhấn Ctrl+F</b><span>Hộp tìm kiếm xuất hiện.</span></div></div><div class="rule"><i>2</i><div><b>Gõ từ cần tìm</b><span>Kết quả được tô sáng.</span></div></div><div class="rule"><i>3</i><div><b>Dùng mũi tên</b><span>Đi qua từng kết quả.</span></div></div></div></div><div class="panel"><div class="findbar" style="grid-template-columns:1fr auto"><input value="máy tinh" readonly><button class="btn" id="findBtn">Tìm</button></div><div class="document" id="findDoc">Máy tinh giúp em học tập. Khi dùng máy tinh, em cần ngồi đúng tư thế. Em không nên sử dụng máy tinh quá lâu.</div><div class="count" id="findCount">Chưa tìm kiếm.</div></div></div></section>
-<section class="slide" data-section="Thay thế" data-time="60–65 phút" data-notes="Giải thích Replace All. Cảnh báo kiểm tra từ tìm và từ thay để tránh sửa nhầm."><div class="inner"><span class="eyebrow">Find & Replace</span><h2>Sửa lỗi lặp lại <span class="marker">trong vài giây</span></h2><div class="panel"><div class="findbar"><input id="findInput" value="máy tinh" aria-label="Tìm"><input id="replaceInput" value="máy tính" aria-label="Thay bằng"><button class="btn green" id="replaceBtn">Thay tất cả</button></div><div class="document" id="replaceDoc">Em học Tin học bằng máy tinh. Máy tinh giúp em tìm tài liệu. Em cần bảo vệ máy tinh và sử dụng máy tinh đúng cách.</div><div class="count" id="replaceCount">Có 4 lỗi “máy tinh” cần sửa.</div><div class="feedback"><b>Trước khi Thay tất cả:</b> kiểm tra ô Tìm → ô Thay bằng → xem thử một kết quả.</div></div></div></section>
-<section class="slide" data-section="Thực hành 2" data-time="65–80 phút" data-notes="Học sinh dùng Ctrl+F và Find & Replace đổi toàn bộ máy tinh thành máy tính, rồi đọc lại."><div class="inner"><div class="challenge"><div class="challenge-head"><div><span class="eyebrow" style="color:#c8dbff">Mini Challenge 2</span><h2>Truy tìm lỗi “máy tinh”</h2><p>Dùng Find & Replace, không sửa tay từng từ.</p></div><div class="timer"><strong id="timer2">15:00</strong><span>THỜI GIAN CÒN LẠI</span></div></div><div class="tasks"><div class="task"><i>1</i><span>Mở đoạn văn giáo viên cung cấp.</span></div><div class="task"><i>2</i><span>Ctrl+F và đếm số kết quả.</span></div><div class="task"><i>3</i><span>Thay tất cả thành “máy tính”.</span></div><div class="task"><i>4</i><span>Đọc lại để chắc chắn không sửa nhầm.</span></div></div><div class="controls"><button class="btn" data-timer="timer2" data-min="15">▶ Bắt đầu</button><button class="btn secondary" data-reveal="answer2">Tiêu chí hoàn thành</button></div><div class="answer" id="answer2">✅ Không còn “máy tinh” · ✅ Tất cả đã thành “máy tính” · ✅ Nội dung khác không đổi · ✅ Tài liệu đã lưu.</div></div></div></section>
-<section class="slide" data-section="Lỗi thường gặp" data-time="80–82 phút" data-notes="Đi nhanh 4 lỗi. Cho học sinh nói cách phòng tránh."><div class="inner"><span class="eyebrow">Dừng 2 phút</span><h2>Bốn lỗi dễ mắc</h2><div class="mistakes"><div class="mistake"><b>✕ Chưa chọn đã Cut</b><p>✓ Bôi xanh đúng phạm vi trước.</p></div><div class="mistake"><b>✕ Cut xong quên Paste</b><p>✓ Dán ngay rồi mới làm việc khác.</p></div><div class="mistake"><b>✕ Ctrl+Z liên tục</b><p>✓ Undo từng bước và quan sát.</p></div><div class="mistake"><b>✕ Replace All quá vội</b><p>✓ Kiểm tra từ tìm và từ thay.</p></div></div></div></section>
-<section class="slide" data-section="Bài tổng hợp" data-time="82–90 phút" data-notes="Phát tài liệu Bài văn bị lỗi. Học sinh bảo toàn phần đúng, không xóa hết gõ lại."><div class="inner"><div class="challenge"><div class="challenge-head"><div><span class="eyebrow" style="color:#c8dbff">Nhiệm vụ tổng hợp</span><h2>Giải cứu bài văn bị lỗi</h2><p>Sửa chính xác, nhanh và không phá phần đúng.</p></div><div class="timer"><strong id="timer3">08:00</strong><span>THỜI GIAN GỢI Ý</span></div></div><div class="tasks"><div class="task"><i>1</i><span>Đưa câu sai vị trí về đúng đoạn bằng Cut/Paste.</span></div><div class="task"><i>2</i><span>Xóa câu lặp và câu không liên quan.</span></div><div class="task"><i>3</i><span>Sửa 5 lỗi chính tả; dùng Replace khi lỗi lặp.</span></div><div class="task"><i>4</i><span>Sao chép một đoạn và kiểm tra bằng Undo/Redo.</span></div></div><div class="rubric"><div><b>3 điểm</b><span>Đúng thứ tự</span></div><div><b>3 điểm</b><span>Đúng chính tả</span></div><div><b>2 điểm</b><span>Đủ thao tác</span></div><div><b>2 điểm</b><span>Không mất chữ</span></div></div><div class="controls"><button class="btn" data-timer="timer3" data-min="8">▶ Bắt đầu</button><button class="btn secondary" data-reveal="answer3">Checklist nộp bài</button></div><div class="answer" id="answer3">□ Đọc lại toàn bài · □ Không câu lặp · □ Không lỗi được giao · □ Thứ tự hợp lý · □ Đã lưu vào Drive.</div></div></div></section>
+<section class="slide" data-section="Thực hành 1" data-time="35–50 phút" data-notes="Học sinh dùng Cut/Paste hoặc bấm mũi tên để sắp xếp 4 câu. Bấm bắt đầu để chạy đồng hồ 15 phút."><div class="inner"><div class="challenge"><div class="challenge-head"><div><span class="eyebrow" style="color:#c8dbff">Mini Challenge 1</span><h2>Sắp xếp “Buổi sáng của em”</h2><p>Nhấp vào câu để chọn, dùng <b>mũi tên ▲ ▼</b> để đưa về đúng trật tự thời gian!</p></div><div class="timer"><strong id="timer1">15:00</strong><span>THỜI GIAN CÒN LẠI</span></div></div><div style="margin-top:18px" id="slide8PuzzleContainer"></div><div class="controls"><button class="btn" data-timer="timer1" data-min="15">▶ Bắt đầu tính giờ</button><button class="btn secondary" id="btnCheckOrder8">✓ Kiểm tra thứ tự</button><button class="btn secondary" data-reveal="answer1">Xem đáp án</button></div><div class="answer" id="answer1"><b>Thứ tự đúng:</b> 1. Thức dậy (6h) → 2. Đánh răng & rửa mặt → 3. Ăn sáng → 4. Đi học (7h).</div></div></div></section>
+<section class="slide" data-section="Sửa sai" data-time="50–55 phút" data-notes="Làm mẫu xóa nhầm, Undo, rồi Redo. Undo có thể bấm nhiều lần nhưng phải nhìn sau mỗi lần."><div class="inner"><span class="eyebrow">Lưới an toàn</span><h2>Undo & Redo — quay lại đúng <span class="accent">một bước</span></h2><p class="lead">Máy tính ghi nhớ lịch sử từng bước thao tác của em như một cỗ máy thời gian.</p><div class="timeline"><button class="step on" data-step="0"><small>Bước 1</small><b>1. Mở tài liệu</b></button><button class="step" data-step="1"><small>Bước 2</small><b>2. Gõ tiêu đề</b></button><button class="step" data-step="2"><small>Bước 3</small><b>3. Dán một đoạn</b></button><button class="step" data-step="3"><small>Bước 4</small><b>4. Xóa nhầm câu!</b></button></div><div class="time-machine-viewport"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase">📄 TRẠNG THÁI VĂN BẢN TRỰC QUAN:</span><span id="tmStateTag" style="font-size:.74rem;font-weight:800;background:#e0f2fe;color:#0369a1;padding:3px 9px;border-radius:99px">Trạng thái 1</span></div><h3 class="tm-title" id="tmDocTitle">[Tài liệu chưa có tiêu đề]</h3><p class="tm-body" id="tmDocBody">[Trang giấy trắng tinh mới tạo]</p></div><div class="controls" style="margin-top:16px"><button class="btn secondary" id="undoBtn">↶ Undo · Ctrl+Z (Lùi 1 bước)</button><button class="btn" id="redoBtn">↷ Redo · Ctrl+Y (Tiến 1 bước)</button></div><div class="feedback" id="historyStatus">Hiện tại: Bước 1 — Mở tài liệu.</div></div></section>
+<section class="slide" data-section="Tìm kiếm" data-time="55–60 phút" data-notes="Demo Ctrl+F. Find chỉ giúp tìm và di chuyển qua kết quả, không tự sửa nội dung."><div class="inner two"><div><span class="eyebrow">Kỹ năng số 2</span><h2><span class="accent">Find</span> tìm kim trong đống chữ</h2><p class="lead">Ctrl+F tìm mọi nơi một từ xuất hiện trong văn bản dài.</p><div class="rules"><div class="rule"><i>1</i><div><b>Nhấn Ctrl+F</b><span>Hộp tìm kiếm hiện ở góc phải.</span></div></div><div class="rule"><i>2</i><div><b>Gõ từ cần tìm</b><span>Tất cả từ khớp được tô sáng vàng.</span></div></div><div class="rule"><i>3</i><div><b>Dùng mũi tên ▲ ▼</b><span>Nhảy qua từng vị trí xuất hiện.</span></div></div></div></div><div class="panel"><div class="findbar" style="grid-template-columns:1fr auto auto;align-items:center;gap:6px"><input value="máy tinh" id="findDocKeyword"><button class="btn" id="findBtn">Tìm kiếm</button><span class="find-nav-badge" id="findNavCounter">0 / 0</span></div><div class="document" id="findDoc">Máy tinh giúp em học tập. Khi dùng máy tinh, em cần ngồi đúng tư thế. Em không nên sử dụng máy tinh quá lâu.</div><div class="count" id="findCount">Bấm Tìm kiếm để phát hiện các vị trí xuất hiện.</div></div></div></section>
+<section class="slide" data-section="Thay thế" data-time="60–65 phút" data-notes="Giải thích Replace All. Cảnh báo kiểm tra từ tìm và từ thay để tránh sửa nhầm."><div class="inner"><span class="eyebrow">Find & Replace</span><h2>Sửa lỗi lặp lại <span class="marker">trong vài giây</span></h2><div class="panel"><div class="findbar"><input id="findInput" value="máy tinh" aria-label="Tìm"><input id="replaceInput" value="máy tính" aria-label="Thay bằng"><button class="btn green" id="replaceBtn">⚡ Thay tất cả</button></div><div class="document" id="replaceDoc">Em học Tin học bằng máy tinh. Máy tinh giúp em tìm tài liệu. Em cần bảo vệ máy tinh và sử dụng máy tinh đúng cách.</div><div class="count" id="replaceCount">Có 4 lỗi “máy tinh” cần sửa tự động.</div><div class="feedback"><b>Mẹo an toàn:</b> Luôn nhìn kỹ ô "Tìm" và ô "Thay bằng" trước khi bấm Thay tất cả!</div></div></div></section>
+<section class="slide" data-section="Thực hành 2" data-time="65–80 phút" data-notes="Học sinh dùng Ctrl+F và Find & Replace đổi toàn bộ máy tinh thành máy tính, rồi đọc lại."><div class="inner"><div class="challenge"><div class="challenge-head"><div><span class="eyebrow" style="color:#c8dbff">Mini Challenge 2</span><h2>Truy tìm & Thay thế lỗi lặp</h2><p>Dùng Find & Replace để sửa sạch lỗi, không sửa tay từng từ!</p></div><div class="timer"><strong id="timer2">15:00</strong><span>THỜI GIAN CÒN LẠI</span></div></div><div class="tasks"><div class="task"><i>1</i><span>Mở tài liệu thực hành do giáo viên giao.</span></div><div class="task"><i>2</i><span>Nhấn Ctrl+F để đếm số lượng lỗi xuất hiện.</span></div><div class="task"><i>3</i><span>Nhấn Ctrl+H mở Replace và nhập từ thay thế "máy tính".</span></div><div class="task"><i>4</i><span>Đọc soát lại câu trước và sau khi thay.</span></div></div><div class="controls"><button class="btn" data-timer="timer2" data-min="15">▶ Bắt đầu</button><button class="btn secondary" data-reveal="answer2">Tiêu chí hoàn thành</button></div><div class="answer" id="answer2">✅ Không còn “máy tinh” · ✅ Tất cả đã thành “máy tính” · ✅ Không mất chữ xung quanh · ✅ Đã lưu file vào Drive.</div></div></div></section>
+<section class="slide" data-section="Lỗi thường gặp" data-time="80–82 phút" data-notes="Đi nhanh 4 lỗi. Cho học sinh nói cách phòng tránh."><div class="inner"><span class="eyebrow">Dừng 2 phút · Cảnh báo an toàn</span><h2>Bốn lỗi dễ mắc & <span class="marker">Cách phòng tránh</span></h2><div class="mistakes"><div class="mistake-card-box"><b>⚠️ 1. Chưa chọn đã vội ấn Cut</b><p>✓ Khắc phục: Luôn bôi xanh đúng phạm vi trước rồi mới ấn Ctrl+X.</p></div><div class="mistake-card-box"><b>⚠️ 2. Cut xong quên Paste</b><p>✓ Khắc phục: Dán ngay vào chỗ mới rồi mới làm việc khác.</p></div><div class="mistake-card-box"><b>⚠️ 3. Bấm Ctrl+Z liên tục lia lịa</b><p>✓ Khắc phục: Bấm 1 lần, mắt quan sát màn hình rồi mới bấm tiếp.</p></div><div class="mistake-card-box"><b>⚠️ 4. Replace All quá vội vàng</b><p>✓ Khắc phục: Đọc kỹ ô Tìm và ô Thay bằng để tránh sửa nhầm từ đồng âm.</p></div></div></div></section>
+<section class="slide" data-section="Bài tổng hợp" data-time="82–90 phút" data-notes="Phát tài liệu Bài văn bị lỗi. Học sinh tự tích điểm theo Rubric 10 điểm."><div class="inner"><div class="challenge"><div class="challenge-head"><div><span class="eyebrow" style="color:#c8dbff">Nhiệm vụ tổng hợp</span><h2>Giải cứu bài văn bị lỗi</h2><p>Sửa chính xác, nhanh và không phá phần đúng. Bấm vào các tiêu chí để tự chấm điểm:</p></div><div class="timer"><strong id="timer3">08:00</strong><span>THỜI GIAN GỢI Ý</span></div></div><div class="tasks"><div class="task"><i>1</i><span>Đưa câu sai vị trí về đúng đoạn bằng Cut/Paste.</span></div><div class="task"><i>2</i><span>Xóa câu lặp và câu không liên quan.</span></div><div class="task"><i>3</i><span>Sửa 5 lỗi chính tả; dùng Replace khi lỗi lặp.</span></div><div class="task"><i>4</i><span>Sao chép một đoạn và kiểm tra bằng Undo/Redo.</span></div></div><div class="rubric" id="rubricGrid"><div class="rubric-interactive-card" data-pts="3"><b>3 điểm</b><span>✓ Đúng thứ tự logic</span></div><div class="rubric-interactive-card" data-pts="3"><b>3 điểm</b><span>✓ Sửa sạch chính tả</span></div><div class="rubric-interactive-card" data-pts="2"><b>2 điểm</b><span>✓ Đủ phím tắt chuẩn</span></div><div class="rubric-interactive-card" data-pts="2"><b>2 điểm</b><span>✓ Không làm mất chữ</span></div></div><div class="controls"><button class="btn" data-timer="timer3" data-min="8">▶ Bắt đầu</button><button class="btn secondary" data-reveal="answer3">Checklist nộp bài</button><span id="rubricTotalScore" style="color:var(--yellow);font-weight:900;font-size:1.1rem;align-self:center;margin-left:12px">Điểm tự chấm: 0 / 10</span></div><div class="answer" id="answer3">□ Đọc lại toàn bài · □ Không câu lặp · □ Không lỗi được giao · □ Thứ tự hợp lý · □ Đã lưu vào Drive.</div></div></div></section>
 <section class="slide" data-section="Quiz" data-time="90–98 phút" data-notes="Cho học sinh trả lời 5 câu. Yêu cầu giải thích trước khi chọn nếu còn thời gian."><div class="inner"><span class="eyebrow">Kiểm tra nhanh</span><h2>5 câu — em chọn thao tác nào?</h2><div class="quiz"><div class="panel"><span class="badge" id="quizCount">Câu 1 / 5</span><div class="question" id="quizQuestion"></div><div class="options" id="quizOptions"></div><div class="feedback" id="quizFeedback">Chọn một đáp án.</div></div><aside class="quiz-side"><span>Kết quả hiện tại</span><div class="score"><span id="quizScore">0</span>/5</div><button class="btn" id="restartQuiz">Làm lại</button><div class="dots-grid" id="quizDots"></div></aside></div></div></section>
-<section class="slide" data-section="Tổng kết" data-time="98–100 phút" data-notes="Học sinh nêu tình huống cho mỗi nhóm kỹ năng. Giới thiệu Buổi 3: Định dạng văn bản."><div class="inner"><span class="eyebrow">Hoàn thành Buổi 2</span><h2>Đúng phần · đúng lệnh · <span class="accent">đúng lúc</span></h2><div class="summary"><div><b>Chọn & di chuyển</b><span>Select → Cut/Copy → đặt con trỏ → Paste.</span></div><div><b>Sửa sai an toàn</b><span>Undo từng bước; Redo khi cần.</span></div><div><b>Sửa lỗi hàng loạt</b><span>Find để tìm; Replace để thay.</span></div></div><div class="feedback"><b>Sản phẩm:</b> bài văn được sắp xếp, sửa chính tả và làm sạch lỗi mà không cần gõ lại.</div><div class="cta-row"><a class="cta yellow" href="index.html">✓ Về trung tâm khóa học</a><button class="cta ghost" id="restartDeck">↺ Xem lại từ đầu</button></div></div></section>
+<section class="slide" data-section="Tổng kết" data-time="98–100 phút" data-notes="Học sinh hoàn thành bài học và được mời tham gia Mini Game để củng cố kỹ năng."><div class="inner"><span class="eyebrow">Hoàn thành Buổi 2</span><h2>Đúng phần · đúng lệnh · <span class="accent">đúng lúc</span></h2><div class="summary"><div><b>1. Chọn & di chuyển</b><span>Select chuẩn xác → Cut/Copy → di chuyển con trỏ → Paste.</span></div><div><b>2. Sửa sai an toàn</b><span>Undo từng bước cẩn thận; Redo khi cần khôi phục.</span></div><div><b>3. Sửa lỗi hàng loạt</b><span>Ctrl+F để tìm; Replace All để thay thế tức thì.</span></div></div><div class="game-launch-banner"><div class="game-launch-info"><h3>🎮 MINI GAME: DOCS RESCUE HERO ⚡</h3><p>Vận dụng kỹ năng vừa học để giải cứu văn bản qua 3 màn thử thách: Siêu tốc bôi đen, Cắt dán thần tốc và Bắn tỉa lỗi sai!</p></div><a class="game-launch-btn" href="buoi-02-game.html"><span>Vào Chơi Mini Game Ngay</span><span>➔</span></a></div><div class="cta-row" style="margin-top:20px"><a class="cta yellow" href="index.html">✓ Về trung tâm khóa học</a><button class="cta ghost" id="restartDeck">↺ Xem lại từ đầu</button></div></div></section>
 </main>
 <nav class="nav"><button id="prev">← <span>Trước</span></button><div class="counter"><b id="current">1</b> / <span id="total">16</span></div><button class="primary" id="next"><span>Tiếp</span> →</button></nav><aside class="notes" id="notes"><h3>Ghi chú giáo viên</h3><p id="notesText"></p></aside><div class="toast" id="toast" role="status"></div>
 <script>
-const slides=[...document.querySelectorAll('.slide')],bar=$('bar');let current=0;function $(id){return document.getElementById(id)}function render(n){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>s.classList.toggle('active',i===current));let s=slides[current];$('current').textContent=current+1;$('total').textContent=slides.length;$('section').textContent=s.dataset.section;$('time').textContent=s.dataset.time;$('notesText').textContent=s.dataset.notes||'';bar.style.width=((current+1)/slides.length*100)+'%';$('prev').disabled=current===0;$('next').disabled=current===slides.length-1;history.replaceState(null,'','#'+(current+1));scrollTo(0,0)}$('prev').onclick=()=>render(current-1);$('next').onclick=()=>render(current+1);document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();render(current+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();render(current-1)}});let h=Number(location.hash.slice(1));render(h>0&&h<=slides.length?h-1:0);window.addEventListener('hashchange',()=>{let n=Number(location.hash.slice(1));if(n>=1&&n<=slides.length&&n-1!==current)render(n-1)});$('notesBtn').onclick=()=>{let o=$('notes').classList.toggle('open');$('notesBtn').setAttribute('aria-pressed',o)};$('fullBtn').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.();let toastTimer;function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2300)}
-document.querySelectorAll('[data-warm]').forEach(b=>b.onclick=()=>{let ok=b.dataset.warm==='good';$('warmFeedback').innerHTML=ok?'<b>✅ Chính xác!</b> Chọn đúng phần rồi sửa sẽ nhanh và an toàn hơn.':'<b>💡 Thử lại:</b> phần lớn nội dung vẫn đúng; chỉ cần sửa phần sai.';document.querySelectorAll('[data-warm]').forEach(x=>x.classList.toggle('good',x===b&&ok))});
-const original=['Em đi học lúc 7 giờ.','Em đánh răng và rửa mặt.','Em thức dậy lúc 6 giờ.','Em ăn sáng.'];let words=[...original],sel=-1,clip='';function renderZone(){$('zone').innerHTML=words.map((x,i)=>`<button class="chip ${i===sel?'on':''}" data-chip="${i}">${x}</button>`).join('');document.querySelectorAll('[data-chip]').forEach(b=>b.onclick=()=>{sel=+b.dataset.chip;renderZone()});$('clipView').textContent=clip?'📋 Clipboard: '+clip:'📋 Clipboard đang trống.'}$('copyBtn').onclick=()=>{if(sel<0)return toast('Hãy chọn một câu trước.');clip=words[sel];renderZone();toast('Đã Copy — câu gốc vẫn còn.')};$('cutBtn').onclick=()=>{if(sel<0)return toast('Hãy chọn một câu trước.');clip=words.splice(sel,1)[0];sel=-1;renderZone();toast('Đã Cut vào clipboard.')};$('pasteBtn').onclick=()=>{if(!clip)return toast('Clipboard đang trống.');words.push(clip);sel=words.length-1;renderZone();toast('Đã Paste xuống cuối.')};$('resetClip').onclick=()=>{words=[...original];sel=-1;clip='';renderZone()};renderZone();
-const timers=new Map();document.querySelectorAll('[data-timer]').forEach(b=>b.onclick=()=>{let id=b.dataset.timer;if(timers.has(id)){clearInterval(timers.get(id));timers.delete(id);b.textContent='▶ Tiếp tục';return}let el=$(id),p=el.textContent.split(':'),left=+p[0]*60 + +p[1];if(left<=0)left=+b.dataset.min*60;b.textContent='⏸ Tạm dừng';let t=setInterval(()=>{left--;el.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');if(left<=0){clearInterval(t);timers.delete(id);b.textContent='↺ Làm lại';toast('Hết giờ — cùng kiểm tra nhé!')}},1000);timers.set(id,t)});document.querySelectorAll('[data-reveal]').forEach(b=>b.onclick=()=>$(b.dataset.reveal).classList.toggle('show'));
-let step=0,labels=['Mở tài liệu','Gõ tiêu đề','Dán một đoạn','Xóa nhầm câu'];function renderHistory(){document.querySelectorAll('[data-step]').forEach((b,i)=>b.classList.toggle('on',i===step));$('historyStatus').textContent=`Hiện tại: Bước ${step+1} — ${labels[step]}.`}document.querySelectorAll('[data-step]').forEach(b=>b.onclick=()=>{step=+b.dataset.step;renderHistory()});$('undoBtn').onclick=()=>{step=Math.max(0,step-1);renderHistory()};$('redoBtn').onclick=()=>{step=Math.min(3,step+1);renderHistory()};
-$('findBtn').onclick=()=>{$('findDoc').innerHTML=$('findDoc').textContent.replace(/máy tinh/gi,m=>`<mark>${m}</mark>`);$('findCount').textContent='Tìm thấy 3 kết quả.'};$('replaceBtn').onclick=()=>{let f=$('findInput').value.trim(),r=$('replaceInput').value,box=$('replaceDoc'),src=box.textContent;if(!f)return toast('Ô Tìm không được trống.');let escaped=f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),re=new RegExp(escaped,'gi'),m=src.match(re)||[];box.innerHTML=src.replace(re,`<mark>${r}</mark>`);$('replaceCount').textContent=`Đã thay ${m.length} kết quả. Hãy đọc lại.`;toast(`Đã thay ${m.length} lỗi.`)};
-const quiz=[['Muốn di chuyển một câu sang vị trí khác?',['Copy rồi Paste','Cut rồi Paste','Delete rồi gõ lại','Find'],1,'Cut lấy câu khỏi chỗ cũ; Paste đặt vào chỗ mới.'],['Vừa xóa nhầm một đoạn, em làm gì trước?',['Đóng tab','Ctrl+Z','Ctrl+F','Xóa tiếp'],1,'Ctrl+Z hoàn tác thao tác gần nhất.'],['Ctrl+C có tác dụng gì?',['Cắt','Sao chép','Dán','Tìm'],1,'Ctrl+C sao chép và giữ bản gốc.'],['Khi nào nên dùng Replace All?',['Khi chưa đọc bài','Lỗi giống nhau lặp nhiều lần và đã kiểm tra','Khi xóa một câu','Khi đổi tên tệp'],1,'Replace All cần kiểm tra từ tìm và từ thay.'],['Trước khi Cut hoặc Delete cần làm gì?',['Chọn chính xác phần cần tác động','Đóng trình duyệt','Nhấn Paste','Mở tệp mới'],0,'Luôn chọn đúng phạm vi trước.']];let qi=0,score=0,res=Array(5).fill(null);function renderQuiz(){let q=quiz[qi];$('quizCount').textContent=`Câu ${qi+1} / 5`;$('quizQuestion').textContent=q[0];$('quizOptions').innerHTML=q[1].map((a,i)=>`<button class="option" data-opt="${i}"><span class="letter">${String.fromCharCode(65+i)}</span>${a}</button>`).join('');$('quizFeedback').textContent='Chọn một đáp án.';$('quizDots').innerHTML=quiz.map((_,i)=>`<div class="qdot ${res[i]!==null?'done':''}">${i+1}</div>`).join('');document.querySelectorAll('[data-opt]').forEach(b=>b.onclick=()=>answer(+b.dataset.opt))}function answer(c){if(res[qi]!==null)return;let q=quiz[qi],ok=c===q[2];res[qi]=ok;if(ok)score++;$('quizScore').textContent=score;document.querySelectorAll('[data-opt]').forEach((b,i)=>b.classList.add(i===q[2]?'correct':i===c?'wrong':''));$('quizFeedback').innerHTML=`<b>${ok?'✅ Chính xác!':'💡 Chưa đúng.'}</b> ${q[3]}`;setTimeout(()=>{if(qi<4){qi++;renderQuiz()}else toast(`Hoàn thành: ${score}/5 điểm.`)},1050)}$('restartQuiz').onclick=()=>{qi=score=0;res=Array(5).fill(null);$('quizScore').textContent=0;renderQuiz()};renderQuiz();$('restartDeck').onclick=()=>render(0);
+// --- CORE UTILITIES & SLIDE NAVIGATION ---
+const slides = [...document.querySelectorAll('.slide')];
+const bar = $('bar');
+let current = 0;
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+// --- AUDIO SYNTHESIS ENGINE (ZERO DEPENDENCIES) ---
+let soundOn = true;
+const soundBtn = $('soundBtn');
+if (soundBtn) {
+  soundBtn.onclick = () => {
+    soundOn = !soundOn;
+    soundBtn.textContent = soundOn ? '🔊' : '🔇';
+    soundBtn.classList.toggle('muted', !soundOn);
+    toast(soundOn ? 'Âm thanh: Đã Bật 🔊' : 'Âm thanh: Đã Tắt 🔇');
+  };
+}
+
+function playTone(type) {
+  if (!soundOn) return;
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    const now = ctx.currentTime;
+    if (type === 'click') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(540, now);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+      osc.start(now);
+      osc.stop(now + 0.07);
+    } else if (type === 'key') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(340, now);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+      osc.start(now);
+      osc.stop(now + 0.06);
+    } else if (type === 'success') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(523.25, now);
+      osc.frequency.setValueAtTime(659.25, now + 0.09);
+      osc.frequency.setValueAtTime(783.99, now + 0.18);
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+      osc.start(now);
+      osc.stop(now + 0.35);
+    } else if (type === 'cut') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(650, now);
+      osc.frequency.linearRampToValueAtTime(260, now + 0.12);
+      gain.gain.setValueAtTime(0.09, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+      osc.start(now);
+      osc.stop(now + 0.12);
+    } else if (type === 'error') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(220, now);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.start(now);
+      osc.stop(now + 0.15);
+    }
+  } catch (e) {}
+}
+
+let toastTimer;
+function toast(t) {
+  const el = $('toast');
+  if (!el) return;
+  el.textContent = t;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+function render(n) {
+  current = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('active', i === current));
+  const s = slides[current];
+  if ($('current')) $('current').textContent = current + 1;
+  if ($('total')) $('total').textContent = slides.length;
+  if ($('section')) $('section').textContent = s.dataset.section || '';
+  if ($('time')) $('time').textContent = s.dataset.time || '';
+  if ($('notesText')) $('notesText').textContent = s.dataset.notes || '';
+  if (bar) bar.style.width = ((current + 1) / slides.length * 100) + '%';
+  if ($('prev')) $('prev').disabled = current === 0;
+  if ($('next')) $('next').disabled = current === slides.length - 1;
+  history.replaceState(null, '', '#' + (current + 1));
+  scrollTo(0, 0);
+}
+
+if ($('prev')) $('prev').onclick = () => render(current - 1);
+if ($('next')) $('next').onclick = () => render(current + 1);
+
+document.addEventListener('keydown', e => {
+  if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) {
+    e.preventDefault();
+    render(current + 1);
+  }
+  if (['ArrowLeft', 'PageUp'].includes(e.key)) {
+    e.preventDefault();
+    render(current - 1);
+  }
+});
+
+const initialHash = Number(location.hash.slice(1));
+render(initialHash > 0 && initialHash <= slides.length ? initialHash - 1 : 0);
+
+window.addEventListener('hashchange', () => {
+  const n = Number(location.hash.slice(1));
+  if (n >= 1 && n <= slides.length && n - 1 !== current) render(n - 1);
+});
+
+if ($('notesBtn')) {
+  $('notesBtn').onclick = () => {
+    const o = $('notes').classList.toggle('open');
+    $('notesBtn').setAttribute('aria-pressed', o);
+  };
+}
+
+if ($('fullBtn')) {
+  $('fullBtn').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+}
+
+// Global Timers
+const timers = new Map();
+document.querySelectorAll('[data-timer]').forEach(b => {
+  b.onclick = () => {
+    const id = b.dataset.timer;
+    if (timers.has(id)) {
+      clearInterval(timers.get(id));
+      timers.delete(id);
+      b.textContent = '▶ Tiếp tục';
+      return;
+    }
+    const el = $(id);
+    const p = el.textContent.split(':');
+    let left = +p[0] * 60 + +p[1];
+    if (left <= 0) left = +b.dataset.min * 60;
+    b.textContent = '⏸ Tạm dừng';
+    playTone('click');
+    const t = setInterval(() => {
+      left--;
+      el.textContent = String(Math.floor(left / 60)).padStart(2, '0') + ':' + String(left % 60).padStart(2, '0');
+      if (left <= 0) {
+        clearInterval(t);
+        timers.delete(id);
+        b.textContent = '↺ Làm lại';
+        playTone('success');
+        toast('⏰ Hết giờ — cùng kiểm tra kết quả nhé!');
+      }
+    }, 1000);
+    timers.set(id, t);
+  };
+});
+
+// Answer reveals
+document.querySelectorAll('[data-reveal]').forEach(b => {
+  b.onclick = () => {
+    playTone('click');
+    $(b.dataset.reveal).classList.toggle('show');
+  };
+});
+
+// ==========================================
+// --- SLIDE 2: INTERACTIVE GOAL CHECKLIST ---
+// ==========================================
+document.querySelectorAll('.goal-card-item').forEach(card => {
+  card.onclick = () => {
+    card.classList.toggle('checked');
+    const isChecked = card.classList.contains('checked');
+    const small = card.querySelector('small');
+    if (small) small.textContent = isChecked ? '✓ Đã sẵn sàng!' : '[✓ Bấm để tick]';
+    playTone(isChecked ? 'success' : 'click');
+    const checkedCount = document.querySelectorAll('.goal-card-item.checked').length;
+    if (checkedCount === 3) {
+      toast('🎯 Xuất sắc! Em đã sẵn sàng cho cả 3 mục tiêu bài học!');
+    } else {
+      toast(`🎯 Mục tiêu ${card.querySelector('.num').textContent}: ${isChecked ? 'Đã tick nhận nhiệm vụ' : 'Đã bỏ chọn'}`);
+    }
+  };
+});
+
+// ==========================================
+// --- SLIDE 3: WARMUP LIVE SIMULATION ---
+// ==========================================
+document.querySelectorAll('[data-warm]').forEach(b => {
+  b.onclick = () => {
+    const isGood = b.dataset.warm === 'good';
+    document.querySelectorAll('[data-warm]').forEach(x => x.classList.toggle('good', x === b && isGood));
+    const preview = $('warmSimPreview');
+    const feedback = $('warmFeedback');
+
+    if (b.id === 'btnWarmA') {
+      playTone('cut');
+      if (feedback) feedback.innerHTML = '<b>❌ Cách tốn công nhất:</b> Xóa hết sẽ mất trắng 4 câu và các định dạng đã tạo. Em phải gõ lại từ đầu mất gấp 10 lần thời gian!';
+      if (preview) preview.innerHTML = '<span style="color:#ef4444;text-decoration:line-through">Em thức dậy lúc 7 giờ. Em ăn sáng. Em đánh răng và rửa mặt. Em đi học lúc 6 giờ.</span><br><b style="color:#dc2626">🐢 Đang gõ lại từng chữ từ đầu... (Mất 15 phút, dễ sai chính tả mới!)</b>';
+      toast('Cách A tốn rất nhiều thời gian và công sức.');
+    } else if (b.id === 'btnWarmB') {
+      playTone('success');
+      if (feedback) feedback.innerHTML = '<b>✅ Cách đỉnh cao của người thành thạo:</b> Giữ trọn văn bản đúng, chỉ chọn số 7 sửa thành 6, chọn số 6 sửa thành 7!';
+      if (preview) preview.innerHTML = 'Em <mark style="background:#bbf7d0;color:#166534">thức dậy lúc 6 giờ</mark>. Em ăn sáng. Em đánh răng và rửa mặt. Em <mark style="background:#bbf7d0;color:#166534">đi học lúc 7 giờ</mark>.<br><b style="color:#16a34a">⚡ Chỉnh sửa thông minh: Đúng thứ tự logic chỉ sau 5 giây!</b>';
+      toast('🎉 Chính xác! Giữ lại phần đúng và sửa phần sai.');
+    } else {
+      playTone('error');
+      if (feedback) feedback.innerHTML = '<b>⚠️ Chưa hợp lý:</b> Nếu để nguyên thì bài viết bị vô lý (thức dậy 7 giờ mà lại đi học lúc 6 giờ!). Đừng lo mất chữ vì ta luôn có Ctrl+Z bảo vệ!';
+      if (preview) preview.innerHTML = '<span style="color:#f59e0b">⚠️ Bài viết vẫn giữ nguyên lỗi đảo lộn thời gian phi lý!</span>';
+      toast('Để nguyên bài viết sẽ không đạt yêu cầu.');
+    }
+  };
+});
+
+// ==========================================
+// --- SLIDE 4: GOOGLE DOCS STUDIO & SELECTION LOGIC ---
+// ==========================================
+(function() {
+  const paper = $('docsContentArea');
+  const inspector = $('floatingInspector');
+  const inspectorInfo = $('inspectorInfo');
+  const vCursor = $('virtualCursor');
+  const cursorTip = $('cursorTip');
+  const m1 = $('mchip1'), m2 = $('mchip2'), m3 = $('mchip3');
+  const scoreEl = $('missionScore'), mFeedback = $('missionFeedback');
+  const origPara1 = paper && paper.querySelector('#paperPara1') ? paper.querySelector('#paperPara1').innerHTML : '';
+  const origPara2 = paper && paper.querySelector('#paperPara2') ? paper.querySelector('#paperPara2').innerHTML : '';
+
+  let completedMissions = new Set();
+  let currentSelectionText = '';
+  let activeStep = 1;
+
+  function updateMissionUI() {
+    if (m1) m1.classList.toggle('completed', completedMissions.has(1));
+    if (m2) m2.classList.toggle('completed', completedMissions.has(2));
+    if (m3) m3.classList.toggle('completed', completedMissions.has(3));
+    if (scoreEl) scoreEl.textContent = `${completedMissions.size} / 3 Hoàn thành`;
+    if (completedMissions.size === 3) {
+      if (mFeedback) mFeedback.innerHTML = '🎉 <b>Tuyệt đỉnh!</b> Em đã hoàn thành xuất sắc cả 3 kỹ năng chọn văn bản!';
+      if (paper) paper.classList.add('glow-success');
+    }
+  }
+
+  function clearAllHighlights() {
+    if (!paper) return;
+    paper.querySelectorAll('.interactive-word').forEach(w => w.classList.remove('selected-word'));
+    if (inspector) inspector.classList.remove('show');
+    currentSelectionText = '';
+  }
+
+  function highlightWords(indexes, infoText) {
+    clearAllHighlights();
+    playTone('click');
+    indexes.forEach(idx => {
+      const el = paper.querySelector(`[data-w="${idx}"]`);
+      if (el) el.classList.add('selected-word');
+    });
+    const wordsCount = indexes.length;
+    currentSelectionText = infoText || `${wordsCount} từ`;
+    if (inspector && inspectorInfo) {
+      inspectorInfo.innerHTML = `Đang chọn: <b>"${currentSelectionText}"</b> (${wordsCount} từ)`;
+      inspector.classList.add('show');
+    }
+  }
+
+  function setStep(stepNum) {
+    activeStep = stepNum;
+    [1, 2, 3].forEach(n => {
+      const el = $(`step${n}Btn`);
+      if (el) el.classList.toggle('active', n === stepNum);
+    });
+
+    if (stepNum === 1) {
+      clearAllHighlights();
+      playTone('click');
+      if (vCursor) {
+        vCursor.classList.add('show');
+        vCursor.style.top = '72px';
+        vCursor.style.left = '220px';
+        if (cursorTip) cursorTip.textContent = 'Đặt con trỏ |';
+      }
+      toast('Bước 1: Con trỏ nhấp nháy đặt tại đầu từ "chọn".');
+    } else if (stepNum === 2) {
+      if (vCursor) {
+        vCursor.classList.add('show');
+        vCursor.style.top = '72px';
+        vCursor.style.left = '390px';
+        if (cursorTip) cursorTip.textContent = 'Đang giữ chuột kéo';
+      }
+      highlightWords([1, 2, 3, 4, 5], 'chọn đúng cụm từ này');
+      toast('Bước 2: Giữ chuột trái và kéo bôi xanh trọn vẹn 5 từ.');
+    } else if (stepNum === 3) {
+      highlightWords([1, 2, 3, 4, 5], 'chọn đúng cụm từ này');
+      if (vCursor) vCursor.classList.remove('show');
+      playTone('success');
+      toast('Bước 3: Vùng xanh chuẩn xác! Các nút Cut, Copy đã sẵn sàng.');
+    }
+  }
+
+  if ($('step1Btn')) $('step1Btn').onclick = () => setStep(1);
+  if ($('step2Btn')) $('step2Btn').onclick = () => setStep(2);
+  if ($('step3Btn')) $('step3Btn').onclick = () => setStep(3);
+
+  if ($('trickWord')) {
+    $('trickWord').onclick = () => {
+      setStep(2);
+      highlightWords([1], 'chọn');
+      toast('✌️ Nháy đúp: Đã chọn siêu nhanh từ "chọn"!');
+      completedMissions.add(1);
+      updateMissionUI();
+      playTone('success');
+    };
+  }
+  if ($('trickParagraph')) {
+    $('trickParagraph').onclick = () => {
+      setStep(2);
+      highlightWords([1, 2, 3, 4, 5], 'toàn bộ đoạn văn 1');
+      toast('🤟 Nháy 3 lần: Đã bôi xanh toàn bộ đoạn văn!');
+      completedMissions.add(3);
+      updateMissionUI();
+      playTone('success');
+    };
+  }
+  if ($('trickAll')) {
+    $('trickAll').onclick = () => {
+      clearAllHighlights();
+      playTone('key');
+      paper.querySelectorAll('.interactive-word').forEach(w => w.classList.add('selected-word'));
+      if (inspector && inspectorInfo) {
+        inspectorInfo.innerHTML = 'Đang chọn: <b>"Toàn bộ tài liệu (Ctrl+A)"</b>';
+        inspector.classList.add('show');
+      }
+      toast('⌨️ Ctrl + A: Đã chọn toàn bộ nội dung trong trang!');
+    };
+  }
+  if ($('trickShift')) {
+    $('trickShift').onclick = () => {
+      highlightWords([6, 7, 8, 9], 'bôi xanh chính xác');
+      toast('⇧ Shift + Click: Chọn từ điểm đầu đến điểm cuối chính xác!');
+      playTone('click');
+    };
+  }
+
+  let demoTimer;
+  if ($('btnAutoDemo')) {
+    $('btnAutoDemo').onclick = () => {
+      clearTimeout(demoTimer);
+      clearAllHighlights();
+      if (!vCursor) return;
+      vCursor.classList.add('show');
+      vCursor.style.top = '20px';
+      vCursor.style.left = '450px';
+      if (cursorTip) cursorTip.textContent = 'Bắt đầu...';
+      playTone('click');
+
+      demoTimer = setTimeout(() => {
+        vCursor.style.top = '72px';
+        vCursor.style.left = '220px';
+        if (cursorTip) cursorTip.textContent = '1. Click đặt trỏ';
+        playTone('click');
+
+        demoTimer = setTimeout(() => {
+          if (cursorTip) cursorTip.textContent = '2. Kéo rê chuột...';
+          vCursor.style.left = '400px';
+          highlightWords([1, 2, 3, 4, 5], 'chọn đúng cụm từ này');
+
+          demoTimer = setTimeout(() => {
+            if (cursorTip) cursorTip.textContent = '3. Thả chuột: Hoàn tất!';
+            playTone('success');
+            completedMissions.add(2);
+            updateMissionUI();
+            toast('🎬 Hoàn tất mô phỏng: Vùng chọn đã sẵn sàng thao tác!');
+          }, 700);
+        }, 600);
+      }, 500);
+    };
+  }
+
+  if ($('btnResetDocs')) {
+    $('btnResetDocs').onclick = () => {
+      clearTimeout(demoTimer);
+      clearAllHighlights();
+      if (vCursor) vCursor.classList.remove('show');
+      if (paper) {
+        const p1 = paper.querySelector('#paperPara1');
+        const p2 = paper.querySelector('#paperPara2');
+        if (p1) p1.innerHTML = origPara1;
+        if (p2) p2.innerHTML = origPara2;
+        paper.classList.remove('glow-success');
+      }
+      setStep(1);
+      toast('Đã khôi phục trang giấy ban đầu.');
+      playTone('click');
+    };
+  }
+
+  if (m1) m1.onclick = () => {
+    highlightWords([1], 'chọn');
+    completedMissions.add(1);
+    updateMissionUI();
+    playTone('success');
+    toast('✅ Nhiệm vụ 1 hoàn thành: Đã chọn từ "chọn"!');
+  };
+  if (m2) m2.onclick = () => {
+    highlightWords([1, 2, 3, 4, 5], 'chọn đúng cụm từ này');
+    completedMissions.add(2);
+    updateMissionUI();
+    playTone('success');
+    toast('✅ Nhiệm vụ 2 hoàn thành: Đã quét cụm 5 từ mẫu!');
+  };
+  if (m3) m3.onclick = () => {
+    highlightWords([1, 2, 3, 4, 5], 'cả đoạn văn');
+    completedMissions.add(3);
+    updateMissionUI();
+    playTone('success');
+    toast('✅ Nhiệm vụ 3 hoàn thành: Đã chọn cả đoạn văn!');
+  };
+
+  if (paper) {
+    paper.addEventListener('mouseup', () => {
+      const sel = window.getSelection();
+      const txt = sel ? sel.toString().trim() : '';
+      if (txt.length > 0) {
+        playTone('click');
+        const wordsCount = txt.split(/\s+/).filter(Boolean).length;
+        if (inspector && inspectorInfo) {
+          inspectorInfo.innerHTML = `Đang chọn: <b>"${txt.length > 25 ? txt.slice(0, 22) + '...' : txt}"</b> (${wordsCount} từ)`;
+          inspector.classList.add('show');
+        }
+        currentSelectionText = txt;
+
+        if (txt === 'chọn') {
+          completedMissions.add(1);
+          playTone('success');
+          updateMissionUI();
+          toast('🎉 Xuất sắc! Em vừa tự tay nháy đúp chọn từ "chọn"!');
+        } else if (txt.includes('chọn đúng cụm từ này')) {
+          completedMissions.add(2);
+          playTone('success');
+          updateMissionUI();
+          toast('🎉 Rất chuẩn! Em đã bôi xanh đúng 5 từ!');
+        } else if (wordsCount >= 15) {
+          completedMissions.add(3);
+          playTone('success');
+          updateMissionUI();
+          toast('🎉 Giỏi lắm! Em đã chọn cả đoạn văn!');
+        }
+      }
+    });
+  }
+
+  function applyFormatting(command) {
+    playTone('click');
+    const selected = paper.querySelectorAll('.interactive-word.selected-word');
+    if (selected.length === 0) {
+      toast('Hãy chọn một từ hoặc cụm từ trước khi áp dụng lệnh.');
+      return;
+    }
+    if (command === 'bold') {
+      selected.forEach(w => w.style.fontWeight = w.style.fontWeight === 'bold' ? 'normal' : 'bold');
+      toast('Đã áp dụng In đậm (Bold) cho phần đang chọn.');
+    } else if (command === 'italic') {
+      selected.forEach(w => w.style.fontStyle = w.style.fontStyle === 'italic' ? 'normal' : 'italic');
+      toast('Đã áp dụng In nghiêng (Italic) cho phần đang chọn.');
+    } else if (command === 'underline') {
+      selected.forEach(w => w.style.textDecoration = w.style.textDecoration === 'underline' ? 'none' : 'underline');
+      toast('Đã áp dụng Gạch chân (Underline) cho phần đang chọn.');
+    } else if (command === 'color') {
+      selected.forEach(w => w.style.color = w.style.color ? '' : '#2f6fea');
+      toast('Đã đổi màu xanh Google Docs cho phần đang chọn.');
+    } else if (command === 'cut') {
+      playTone('cut');
+      selected.forEach((w, i) => {
+        if (i === 0) w.textContent = '[✂️ Đã cắt]';
+        else w.remove();
+      });
+      clearAllHighlights();
+      toast('✂️ Đã Cut vào clipboard! Phần chữ đã được lấy đi.');
+    } else if (command === 'copy') {
+      toast('📋 Đã Copy: Bản gốc vẫn giữ nguyên, clipboard đã lưu.');
+    } else if (command === 'delete') {
+      playTone('click');
+      selected.forEach(w => w.remove());
+      clearAllHighlights();
+      toast('🗑️ Đã xóa phần đang được chọn.');
+    } else if (command === 'highlight') {
+      selected.forEach(w => w.classList.toggle('yellow-highlight'));
+      toast('✨ Đã tô màu vàng dạ quang cho phần chọn.');
+    }
+  }
+
+  if ($('tbBold')) $('tbBold').onclick = () => applyFormatting('bold');
+  if ($('tbItalic')) $('tbItalic').onclick = () => applyFormatting('italic');
+  if ($('tbUnderline')) $('tbUnderline').onclick = () => applyFormatting('underline');
+  if ($('tbColor')) $('tbColor').onclick = () => applyFormatting('color');
+  if ($('tbCut')) $('tbCut').onclick = () => applyFormatting('cut');
+  if ($('tbCopy')) $('tbCopy').onclick = () => applyFormatting('copy');
+  if ($('tbDelete')) $('tbDelete').onclick = () => applyFormatting('delete');
+  if ($('tbUndo')) $('tbUndo').onclick = () => {
+    if ($('btnResetDocs')) $('btnResetDocs').click();
+  };
+
+  if ($('inspCut')) $('inspCut').onclick = () => applyFormatting('cut');
+  if ($('inspCopy')) $('inspCopy').onclick = () => applyFormatting('copy');
+  if ($('inspHighlight')) $('inspHighlight').onclick = () => applyFormatting('highlight');
+})();
+
+// ==========================================
+// --- SLIDE 5: INTERACTIVE CLIPBOARD LAB ---
+// ==========================================
+(function() {
+  const sourceEl = $('sourceTextSnippet');
+  const trayEl = $('trayContentDisplay');
+  const destEl = $('destTextSnippet');
+  const defaultText = '⭐ Ý tưởng sáng tạo';
+  let labClipboard = '';
+
+  if ($('labBtnCut')) {
+    $('labBtnCut').onclick = () => {
+      if (!sourceEl.textContent.includes('⭐')) {
+        toast('Bản gốc đã bị cắt rồi! Hãy bấm "↺ Đặt lại mẫu" để thử lại.');
+        return;
+      }
+      playTone('cut');
+      labClipboard = defaultText;
+      trayEl.textContent = labClipboard;
+      trayEl.style.background = '#fef3c7';
+      sourceEl.textContent = '[✂️ Đã bị lấy đi vào Clipboard]';
+      sourceEl.style.color = '#94a3b8';
+      sourceEl.style.fontStyle = 'italic';
+      toast('✂️ Cut (Ctrl+X): Lấy khỏi bản gốc và cất vào Khay tạm!');
+    };
+  }
+
+  if ($('labBtnCopy')) {
+    $('labBtnCopy').onclick = () => {
+      playTone('click');
+      labClipboard = defaultText;
+      trayEl.textContent = labClipboard;
+      trayEl.style.background = '#fef3c7';
+      toast('📋 Copy (Ctrl+C): Giữ nguyên bản gốc, tạo bản sao vào Khay tạm!');
+    };
+  }
+
+  if ($('labBtnPaste')) {
+    $('labBtnPaste').onclick = () => {
+      if (!labClipboard) {
+        toast('Khay Clipboard đang trống! Hãy Cut hoặc Copy trước.');
+        playTone('error');
+        return;
+      }
+      playTone('success');
+      destEl.textContent = labClipboard;
+      destEl.style.background = '#dcfce7';
+      destEl.style.color = '#15803d';
+      destEl.style.fontWeight = 'bold';
+      toast('📌 Paste (Ctrl+V): Đã dán nội dung từ Khay tạm vào vị trí mới!');
+    };
+  }
+
+  if ($('labBtnReset')) {
+    $('labBtnReset').onclick = () => {
+      playTone('click');
+      labClipboard = '';
+      sourceEl.textContent = defaultText;
+      sourceEl.style.color = '';
+      sourceEl.style.fontStyle = 'normal';
+      trayEl.textContent = '[Khay đang trống]';
+      trayEl.style.background = '';
+      destEl.textContent = '[Đang chờ dán...]';
+      destEl.style.background = '';
+      destEl.style.color = '';
+      destEl.style.fontWeight = 'normal';
+      toast('↺ Đã đặt lại phòng thí nghiệm Clipboard.');
+    };
+  }
+
+  document.querySelectorAll('.flow-card').forEach(fc => {
+    fc.onclick = () => {
+      playTone('click');
+      const title = fc.querySelector('h3') ? fc.querySelector('h3').textContent : '';
+      toast(`⚡ ${title}: Thao tác nhanh qua bộ nhớ tạm.`);
+    };
+  });
+})();
+
+// ==========================================
+// --- SLIDE 6: 3D MECHANICAL KEYCAPS SHOWCASE ---
+// ==========================================
+(function() {
+  const icon = $('keyShowcaseIcon');
+  const title = $('keyShowcaseTitle');
+  const desc = $('keyShowcaseDesc');
+
+  const keyMeta = {
+    c: {
+      icon: '📋',
+      title: 'Ctrl + C · Copy (Sao chép)',
+      desc: 'Sao chép nội dung đã bôi đen vào Khay tạm (Clipboard). Bản gốc được giữ nguyên 100% không suy suyển.'
+    },
+    x: {
+      icon: '✂️',
+      title: 'Ctrl + X · Cut (Cắt nội dung)',
+      desc: 'Cắt lấy phần văn bản khỏi vị trí cũ để di chuyển. Nhớ hình chữ X giống cây kéo đang mở!'
+    },
+    v: {
+      icon: '📌',
+      title: 'Ctrl + V · Paste (Dán nội dung)',
+      desc: 'Dán nội dung từ Clipboard vào vị trí con trỏ nhấp nháy. Nhớ chữ V giống chiếc ghim bấm cắm xuống trang giấy.'
+    },
+    z: {
+      icon: '↶',
+      title: 'Ctrl + Z · Undo (Quay lại / Hoàn tác)',
+      desc: 'Cỗ máy thời gian! Hoàn tác thao tác sai lầm vừa làm trong tích tắc. Lưới an toàn số 1 của mọi chuyên gia soạn thảo.'
+    },
+    f: {
+      icon: '🔍',
+      title: 'Ctrl + F · Find (Tìm kiếm thần tốc)',
+      desc: 'Mở hộp tìm kiếm siêu nhanh. Gõ một từ bất kỳ để tìm ra ngay lập tức giữa hàng chục trang tài liệu dài.'
+    }
+  };
+
+  function activateKey(keyChar) {
+    const data = keyMeta[keyChar];
+    if (!data) return;
+    const el = document.querySelector(`.key[data-k="${keyChar}"]`);
+    if (el) {
+      el.classList.add('pressed');
+      setTimeout(() => el.classList.remove('pressed'), 250);
+    }
+    playTone('key');
+    if (icon) icon.textContent = data.icon;
+    if (title) title.textContent = data.title;
+    if (desc) desc.textContent = data.desc;
+    toast(`⌨️ Kích hoạt: ${data.title}`);
+  }
+
+  document.querySelectorAll('.key').forEach(k => {
+    k.onclick = () => activateKey(k.dataset.k);
+  });
+
+  window.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey) {
+      const k = e.key.toLowerCase();
+      if (keyMeta[k] && current === 5) { // Active on slide 6
+        e.preventDefault();
+        activateKey(k);
+      }
+    }
+  });
+})();
+
+// ==========================================
+// --- SLIDE 7: INTERACTIVE SENTENCE MOVE DEMO ---
+// ==========================================
+(function() {
+  const original = [
+    'Em đi học lúc 7 giờ.',
+    'Em đánh răng và rửa mặt.',
+    'Em thức dậy lúc 6 giờ.',
+    'Em ăn sáng.'
+  ];
+  let words = [...original];
+  let sel = -1;
+  let clip = '';
+
+  function renderZone() {
+    if (!$('zone')) return;
+    $('zone').innerHTML = words.map((x, i) => `<button class="chip ${i === sel ? 'on' : ''}" data-chip="${i}">${x}</button>`).join('');
+    document.querySelectorAll('[data-chip]').forEach(b => {
+      b.onclick = () => {
+        sel = +b.dataset.chip;
+        playTone('click');
+        renderZone();
+      };
+    });
+    if ($('clipView')) {
+      $('clipView').textContent = clip ? '📋 Clipboard: ' + clip : '📋 Clipboard đang trống.';
+    }
+  }
+
+  if ($('copyBtn')) {
+    $('copyBtn').onclick = () => {
+      if (sel < 0) return toast('Hãy chọn một câu trước.');
+      clip = words[sel];
+      playTone('click');
+      renderZone();
+      toast('📋 Đã Copy — câu gốc vẫn còn.');
+    };
+  }
+
+  if ($('cutBtn')) {
+    $('cutBtn').onclick = () => {
+      if (sel < 0) return toast('Hãy chọn một câu trước.');
+      clip = words.splice(sel, 1)[0];
+      sel = -1;
+      playTone('cut');
+      renderZone();
+      toast('✂️ Đã Cut vào clipboard.');
+    };
+  }
+
+  if ($('pasteBtn')) {
+    $('pasteBtn').onclick = () => {
+      if (!clip) return toast('Clipboard đang trống.');
+      words.push(clip);
+      sel = words.length - 1;
+      playTone('success');
+      renderZone();
+      toast('📌 Đã Paste xuống cuối đoạn.');
+    };
+  }
+
+  if ($('resetClip')) {
+    $('resetClip').onclick = () => {
+      words = [...original];
+      sel = -1;
+      clip = '';
+      playTone('click');
+      renderZone();
+      toast('Đã đặt lại đoạn văn mẫu.');
+    };
+  }
+
+  renderZone();
+})();
+
+// ==========================================
+// --- SLIDE 8: PUZZLE ORDERING BOARD (CHALLENGE 1) ---
+// ==========================================
+(function() {
+  const container = $('slide8PuzzleContainer');
+  let items = [
+    'Em đi học lúc 7 giờ.',
+    'Em ăn sáng.',
+    'Em đánh răng và rửa mặt.',
+    'Em thức dậy lúc 6 giờ.'
+  ];
+  const targetOrder = [
+    'Em thức dậy lúc 6 giờ.',
+    'Em đánh răng và rửa mặt.',
+    'Em ăn sáng.',
+    'Em đi học lúc 7 giờ.'
+  ];
+
+  function renderPuzzle() {
+    if (!container) return;
+    container.innerHTML = items.map((text, i) => `
+      <div class="puzzle-card-item" data-idx="${i}">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="display:grid;place-items:center;width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,.2);color:#ffca45;font-weight:900;font-size:.8rem">${i + 1}</span>
+          <span style="font-weight:750;color:white;font-size:.92rem">${text}</span>
+        </div>
+        <div class="puzzle-arrow-btns">
+          ${i > 0 ? `<button class="p-btn-up" data-up="${i}" title="Chuyển lên">▲</button>` : ''}
+          ${i < items.length - 1 ? `<button class="p-btn-down" data-down="${i}" title="Chuyển xuống">▼</button>` : ''}
+        </div>
+      </div>
+    `).join('');
+
+    container.querySelectorAll('[data-up]').forEach(btn => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        const idx = +btn.dataset.up;
+        const tmp = items[idx];
+        items[idx] = items[idx - 1];
+        items[idx - 1] = tmp;
+        playTone('click');
+        renderPuzzle();
+      };
+    });
+
+    container.querySelectorAll('[data-down]').forEach(btn => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        const idx = +btn.dataset.down;
+        const tmp = items[idx];
+        items[idx] = items[idx + 1];
+        items[idx + 1] = tmp;
+        playTone('click');
+        renderPuzzle();
+      };
+    });
+  }
+
+  if ($('btnCheckOrder8')) {
+    $('btnCheckOrder8').onclick = () => {
+      const isCorrect = items.every((val, idx) => val === targetOrder[idx]);
+      if (isCorrect) {
+        playTone('success');
+        container.querySelectorAll('.puzzle-card-item').forEach(el => {
+          el.style.borderColor = '#34d399';
+          el.style.background = 'rgba(16,185,129,.25)';
+        });
+        toast('🎉 Quá đỉnh! Em đã sắp xếp đúng 100% trật tự thời gian!');
+        const ans = $('answer1');
+        if (ans) ans.classList.add('show');
+      } else {
+        playTone('error');
+        toast('💡 Chưa đúng trật tự. Hãy nhớ: Thức dậy (6h) đầu tiên, Đi học (7h) sau cùng!');
+      }
+    };
+  }
+
+  renderPuzzle();
+})();
+
+// ==========================================
+// --- SLIDE 9: DOCUMENT TIME MACHINE (UNDO/REDO) ---
+// ==========================================
+(function() {
+  let step = 0;
+  const historyStates = [
+    {
+      label: '1. Mở tài liệu mới',
+      tag: 'Bước 1/4 · Khởi đầu',
+      title: '[Tài liệu chưa có tiêu đề]',
+      body: '[Trang giấy trắng tinh mới mở - Con trỏ | đang nhấp nháy chờ lệnh]'
+    },
+    {
+      label: '2. Gõ tiêu đề',
+      tag: 'Bước 2/4 · Đã gõ tiêu đề',
+      title: '📝 Nhật ký một ngày của em',
+      body: '[Con trỏ | đang đứng ở đầu dòng thứ nhất, sẵn sàng nhập nội dung...]'
+    },
+    {
+      label: '3. Dán một đoạn',
+      tag: 'Bước 3/4 · Đã dán nội dung',
+      title: '📝 Nhật ký một ngày của em',
+      body: 'Hôm nay là một ngày tuyệt vời. <mark style="background:#bbf7d0;color:#166534">Em thức dậy lúc 6 giờ sáng, tự giác đánh răng và chuẩn bị sách vở đến trường.</mark>'
+    },
+    {
+      label: '4. Xóa nhầm câu!',
+      tag: 'Bước 4/4 · ⚠️ LỠ TAY XÓA NHẦM',
+      title: '📝 Nhật ký một ngày của em',
+      body: 'Hôm nay là một ngày tuyệt vời. <span style="background:#fee2e2;color:#b91c1c;padding:3px 8px;border-radius:6px;text-decoration:line-through">[⚠️ ĐOẠN VĂN ĐÃ BỊ XÓA MẤT TRẮNG!]</span><br><b style="color:#dc2626;display:inline-block;margin-top:6px">👉 Đừng hoảng sợ! Hãy nhấn nút Undo (Ctrl+Z) bên dưới để lấy lại ngay!</b>'
+    }
+  ];
+
+  function renderHistory() {
+    const cur = historyStates[step];
+    document.querySelectorAll('[data-step]').forEach((b, i) => b.classList.toggle('on', i === step));
+    if ($('historyStatus')) $('historyStatus').textContent = `Hiện tại: Bước ${step + 1} — ${cur.label}.`;
+    if ($('tmStateTag')) $('tmStateTag').textContent = cur.tag;
+    if ($('tmDocTitle')) $('tmDocTitle').textContent = cur.title;
+    if ($('tmDocBody')) $('tmDocBody').innerHTML = cur.body;
+  }
+
+  document.querySelectorAll('[data-step]').forEach(b => {
+    b.onclick = () => {
+      step = +b.dataset.step;
+      playTone('click');
+      renderHistory();
+    };
+  });
+
+  if ($('undoBtn')) {
+    $('undoBtn').onclick = () => {
+      if (step > 0) {
+        step--;
+        playTone('click');
+        renderHistory();
+        toast('↶ Undo (Ctrl+Z): Đã lùi lại 1 bước trong lịch sử!');
+      } else {
+        toast('Đã ở trạng thái ban đầu, không thể lùi thêm.');
+      }
+    };
+  }
+
+  if ($('redoBtn')) {
+    $('redoBtn').onclick = () => {
+      if (step < historyStates.length - 1) {
+        step++;
+        playTone('click');
+        renderHistory();
+        toast('↷ Redo (Ctrl+Y): Đã tiến lại 1 bước thao tác!');
+      } else {
+        toast('Đã ở trạng thái mới nhất, không thể tiến thêm.');
+      }
+    };
+  }
+
+  renderHistory();
+})();
+
+// ==========================================
+// --- SLIDE 10 & 11: FIND & REPLACE ---
+// ==========================================
+(function() {
+  const origFindText = $('findDoc') ? $('findDoc').textContent : '';
+
+  if ($('findBtn')) {
+    $('findBtn').onclick = () => {
+      const kw = ($('findDocKeyword') ? $('findDocKeyword').value.trim() : '') || 'máy tinh';
+      const doc = $('findDoc');
+      if (!doc) return;
+      playTone('click');
+      const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const re = new RegExp(escaped, 'gi');
+      const matches = origFindText.match(re) || [];
+      doc.innerHTML = origFindText.replace(re, m => `<mark style="background:#fef08a;color:#854d0e;padding:2px 4px;border-radius:4px;border:1px solid #facc15">${m}</mark>`);
+      if ($('findNavCounter')) $('findNavCounter').textContent = `${matches.length > 0 ? 1 : 0} / ${matches.length}`;
+      if ($('findCount')) $('findCount').textContent = `🔍 Tìm thấy ${matches.length} kết quả khớp từ khóa "${kw}".`;
+      playTone('success');
+      toast(`Ctrl+F: Tìm thấy ${matches.length} kết quả!`);
+    };
+  }
+
+  if ($('replaceBtn')) {
+    $('replaceBtn').onclick = () => {
+      const f = $('findInput').value.trim();
+      const r = $('replaceInput').value;
+      const box = $('replaceDoc');
+      const src = box.textContent;
+      if (!f) return toast('Ô Tìm không được trống.');
+      playTone('click');
+      const escaped = f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const re = new RegExp(escaped, 'gi');
+      const m = src.match(re) || [];
+      box.innerHTML = src.replace(re, `<mark style="background:#bbf7d0;color:#166534;padding:2px 4px;border-radius:4px;border:1px solid #4ade80">${r}</mark>`);
+      if ($('replaceCount')) $('replaceCount').textContent = `✨ Đã thay thế xong ${m.length} lỗi. Em hãy đọc lại toàn bài!`;
+      playTone('success');
+      toast(`⚡ Đã thay tất cả ${m.length} lỗi lặp thành công!`);
+    };
+  }
+})();
+
+// ==========================================
+// --- SLIDE 14: INTERACTIVE RUBRIC SCORING ---
+// ==========================================
+(function() {
+  const cards = document.querySelectorAll('.rubric-interactive-card');
+  const scoreDisplay = $('rubricTotalScore');
+
+  cards.forEach(card => {
+    card.onclick = () => {
+      card.classList.toggle('scored');
+      let total = 0;
+      cards.forEach(c => {
+        if (c.classList.contains('scored')) {
+          total += +(c.dataset.pts || 0);
+        }
+      });
+      if (scoreDisplay) scoreDisplay.textContent = `Điểm tự chấm: ${total} / 10 Điểm ${total === 10 ? '🌟' : ''}`;
+      if (card.classList.contains('scored')) {
+        playTone('click');
+        toast(`+${card.dataset.pts} điểm tiêu chí! Tổng: ${total}/10`);
+      }
+      if (total === 10) {
+        playTone('success');
+        toast('🌟 Tuyệt đối 10/10 điểm! Em đã hoàn thành xuất sắc mọi tiêu chuẩn bài học!');
+      }
+    };
+  });
+})();
+
+// ==========================================
+// --- SLIDE 15: QUIZ SYSTEM ---
+// ==========================================
+const quiz = [
+  ['Muốn di chuyển một câu sang vị trí khác, em dùng cặp lệnh nào?', ['Copy rồi Paste', 'Cut rồi Paste', 'Delete rồi gõ lại', 'Find'], 1, 'Cut lấy câu khỏi chỗ cũ; Paste đặt vào chỗ mới.'],
+  ['Vừa xóa nhầm một đoạn văn, em làm gì đầu tiên?', ['Đóng tab ngay', 'Bấm Ctrl+Z (Undo)', 'Bấm Ctrl+F', 'Xóa tiếp câu sau'], 1, 'Ctrl+Z hoàn tác thao tác gần nhất an toàn tuyệt đối.'],
+  ['Phím tắt Ctrl+C có tác dụng gì?', ['Cắt câu', 'Sao chép (giữ nguyên bản gốc)', 'Dán chữ', 'Tìm từ khóa'], 1, 'Ctrl+C sao chép và giữ bản gốc trong bài.'],
+  ['Khi nào nên dùng tính năng Replace All?', ['Khi chưa đọc bài', 'Khi lỗi giống nhau lặp nhiều lần và đã kiểm tra kỹ', 'Khi muốn xóa một câu', 'Khi đổi tên tệp'], 1, 'Replace All cần kiểm tra kỹ từ tìm và từ thay để không đổi nhầm từ đồng âm.'],
+  ['Trước khi thực hiện Cut hoặc Delete, thao tác bắt buộc là gì?', ['Chọn (bôi xanh) chính xác phần cần tác động', 'Đóng trình duyệt', 'Nhấn Paste', 'Mở tệp mới'], 0, 'Nguyên tắc vàng: Luôn chọn đúng phạm vi trước, ra lệnh sau!']
+];
+
+let qi = 0, score = 0, res = Array(5).fill(null);
+
+function renderQuiz() {
+  const q = quiz[qi];
+  if ($('quizCount')) $('quizCount').textContent = `Câu ${qi + 1} / 5`;
+  if ($('quizQuestion')) $('quizQuestion').textContent = q[0];
+  if ($('quizOptions')) {
+    $('quizOptions').innerHTML = q[1].map((a, i) => `<button class="option" data-opt="${i}"><span class="letter">${String.fromCharCode(65 + i)}</span>${a}</button>`).join('');
+  }
+  if ($('quizFeedback')) $('quizFeedback').textContent = 'Chọn một đáp án.';
+  if ($('quizDots')) {
+    $('quizDots').innerHTML = quiz.map((_, i) => `<div class="qdot ${res[i] !== null ? 'done' : ''}">${i + 1}</div>`).join('');
+  }
+  document.querySelectorAll('[data-opt]').forEach(b => b.onclick = () => answer(+b.dataset.opt));
+}
+
+function answer(c) {
+  if (res[qi] !== null) return;
+  const q = quiz[qi];
+  const ok = c === q[2];
+  res[qi] = ok;
+  if (ok) {
+    score++;
+    playTone('success');
+  } else {
+    playTone('error');
+  }
+  if ($('quizScore')) $('quizScore').textContent = score;
+  document.querySelectorAll('[data-opt]').forEach((b, i) => b.classList.add(i === q[2] ? 'correct' : i === c ? 'wrong' : ''));
+  if ($('quizFeedback')) $('quizFeedback').innerHTML = `<b>${ok ? '✅ Chính xác!' : '💡 Chưa đúng.'}</b> ${q[3]}`;
+  setTimeout(() => {
+    if (qi < 4) {
+      qi++;
+      renderQuiz();
+    } else {
+      playTone('success');
+      toast(`🎉 Hoàn thành trắc nghiệm: ${score}/5 điểm.`);
+    }
+  }, 1100);
+}
+
+if ($('restartQuiz')) {
+  $('restartQuiz').onclick = () => {
+    qi = 0;
+    score = 0;
+    res = Array(5).fill(null);
+    if ($('quizScore')) $('quizScore').textContent = 0;
+    playTone('click');
+    renderQuiz();
+  };
+}
+
+renderQuiz();
+
+if ($('restartDeck')) $('restartDeck').onclick = () => render(0);
 </script>
 </body></html>

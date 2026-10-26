@@ -1,0 +1,2358 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bài giảng 3D tương tác Buổi 4: Styles và Heading — Xây dựng bộ xương cho tài liệu (Google Docs THCS) trên nền tảng Impress.js">
+  <title>Buổi 4 · Styles và Heading: Xây dựng bộ xương cho tài liệu | 3D Impress Presentation</title>
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       1. CORE DESIGN TOKENS & RESET
+       ============================================================ */
+    :root {
+      --bg-space: #070e20;
+      --navy-900: #0b152d;
+      --navy-800: #132448;
+      --blue-600: #2563eb;
+      --blue-500: #3b82f6;
+      --blue-100: #dbeafe;
+      --blue-50: #eff6ff;
+      --cyan-600: #0284c7;
+      --cyan-500: #06b6d4;
+      --cyan-100: #cffafe;
+      --amber-500: #f59e0b;
+      --amber-400: #fbbf24;
+      --amber-100: #fef3c7;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-100: #d1fae5;
+      --rose-600: #e11d48;
+      --rose-500: #f43f5e;
+      --rose-100: #ffe4e6;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --card-bg: rgba(255, 255, 255, 0.98);
+      --card-dark-bg: linear-gradient(145deg, #101e3d, #091226);
+      --shadow-step: 0 35px 80px -15px rgba(0, 7, 24, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.6);
+      --shadow-hover: 0 45px 95px -20px rgba(11, 26, 61, 0.65), 0 0 0 2px rgba(59, 130, 246, 0.4);
+      --radius-step: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 18% 18%, #16366f 0%, #070e20 48%, #030713 100%);
+      background-attachment: fixed;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid var(--blue-500); outline-offset: 3px; }
+
+    /* ============================================================
+       2. IMPRESS.JS 3D CANVAS & STEP STYLES
+       ============================================================ */
+    .impress-enabled { pointer-events: none; }
+    .impress-enabled #impress,
+    .impress-enabled .step,
+    .impress-enabled .hud,
+    .impress-enabled button,
+    .impress-enabled a,
+    .impress-enabled input,
+    .impress-enabled select,
+    .impress-enabled .modal {
+      pointer-events: auto;
+    }
+
+    #impress {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .step {
+      position: relative;
+      width: 1120px;
+      min-height: 660px;
+      padding: 44px 50px;
+      margin: 0 auto;
+      border-radius: var(--radius-step);
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-step);
+      opacity: 0.2;
+      filter: blur(1.5px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: default;
+    }
+
+    .step.active {
+      opacity: 1;
+      filter: none;
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Cosmic Overview Mode */
+    #impress.step-overview .step {
+      opacity: 0.88 !important;
+      filter: none !important;
+      cursor: pointer !important;
+    }
+    #impress.step-overview .step:hover {
+      transform: scale(1.05);
+      border-color: var(--amber-400);
+      box-shadow: 0 0 45px rgba(245, 158, 11, 0.5);
+    }
+
+    /* Overview step itself must be completely transparent to reveal all 3D slides */
+    #overview.step {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      min-height: auto !important;
+      padding: 0 !important;
+      opacity: 1 !important;
+      filter: none !important;
+      cursor: default !important;
+      pointer-events: none !important;
+    }
+    #impress.step-overview #overview.step {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      cursor: default !important;
+    }
+    #impress.step-overview #overview.step:hover {
+      transform: none !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+    .overview-hero-capsule {
+      pointer-events: auto !important;
+      text-align: center;
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 34px 46px;
+      border-radius: 28px;
+      background: rgba(11, 21, 45, 0.94);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 50px rgba(37, 99, 235, 0.4);
+      backdrop-filter: blur(22px);
+      color: #ffffff;
+    }
+    .overview-hero-capsule h1 {
+      color: #ffffff !important;
+      font-size: 3.2rem;
+      margin: 8px 0 14px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+    .overview-hero-capsule p {
+      color: #e2e8f0 !important;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    /* Dark Step Variant */
+    .step.dark {
+      background: var(--card-dark-bg);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 40px 90px rgba(0, 0, 0, 0.7);
+    }
+    .step.dark h1, .step.dark h2, .step.dark h3 {
+      color: #ffffff !important;
+    }
+    .step.dark p {
+      color: #e2e8f0 !important;
+    }
+    .step.dark .lead {
+      color: #cbd5e1 !important;
+    }
+    .step.dark .card {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+    }
+    .step.dark .card p { color: #e2e8f0 !important; }
+    .step.dark .card b { color: #ffffff !important; }
+
+    /* Light Step Text Contrast Enforcement: deep slate on white cards */
+    .step:not(.dark):not(#overview) h1,
+    .step:not(.dark):not(#overview) h2,
+    .step:not(.dark):not(#overview) h3 {
+      color: var(--navy-900);
+    }
+    .step:not(.dark):not(#overview) p {
+      color: var(--ink-soft);
+    }
+    .step:not(.dark):not(#overview) .lead {
+      color: var(--ink-soft);
+    }
+    .step:not(.dark):not(#overview) .card b {
+      color: var(--navy-900);
+    }
+    .step:not(.dark):not(#overview) .card p {
+      color: var(--ink-soft);
+    }
+
+    /* ============================================================
+       3. TYPOGRAPHY & COMMON COMPONENTS
+       ============================================================ */
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+      margin: 0 0 12px;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+    h1 { font-size: 3.15rem; font-weight: 900; }
+    h2 { font-size: 2.3rem; font-weight: 800; }
+    h3 { font-size: 1.4rem; font-weight: 700; }
+    p { margin: 0 0 16px; line-height: 1.6; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--blue-600);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+    .step.dark .eyebrow { color: var(--amber-400); }
+    .eyebrow::before {
+      content: "";
+      width: 24px;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--amber-500);
+    }
+    .accent { color: var(--blue-600); }
+    .step.dark .accent { color: #60a5fa; }
+    .mark {
+      background: linear-gradient(transparent 60%, rgba(251, 191, 36, 0.45) 60%);
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+    .lead {
+      font-size: 1.25rem;
+      color: var(--muted);
+      max-width: 820px;
+      margin-bottom: 24px;
+      font-weight: 400;
+    }
+    .step.dark .lead { color: #94a3b8; }
+
+    .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 100px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      font-weight: 700;
+      font-size: 0.82rem;
+      border: 1px solid var(--blue-100);
+    }
+    .step.dark .pill {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #e2e8f0;
+    }
+
+    /* Grids & Cards */
+    .split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 48px;
+    }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .card {
+      padding: 24px;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 35px rgba(37, 99, 235, 0.12);
+    }
+    .card b { display: block; font-size: 1.05rem; margin: 12px 0 6px; color: var(--navy-900); }
+    .card p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+
+    .step-no {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 1.15rem;
+    }
+
+    .rule {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .rule:last-child { border-bottom: 0; }
+    .rule i {
+      display: grid;
+      place-items: center;
+      flex: 0 0 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      font-style: normal;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .rule b { display: block; font-size: 1.05rem; color: var(--navy-900); margin-bottom: 2px; }
+    .rule span { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+
+    .visual-guide {
+      margin: 0;
+      padding: 16px;
+      border-radius: 20px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+    .visual-guide img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+    .visual-guide img:hover { transform: scale(1.02); }
+    .visual-guide figcaption {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      text-align: left;
+    }
+    .visual-guide figcaption b { color: var(--navy-900); }
+
+    .feedback {
+      margin-top: 18px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: #eff6ff;
+      border-left: 5px solid var(--blue-600);
+      color: #1e3a8a;
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+    .learner-cue {
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: #fffbeb;
+      border-left: 5px solid var(--amber-500);
+      color: #78350f;
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 44px;
+      padding: 0 20px;
+      border-radius: 12px;
+      border: 0;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      background: var(--blue-600);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      background: #1d4ed8;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+    }
+    .btn.secondary {
+      background: #e2e8f0;
+      color: var(--ink);
+      box-shadow: none;
+    }
+    .btn.secondary:hover { background: #cbd5e1; }
+    .btn.amber {
+      background: var(--amber-500);
+      color: var(--navy-900);
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+    }
+    .btn.amber:hover { background: var(--amber-400); }
+
+    /* ============================================================
+       4. CHALLENGE CARDS & TIMERS
+       ============================================================ */
+    .challenge-card {
+      padding: 34px 40px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, #0f2752, #081329);
+      color: #ffffff;
+      box-shadow: 0 25px 65px rgba(15, 23, 42, 0.4);
+    }
+    .challenge-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .timer-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 130px;
+      padding: 12px 18px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+    }
+    .timer-badge b {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.1rem;
+      color: var(--amber-400);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .timer-badge span {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-top: 4px;
+      font-weight: 700;
+    }
+    .task-list {
+      display: grid;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 1rem;
+    }
+    .task-item i {
+      display: grid;
+      place-items: center;
+      flex: 0 0 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--amber-400);
+      color: var(--navy-900);
+      font-style: normal;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+    }
+    .answer-panel {
+      display: none;
+      margin-top: 16px;
+      padding: 16px 20px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.15);
+      border-left: 4px solid var(--amber-400);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+    .answer-panel.show { display: block; }
+
+    .rubric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .rubric-item {
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      text-align: center;
+    }
+    .rubric-item b {
+      display: block;
+      color: var(--amber-400);
+      font-size: 1.15rem;
+      font-family: 'Outfit', sans-serif;
+      margin-bottom: 4px;
+    }
+
+    /* ============================================================
+       5. INTERACTIVE LABS: HIERARCHY LAB & PAINT ROLLER LAB
+       ============================================================ */
+    .lab-box {
+      padding: 24px;
+      border-radius: 20px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+    }
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      transition: all 0.2s ease;
+    }
+    .item-row.is-title {
+      border-left: 6px solid var(--amber-500);
+      background: #fffbeb;
+      font-weight: 800;
+    }
+    .item-row.is-h1 {
+      border-left: 6px solid var(--blue-600);
+      background: #eff6ff;
+      font-weight: 700;
+      margin-left: 15px;
+    }
+    .item-row.is-h2 {
+      border-left: 6px solid var(--emerald-500);
+      background: #f0fdf4;
+      margin-left: 35px;
+    }
+    .style-select {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    /* Paint Roller Demo */
+    .paint-source-card {
+      padding: 16px 20px;
+      border-radius: 14px;
+      background: #eff6ff;
+      border: 2px dashed var(--blue-500);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .paint-target-row {
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+    }
+    .paint-target-row.painted {
+      background: #eff6ff;
+      border-color: var(--blue-500);
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.15);
+    }
+    .paint-target-row.painted b {
+      color: var(--blue-600) !important;
+      font-size: 1.15rem;
+    }
+
+    /* ============================================================
+       6. INTERACTIVE 10-QUESTION QUIZ
+       ============================================================ */
+    .quiz-container {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 28px;
+      align-items: start;
+    }
+    .quiz-card {
+      padding: 30px;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+    .quiz-option-list {
+      display: grid;
+      gap: 10px;
+      margin: 18px 0;
+    }
+    .quiz-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      font-size: 1rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .quiz-btn:hover { background: #eff6ff; border-color: var(--blue-500); }
+    .quiz-btn .letter-badge {
+      display: grid;
+      place-items: center;
+      flex: 0 0 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--blue-100);
+      color: var(--blue-600);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+    }
+    .quiz-btn.correct {
+      background: var(--emerald-100);
+      border-color: var(--emerald-500);
+      color: #065f46;
+    }
+    .quiz-btn.correct .letter-badge {
+      background: var(--emerald-500);
+      color: #ffffff;
+    }
+    .quiz-btn.wrong {
+      background: var(--rose-100);
+      border-color: var(--rose-500);
+      color: #9f1239;
+    }
+    .quiz-btn.wrong .letter-badge {
+      background: var(--rose-500);
+      color: #ffffff;
+    }
+    .quiz-sidebar {
+      padding: 26px;
+      border-radius: 20px;
+      background: var(--navy-900);
+      color: #ffffff;
+      text-align: center;
+    }
+    .score-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--amber-400);
+      line-height: 1;
+      margin: 12px 0 16px;
+    }
+    .quiz-dot-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin: 18px 0;
+    }
+    .quiz-dot {
+      display: grid;
+      place-items: center;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .quiz-dot.done { background: var(--emerald-500); color: #ffffff; }
+
+    /* ============================================================
+       7. FIXED HEADS-UP DISPLAY (HUD) OVERLAYS
+       ============================================================ */
+    .top-hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(16px, 3vw, 40px);
+      background: rgba(7, 14, 32, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(18px);
+      color: #ffffff;
+    }
+    .hud-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .brand-icon {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--blue-600), #0284c7);
+      color: #ffffff;
+      font-size: 1.25rem;
+      font-weight: 900;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+    .hud-station-tag {
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--amber-400);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .hud-progress-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: min(440px, 36vw);
+    }
+    .hud-progress-labels {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-size: 0.74rem;
+      color: #94a3b8;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    .hud-progress-bar-track {
+      width: 100%;
+      height: 6px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+    }
+    .hud-progress-bar-fill {
+      width: 6%;
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--blue-500), var(--cyan-500));
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hud-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hud-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 40px;
+      padding: 0 14px;
+      border-radius: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .hud-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+    .hud-btn.active {
+      background: var(--blue-600);
+      border-color: var(--blue-500);
+    }
+
+    .bottom-hud {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+      border-radius: 18px;
+      background: rgba(7, 14, 32, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(16px);
+      color: #ffffff;
+    }
+    .nav-arrow-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 12px;
+      border: 0;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .nav-arrow-btn:hover { background: rgba(255, 255, 255, 0.22); }
+    .nav-arrow-btn.next {
+      background: var(--blue-600);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+    .nav-arrow-btn.next:hover { background: #1d4ed8; }
+    .nav-counter {
+      min-width: 90px;
+      text-align: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+    }
+    .nav-counter b { color: var(--amber-400); }
+    .key-hint {
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+
+    /* Drawers */
+    .drawer {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      width: min(440px, calc(100vw - 40px));
+      max-height: calc(100vh - 105px);
+      overflow-y: auto;
+      padding: 24px;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+      z-index: 60;
+      transform: translateX(calc(100% + 40px));
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .drawer-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 0;
+      background: #f1f5f9;
+      color: var(--ink);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .teaching-box {
+      margin-top: 10px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border-left: 4px solid var(--blue-500);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+    .teaching-box b { display: block; color: var(--navy-900); text-transform: uppercase; font-size: 0.76rem; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .teaching-box p { margin: 0; }
+
+    /* Lightbox modal */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: none;
+      place-items: center;
+      padding: 30px;
+      background: rgba(3, 7, 18, 0.88);
+      backdrop-filter: blur(8px);
+    }
+    .lightbox.show { display: grid; }
+    .lightbox-content {
+      max-width: 90vw;
+      max-height: 85vh;
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 20px;
+      position: relative;
+    }
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 75vh;
+      border-radius: 12px;
+      display: block;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: -16px;
+      right: -16px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--rose-500);
+      color: #ffffff;
+      border: 0;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 80px;
+      transform: translate(-50%, 20px);
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: var(--navy-900);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 80;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 900px) {
+      .step { width: 92vw; padding: 24px; min-height: 520px; }
+      .split, .grid2, .grid3, .quiz-container { grid-template-columns: 1fr; }
+      .hud-progress-wrap { display: none; }
+      .hud-brand span { display: none; }
+    }
+  </style>
+</head>
+<body class="impress-not-supported">
+
+  <!-- ============================================================
+       TOP FIXED HEADS-UP DISPLAY (HUD)
+       ============================================================ -->
+  <header class="top-hud">
+    <div class="hud-brand">
+      <a href="index.html" class="brand-icon" title="Về trung tâm khóa học">D</a>
+      <span>Docs Lab · Buổi 04</span>
+      <span class="hud-station-tag" id="hudSectionLabel">Mở đầu</span>
+    </div>
+
+    <div class="hud-progress-wrap">
+      <div class="hud-progress-labels">
+        <span id="hudStepTitle">Khởi hành</span>
+        <b id="hudTimeLabel">0–5 phút</b>
+      </div>
+      <div class="hud-progress-bar-track">
+        <div class="hud-progress-bar-fill" id="hudProgressBar"></div>
+      </div>
+    </div>
+
+    <div class="hud-actions">
+      <button class="hud-btn" id="overviewBtn" title="Xem toàn cảnh 3D vũ trụ bài giảng">
+        🔭 <span>Toàn cảnh 3D</span>
+      </button>
+      <button class="hud-btn" id="explainToggleBtn" title="Giải thích mở rộng sư phạm">
+        💡 <span>Sư phạm</span>
+      </button>
+      <button class="hud-btn" id="notesToggleBtn" title="Ghi chú giáo viên">
+        ☷ <span>Ghi chú</span>
+      </button>
+      <a href="buoi-04-bai-tap.html" class="hud-btn" style="background: rgba(37, 99, 235, 0.4); border-color: var(--blue-500);" title="Mở Phiếu bài tập & Thực hành">
+        📝 <span>Bài tập</span>
+      </a>
+      <button class="hud-btn" id="fullscreenBtn" title="Toàn màn hình">
+        ⛶
+      </button>
+      <a href="index.html" class="hud-btn" title="Về trang khóa học">
+        ⌂
+      </a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       IMPRESS 3D PRESENTATION CONTAINER
+       ============================================================ -->
+  <div id="impress" data-transition-duration="900" data-width="1200" data-height="740">
+
+    <!-- ------------------------------------------------------------
+         STEP 1: KHỞI HÀNH (INTRO)
+         Coords: x=0, y=0, z=0
+         ------------------------------------------------------------ -->
+    <div id="step-intro" class="step dark"
+         data-x="0" data-y="0" data-z="0"
+         data-section="Mở đầu" data-time="0–5 phút"
+         data-title="Styles và Heading: Bộ xương tài liệu"
+         data-notes="Kết nối Buổi 3: Buổi trước đã học trang điểm chữ đẹp (màu, font, căn lề). Hôm nay xây dựng bộ xương nâng đỡ toàn bộ tài liệu bằng Styles & Heading.">
+      <div class="split">
+        <div>
+          <span class="eyebrow">Buổi 04 · Thời lượng 100 phút</span>
+          <h1>Xây dựng <span class="accent">bộ xương</span> cho tài liệu.</h1>
+          <p class="lead">Đừng biến bài viết thành đống chữ lộn xộn. Hãy làm chủ Title, Heading 1–3 và Paint Format để tài liệu tự động sinh mục lục và mục tiêu điều hướng!</p>
+          <div class="pills">
+            <span class="pill">👑 Title & Subtitle</span>
+            <span class="pill">📑 Heading 1 – 2 – 3</span>
+            <span class="pill">📝 Normal Text</span>
+            <span class="pill">🖌️ Paint Format</span>
+            <span class="pill">⚡ Update to match</span>
+          </div>
+        </div>
+        <figure class="visual-guide" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15);">
+          <img src="assets/buoi04/bo-xuong-tai-lieu.svg" alt="So sánh tài liệu không có bộ xương và có bộ xương Styles">
+          <figcaption style="color: #cbd5e1;"><b>Ẩn dụ bộ xương:</b> Không có xương, cơ thể sụp đổ. Không có Styles, tài liệu dài 10 trang sẽ biến thành một mê cung không lối thoát!</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 2: MỤC TIÊU & LỘ TRÌNH (GOALS & AGENDA)
+         Coords: x=1400, y=0, z=0
+         ------------------------------------------------------------ -->
+    <div id="step-goals" class="step"
+         data-x="1400" data-y="0" data-z="0"
+         data-section="Mục tiêu" data-time="5–10 phút"
+         data-title="Cuối buổi 4, em làm chủ những gì?"
+         data-notes="Nêu rõ 3 chuẩn đầu ra: Phân cấp tiêu đề, dùng con lăn sơn Paint Format, và hoàn thành văn bản phân tầng Thế giới quanh em.">
+      <span class="eyebrow">Mục tiêu & Lộ trình</span>
+      <h2>Cuối buổi 4, em làm chủ những gì?</h2>
+      <div class="grid3" style="margin-top: 24px;">
+        <div class="card">
+          <span class="step-no">1</span>
+          <b>Phân cấp Styles chuẩn xác</b>
+          <p>Hiểu bản chất và phân biệt rõ Title, Subtitle, Heading 1, 2, 3 và Normal Text theo cây phác thảo.</p>
+        </div>
+        <div class="card">
+          <span class="step-no">2</span>
+          <b>Bảo bối Paint Format</b>
+          <p>Sử dụng con lăn sơn sao chép toàn bộ định dạng trong 1 giây (chế độ click 1 lần & double-click).</p>
+        </div>
+        <div class="card">
+          <span class="step-no">3</span>
+          <b>Sản phẩm đa cấp độ</b>
+          <p>Thiết lập hoàn chỉnh tài liệu “Thế giới quanh em” chuẩn phân cấp, tự động xuất hiện trên Document Outline.</p>
+        </div>
+      </div>
+      <div class="grid4" style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line);">
+        <div style="background: #f8fafc; padding: 14px; border-radius: 12px;">
+          <b style="color: var(--blue-600); display: block; font-size: 0.82rem;">0–15'</b>
+          <span style="font-size: 0.85rem; color: var(--muted);">Bí mật của Styles</span>
+        </div>
+        <div style="background: #f8fafc; padding: 14px; border-radius: 12px;">
+          <b style="color: var(--blue-600); display: block; font-size: 0.82rem;">15–40'</b>
+          <span style="font-size: 0.85rem; color: var(--muted);">Phân cấp ĐỘNG VẬT</span>
+        </div>
+        <div style="background: #f8fafc; padding: 14px; border-radius: 12px;">
+          <b style="color: var(--blue-600); display: block; font-size: 0.82rem;">40–65'</b>
+          <span style="font-size: 0.85rem; color: var(--muted);">Paint Format & Update</span>
+        </div>
+        <div style="background: #f8fafc; padding: 14px; border-radius: 12px;">
+          <b style="color: var(--blue-600); display: block; font-size: 0.82rem;">65–100'</b>
+          <span style="font-size: 0.85rem; color: var(--muted);">Thế giới quanh em & Quiz</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 3: TẠI SAO CẦN BỘ XƯƠNG? (METAPHOR & REALITY)
+         Coords: x=2800, y=0, z=-200, rotate=10
+         ------------------------------------------------------------ -->
+    <div id="step-metaphor" class="step"
+         data-x="2800" data-y="0" data-z="-200" data-rotate="10"
+         data-section="Khởi động" data-time="10–15 phút"
+         data-title="Chỉ to và đậm thôi là chưa đủ!"
+         data-notes="Hỏi học sinh: Nếu em chỉ bôi đen rồi tăng cỡ 20pt và bấm Bold thì khác gì chọn Heading 1? Giải thích: Cỡ 20pt chỉ mắt người thấy; Heading 1 giúp máy tính hiểu cấu trúc.">
+      <span class="eyebrow">Khởi động · Khai phá tư duy</span>
+      <h2>Chỉ chỉnh cỡ to và in đậm <span class="mark">thôi là chưa đủ!</span></h2>
+      <div class="grid2" style="margin-top: 18px;">
+        <div class="card" style="background: #fff5f5; border-color: #fecdd3;">
+          <h3 style="color: var(--rose-600); font-size: 1.15rem;">❌ Cách làm thủ công nghiệp dư</h3>
+          <p style="color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+            Bôi đen dòng chữ → Tự chọn cỡ 18pt → Bấm nút Bold → Đổi màu xanh.
+          </p>
+          <div class="feedback" style="background: #fff; border-left-color: var(--rose-500); color: var(--rose-600);">
+            ⚠️ <strong>Hậu quả:</strong> Mắt người nhìn thấy chữ to, nhưng Google Docs <strong>hoàn toàn không biết</strong> đây là tiêu đề! Không sinh được mục lục, không có thanh phác thảo outline, khi muốn đổi font phải đi sửa từng trang một.
+          </div>
+        </div>
+        <div class="card" style="background: #f0fdf4; border-color: #bbf7d0;">
+          <h3 style="color: var(--emerald-600); font-size: 1.15rem;">✅ Cách làm chuẩn chuyên gia (Styles)</h3>
+          <p style="color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+            Đặt con trỏ vào dòng chữ → Mở menu <strong>Styles</strong> → Chọn <strong>Heading 1</strong>.
+          </p>
+          <div class="feedback" style="background: #fff; border-left-color: var(--emerald-500); color: #065f46;">
+            🎉 <strong>Lợi ích vượt trội:</strong> Google Docs lập tức ghi nhận đây là đề mục cấp 1! Tự động tạo cây sơ đồ Document Outline bên trái, 1 click tạo mục lục toàn tập, và cập nhật hàng loạt trong tích tắc!
+          </div>
+        </div>
+      </div>
+      <div class="learner-cue">
+        <b>💡 Câu hỏi then chốt:</b> Tại sao các nhà xuất bản sách dày 500 trang không bao giờ chỉnh tiêu đề bằng tay?
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 4: CÂY PHÁC THẢO PHÂN CẤP (TREE HIERARCHY)
+         Coords: x=2800, y=1300, z=0, rotate-x=20
+         ------------------------------------------------------------ -->
+    <div id="step-tree-concept" class="step"
+         data-x="2800" data-y="1300" data-z="0" data-rotate-x="20"
+         data-section="Cây phân cấp" data-time="15–22 phút"
+         data-title="Cây gia phả các cấp độ Heading"
+         data-notes="Giải thích cấu trúc hình cây: Title là vua ở trên cùng (1 lần). Heading 1 là các nhánh lớn (Chương). Heading 2 là các cành con (Bài/Mục). Heading 3 là nhánh chi tiết. Normal Text là lá cây.">
+      <span class="eyebrow">Bộ công cụ 1 · Cấu trúc hình cây</span>
+      <h2>Cây gia phả: <span class="accent">Title, Heading 1, 2, 3</span></h2>
+      <figure class="visual-guide" style="margin-top: 14px;">
+        <img src="assets/buoi04/cay-phan-cap.svg" alt="Cây phác thảo phân cấp thông tin Title đến Heading 2">
+        <figcaption><b>Quy tắc bất di bất dịch:</b> Title là duy nhất ở đầu. Heading 2 phải nằm bên trong một Heading 1. Không bao giờ nhảy cóc từ Title xuống thẳng Heading 3!</figcaption>
+      </figure>
+      <div class="grid3" style="margin-top: 16px;">
+        <div class="card" style="padding: 16px;">
+          <b style="color: var(--blue-600); font-size: 1.05rem;">Title (Tiêu đề)</b>
+          <p>Tên tài liệu. Thường chỉ xuất hiện 1 lần duy nhất ở trang đầu tiên.</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <b style="color: #0284c7; font-size: 1.05rem;">Heading 1 (Cấp 1)</b>
+          <p>Các phần lớn, chương lớn, hoặc chủ đề chính của văn bản.</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <b style="color: #0d9488; font-size: 1.05rem;">Heading 2 & 3 (Cấp 2, 3)</b>
+          <p>Các mục nhỏ, ý chi tiết nằm bên trong từng chương lớn.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 5: PHÒNG THÍ NGHIỆM PHÂN CẤP TƯƠNG TÁC (LAB 1)
+         Coords: x=1400, y=1300, z=200, rotate-y=-20
+         ------------------------------------------------------------ -->
+    <div id="step-interactive-hierarchy" class="step"
+         data-x="1400" data-y="1300" data-z="200" data-rotate-y="-20"
+         data-section="Thực hành 1" data-time="22–32 phút"
+         data-title="Phòng thí nghiệm phân cấp ĐỘNG VẬT"
+         data-notes="Mời học sinh trực tiếp chọn Styles cho từng mục trong khung thử. Sau đó bấm nút Kiểm tra để hệ thống chấm điểm và giải thích đúng/sai.">
+      <span class="eyebrow">Phòng thí nghiệm phân cấp · Hierarchy Lab</span>
+      <h2>Thử thách: Xây bộ xương cho chủ đề <span class="accent">ĐỘNG VẬT</span></h2>
+      <div class="lab-box" style="margin-top: 16px;">
+        <p style="margin: 0 0 12px; font-size: 0.9rem; color: var(--muted);">Chọn cấp độ Styles chuẩn xác cho 7 dòng dữ liệu dưới đây:</p>
+        
+        <div class="item-row is-title" id="row0">
+          <span>🐾 <strong>ĐỘNG VẬT</strong> (Tên bài viết)</span>
+          <select class="style-select" data-row-idx="0">
+            <option value="Title" selected>👑 Title</option>
+            <option value="Heading 1">Heading 1</option>
+            <option value="Heading 2">Heading 2</option>
+          </select>
+        </div>
+
+        <div class="item-row is-h1" id="row1">
+          <span>🌿 <strong>Động vật trên cạn</strong> (Phần lớn 1)</span>
+          <select class="style-select" data-row-idx="1">
+            <option value="Title">Title</option>
+            <option value="Heading 1" selected>📑 Heading 1</option>
+            <option value="Heading 2">Heading 2</option>
+          </select>
+        </div>
+
+        <div class="item-row is-h2" id="row2">
+          <span>🐅 Con hổ (Mục con của trên cạn)</span>
+          <select class="style-select" data-row-idx="2">
+            <option value="Title">Title</option>
+            <option value="Heading 1">Heading 1</option>
+            <option value="Heading 2" selected>📌 Heading 2</option>
+          </select>
+        </div>
+
+        <div class="item-row is-h2" id="row3">
+          <span>🐘 Con voi (Mục con của trên cạn)</span>
+          <select class="style-select" data-row-idx="3">
+            <option value="Title">Title</option>
+            <option value="Heading 1">Heading 1</option>
+            <option value="Heading 2" selected>📌 Heading 2</option>
+          </select>
+        </div>
+
+        <div class="item-row is-h1" id="row4">
+          <span>🌊 <strong>Động vật dưới nước</strong> (Phần lớn 2)</span>
+          <select class="style-select" data-row-idx="4">
+            <option value="Title">Title</option>
+            <option value="Heading 1" selected>📑 Heading 1</option>
+            <option value="Heading 2">Heading 2</option>
+          </select>
+        </div>
+
+        <div class="item-row is-h2" id="row5">
+          <span>🦈 Cá mập (Mục con dưới nước)</span>
+          <select class="style-select" data-row-idx="5">
+            <option value="Title">Title</option>
+            <option value="Heading 1">Heading 1</option>
+            <option value="Heading 2" selected>📌 Heading 2</option>
+          </select>
+        </div>
+
+        <div class="item-row is-h2" id="row6">
+          <span>🐬 Cá heo (Mục con dưới nước)</span>
+          <select class="style-select" data-row-idx="6">
+            <option value="Title">Title</option>
+            <option value="Heading 1">Heading 1</option>
+            <option value="Heading 2" selected>📌 Heading 2</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 14px;">
+          <button class="btn" id="checkHierarchyBtn">✓ Kiểm tra kết quả</button>
+          <button class="btn secondary" id="resetHierarchyBtn">↺ Xáo trộn để làm lại</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 6: THỬ THÁCH 1 TRÊN GOOGLE DOCS THẬT
+         Coords: x=0, y=1300, z=400, rotate-z=-10
+         ------------------------------------------------------------ -->
+    <div id="step-challenge-1" class="step"
+         data-x="0" data-y="1300" data-z="400" data-rotate-z="-10"
+         data-section="Thực hành 1" data-time="32–42 phút"
+         data-title="Thực hành nhỏ 1: Phân cấp trên Docs"
+         data-notes="Học sinh mở Google Docs thật, gõ 7 dòng về ĐỘNG VẬT và gán Styles theo đúng cấu trúc. Bật đồng hồ đếm ngược 10:00.">
+      <div class="challenge-card">
+        <div class="challenge-header">
+          <div>
+            <span class="eyebrow" style="color: var(--amber-400);">Thử thách nhỏ 1</span>
+            <h2 style="margin: 4px 0 8px;">Áp dụng Styles trên Google Docs thật</h2>
+            <p style="color: #cbd5e1; margin: 0;">Mở một tài liệu mới và thiết lập bộ xương đầu tiên.</p>
+          </div>
+          <div class="timer-badge">
+            <b id="timerDisplay1">10:00</b>
+            <span>THỜI GIAN LÀM</span>
+          </div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <i>1</i>
+            <span>Gõ dòng đầu tiên: <strong>ĐỘNG VẬT</strong> → Áp dụng kiểu <strong>Title</strong>.</span>
+          </div>
+          <div class="task-item">
+            <i>2</i>
+            <span>Áp dụng <strong>Heading 1</strong> cho 2 dòng: <em>Động vật trên cạn</em> và <em>Động vật dưới nước</em>.</span>
+          </div>
+          <div class="task-item">
+            <i>3</i>
+            <span>Áp dụng <strong>Heading 2</strong> cho 4 loài vật: <em>Con hổ, Con voi, Cá mập, Cá heo</em>.</span>
+          </div>
+          <div class="task-item">
+            <i>4</i>
+            <span>Bấm vào biểu tượng <strong>Document Outline</strong> ở mép trái màn hình để xem cây phác thảo tự động!</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 18px;">
+          <button class="btn amber" data-timer-btn="timerDisplay1">▶ Bắt đầu đếm giờ</button>
+          <button class="btn secondary" data-toggle-answer="answerBox1">Xem tiêu chí hoàn thành</button>
+        </div>
+        <div class="answer-panel" id="answerBox1">
+          ✅ <strong>Đạt yêu cầu khi:</strong> Cột Outline bên trái Docs xuất hiện đầy đủ 3 cấp bậc: Title thụt ngoài cùng, 2 Heading 1 thẳng hàng, 4 Heading 2 thụt lề vào trong.
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 7: SIÊU NĂNG LỰC CỦA STYLES (OUTLINE & TOC)
+         Coords: x=-1400, y=1300, z=200, rotate-y=25
+         ------------------------------------------------------------ -->
+    <div id="step-secret-powers" class="step"
+         data-x=-1400 data-y=1300 data-z=200 data-rotate-y=25
+         data-section="Siêu năng lực" data-time="42–50 phút"
+         data-title="Document Outline và Mục lục tự động"
+         data-notes="Chiếu sơ đồ Document Outline. Nhấn mạnh: Chỉ khi dùng Heading thì thanh Outline bên trái mới xuất hiện. Giới thiệu sơ lược tính năng chèn Mục lục tự động (Table of Contents).">
+      <div class="split">
+        <div>
+          <span class="eyebrow">Bộ công cụ 2 · Siêu năng lực</span>
+          <h2>Hai món quà kỳ diệu của <span class="accent">Styles</span></h2>
+          <div class="rule">
+            <i>📑</i>
+            <div>
+              <b>Document Outline (Sơ đồ phác thảo bên trái)</b>
+              <span>Tự động liệt kê toàn bộ các đề mục. Bấm vào bất kỳ mục nào là tài liệu tự cuộn ngay đến trang đó!</span>
+            </div>
+          </div>
+          <div class="rule">
+            <i>📖</i>
+            <div>
+              <b>Table of Contents (Mục lục tự động)</b>
+              <span>Vào <em>Insert → Table of Contents</em>: Toàn bộ danh mục và số trang sẽ tự sinh ra trong 1 cú nhấp chuột!</span>
+            </div>
+          </div>
+          <div class="feedback">
+            <b>Thử nghĩ xem:</b> Nếu một tài liệu 100 trang không dùng Heading, em sẽ mất bao nhiêu giờ để tự gõ từng trang vào mục lục?
+          </div>
+        </div>
+        <figure class="visual-guide">
+          <img src="assets/buoi04/document-outline.svg" alt="Minh họa Document Outline và Update to match">
+          <figcaption><b>Thanh Outline thần thánh:</b> Không cần lăn chuột mỏi tay tìm kiếm, mọi chương mục nằm gọn ngay trong tầm mắt!</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 8: UPDATE TO MATCH (ĐỔI 1 LẦN - TẤT CẢ ĐỔI THEO)
+         Coords: x=-1400, y=0, z=0, scale=1.15
+         ------------------------------------------------------------ -->
+    <div id="step-update-to-match" class="step"
+         data-x="-1400" data-y="0" data-z="0" data-scale="1.15"
+         data-section="Đồng bộ" data-time="50–58 phút"
+         data-title="Bí kíp: Update 'Heading 1' to match"
+         data-notes="Demo tính năng Update to match. Sửa màu hoặc font của một Heading 1, sau đó bấm 'Update Heading 1 to match', lập tức tất cả các Heading 1 khác tự động thay đổi theo.">
+      <span class="eyebrow">Tuyệt kỹ số 1 · Đồng bộ hàng loạt</span>
+      <h2>Update to match: <span class="accent">Đổi 1 lần, 50 mục đổi theo</span></h2>
+      <div class="grid3" style="margin-top: 20px;">
+        <div class="card">
+          <span class="step-no">1</span>
+          <b>Định dạng 1 mục mẫu</b>
+          <p>Chọn một dòng Heading 1 bất kỳ, đổi font sang Roboto, cỡ 20pt, màu xanh dương đậm.</p>
+        </div>
+        <div class="card">
+          <span class="step-no">2</span>
+          <b>Mở menu Styles</b>
+          <p>Rê chuột vào dòng <strong>Heading 1</strong> → Bấm mũi tên bên cạnh → Chọn <strong>Update 'Heading 1' to match</strong>.</p>
+        </div>
+        <div class="card">
+          <span class="step-no">3</span>
+          <b>Phép màu xuất hiện</b>
+          <p>Tất cả các dòng Heading 1 còn lại trong toàn bộ tài liệu tự động đổi sang màu và font mới ngay tức khắc!</p>
+        </div>
+      </div>
+      <div class="learner-cue" style="margin-top: 24px;">
+        <b>💡 So sánh đẳng cấp:</b> Người nghiệp dư mất 30 phút đi tìm từng dòng để đổi màu. Chuyên gia Docs chỉ mất đúng <strong>2 giây</strong> nhờ "Update to match"!
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 9: BẢO BỐI PAINT FORMAT (CON LĂN SƠN)
+         Coords: x=-1400, y=-1300, z=200, rotate-x=-20
+         ------------------------------------------------------------ -->
+    <div id="step-paint-format-concept" class="step"
+         data-x="-1400" data-y="-1300" data-z="200" data-rotate-x="-20"
+         data-section="Paint Format" data-time="58–66 phút"
+         data-title="Con lăn sơn Paint Format là gì?"
+         data-notes="Giới thiệu biểu tượng Paint Format. Nhấn mạnh 2 chế độ: Click 1 lần (dùng cho 1 đối tượng rồi tự tắt) và Double-Click (khóa chế độ sơn liên tục cho nhiều đối tượng, bấm Escape để thoát).">
+      <div class="split">
+        <div>
+          <span class="eyebrow">Bộ công cụ 3 · Con lăn sơn</span>
+          <h2>Bảo bối <span class="accent">Paint Format</span> (Sao chép định dạng)</h2>
+          <p class="lead">Sao chép toàn bộ font, màu, cỡ chữ, in đậm từ văn bản mẫu sang văn bản khác mà không cần nhớ thông số!</p>
+          <div class="rule">
+            <i>1x</i>
+            <div>
+              <b>Click 1 lần (Single-click)</b>
+              <span>Hút màu từ mẫu gốc → Quét lên 1 mục đích → Con lăn sơn tự động tắt.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <i>2x</i>
+            <div>
+              <b>Nhấp đúp chuột (Double-click)</b>
+              <span>Khóa chế độ sơn liên tục! Quét lên mục 1, mục 2, mục 3 thoải mái; khi xong nhấn phím <strong>Escape (Esc)</strong> để nhả sơn.</span>
+            </div>
+          </div>
+        </div>
+        <figure class="visual-guide">
+          <img src="assets/buoi04/paint-format-roller.svg" alt="Sơ đồ cơ chế hoạt động của Paint Format">
+          <figcaption><b>Chỉ cần 3 bước:</b> 1. Đặt con trỏ vào mẫu → 2. Bấm con lăn sơn → 3. Quét lên chữ mới!</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 10: PHÒNG THÍ NGHIỆM CON LĂN SƠN (LAB 2)
+         Coords: x=0, y=-1300, z=400, rotate-z=15
+         ------------------------------------------------------------ -->
+    <div id="step-paint-format-lab" class="step"
+         data-x="0" data-y="-1300" data-z="400" data-rotate-z="15"
+         data-section="Paint Lab" data-time="66–75 phút"
+         data-title="Thử nghiệm con lăn sơn Paint Format"
+         data-notes="Học sinh bấm nút 'Nạp sơn từ Chương 1' rồi nhấp chuột vào Chương 2 hoặc Chương 3 bên dưới để trải nghiệm hiệu ứng sao chép định dạng tức thì.">
+      <span class="eyebrow">Phòng thí nghiệm tương tác · Paint Lab</span>
+      <h2>Trải nghiệm <span class="accent">Con lăn sơn</span> ngay trên slide</h2>
+      <div class="lab-box" style="margin-top: 16px;">
+        <div class="paint-source-card">
+          <div>
+            <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--blue-600); font-weight: 800; letter-spacing: 0.08em;">MẪU GỐC ĐÃ ĐẸP:</span>
+            <div style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--blue-600); margin-top: 2px;">
+              CHƯƠNG 1 – ĐỘNG VẬT
+            </div>
+            <span style="font-size: 0.82rem; color: var(--muted);">(Cỡ 20pt · In đậm · Màu xanh dương đậm)</span>
+          </div>
+          <button class="btn" id="loadPaintBtn">🖌️ Bấm nạp sơn Paint Format</button>
+        </div>
+
+        <p style="margin: 0 0 10px; font-size: 0.88rem; color: var(--muted);" id="paintPromptText">
+          👆 Hãy bấm nút "Nạp sơn" ở trên, sau đó nhấp vào Chương 2 hoặc Chương 3 bên dưới để sơn định dạng!
+        </p>
+
+        <div class="paint-target-row" id="targetRow2">
+          <div>
+            <b style="font-size: 1rem; color: #475569;">CHƯƠNG 2 – THỰC VẬT</b>
+            <span style="font-size: 0.82rem; color: #94a3b8; display: block;">(Hiện tại: Chữ thô, chưa định dạng)</span>
+          </div>
+          <span class="pill" style="margin: 0;" id="paintStatus2">Chưa sơn</span>
+        </div>
+
+        <div class="paint-target-row" id="targetRow3">
+          <div>
+            <b style="font-size: 1rem; color: #475569;">CHƯƠNG 3 – CON NGƯỜI</b>
+            <span style="font-size: 0.82rem; color: #94a3b8; display: block;">(Hiện tại: Chữ thô, chưa định dạng)</span>
+          </div>
+          <span class="pill" style="margin: 0;" id="paintStatus3">Chưa sơn</span>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <button class="btn secondary" id="resetPaintLabBtn" style="font-size: 0.85rem; height: 38px;">↺ Đặt lại phòng thí nghiệm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 11: THỬ THÁCH 2 TRÊN GOOGLE DOCS THẬT
+         Coords: x=1400, y=-1300, z=200, rotate-y=-20
+         ------------------------------------------------------------ -->
+    <div id="step-challenge-2" class="step"
+         data-x="1400" data-y="-1300" data-z="200" data-rotate-y="-20"
+         data-section="Thực hành 2" data-time="75–82 phút"
+         data-title="Thực hành nhỏ 2: Paint Format trên Docs"
+         data-notes="Học sinh mở Google Docs thật, dùng Paint Format để sao chép định dạng từ Chương 1 sang Chương 2 và Chương 3. Thử nghiệm chế độ Double-click.">
+      <div class="challenge-card">
+        <div class="challenge-header">
+          <div>
+            <span class="eyebrow" style="color: var(--amber-400);">Thử thách nhỏ 2</span>
+            <h2 style="margin: 4px 0 8px;">Bậc thầy Con lăn sơn</h2>
+            <p style="color: #cbd5e1; margin: 0;">Sử dụng Paint Format để sao chép định dạng trong 1 nốt nhạc.</p>
+          </div>
+          <div class="timer-badge">
+            <b id="timerDisplay2">05:00</b>
+            <span>THỜI GIAN LÀM</span>
+          </div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <i>1</i>
+            <span>Định dạng thật đẹp dòng <strong>CHƯƠNG 1 – ĐỘNG VẬT</strong> (Đổi màu, in đậm, đổi font).</span>
+          </div>
+          <div class="task-item">
+            <i>2</i>
+            <span>Đặt con trỏ vào dòng Chương 1 → <strong>Nhấp đúp chuột (Double-click)</strong> vào biểu tượng con lăn sơn.</span>
+          </div>
+          <div class="task-item">
+            <i>3</i>
+            <span>Lần lượt quét qua dòng <strong>CHƯƠNG 2 – THỰC VẬT</strong> và <strong>CHƯƠNG 3 – CON NGƯỜI</strong>.</span>
+          </div>
+          <div class="task-item">
+            <i>4</i>
+            <span>Nhấn phím <strong>Esc</strong> trên bàn phím để tắt con lăn sơn.</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 18px;">
+          <button class="btn amber" data-timer-btn="timerDisplay2">▶ Bắt đầu đếm giờ</button>
+          <button class="btn secondary" data-toggle-answer="answerBox2">Xem tiêu chí hoàn thành</button>
+        </div>
+        <div class="answer-panel" id="answerBox2">
+          ✅ <strong>Đạt yêu cầu khi:</strong> Cả 3 chương đều có kiểu dáng hoàn toàn giống nhau 100%, thực hiện bằng con lăn sơn Paint Format mà không cần chỉnh lại từng nút thủ công.
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 12: 4 SAI LẦM DỄ GẶP (COMMON PITFALLS)
+         Coords: x=2800, y=-1300, z=0, rotate-x=15
+         ------------------------------------------------------------ -->
+    <div id="step-common-mistakes" class="step"
+         data-x="2800" data-y="-1300" data-z="0" data-rotate-x="15"
+         data-section="Lưu ý" data-time="82–86 phút"
+         data-title="4 Sai lầm phổ biến khi dùng Styles"
+         data-notes="Điểm danh 4 lỗi học sinh hay mắc: 1. Quên Normal Text biến cả đoạn thành tiêu đề; 2. Nhầm Title với Heading 1; 3. Nhảy cóc cấp độ; 4. Tự chỉnh cỡ chữ to bằng tay.">
+      <span class="eyebrow">Tránh bẫy sai lầm · Phòng bệnh hơn chữa bệnh</span>
+      <h2>4 Cạm bẫy học sinh hay mắc khi dùng <span class="accent">Styles</span></h2>
+      <div class="grid2" style="margin-top: 20px;">
+        <div class="card" style="border-left: 5px solid var(--rose-500);">
+          <b style="color: var(--rose-600);">1. Quên Normal text cho thân bài</b>
+          <p>Đang ở dòng Heading 1 gõ Enter xuống dòng nhưng quên chuyển về Normal text, khiến cả đoạn văn dài 10 dòng bị biến thành tiêu đề khổng lồ!</p>
+        </div>
+        <div class="card" style="border-left: 5px solid var(--rose-500);">
+          <b style="color: var(--rose-600);">2. Nhầm Title với Heading 1</b>
+          <p>Mỗi chương lại gán kiểu Title. Nhớ kỹ: Title chỉ dành riêng cho TÊN CẢ TÀI LIỆU ở trang đầu; các chương bài phải dùng Heading 1!</p>
+        </div>
+        <div class="card" style="border-left: 5px solid var(--rose-500);">
+          <b style="color: var(--rose-600);">3. Nhảy cóc cấp bậc</b>
+          <p>Từ Title nhảy thẳng xuống Heading 3 mà không qua Heading 1 và 2, làm cây sơ đồ Outline bị khuyết tầng, thiếu logic.</p>
+        </div>
+        <div class="card" style="border-left: 5px solid var(--rose-500);">
+          <b style="color: var(--rose-600);">4. Vẫn giữ thói quen chỉnh tay</b>
+          <p>Vẫn quen tay bôi đen rồi tăng cỡ chữ 18pt thay vì chọn menu Styles, khiến tài liệu không thể tự động sinh mục lục.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 13: BÀI THỰC HÀNH TỔNG HỢP (FINAL PROJECT)
+         Coords: x=4200, y=-1300, z=300, rotate-y=30
+         ------------------------------------------------------------ -->
+    <div id="step-final-project" class="step"
+         data-x="4200" data-y="-1300" data-z="300" data-rotate-y="30"
+         data-section="Bài tổng hợp" data-time="86–92 phút"
+         data-title="Dự án tổng hợp: Thế giới quanh em"
+         data-notes="Học sinh thực hiện bài thực hành tổng hợp 'Thế giới quanh em': 1 Title, 3 Heading 1, mỗi Heading 1 có 2 Heading 2 kèm đoạn văn ngắn. Dùng Rubric 2-2-4-2 để chấm điểm.">
+      <div class="challenge-card">
+        <div class="challenge-header">
+          <div>
+            <span class="eyebrow" style="color: var(--amber-400);">Dự án thực tế cuối buổi</span>
+            <h2 style="margin: 4px 0 8px;">Thế giới quanh em</h2>
+            <p style="color: #cbd5e1; margin: 0;">Tài liệu hoàn chỉnh chứng minh năng lực xây dựng bộ xương văn bản.</p>
+          </div>
+          <div class="timer-badge">
+            <b id="timerDisplay3">10:00</b>
+            <span>THỜI GIAN LÀM</span>
+          </div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <i>1</i>
+            <span><strong>1 Title:</strong> THẾ GIỚI QUANH EM (Nổi bật ở đầu trang).</span>
+          </div>
+          <div class="task-item">
+            <i>2</i>
+            <span><strong>3 Heading 1:</strong> Ví dụ: 1. Động vật kỳ thú · 2. Thực vật xanh tươi · 3. Đại dương bao la.</span>
+          </div>
+          <div class="task-item">
+            <i>3</i>
+            <span><strong>Mỗi Heading 1 có ít nhất 2 Heading 2:</strong> (Ví dụ: Con hổ, Con cá voi...)</span>
+          </div>
+          <div class="task-item">
+            <i>4</i>
+            <span><strong>Nội dung:</strong> Dưới mỗi Heading 2 có 1–2 câu văn bản <strong>Normal Text</strong> mô tả ngắn gọn.</span>
+          </div>
+        </div>
+        <div class="rubric-grid">
+          <div class="rubric-item">
+            <b>2 điểm</b>
+            <span>Title chuẩn xác</span>
+          </div>
+          <div class="rubric-item">
+            <b>3 điểm</b>
+            <span>Đủ 3 Heading 1</span>
+          </div>
+          <div class="rubric-item">
+            <b>3 điểm</b>
+            <span>Đủ 6 Heading 2</span>
+          </div>
+          <div class="rubric-item">
+            <b>2 điểm</b>
+            <span>Outline hiển thị chuẩn</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 14px;">
+          <button class="btn amber" data-timer-btn="timerDisplay3">▶ Bắt đầu đếm giờ</button>
+          <button class="btn secondary" data-toggle-answer="answerBox3">Checklist tự chấm bài</button>
+        </div>
+        <div class="answer-panel" id="answerBox3">
+          📋 <strong>Checklist học sinh:</strong> [ ] Tên file rõ ràng · [ ] Có 1 Title · [ ] Đủ 3 Heading 1 · [ ] Có ít nhất 6 Heading 2 · [ ] Thân bài dùng Normal Text · [ ] Cột Outline bên trái phân tầng đẹp mắt.
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 14: ĐẤU TRƯỜNG QUIZ (10 CÂU TRẮC NGHIỆM)
+         Coords: x=4200, y=0, z=200, rotate-z=-20
+         ------------------------------------------------------------ -->
+    <div id="step-quiz" class="step"
+         data-x="4200" data-y="0" data-z="200" data-rotate-z="-20"
+         data-section="Quiz" data-time="92–98 phút"
+         data-title="Đấu trường Quiz 10 câu Styles & Heading"
+         data-notes="10 câu hỏi trắc nghiệm kiểm tra tư duy chọn Styles, Paint Format, Outline và Update to match.">
+      <span class="eyebrow">Đấu trường kiến thức · Thử thách 10 câu</span>
+      <h2>Kiểm tra cuối buổi: Em làm chủ Styles thế nào?</h2>
+      <div class="quiz-container" style="margin-top: 16px;">
+        <div class="quiz-card">
+          <div class="pill" id="quizCountLabel">Câu 1 / 10</div>
+          <h3 id="quizQuestionText" style="margin: 14px 0 16px; font-size: 1.25rem;">Đang tải câu hỏi...</h3>
+          <div class="quiz-option-list" id="quizOptionList"></div>
+          <div class="feedback" id="quizFeedbackBox" style="margin-top: 14px;">Chọn đáp án đúng nhất.</div>
+          <div style="margin-top: 16px;">
+            <button class="btn" id="quizNextBtn" style="display: none;">Câu tiếp theo →</button>
+          </div>
+        </div>
+        <aside class="quiz-sidebar">
+          <span style="font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">Điểm số của em</span>
+          <div class="score-display">
+            <span id="quizScoreNumber">0</span>/10
+          </div>
+          <button class="btn secondary" id="quizResetBtn" style="width: 100%; height: 38px; font-size: 0.85rem;">↺ Làm lại từ đầu</button>
+          <div class="quiz-dot-grid" id="quizDotsContainer"></div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 15: TỔNG KẾT & BÀI VỀ NHÀ (SUMMARY & HOMEWORK)
+         Coords: x=4200, y=1300, z=0, scale=1.2
+         ------------------------------------------------------------ -->
+    <div id="step-summary" class="step dark"
+         data-x="4200" data-y="1300" data-z="0" data-scale="1.2"
+         data-section="Tổng kết" data-time="98–100 phút"
+         data-title="Tổng kết Buổi 4 & Bài tập về nhà"
+         data-notes="Chốt lại thông điệp: Styles là bộ xương nâng đỡ văn bản. Giao bài về nhà: 'Môn học em yêu thích' (Title, 3 Heading 1, các Heading 2 tương ứng).">
+      <span class="eyebrow">Hoàn thành Buổi 4</span>
+      <h1>Có bộ xương vững, tài liệu <span class="accent">tự tỏa sáng.</span></h1>
+      <div class="grid3" style="margin: 24px 0;">
+        <div class="card" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); color: #fff;">
+          <b style="color: var(--amber-400);">1. Phân cấp đúng chuẩn</b>
+          <p style="color: #cbd5e1;">Title cho tên bài viết; Heading 1 cho chương lớn; Heading 2 cho bài nhỏ; Normal text cho thân bài.</p>
+        </div>
+        <div class="card" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); color: #fff;">
+          <b style="color: var(--amber-400);">2. Tốc độ với Paint Format</b>
+          <p style="color: #cbd5e1;">Nhấp đúp chuột để khóa con lăn sơn, sao chép định dạng đồng bộ hàng chục mục trong vài giây.</p>
+        </div>
+        <div class="card" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); color: #fff;">
+          <b style="color: var(--amber-400);">3. Quản lý văn bản dài</b>
+          <p style="color: #cbd5e1;">Bật thanh Document Outline để điều hướng nhanh; sẵn sàng cho việc tạo Mục lục tự động ở các bài sau.</p>
+        </div>
+      </div>
+      <div class="challenge-card" style="padding: 24px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16);">
+        <h3 style="color: var(--amber-400); margin: 0 0 8px;">🏠 Bài tập về nhà: "Môn học em yêu thích"</h3>
+        <p style="margin: 0; color: #e2e8f0; font-size: 0.95rem; line-height: 1.6;">
+          Tạo tài liệu mới gồm: <strong>Title</strong> (MÔN HỌC EM YÊU THÍCH) · <strong>3 Heading 1</strong> (1. Giới thiệu môn học · 2. Những điều em thích · 3. Cách em học hiệu quả) · Mỗi phần có ít nhất 1 <strong>Heading 2</strong> và nội dung Normal Text. <br>
+          <strong>Sản phẩm nộp:</strong> Link Google Docs gửi cho giáo viên.
+        </p>
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 24px;">
+        <a class="btn amber" href="index.html">⌂ Về trung tâm khóa học</a>
+        <a class="btn blue" href="buoi-04-bai-tap.html">📝 Mở Phiếu bài tập & Thực hành</a>
+        <button class="btn secondary" id="restartPresentationBtn">↺ Xem lại từ đầu</button>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 16: TOÀN CẢNH 3D VŨ TRỤ BÀI HỌC (COSMIC OVERVIEW)
+         Coords: x=1400, y=650, z=5000, scale=6
+         ------------------------------------------------------------ -->
+    <div id="overview" class="step"
+         data-x="1400" data-y="650" data-z="5000" data-scale="6"
+         data-section="Toàn cảnh" data-time="Tổng quan"
+         data-title="Toàn cảnh 3D Vũ trụ Buổi 4"
+         data-notes="Góc nhìn toàn cảnh 3D vũ trụ bài giảng Buổi 4. Bấm vào bất kỳ slide nào để camera bay tới ngay slide đó!">
+      <div class="overview-hero-capsule">
+        <span class="eyebrow" style="color: var(--amber-400); margin-bottom: 8px;">VŨ TRỤ BÀI HỌC 3D</span>
+        <h1>Toàn cảnh Buổi 04</h1>
+        <p>
+          Toàn bộ 15 trạm kiến thức về <strong>Styles & Heading</strong> kết nối trong không gian 3D. <br>
+          <span style="color: #93c5fd; font-size: 1.05rem;">👉 <strong>Bấm vào bất kỳ tấm thẻ slide nào</strong> xung quanh để camera bay trực tiếp tới trạm đó!</span>
+        </p>
+        <button class="btn amber" id="backToIntroBtn" style="min-height: 44px; padding: 0 24px; font-size: 1rem;">🚀 Bắt đầu từ đầu</button>
+      </div>
+    </div>
+
+  </div> <!-- /#impress -->
+
+  <!-- ============================================================
+       BOTTOM FIXED CONTROLS BAR
+       ============================================================ -->
+  <nav class="bottom-hud">
+    <button class="nav-arrow-btn" id="prevSlideBtn" title="Slide trước (Phím Mũi tên trái)">
+      ← <span>Trước</span>
+    </button>
+    <div class="nav-counter">
+      <span id="currentSlideNum">1</span> / <span id="totalSlideNum">15</span>
+    </div>
+    <button class="nav-arrow-btn next" id="nextSlideBtn" title="Slide tiếp (Phím Mũi tên phải hoặc Space)">
+      <span>Tiếp</span> →
+    </button>
+    <span class="key-hint" title="Phím tắt điều khiển">⌨ Space / ← / → / O</span>
+  </nav>
+
+  <!-- ============================================================
+       TEACHER NOTES DRAWER (Panel phải)
+       ============================================================ -->
+  <aside class="drawer" id="notesDrawer">
+    <div class="drawer-header">
+      <h3 style="margin: 0; font-size: 1.2rem; color: var(--navy-900);">☷ Ghi chú giáo viên</h3>
+      <button class="drawer-close" id="closeNotesBtn">×</button>
+    </div>
+    <div id="notesDrawerBody" style="color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+      Đang tải ghi chú...
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       PEDAGOGICAL EXPLANATIONS DRAWER (Panel sư phạm)
+       ============================================================ -->
+  <aside class="drawer" id="explainDrawer">
+    <div class="drawer-header">
+      <h3 style="margin: 0; font-size: 1.2rem; color: var(--navy-900);">💡 Giải thích sư phạm chi tiết</h3>
+      <button class="drawer-close" id="closeExplainBtn">×</button>
+    </div>
+    <div id="explainDrawerBody"></div>
+  </aside>
+
+  <!-- ============================================================
+       LIGHTBOX MODAL FOR ZOOMING SVG MINH HỌA
+       ============================================================ -->
+  <div class="lightbox" id="zoomLightbox" role="dialog" aria-modal="true">
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="closeLightboxBtn">×</button>
+      <img id="lightboxImg" src="" alt="Hình phóng to">
+      <p id="lightboxCaption" style="margin: 12px 4px 0; color: var(--ink-soft); font-size: 0.92rem; font-weight: 500;"></p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOAST NOTIFICATION COMPONENT
+       ============================================================ -->
+  <div class="toast" id="toastMessage">Thông báo</div>
+
+  <!-- ============================================================
+       SCRIPTS: IMPRESS.JS + SLIDE ORCHESTRATION & LOGIC
+       ============================================================ -->
+  <script src="assets/js/impress.js"></script>
+  <script>
+    // ------------------------------------------------------------
+    // 1. DATA: TEACHING EXPLANATIONS FOR ALL STEPS
+    // ------------------------------------------------------------
+    const pedagogicalData = [
+      {
+        title: "Bộ xương nâng đỡ văn bản",
+        concept: "Định dạng chữ (Buổi 3) là trang phục; Styles (Buổi 4) là khung xương. Tài liệu dài mà không có xương thì không ai đọc được.",
+        demo: "Cho học sinh xem 1 tài liệu 10 trang không có Heading và hỏi: Làm sao tìm được Chương 3 trong 3 giây?",
+        ask: "Nếu em viết một bài văn dài 5 trang, em sẽ chia bài viết thành mấy phần lớn?",
+        watch: "Học sinh hay nghĩ Styles chỉ là đổi cỡ chữ to hơn. Phải nhấn mạnh ý nghĩa ngữ nghĩa (semantic structure) cho máy hiểu."
+      },
+      {
+        title: "Ba năng lực chuẩn đầu ra",
+        concept: "Học sinh chuyển từ tư duy vẽ thủ công sang tư duy kiến trúc sư văn bản: phân cấp danh mục, đồng bộ định dạng bằng công cụ.",
+        demo: "Liệt kê 3 thao tác học sinh sẽ làm chủ: gán Heading, sao chép bằng con lăn sơn, và xem khung outline.",
+        ask: "Một quyển sách giáo khoa có những cấp đề mục nào?",
+        watch: "Nhắc học sinh quan sát thanh công cụ Docs: menu Styles nằm ngay cạnh ô chọn Font chữ."
+      },
+      {
+        title: "Chỉ to và đậm thôi là chưa đủ",
+        concept: "Sự khác biệt giữa định dạng trực quan (chỉ mắt người thấy) và định dạng ngữ nghĩa (cả người và phần mềm máy tính đều hiểu).",
+        demo: "Tạo 1 dòng chữ cỡ 20pt bôi đậm và 1 dòng Heading 1. Mở Document Outline để học sinh thấy chỉ dòng Heading 1 mới xuất hiện trên phác thảo.",
+        ask: "Tại sao dòng cỡ 20pt bôi đậm lại không xuất hiện trên sơ đồ bên trái?",
+        watch: "Đây là bước ngoặt tư duy quan trọng nhất của buổi 4."
+      },
+      {
+        title: "Cây gia phả các cấp độ Heading",
+        concept: "Mỗi cấp độ Styles có một vai trò độc tôn: Title là vua (tên sách), Heading 1 là chương, Heading 2 là bài, Normal text là nội dung.",
+        demo: "Vẽ sơ đồ phân nhánh trên bảng hoặc chiếu slide cây gia phả.",
+        ask: "Trong một cuốn vở ghi bài, tên môn học là gì? Tên bài học là gì? Các phần I, II, III là gì?",
+        watch: "Nhắc học sinh: Một tài liệu chỉ có duy nhất 1 Title."
+      },
+      {
+        title: "Thực hành phân cấp ĐỘNG VẬT",
+        concept: "Luyện tập tư duy logic phân tầng: Cái nào chứa cái nào? Động vật chứa Động vật trên cạn; Động vật trên cạn chứa Con hổ.",
+        demo: "Cho học sinh tự chọn Styles trong khung thử và kiểm tra ngay trên màn hình.",
+        ask: "Vì sao Con hổ không thể là Heading 1 ngang hàng với Động vật trên cạn?",
+        watch: "Một số em chọn Con hổ là Heading 1 vì nghĩ con hổ to lớn quan trọng."
+      },
+      {
+        title: "Thực hành trên Docs thật 1",
+        concept: "Chuyển giao từ mô phỏng trên slide sang thao tác thực tế trong môi trường Google Docs.",
+        demo: "Bật đồng hồ đếm ngược 10:00, quan sát màn hình học sinh và nhắc nhở mở thanh Document Outline.",
+        ask: "Cột bên trái đã hiện đủ các nhánh cây chưa?",
+        watch: "Đảm bảo học sinh không gõ thêm dấu cách Space ở đầu dòng để thụt lề Heading 2."
+      },
+      {
+        title: "Hai món quà kỳ diệu của Styles",
+        concept: "Document Outline và Mục lục tự động là lý do sống còn vì sao cả thế giới phải dùng Heading.",
+        demo: "Bấm chuột vào các mục trên Outline để thấy trang màn hình cuộn vèo vèo đến đúng chỗ.",
+        ask: "Nếu tài liệu dài 50 trang, tính năng Outline giúp em tiết kiệm được bao nhiêu thời gian?",
+        watch: "Chỉ cho học sinh nút bật/tắt Outline ở góc trên bên trái văn bản Docs."
+      },
+      {
+        title: "Update to match: Đổi 1 lần hàng loạt",
+        concept: "Tính năng biến đổi đồng loạt giúp duy trì tính nhất quán tuyệt đối trong tài liệu lớn.",
+        demo: "Chỉnh 1 Heading 1 sang màu tím cỡ 22pt, bấm 'Update Heading 1 to match' và xem tất cả các Heading 1 khác tự đổi theo.",
+        ask: "Nếu cô giáo yêu cầu đổi toàn bộ 20 chương sang màu đỏ, em sẽ làm trong bao nhiêu giây?",
+        watch: "Nhắc học sinh nhấp chuột phải vào tên kiểu trong menu Styles để tìm nút Update to match."
+      },
+      {
+        title: "Con lăn sơn Paint Format",
+        concept: "Sao chép định dạng là kỹ thuật sao chép 'trang phục' từ đoạn này sang đoạn khác mà không sao chép chữ.",
+        demo: "Phân biệt rõ: Single-click (sơn 1 lần) và Double-click (khóa sơn để quét nhiều nơi liên tục).",
+        ask: "Khi sơn xong nhiều đoạn, muốn tắt con lăn sơn thì bấm phím nào? (Esc)",
+        watch: "Học sinh hay quên bấm Esc khiến đi đâu cũng dính sơn."
+      },
+      {
+        title: "Thử nghiệm Paint Lab",
+        concept: "Thực hành trực quan cơ chế hút sơn từ mẫu gốc và phết sơn lên mục tiêu mới.",
+        demo: "Bấm 'Nạp sơn' rồi bấm vào Chương 2 và Chương 3 để thấy sự thay đổi màu sắc.",
+        ask: "Con lăn sơn có làm đổi chữ 'Chương 2' thành chữ 'Chương 1' không? (Không, chỉ đổi định dạng).",
+        watch: "Nhấn mạnh: Paint Format chỉ copy kiểu dáng, giữ nguyên nội dung chữ."
+      },
+      {
+        title: "Thực hành trên Docs thật 2",
+        concept: "Ứng dụng Double-click Paint Format để xử lý đồng bộ 3 chương sách.",
+        demo: "Cho học sinh đếm số giây hoàn thành: Ai xong trong dưới 15 giây là đạt chuẩn chuyên gia.",
+        ask: "Em cảm thấy dùng Paint Format nhanh hơn việc tự chỉnh từng nút gấp mấy lần?",
+        watch: "Kiểm tra xem học sinh có nhớ dùng phím Escape để hủy con lăn sơn sau khi hoàn thành không."
+      },
+      {
+        title: "4 Cạm bẫy học sinh hay mắc",
+        concept: "Phòng ngừa các thói quen sai lầm trước khi bước vào dự án thực hành lớn.",
+        demo: "Chỉ ra từng ví dụ lỗi: quên Normal text khiến cả bài thành Heading to tướng.",
+        ask: "Làm thế nào để đưa một đoạn lỡ bị dính Heading trở về chữ bình thường? (Chọn Normal text).",
+        watch: "Nhắc lại: Normal text là 'chiếc tẩy thần kỳ' để xóa bỏ mọi cấp độ Heading nhầm lẫn."
+      },
+      {
+        title: "Dự án lớn: Thế giới quanh em",
+        concept: "Đánh giá tổng hợp năng lực thiết kế văn bản có phân cấp hoàn chỉnh.",
+        demo: "Chiếu Rubric chấm điểm 2-3-3-2 và nhắc học sinh tự kiểm tra theo checklist trước khi nộp.",
+        ask: "Em chọn 3 chủ đề lớn nào cho bài Thế giới quanh em?",
+        watch: "Theo dõi xem học sinh có đủ 1 Title, 3 Heading 1, 6 Heading 2 và phần mô tả Normal Text không."
+      },
+      {
+        title: "Đấu trường Quiz 10 câu",
+        concept: "Củng cố lý thuyết và các tình huống xử lý thực tế qua 10 câu hỏi trắc nghiệm.",
+        demo: "Mời học sinh đọc câu hỏi, giải thích vì sao chọn đáp án đó trước khi bấm chọn.",
+        ask: "Câu nào em cảm thấy bất ngờ nhất về công dụng của Styles?",
+        watch: "Dùng điểm số để đánh giá mức độ tiếp thu của học sinh trong buổi học."
+      },
+      {
+        title: "Tổng kết & Bài tập về nhà",
+        concept: "Khắc sâu 3 nguyên tắc cốt lõi và giao đề tài 'Môn học em yêu thích'.",
+        demo: "Nhắc học sinh gửi link chia sẻ Google Docs để giáo viên chấm điểm trực tiếp.",
+        ask: "Buổi sau chúng ta sẽ chèn thêm hình ảnh và link vào bộ xương này, em thấy hào hứng không?",
+        watch: "Ghi chú lại tiến độ học tập của học sinh vào sổ theo dõi."
+      }
+    ];
+
+    // ------------------------------------------------------------
+    // 2. DATA: 10 QUIZ QUESTIONS FOR BUỔI 4
+    // ------------------------------------------------------------
+    const quizQuestions = [
+      {
+        q: 'Tên chính của cả tài liệu (ví dụ: "THẾ GIỚI ĐỘNG VẬT") nên áp dụng kiểu Styles nào?',
+        a: ['Title', 'Heading 1', 'Heading 2', 'Normal text'],
+        c: 0,
+        e: 'Title dành riêng cho tên chính của toàn bộ văn bản và thường chỉ xuất hiện 1 lần duy nhất ở đầu trang.'
+      },
+      {
+        q: 'Trong một tài liệu, các phần lớn như "Chương 1", "Chương 2", "Chương 3" nên dùng kiểu nào?',
+        a: ['Title', 'Heading 1', 'Heading 2', 'Subtitle'],
+        c: 1,
+        e: 'Heading 1 là cấp đề mục lớn nhất (cấp 1) dùng cho các chương hoặc phần chính của tài liệu.'
+      },
+      {
+        q: 'Mục "Con hổ" nằm bên trong "Chương 1: Động vật trên cạn" thì nên dùng kiểu Styles nào?',
+        a: ['Title', 'Heading 1', 'Heading 2', 'Heading 3'],
+        c: 2,
+        e: 'Heading 2 là đề mục con (cấp 2) trực thuộc một Heading 1.'
+      },
+      {
+        q: 'Phần nội dung văn bản thông thường (các đoạn văn mô tả) dùng kiểu nào?',
+        a: ['Normal text (Văn bản thường)', 'Heading 1', 'Title', 'Subtitle'],
+        c: 0,
+        e: 'Normal text là kiểu mặc định dành cho phần thân bài để đọc dễ chịu và không bị nhầm vào mục lục.'
+      },
+      {
+        q: 'Muốn sao chép định dạng liên tục cho nhiều dòng khác nhau bằng Paint Format, em làm thế nào?',
+        a: ['Click chuột 1 lần vào con lăn sơn', 'Nhấp đúp chuột (Double-click) vào con lăn sơn', 'Bấm phím Ctrl + P', 'Nhấn phím Delete'],
+        c: 1,
+        e: 'Nhấp đúp chuột (Double-click) sẽ khóa chế độ con lăn sơn, cho phép quét liên tục nhiều đoạn cho đến khi nhấn phím Esc.'
+      },
+      {
+        q: 'Khi đang dùng con lăn sơn liên tục, phím nào giúp em tắt con lăn sơn để trở về chuột bình thường?',
+        a: ['Phím Enter', 'Phím Escape (Esc)', 'Phím Space', 'Phím Tab'],
+        c: 1,
+        e: 'Phím Escape (Esc) giúp hủy chế độ con lăn sơn ngay lập tức.'
+      },
+      {
+        q: 'Tính năng "Update Heading 1 to match" có công dụng thần kỳ nào?',
+        a: ['Xóa toàn bộ các Heading 1', 'Đổi màu và font của tất cả Heading 1 trong tài liệu theo mục mẫu vừa sửa', 'Biến Heading 1 thành Normal text', 'Đóng tài liệu lại'],
+        c: 1,
+        e: 'Update to match tự động đồng bộ tất cả các Heading cùng cấp trong toàn bộ tài liệu chỉ sau 1 click chuột.'
+      },
+      {
+        q: 'Lợi ích lớn nhất của việc dùng đúng Styles & Heading là gì?',
+        a: ['Tài liệu tự động tạo thanh Document Outline và có thể sinh Mục lục tự động', 'Làm chữ đổi màu xanh lá cây', 'Tự động lưu vào máy tính', 'Không bao giờ bị lỗi chính tả'],
+        c: 0,
+        e: 'Google Docs chỉ nhận diện và xây dựng thanh phác thảo Outline cùng Mục lục khi em dùng các kiểu Heading.'
+      },
+      {
+        q: 'Nếu em lỡ gõ Enter từ dòng Heading 1 xuống mà cả đoạn văn sau đó đều bị dính chữ to khổng lồ, em sửa thế nào?',
+        a: ['Xóa hết đi gõ lại từ đầu', 'Chọn đoạn văn đó rồi bấm chọn lại kiểu "Normal text"', 'Nhấn nút in đậm nhiều lần', 'Tắt máy tính mở lại'],
+        c: 1,
+        e: 'Chỉ cần chọn đoạn văn đó và gán lại kiểu Normal text là văn bản trở về bình thường.'
+      },
+      {
+        q: 'Có nên dùng nhiều kiểu "Title" rải rác trong các trang giữa của một bài viết không?',
+        a: ['Nên dùng cho mỗi trang 1 Title', 'Tuyệt đối không, Title chỉ xuất hiện 1 lần ở đầu, các chương phải dùng Heading 1', 'Càng nhiều Title càng đẹp', 'Không quan trọng'],
+        c: 1,
+        e: 'Title đại diện cho tên toàn bộ tác phẩm. Các phần bên trong phải dùng phân cấp Heading 1, 2, 3.'
+      }
+    ];
+
+    // ------------------------------------------------------------
+    // 3. INITIALIZE IMPRESS.JS
+    // ------------------------------------------------------------
+    const impressApi = impress();
+    impressApi.init();
+
+    const allSteps = Array.from(document.querySelectorAll('.step:not(#overview)'));
+    let currentStepIndex = 0;
+
+    let toastTimeout;
+    function showToast(msg) {
+      const toastEl = document.getElementById('toastMessage');
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toastEl.classList.remove('show'), 2600);
+    }
+
+    // ------------------------------------------------------------
+    // 4. STEP ENTER & NAVIGATION SYNC
+    // ------------------------------------------------------------
+    document.addEventListener("impress:stepenter", function (event) {
+      const target = event.target;
+      const targetId = target.id;
+      const impressRoot = document.getElementById('impress');
+
+      if (targetId === 'overview') {
+        impressRoot.classList.add('step-overview');
+        document.getElementById('hudSectionLabel').textContent = 'Toàn cảnh';
+        document.getElementById('hudStepTitle').textContent = 'Vũ trụ Buổi 4';
+        document.getElementById('hudTimeLabel').textContent = '3D Canvas';
+        document.getElementById('currentSlideNum').textContent = '🌌';
+        document.getElementById('hudProgressBar').style.width = '100%';
+        return;
+      }
+
+      impressRoot.classList.remove('step-overview');
+      const stepIdx = allSteps.indexOf(target);
+      if (stepIdx !== -1) {
+        currentStepIndex = stepIdx;
+        const section = target.dataset.section || 'Nội dung';
+        const time = target.dataset.time || '';
+        const title = target.dataset.title || '';
+        const notes = target.dataset.notes || '';
+
+        document.getElementById('hudSectionLabel').textContent = section;
+        document.getElementById('hudStepTitle').textContent = title;
+        document.getElementById('hudTimeLabel').textContent = time;
+        document.getElementById('currentSlideNum').textContent = currentStepIndex + 1;
+        document.getElementById('totalSlideNum').textContent = allSteps.length;
+
+        const progressPercent = Math.round(((currentStepIndex + 1) / allSteps.length) * 100);
+        document.getElementById('hudProgressBar').style.width = `${progressPercent}%`;
+
+        document.getElementById('notesDrawerBody').textContent = notes || 'Không có ghi chú thêm cho slide này.';
+        renderPedagogicalDrawer(currentStepIndex);
+      }
+    });
+
+    // Overview buttons
+    document.getElementById('overviewBtn').onclick = () => impressApi.goto('overview');
+    document.getElementById('backToIntroBtn').onclick = () => impressApi.goto('step-intro');
+
+    // Bottom Navigation Buttons
+    document.getElementById('prevSlideBtn').onclick = () => impressApi.prev();
+    document.getElementById('nextSlideBtn').onclick = () => impressApi.next();
+    document.getElementById('restartPresentationBtn').onclick = () => impressApi.goto('step-intro');
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', function (e) {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+      if (e.key === 'o' || e.key === 'O') {
+        e.preventDefault();
+        impressApi.goto('overview');
+      } else if (e.key === 'n' || e.key === 'N') {
+        e.preventDefault();
+        toggleDrawer('notesDrawer');
+      } else if (e.key === 'g' || e.key === 'G') {
+        e.preventDefault();
+        toggleDrawer('explainDrawer');
+      }
+    });
+
+    document.getElementById('fullscreenBtn').onclick = () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen?.();
+      } else {
+        document.exitFullscreen?.();
+      }
+    };
+
+    // ------------------------------------------------------------
+    // 5. DRAWERS LOGIC
+    // ------------------------------------------------------------
+    function toggleDrawer(drawerId) {
+      const drawer = document.getElementById(drawerId);
+      const otherId = drawerId === 'notesDrawer' ? 'explainDrawer' : 'notesDrawer';
+      document.getElementById(otherId).classList.remove('open');
+
+      const isOpen = drawer.classList.toggle('open');
+      if (drawerId === 'notesDrawer') {
+        document.getElementById('notesToggleBtn').classList.toggle('active', isOpen);
+        document.getElementById('explainToggleBtn').classList.remove('active');
+      } else {
+        document.getElementById('explainToggleBtn').classList.toggle('active', isOpen);
+        document.getElementById('notesToggleBtn').classList.remove('active');
+        if (isOpen) renderPedagogicalDrawer(currentStepIndex);
+      }
+    }
+
+    document.getElementById('notesToggleBtn').onclick = () => toggleDrawer('notesDrawer');
+    document.getElementById('explainToggleBtn').onclick = () => toggleDrawer('explainDrawer');
+    document.getElementById('closeNotesBtn').onclick = () => {
+      document.getElementById('notesDrawer').classList.remove('open');
+      document.getElementById('notesToggleBtn').classList.remove('active');
+    };
+    document.getElementById('closeExplainBtn').onclick = () => {
+      document.getElementById('explainDrawer').classList.remove('open');
+      document.getElementById('explainToggleBtn').classList.remove('active');
+    };
+
+    function renderPedagogicalDrawer(idx) {
+      const item = pedagogicalData[idx] || pedagogicalData[0];
+      const container = document.getElementById('explainDrawerBody');
+      container.innerHTML = `
+        <h4 style="color: var(--blue-600); margin: 0 0 12px; font-size: 1.1rem;">Trạm ${idx + 1}: ${item.title}</h4>
+        <div class="teaching-box" style="border-left-color: var(--blue-500); background: #eff6ff;">
+          <b>Ý nghĩa sư phạm cốt lõi</b>
+          <p>${item.concept}</p>
+        </div>
+        <div class="teaching-box" style="border-left-color: var(--emerald-500); background: #ecfdf5;">
+          <b>Gợi ý thao tác Demo trực quan</b>
+          <p>${item.demo}</p>
+        </div>
+        <div class="teaching-box" style="border-left-color: var(--amber-500); background: #fffbeb;">
+          <b>Câu hỏi gợi mở cho học sinh</b>
+          <p>${item.ask}</p>
+        </div>
+        <div class="teaching-box" style="border-left-color: var(--rose-500); background: #fff1f2;">
+          <b>Lỗi tư duy học sinh thường gặp</b>
+          <p>${item.watch}</p>
+        </div>
+      `;
+    }
+
+    // ------------------------------------------------------------
+    // 6. HIERARCHY LAB LOGIC (STEP 5)
+    // ------------------------------------------------------------
+    const correctHierarchy = ['Title', 'Heading 1', 'Heading 2', 'Heading 2', 'Heading 1', 'Heading 2', 'Heading 2'];
+    const checkHierarchyBtn = document.getElementById('checkHierarchyBtn');
+    const resetHierarchyBtn = document.getElementById('resetHierarchyBtn');
+
+    if (checkHierarchyBtn) {
+      checkHierarchyBtn.onclick = () => {
+        let correctCount = 0;
+        document.querySelectorAll('.style-select').forEach((sel, idx) => {
+          const val = sel.value;
+          const row = document.getElementById(`row${idx}`);
+          if (val === correctHierarchy[idx]) {
+            correctCount++;
+            row.style.outline = '3px solid #10b981';
+          } else {
+            row.style.outline = '3px solid #ef4444';
+          }
+        });
+
+        if (correctCount === correctHierarchy.length) {
+          showToast('🎉 Xuất sắc! Em đã phân cấp chính xác 7/7 mục!');
+        } else {
+          showToast(`💡 Em đúng ${correctCount}/${correctHierarchy.length} mục. Hãy kiểm tra các mục có viền đỏ nhé!`);
+        }
+      };
+    }
+
+    if (resetHierarchyBtn) {
+      resetHierarchyBtn.onclick = () => {
+        document.querySelectorAll('.style-select').forEach((sel, idx) => {
+          sel.value = idx % 2 === 0 ? 'Heading 1' : 'Heading 2';
+          document.getElementById(`row${idx}`).style.outline = 'none';
+        });
+        showToast('↺ Đã đặt lại bảng phân cấp thử nghiệm');
+      };
+    }
+
+    // ------------------------------------------------------------
+    // 7. PAINT FORMAT LAB LOGIC (STEP 10)
+    // ------------------------------------------------------------
+    const loadPaintBtn = document.getElementById('loadPaintBtn');
+    const targetRow2 = document.getElementById('targetRow2');
+    const targetRow3 = document.getElementById('targetRow3');
+    const paintStatus2 = document.getElementById('paintStatus2');
+    const paintStatus3 = document.getElementById('paintStatus3');
+    const resetPaintLabBtn = document.getElementById('resetPaintLabBtn');
+    const paintPromptText = document.getElementById('paintPromptText');
+    let hasLoadedPaint = false;
+
+    if (loadPaintBtn) {
+      loadPaintBtn.onclick = () => {
+        hasLoadedPaint = true;
+        loadPaintBtn.style.background = '#10b981';
+        loadPaintBtn.textContent = '✓ Sơn đã nạp! Hãy nhấp vào Chương 2 hoặc 3';
+        paintPromptText.textContent = '🖌️ Con lăn sơn đang cầm trên tay! Nhấp vào một trong các dòng bên dưới để phết sơn:';
+        paintPromptText.style.color = 'var(--blue-600)';
+        showToast('🖌️ Đã nạp sơn từ Chương 1! Hãy nhấp vào mục đích');
+      };
+    }
+
+    function applyPaint(targetRow, statusBadge, name) {
+      if (!hasLoadedPaint) {
+        showToast('⚠️ Em chưa nạp sơn! Hãy bấm nút "Nạp sơn" ở trên trước nhé.');
+        return;
+      }
+      targetRow.classList.add('painted');
+      statusBadge.textContent = '✓ Đã sơn đẹp!';
+      statusBadge.style.background = '#d1fae5';
+      statusBadge.style.color = '#065f46';
+      showToast(`✨ Đã sao chép định dạng thành công cho ${name}!`);
+    }
+
+    if (targetRow2) targetRow2.onclick = () => applyPaint(targetRow2, paintStatus2, 'Chương 2');
+    if (targetRow3) targetRow3.onclick = () => applyPaint(targetRow3, paintStatus3, 'Chương 3');
+
+    if (resetPaintLabBtn) {
+      resetPaintLabBtn.onclick = () => {
+        hasLoadedPaint = false;
+        loadPaintBtn.style.background = 'var(--blue-600)';
+        loadPaintBtn.textContent = '🖌️ Bấm nạp sơn Paint Format';
+        targetRow2.classList.remove('painted');
+        targetRow3.classList.remove('painted');
+        paintStatus2.textContent = 'Chưa sơn';
+        paintStatus2.style.background = 'var(--blue-50)';
+        paintStatus2.style.color = 'var(--blue-600)';
+        paintStatus3.textContent = 'Chưa sơn';
+        paintStatus3.style.background = 'var(--blue-50)';
+        paintStatus3.style.color = 'var(--blue-600)';
+        paintPromptText.textContent = '👆 Hãy bấm nút "Nạp sơn" ở trên, sau đó nhấp vào Chương 2 hoặc Chương 3 bên dưới để sơn định dạng!';
+        paintPromptText.style.color = 'var(--muted)';
+        showToast('↺ Đã làm mới phòng thí nghiệm con lăn sơn');
+      };
+    }
+
+    // ------------------------------------------------------------
+    // 8. PRACTICE TIMERS & ANSWER TOGGLES
+    // ------------------------------------------------------------
+    const activeTimers = new Map();
+
+    document.querySelectorAll('[data-timer-btn]').forEach(btn => {
+      btn.onclick = () => {
+        const targetId = btn.dataset.timerBtn;
+        const displayEl = document.getElementById(targetId);
+
+        if (activeTimers.has(targetId)) {
+          clearInterval(activeTimers.get(targetId));
+          activeTimers.delete(targetId);
+          btn.textContent = '▶ Tiếp tục';
+          showToast('⏸ Đã tạm dừng đếm giờ');
+          return;
+        }
+
+        let [mins, secs] = displayEl.textContent.split(':').map(Number);
+        let totalSeconds = mins * 60 + secs;
+        if (totalSeconds <= 0) totalSeconds = targetId === 'timerDisplay2' ? 300 : 600;
+
+        btn.textContent = '⏸ Tạm dừng';
+        showToast('⏱ Bắt đầu tính giờ làm bài!');
+
+        const interval = setInterval(() => {
+          totalSeconds--;
+          const m = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+          const s = String(totalSeconds % 60).padStart(2, '0');
+          displayEl.textContent = `${m}:${s}`;
+
+          if (totalSeconds <= 0) {
+            clearInterval(interval);
+            activeTimers.delete(targetId);
+            btn.textContent = '↺ Làm lại';
+            showToast('🎉 Hết giờ! Cùng thầy cô kiểm tra thành phẩm nhé!');
+          }
+        }, 1000);
+
+        activeTimers.set(targetId, interval);
+      };
+    });
+
+    document.querySelectorAll('[data-toggle-answer]').forEach(btn => {
+      btn.onclick = () => {
+        const answerEl = document.getElementById(btn.dataset.toggleAnswer);
+        answerEl.classList.toggle('show');
+      };
+    });
+
+    // ------------------------------------------------------------
+    // 9. 10-QUESTION QUIZ LOGIC
+    // ------------------------------------------------------------
+    let quizIndex = 0;
+    let quizScore = 0;
+    let quizAnsweredStatus = Array(quizQuestions.length).fill(false);
+
+    function renderQuizStep() {
+      const q = quizQuestions[quizIndex];
+      document.getElementById('quizCountLabel').textContent = `Câu ${quizIndex + 1} / ${quizQuestions.length}`;
+      document.getElementById('quizQuestionText').textContent = q.q;
+
+      const optionsHtml = q.a.map((ans, i) => `
+        <button class="quiz-btn" data-choice-index="${i}">
+          <span class="letter-badge">${String.fromCharCode(65 + i)}</span>
+          <span>${ans}</span>
+        </button>
+      `).join('');
+      document.getElementById('quizOptionList').innerHTML = optionsHtml;
+
+      document.getElementById('quizFeedbackBox').textContent = 'Chọn đáp án đúng nhất.';
+      document.getElementById('quizFeedbackBox').className = 'feedback';
+      document.getElementById('quizNextBtn').style.display = 'none';
+
+      const dotsHtml = quizQuestions.map((_, i) => `
+        <div class="quiz-dot ${quizAnsweredStatus[i] ? 'done' : ''}">${i + 1}</div>
+      `).join('');
+      document.getElementById('quizDotsContainer').innerHTML = dotsHtml;
+
+      document.querySelectorAll('[data-choice-index]').forEach(btn => {
+        btn.onclick = () => handleQuizChoice(Number(btn.dataset.choiceIndex));
+      });
+    }
+
+    function handleQuizChoice(chosenIndex) {
+      if (quizAnsweredStatus[quizIndex]) return;
+      const q = quizQuestions[quizIndex];
+      const isCorrect = chosenIndex === q.c;
+      quizAnsweredStatus[quizIndex] = true;
+
+      if (isCorrect) quizScore++;
+      document.getElementById('quizScoreNumber').textContent = quizScore;
+
+      document.querySelectorAll('[data-choice-index]').forEach((btn, idx) => {
+        if (idx === q.c) btn.classList.add('correct');
+        else if (idx === chosenIndex) btn.classList.add('wrong');
+      });
+
+      const feedbackEl = document.getElementById('quizFeedbackBox');
+      feedbackEl.textContent = `${isCorrect ? '✅ Chính xác!' : '💡 Chưa đúng.'} ${q.e}`;
+      feedbackEl.style.backgroundColor = isCorrect ? '#ecfdf5' : '#fff1f2';
+      feedbackEl.style.color = isCorrect ? '#065f46' : '#9f1239';
+
+      document.getElementById('quizDotsContainer').children[quizIndex].classList.add('done');
+
+      const nextBtn = document.getElementById('quizNextBtn');
+      nextBtn.style.display = 'inline-flex';
+      nextBtn.textContent = quizIndex === quizQuestions.length - 1 ? 'Xem kết quả chung cuộc' : 'Câu tiếp theo →';
+    }
+
+    document.getElementById('quizNextBtn').onclick = () => {
+      if (quizIndex < quizQuestions.length - 1) {
+        quizIndex++;
+        renderQuizStep();
+      } else {
+        showToast(`🎉 Xuất sắc! Em hoàn thành với ${quizScore}/${quizQuestions.length} điểm!`);
+      }
+    };
+
+    document.getElementById('quizResetBtn').onclick = () => {
+      quizIndex = 0;
+      quizScore = 0;
+      quizAnsweredStatus = Array(quizQuestions.length).fill(false);
+      document.getElementById('quizScoreNumber').textContent = '0';
+      renderQuizStep();
+      showToast('↺ Đã làm lại bài trắc nghiệm từ đầu');
+    };
+    renderQuizStep();
+
+    // ------------------------------------------------------------
+    // 10. LIGHTBOX FOR SVG VISUAL GUIDES
+    // ------------------------------------------------------------
+    const zoomLightbox = document.getElementById('zoomLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+
+    document.querySelectorAll('.visual-guide img').forEach(img => {
+      img.onclick = () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxCaption.textContent = img.closest('figure')?.querySelector('figcaption')?.textContent || '';
+        zoomLightbox.classList.add('show');
+      };
+    });
+
+    closeLightboxBtn.onclick = () => zoomLightbox.classList.remove('show');
+    zoomLightbox.onclick = (e) => {
+      if (e.target === zoomLightbox) zoomLightbox.classList.remove('show');
+    };
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && zoomLightbox.classList.contains('show')) {
+        zoomLightbox.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

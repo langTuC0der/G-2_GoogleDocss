@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Phiếu bài tập thực hành & bài tập về nhà Buổi 2 – Chỉnh sửa văn bản thông minh (Google Docs THCS). Kèm đáp án, biểu mẫu Before/After và thang điểm 30 điểm.">
+  <title>Bài tập & Thực hành Buổi 2 · Chỉnh sửa văn bản thông minh</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='10' y='5' width='44' height='54' rx='10' fill='%232f6fea'/%3E%3Cpath d='M22 21h20M22 31h20M22 41h13' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='48' cy='48' r='11' fill='%23ffca45'/%3E%3Cpath d='m44 48 3 3 5-6' fill='none' stroke='%23152b54' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --navy: #10224a;
+      --blue: #2f6fea;
+      --blue-soft: #edf4ff;
+      --yellow: #ffca45;
+      --yellow-soft: #fff8e6;
+      --green: #10b981;
+      --green-soft: #ecfdf5;
+      --red: #ef4444;
+      --red-soft: #fff1f2;
+      --ink: #17233c;
+      --muted: #64748b;
+      --line: #dce5f3;
+      --soft: #f4f7fc;
+      --paper: #ffffff;
+      --shadow: 0 16px 45px rgba(28, 62, 123, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: radial-gradient(circle at 8% 0, rgba(47, 111, 234, 0.08), transparent 28rem), #f6f8fc;
+      font: 16px/1.6 Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    button, a { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid rgba(47, 111, 234, 0.35); outline-offset: 3px; }
+
+    /* Topbar */
+    .topbar {
+      position: sticky; top: 0; z-index: 25;
+      display: flex; align-items: center; gap: 18px;
+      min-height: 72px; padding: 12px clamp(18px, 4vw, 54px);
+      border-bottom: 1px solid rgba(220, 229, 243, 0.9);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(18px);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; }
+    .mark { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; color: white; background: var(--blue); font-weight: 900; }
+    .crumb { color: var(--muted); font-size: 0.82rem; }
+    .crumb b { color: var(--ink); }
+    .top-actions { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+    .top-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 38px; padding: 0 13px;
+      border: 1px solid var(--line); border-radius: 11px;
+      background: white; font-size: 0.78rem; font-weight: 800;
+      transition: all 0.18s ease;
+    }
+    .top-link:hover { border-color: var(--blue); color: var(--blue); }
+    .top-link.highlight { background: #edf4ff; border-color: #bed7fa; color: var(--blue); }
+    .top-link.primary { background: var(--yellow); border-color: var(--yellow); color: var(--navy); }
+
+    /* Page Layout */
+    .page { width: min(1200px, 100%); margin: auto; padding: 32px clamp(16px, 4vw, 44px) 70px; }
+
+    /* Header Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #10224a 0%, #173664 65%, #1e4585 100%);
+      border-radius: 24px; padding: clamp(26px, 4vw, 40px);
+      color: white; margin-bottom: 28px;
+      box-shadow: 0 20px 50px rgba(16, 34, 74, 0.18);
+      position: relative; overflow: hidden;
+    }
+    .hero-banner::after {
+      content: ""; position: absolute; right: -50px; bottom: -50px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 202, 69, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #93c5fd; font-size: 0.73rem; font-weight: 850;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .hero-banner h1 {
+      margin: 4px 0 12px; font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+      line-height: 1.15; letter-spacing: -0.03em;
+    }
+    .hero-banner p { margin: 0 0 20px; color: #cbd5e1; max-width: 760px; font-size: 0.96rem; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+    .pill {
+      padding: 6px 12px; border-radius: 99px;
+      background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.75rem; font-weight: 750; color: #e2e8f0;
+    }
+    .pill.gold { background: rgba(255, 202, 69, 0.2); border-color: rgba(255, 202, 69, 0.4); color: #ffca45; }
+
+    .banner-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 42px; padding: 0 18px; border-radius: 12px;
+      font-size: 0.84rem; font-weight: 800; cursor: pointer; border: 0;
+      transition: all 0.18s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.primary { background: var(--yellow); color: var(--navy); box-shadow: 0 6px 18px rgba(255, 202, 69, 0.25); }
+    .btn.ghost { background: rgba(255, 255, 255, 0.12); color: white; border: 1px solid rgba(255, 255, 255, 0.25); }
+    .btn.success { background: var(--green); color: white; }
+
+    /* Tabs Navigation */
+    .tabs-bar {
+      display: flex; gap: 6px; overflow-x: auto;
+      padding: 6px; background: white;
+      border: 1px solid var(--line); border-radius: 16px;
+      margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    .tab-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: 11px;
+      border: 0; background: transparent;
+      color: var(--muted); font-size: 0.85rem; font-weight: 800;
+      cursor: pointer; white-space: nowrap; transition: all 0.18s ease;
+    }
+    .tab-btn:hover { color: var(--ink); background: var(--soft); }
+    .tab-btn.active { color: white; background: var(--navy); }
+    .tab-badge {
+      display: inline-block; padding: 2px 7px; border-radius: 99px;
+      font-size: 0.68rem; font-weight: 900; background: rgba(0,0,0,0.08);
+    }
+    .tab-btn.active .tab-badge { background: var(--yellow); color: var(--navy); }
+
+    /* Tab Content Cards */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card {
+      background: white; border: 1px solid var(--line);
+      border-radius: var(--radius); padding: clamp(22px, 3.5vw, 36px);
+      box-shadow: var(--shadow); margin-bottom: 24px;
+    }
+    .card-title-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 14px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .card-kicker {
+      font-size: 0.72rem; font-weight: 900; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--blue);
+    }
+    .card h2 { margin: 4px 0 0; font-size: 1.45rem; color: var(--navy); }
+
+    /* Box styles */
+    .info-box {
+      background: var(--yellow-soft); border: 1.5px solid #ffebad;
+      border-radius: 14px; padding: 16px 20px; margin-bottom: 20px;
+    }
+    .info-box.blue {
+      background: var(--blue-soft); border-color: #bed7fa;
+    }
+    .info-box b { display: block; color: var(--navy); margin-bottom: 4px; font-size: 0.95rem; }
+    .info-box p { margin: 0; font-size: 0.88rem; color: #475569; }
+
+    /* Grid layout */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; }
+    .stat-pill-box {
+      background: var(--soft); border: 1px solid var(--line);
+      border-radius: 14px; padding: 14px 18px;
+    }
+    .stat-pill-box b { display: block; color: var(--navy); font-size: 0.88rem; margin-bottom: 2px; }
+    .stat-pill-box span { font-size: 0.8rem; color: var(--muted); }
+
+    /* Checklist */
+    .checklist { display: grid; gap: 9px; margin: 16px 0; }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 16px; border: 1.5px solid var(--line);
+      border-radius: 12px; background: white; transition: all 0.18s ease;
+    }
+    .check-item:hover { border-color: #93c5fd; background: #fafcff; }
+    .check-icon {
+      width: 22px; height: 22px; border-radius: 6px;
+      border: 2px solid #cbd5e1; display: grid; place-items: center;
+      flex: 0 0 22px; font-size: 0.8rem; color: white; margin-top: 2px;
+    }
+    .check-item.done .check-icon { background: var(--green); border-color: var(--green); }
+    .check-text b { display: block; font-size: 0.9rem; color: var(--navy); }
+    .check-text span { font-size: 0.8rem; color: var(--muted); }
+
+    /* Text Showcase & Copy Button */
+    .sample-doc-box {
+      border: 1.5px solid #cbd5e1; border-radius: 16px;
+      background: #fafcff; padding: 20px 24px; position: relative;
+      margin: 18px 0;
+    }
+    .sample-doc-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px dashed #cbd5e1;
+    }
+    .sample-doc-title { font-size: 0.82rem; font-weight: 850; color: var(--navy); text-transform: uppercase; letter-spacing: 0.06em; }
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 13px; border-radius: 8px; border: 1px solid #bed7fa;
+      background: white; color: var(--blue); font-size: 0.76rem; font-weight: 800;
+      cursor: pointer; transition: all 0.18s ease;
+    }
+    .copy-btn:hover { background: var(--blue); color: white; }
+    .doc-text-content {
+      font-size: 0.95rem; line-height: 1.8; color: #334155;
+      white-space: pre-line;
+    }
+
+    /* Before vs After Split */
+    .before-after-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;
+    }
+    .ba-column {
+      border: 1.5px solid var(--line); border-radius: 16px; padding: 20px;
+      background: white;
+    }
+    .ba-column.before { border-color: #fca5a5; background: #fff5f5; }
+    .ba-column.after { border-color: #86efac; background: #f0fdf4; }
+    .ba-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .ba-badge {
+      font-size: 0.72rem; font-weight: 900; padding: 3px 9px; border-radius: 99px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .ba-column.before .ba-badge { background: #fee2e2; color: #b91c1c; }
+    .ba-column.after .ba-badge { background: #dcfce7; color: #15803d; }
+    .ba-body { font-size: 0.9rem; line-height: 1.75; color: #334155; }
+    .ba-body mark.bad { background: #fecaca; color: #991b1b; padding: 2px 4px; border-radius: 4px; font-weight: 700; }
+    .ba-body mark.good { background: #bbf7d0; color: #166534; padding: 2px 4px; border-radius: 4px; font-weight: 700; }
+
+    /* Rubric Table */
+    .rubric-table {
+      width: 100%; border-collapse: collapse; margin: 18px 0;
+      font-size: 0.88rem; text-align: left;
+    }
+    .rubric-table th, .rubric-table td {
+      padding: 12px 16px; border: 1px solid var(--line);
+    }
+    .rubric-table th { background: var(--soft); color: var(--navy); font-weight: 850; }
+    .rubric-table tr:nth-child(even) { background: #fafcff; }
+    .pts-badge {
+      display: inline-block; padding: 3px 8px; border-radius: 6px;
+      background: #edf4ff; color: var(--blue); font-weight: 900; font-size: 0.78rem;
+    }
+
+    /* Questions List */
+    .q-list { display: grid; gap: 16px; margin: 18px 0; }
+    .q-item {
+      border: 1.5px solid var(--line); border-radius: 14px; padding: 18px 20px;
+      background: white;
+    }
+    .q-item-num {
+      display: inline-block; padding: 3px 9px; border-radius: 6px;
+      background: var(--navy); color: white; font-size: 0.75rem; font-weight: 900; margin-bottom: 8px;
+    }
+    .q-item h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--navy); line-height: 1.4; }
+    .q-hint {
+      display: none; margin-top: 10px; padding: 12px 14px;
+      border-radius: 10px; background: var(--soft); color: #334155; font-size: 0.86rem; line-height: 1.6;
+    }
+    .q-hint.show { display: block; }
+    .toggle-hint-btn {
+      padding: 5px 11px; border-radius: 8px; border: 1px solid #cbd5e1;
+      background: white; color: var(--muted); font-size: 0.75rem; font-weight: 800; cursor: pointer;
+    }
+    .toggle-hint-btn:hover { color: var(--blue); border-color: var(--blue); }
+
+    /* PDF Download Box */
+    .pdf-dl-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0;
+    }
+    .pdf-dl-card {
+      border: 1.5px solid var(--line); border-radius: 16px; padding: 18px;
+      background: #fafcff; display: flex; flex-direction: column; justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .pdf-dl-card:hover { transform: translateY(-3px); border-color: var(--blue); box-shadow: 0 8px 24px rgba(47,111,234,0.12); }
+    .pdf-icon { font-size: 2rem; margin-bottom: 8px; }
+    .pdf-dl-card b { display: block; font-size: 0.95rem; color: var(--navy); margin-bottom: 4px; }
+    .pdf-dl-card p { margin: 0 0 14px; font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
+    .dl-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 9px 14px; border-radius: 10px; background: var(--blue); color: white;
+      font-size: 0.78rem; font-weight: 850; text-align: center;
+    }
+    .dl-btn:hover { background: #235fd0; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 99;
+      background: var(--navy); color: white; padding: 12px 20px;
+      border-radius: 12px; font-size: 0.88rem; font-weight: 750;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      display: none; align-items: center; gap: 10px;
+    }
+    .toast.show { display: flex; animation: slideUp 0.2s ease; }
+    @keyframes slideUp { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* Responsive */
+    @media (max-width: 820px) {
+      .grid-2, .before-after-grid, .pdf-dl-grid { grid-template-columns: 1fr; }
+      .crumb { display: none; }
+      .top-actions .top-link:not(.primary) { display: none; }
+    }
+
+    /* Print Styles */
+    @media print {
+      .topbar, .tabs-bar, .banner-actions, .copy-btn, .toggle-hint-btn, .toast { display: none !important; }
+      body { background: white; color: black; font-size: 13pt; }
+      .page { width: 100%; padding: 0; margin: 0; }
+      .hero-banner { background: #10224a !important; color: white !important; -webkit-print-color-adjust: exact; }
+      .tab-panel { display: block !important; margin-bottom: 40px; page-break-after: always; }
+      .card { border: 1px solid #ccc; box-shadow: none; padding: 15px; }
+      .q-hint { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="mark">D</span>
+      <span>Docs Lab</span>
+    </a>
+    <div class="crumb"><b>Buổi 2</b> · Phiếu bài tập & Thực hành</div>
+    <nav class="top-actions">
+      <a class="top-link" href="buoi-02-chinh-sua-van-ban.html">📖 Slide bài giảng</a>
+      <a class="top-link highlight" href="buoi-02-quiz.html">🎯 Quiz 20 câu</a>
+      <a class="top-link" href="buoi-02-game.html">🎮 Mini Game</a>
+      <button class="top-link primary" onclick="window.print()">🖨️ In phiếu bài tập</button>
+    </nav>
+  </header>
+
+  <main class="page">
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+      <span class="eyebrow">Docs Lab · Kỹ năng Google Docs THCS · Buổi 02</span>
+      <h1>Phiếu Bài Tập & Hướng Dẫn Thực Hành</h1>
+      <p>Bộ 3 bài tập chuẩn hóa: Tự luận phím tắt, Thực hành sửa bài văn lỗi trên lớp và Bài tập xáo trộn về nhà kèm biểu mẫu Before/After và thang điểm 30 điểm cho giáo viên.</p>
+      
+      <div class="pills">
+        <span class="pill gold">⚡ 3 Bài tập chuẩn hóa</span>
+        <span class="pill">⏱️ Thời gian: 45–60 phút</span>
+        <span class="pill">💯 Thang điểm: 30 điểm</span>
+        <span class="pill">📄 Kèm 3 file PDF bản in</span>
+      </div>
+
+      <div class="banner-actions">
+        <button class="btn primary" onclick="switchTab(1)">📝 Làm Bài Thực Hành 1</button>
+        <button class="btn ghost" onclick="switchTab(2)">✍️ Xem Bài Tập Về Nhà</button>
+        <button class="btn ghost" onclick="switchTab(3)">📊 Thang Điểm Giáo Viên</button>
+        <button class="btn ghost" onclick="window.print()">🖨️ In ra giấy / Lưu PDF</button>
+      </div>
+    </section>
+
+    <!-- Download PDF Cards -->
+    <div class="pdf-dl-grid">
+      <div class="pdf-dl-card">
+        <div>
+          <div class="pdf-icon">📄</div>
+          <b>Thực hành 1: Sửa bài văn lỗi</b>
+          <p>Phiếu bài tập giao trên lớp, hướng dẫn 5 bước sử dụng phím tắt và checklist sản phẩm.</p>
+        </div>
+        <a class="dl-btn" href="output/pdf/buoi-02-thuc-hanh-sua-bai-van.pdf" target="_blank">📥 Mở file PDF</a>
+      </div>
+
+      <div class="pdf-dl-card">
+        <div>
+          <div class="pdf-icon">📑</div>
+          <b>Bài tập về nhà: Đoạn văn xáo trộn</b>
+          <p>Đoạn văn logic kèm bản mẫu Before / After trực quan để học sinh đối chiếu kết quả.</p>
+        </div>
+        <a class="dl-btn" href="output/pdf/buoi-02-thuc-hanh-xao-tron-before-after.pdf" target="_blank">📥 Mở file PDF</a>
+      </div>
+
+      <div class="pdf-dl-card">
+        <div>
+          <div class="pdf-icon">🎯</div>
+          <b>Đáp án & Thang điểm 30 điểm</b>
+          <p>Tài liệu nội bộ dành cho giáo viên: thang điểm 3 bài, sản phẩm mẫu và hướng dẫn sửa lỗi.</p>
+        </div>
+        <a class="dl-btn" href="output/pdf/buoi-02-dap-an-3-bai-tap-ve-nha.pdf" target="_blank">📥 Mở file PDF</a>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation Bar -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab(0)">
+        <span>1. Tự luận & Phím tắt</span>
+        <span class="tab-badge">10 điểm</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab(1)">
+        <span>2. Thực hành trên lớp</span>
+        <span class="tab-badge">10 điểm</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab(2)">
+        <span>3. Bài tập về nhà</span>
+        <span class="tab-badge">10 điểm</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab(3)">
+        <span>4. Đáp án & Thang điểm (GV)</span>
+        <span class="tab-badge">30 điểm</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: TỰ LUẬN & PHÍM TẮT -->
+    <div class="tab-panel active" id="tab0">
+      <article class="card">
+        <div class="card-title-row">
+          <div>
+            <span class="card-kicker">Phần 1 · Lý thuyết & Phản xạ</span>
+            <h2>Bài 1 — Tự Luận & Thao Tác Phím Tắt</h2>
+          </div>
+          <span style="font-weight:900;color:var(--blue);font-size:1.1rem">10 điểm (2 điểm/câu)</span>
+        </div>
+
+        <div class="info-box blue">
+          <b>🎯 Mục tiêu:</b>
+          <p>Kiểm tra khả năng hiểu bản chất thao tác, phân biệt giữa Cut/Copy, ý nghĩa cỗ máy thời gian của Undo và cách dùng Find & Replace an toàn.</p>
+        </div>
+
+        <div class="q-list">
+          <!-- Q1 -->
+          <div class="q-item">
+            <span class="q-item-num">Câu 1 · 2 điểm</span>
+            <h3>Nguyên tắc vàng khi chỉnh sửa văn bản là gì? Vì sao khi phát hiện bài viết bị lỗi, ta không nên xóa hết rồi gõ lại từ đầu?</h3>
+            <button class="toggle-hint-btn" onclick="toggleHint('hint1')">💡 Xem đáp án gợi ý</button>
+            <div class="q-hint" id="hint1">
+              <b>Gợi ý trả lời:</b>
+              <br>• Nguyên tắc vàng: <i>"Chọn trước, ra lệnh sau"</i> (luôn bôi xanh chính xác vùng văn bản trước khi tác động).
+              <br>• Không nên xóa hết gõ lại vì: Phần lớn nội dung vẫn đúng, xóa hết sẽ mất trắng định dạng và mất nhiều thời gian gõ lại (gấp 10 lần), đồng thời dễ phát sinh thêm các lỗi chính tả mới.
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="q-item">
+            <span class="q-item-num">Câu 2 · 2 điểm</span>
+            <h3>Hãy nêu điểm khác nhau cốt lõi giữa hai lệnh Cut (Ctrl+X) và Copy (Ctrl+C). Cho ví dụ một tình huống nên dùng Cut và một tình huống nên dùng Copy?</h3>
+            <button class="toggle-hint-btn" onclick="toggleHint('hint2')">💡 Xem đáp án gợi ý</button>
+            <div class="q-hint" id="hint2">
+              <b>Gợi ý trả lời:</b>
+              <br>• <b>Khác biệt:</b> Cut lấy chữ rời khỏi vị trí cũ và cất vào Clipboard; còn Copy nhân bản nội dung vào Clipboard mà vẫn giữ nguyên bản gốc tại chỗ cũ.
+              <br>• <b>Tình huống Cut:</b> Khi một câu bị viết sai thứ tự và cần dời sang đoạn văn khác.
+              <br>• <b>Tình huống Copy:</b> Khi muốn sao chép tiêu đề hoặc một đoạn văn mẫu sang trang mới mà vẫn muốn lưu giữ ở trang cũ.
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="q-item">
+            <span class="q-item-num">Câu 3 · 2 điểm</span>
+            <h3>Lệnh Undo (Ctrl+Z) và Redo (Ctrl+Y) có ý nghĩa như thế nào? Khi lỡ tay xóa mất một đoạn văn, hành động nào là NGUY HIỂM NHẤT mà học sinh cần tránh?</h3>
+            <button class="toggle-hint-btn" onclick="toggleHint('hint3')">💡 Xem đáp án gợi ý</button>
+            <div class="q-hint" id="hint3">
+              <b>Gợi ý trả lời:</b>
+              <br>• <b>Ý nghĩa:</b> Undo là cỗ máy thời gian (lưới an toàn) giúp quay ngược lại một bước thao tác sai; Redo giúp tiến lại bước vừa Undo.
+              <br>• <b>Hành động nguy hiểm nhất:</b> Hoảng sợ bấm Ctrl+Z liên tục lia lịa nhiều lần mà không nhìn màn hình, hoặc vội vã đóng tab trình duyệt, dẫn đến mất quyền hoàn tác đúng bước.
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="q-item">
+            <span class="q-item-num">Câu 4 · 2 điểm</span>
+            <h3>Phân biệt tính năng Tìm kiếm Find (Ctrl+F) và Thay thế Find & Replace (Ctrl+H). Khi nào em nên sử dụng Replace All?</h3>
+            <button class="toggle-hint-btn" onclick="toggleHint('hint4')">💡 Xem đáp án gợi ý</button>
+            <div class="q-hint" id="hint4">
+              <b>Gợi ý trả lời:</b>
+              <br>• <b>Khác nhau:</b> Find (Ctrl+F) chỉ giúp định vị và nhảy tới các từ trùng khớp mà không sửa chữ. Find & Replace (Ctrl+H) cho phép tự động đổi từ sai thành từ đúng.
+              <br>• <b>Khi nào dùng Replace All:</b> Khi một lỗi sai chính tả giống hệt nhau lặp lại nhiều lần trong toàn bộ tài liệu (ví dụ thiếu dấu 10 chữ "máy tinh"), sau khi đã kiểm tra kỹ ô Tìm và ô Thay.
+            </div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="q-item">
+            <span class="q-item-num">Câu 5 · 2 điểm</span>
+            <h3>Khi sử dụng tính năng "Replace All", rủi ro nào có thể xảy ra ngoài ý muốn? Em cần làm gì để phòng tránh rủi ro này?</h3>
+            <button class="toggle-hint-btn" onclick="toggleHint('hint5')">💡 Xem đáp án gợi ý</button>
+            <div class="q-hint" id="hint5">
+              <b>Gợi ý trả lời:</b>
+              <br>• <b>Rủi ro:</b> Thay thế nhầm các từ có chứa cụm ký tự đó (Ví dụ: Tìm 'ba' thay bằng 'bố' có thể làm chữ 'bà' biến thành 'bố' hoặc 'ba mươi' biến thành 'bố mươi').
+              <br>• <b>Cách phòng tránh:</b> Luôn đọc kỹ ô 'Tìm' và ô 'Thay bằng', kiểm tra xem từ có bị trùng với các từ đồng âm không; nên bấm 'Next' để kiểm tra thử 1-2 từ đầu tiên trước khi bấm 'Replace all'.
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- TAB 2: THỰC HÀNH TRÊN LỚP -->
+    <div class="tab-panel" id="tab1">
+      <article class="card">
+        <div class="card-title-row">
+          <div>
+            <span class="card-kicker">Phần 2 · Thực hành trên lớp (30 phút)</span>
+            <h2>Bài 2 — Giải Cứu Bài Văn Bị Lỗi</h2>
+          </div>
+          <span style="font-weight:900;color:var(--green);font-size:1.1rem">10 điểm</span>
+        </div>
+
+        <div class="info-box">
+          <b>🎯 Tình huống thực hành:</b>
+          <p>Giáo viên cung cấp một bài viết về <i>"Chú mèo mướp của em"</i>. Bài viết đang bị đảo lộn câu, thừa câu lặp, sai 5 lỗi chính tả và có từ bị gõ thiếu dấu lặp lại. Em hãy dùng kỹ năng chỉnh sửa thông minh để giải cứu bài văn mà <b>tuyệt đối không được xóa hết rồi gõ lại</b>!</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="stat-pill-box">
+            <b>📁 Tên tài liệu nộp:</b>
+            <span>THỰC HÀNH 2 - SỬA LỖI - LỚP - HỌ TÊN</span>
+          </div>
+          <div class="stat-pill-box">
+            <b>⏱️ Thời gian gợi ý:</b>
+            <span>20–30 phút · Làm trực tiếp trên Google Docs</span>
+          </div>
+        </div>
+
+        <!-- Sample Document Box -->
+        <div class="sample-doc-box">
+          <div class="sample-doc-head">
+            <span class="sample-doc-title">📄 ĐOẠN VĂN MẪU BỊ LỖI (HỌC SINH SAO CHÉP VÀO GOOGLE DOCS)</span>
+            <button class="copy-btn" id="copySampleBtn1" onclick="copyText('sampleText1', 'Đã sao chép bài văn mẫu 1 vào Clipboard!')">
+              📋 Sao chép bài văn này
+            </button>
+          </div>
+          <div class="doc-text-content" id="sampleText1">CHÚ MÈO MƯỚP NHÀ EM
+
+Nhà em có nuôi một chú mèo mướp rất đáng yêu. Chú mèo có bộ lông màu vàng cam xen lẫn những vệt xám tro. Mỗi buổi sáng, chú mèo thường trèo lên cây cau để bắt bướm. Chú mèo thích ngủ nướng trên mái ngói ấm áp. Chú mèo thích ngủ nướng trên mái ngói ấm áp. 
+
+Chú mèo rất thich bat chuột. Đôi mắt chú sang tròn xoe như hai hòn bi ve trong bóng đêm. Ban đêm, chú rinh chuot rất giỏi. Chú mèo bắt chuột rất giỏi và bảo vệ kho thóc cho cả nhà. Khi em học bài bằng máy tinh, chú thường đến cọ đầu vào chân em đòi vuốt ve. Em rất yêu chú mèo mướp của em.</div>
+        </div>
+
+        <!-- Nhiệm vụ chi tiết -->
+        <h3 style="color:var(--navy);margin:24px 0 12px">🛠️ Danh sách 5 nhiệm vụ giải cứu:</h3>
+        <div class="checklist">
+          <div class="check-item">
+            <div class="check-icon">1</div>
+            <div class="check-text">
+              <b>Xóa câu bị lặp thừa bằng lệnh Delete / Backspace:</b>
+              <span>Câu <i>"Chú mèo thích ngủ nướng trên mái ngói ấm áp."</i> bị xuất hiện 2 lần liên tiếp ở Đoạn 1. Em hãy bôi đen 1 câu thừa và nhấn Delete.</span>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-icon">2</div>
+            <div class="check-text">
+              <b>Di chuyển câu sai vị trí bằng Cut (Ctrl+X) và Paste (Ctrl+V):</b>
+              <span>Câu <i>"Mỗi buổi sáng, chú mèo thường trèo lên cây cau để bắt bướm."</i> đang đứng sai vị trí. Hãy Cut câu này và dán về cuối Đoạn 1 sau câu ngủ nướng.</span>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-icon">3</div>
+            <div class="check-text">
+              <b>Sửa 4 lỗi chính tả thiếu dấu tiếng Việt bằng cách bôi đen nháy đúp:</b>
+              <span>Nháy đúp vào từng từ sau và sửa: <code>thich</code> ➔ <b>thích</b>, <code>bat</code> ➔ <b>bắt</b>, <code>sang</code> ➔ <b>sáng</b>, <code>rinh chuot</code> ➔ <b>rình chuột</b>.</span>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-icon">4</div>
+            <div class="check-text">
+              <b>Dùng Find & Replace sửa sạch lỗi từ lặp:</b>
+              <span>Nhấn <b>Ctrl + H</b>, nhập tìm <code>máy tinh</code> và thay thế bằng <code>máy tính</code>.</span>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-icon">5</div>
+            <div class="check-text">
+              <b>Nhân bản câu chốt bằng Copy (Ctrl+C) và Paste (Ctrl+V):</b>
+              <span>Sao chép câu <i>"Chú mèo bắt chuột rất giỏi và bảo vệ kho thóc cho cả nhà."</i> dán thêm một câu tương tự vào tài liệu tóm tắt. Sau đó dùng <b>Ctrl+Z</b> và <b>Ctrl+Y</b> để thử nghiệm độ an toàn.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Before / After comparison -->
+        <h3 style="color:var(--navy);margin:24px 0 12px">🔍 Bảng so sánh Before / After:</h3>
+        <div class="before-after-grid">
+          <div class="ba-column before">
+            <div class="ba-header">
+              <span style="font-weight:800;color:#991b1b">TRƯỚC KHI SỬA (BEFORE)</span>
+              <span class="ba-badge">Chứa 5 lỗi</span>
+            </div>
+            <div class="ba-body">
+              CHÚ MÈO MƯỚP NHÀ EM<br><br>
+              Nhà em có nuôi một chú mèo mướp rất đáng yêu. Chú mèo có bộ lông màu vàng cam... <mark class="bad">Mỗi buổi sáng, chú mèo thường trèo lên cây cau để bắt bướm.</mark> Chú mèo thích ngủ nướng... <mark class="bad">Chú mèo thích ngủ nướng trên mái ngói ấm áp.</mark><br><br>
+              Chú mèo rất <mark class="bad">thich bat</mark> chuột. Đôi mắt chú <mark class="bad">sang</mark> tròn xoe... Ban đêm, chú <mark class="bad">rinh chuot</mark> rất giỏi... Khi em học bài bằng <mark class="bad">máy tinh</mark>, chú thường đến...
+            </div>
+          </div>
+
+          <div class="ba-column after">
+            <div class="ba-header">
+              <span style="font-weight:800;color:#166534">SAU KHI HOÀN TẤT (AFTER)</span>
+              <span class="ba-badge">Đạt 10 điểm</span>
+            </div>
+            <div class="ba-body">
+              CHÚ MÈO MƯỚP NHÀ EM<br><br>
+              Nhà em có nuôi một chú mèo mướp rất đáng yêu. Chú mèo có bộ lông màu vàng cam xen lẫn những vệt xám tro. Chú mèo thích ngủ nướng trên mái ngói ấm áp. <mark class="good">Mỗi buổi sáng, chú mèo thường trèo lên cây cau để bắt bướm.</mark><br><br>
+              Chú mèo rất <mark class="good">thích bắt</mark> chuột. Đôi mắt chú <mark class="good">sáng</mark> tròn xoe như hai hòn bi ve trong bóng đêm. Ban đêm, chú <mark class="good">rình chuột</mark> rất giỏi. Chú mèo bắt chuột rất giỏi và bảo vệ kho thóc cho cả nhà. Khi em học bài bằng <mark class="good">máy tính</mark>, chú thường đến cọ đầu vào chân em đòi vuốt ve. Em rất yêu chú mèo mướp của em.
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- TAB 3: BÀI TẬP VỀ NHÀ -->
+    <div class="tab-panel" id="tab2">
+      <article class="card">
+        <div class="card-title-row">
+          <div>
+            <span class="card-kicker">Phần 3 · Nhiệm vụ về nhà</span>
+            <h2>Bài 3 — Sửa Đoạn Văn Bị Xáo Trộn Logic</h2>
+          </div>
+          <span style="font-weight:900;color:var(--yellow);font-size:1.1rem">10 điểm</span>
+        </div>
+
+        <div class="info-box">
+          <b>🏠 Yêu cầu bài tập về nhà:</b>
+          <p>Tạo một Google Docs mới, đặt tên đúng quy ước. Sao chép đoạn văn dưới đây vào bài, sau đó dùng các công cụ <b>Cut, Copy, Paste, Find & Replace</b> để đưa bài viết về trật tự thời gian và ngữ pháp chuẩn xác.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="stat-pill-box">
+            <b>📁 Tên tài liệu nộp:</b>
+            <span>BÀI TẬP VỀ NHÀ 2 - XÁO TRỘN - LỚP - HỌ TÊN</span>
+          </div>
+          <div class="stat-pill-box">
+            <b>📤 Hình thức nộp:</b>
+            <span>Chia sẻ link Google Docs (quyền Xem hoặc Nhận xét)</span>
+          </div>
+        </div>
+
+        <!-- Sample Document Box -->
+        <div class="sample-doc-box">
+          <div class="sample-doc-head">
+            <span class="sample-doc-title">📄 ĐOẠN VĂN XÁO TRỘN (BEFORE)</span>
+            <button class="copy-btn" id="copySampleBtn2" onclick="copyText('sampleText2', 'Đã sao chép bài văn mẫu 2 vào Clipboard!')">
+              📋 Sao chép văn bản này
+            </button>
+          </div>
+          <div class="doc-text-content" id="sampleText2">KẾ HOẠCH HỌC TẬP BUỔI TỐI CỦA EM
+
+Em chuẩn bị đi ngủ lúc 10 giờ đêm. Em ăn cơm tối cùng gia đình lúc 7 giờ. Em ngồi vào bàn học bài lúc 7 giờ 30 phút. Hôm nay trời mưa to làm ướt hết sân bóng đá ở ngoài ngõ. 
+
+Khi ngồi học, em chu y ngôi đúng tư thế để bảo vệ cột sống và mắt. Em bật máy tinh để vào lớp học trực tuyến môn Tin học. Em dùng bàn phim để gõ bài tập nhanh và chính xác. Em luôn hoan thanh bài tập trước khi giải trí. Chúc các bạn một ngày học tập thật tốt!</div>
+        </div>
+
+        <h3 style="color:var(--navy);margin:24px 0 12px">📋 4 Bước thực hiện bài tập về nhà:</h3>
+        <div class="checklist">
+          <div class="check-item">
+            <div class="check-icon">1</div>
+            <div class="check-text">
+              <b>Sắp xếp đúng thứ tự thời gian logic ở Đoạn 1:</b>
+              <span>Dùng <b>Cut (Ctrl+X)</b> và <b>Paste (Ctrl+V)</b> xếp lại: Ăn cơm tối (7h) ➔ Ngồi vào bàn học (7h30) ➔ Đi ngủ (10h đêm).</span>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-icon">2</div>
+            <div class="check-text">
+              <b>Xóa câu lạc đề không liên quan:</b>
+              <span>Xóa hẳn câu: <i>"Hôm nay trời mưa to làm ướt hết sân bóng đá ở ngoài ngõ."</i> vì không liên quan đến kế hoạch học tập.</span>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-icon">3</div>
+            <div class="check-text">
+              <b>Sửa 3 lỗi chính tả thiếu dấu tiếng Việt:</b>
+              <span>Chọn từng từ sai và sửa: <code>chu y</code> ➔ <b>chú ý</b>, <code>ngôi đúng</code> ➔ <b>ngồi đúng</b>, <code>hoan thanh</code> ➔ <b>hoàn thành</b>.</span>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-icon">4</div>
+            <div class="check-text">
+              <b>Dùng Find & Replace đổi lỗi lặp thiết bị:</b>
+              <span>Nhấn <b>Ctrl+H</b>: Tìm <code>máy tinh</code> thay bằng <b>máy tính</b>; Tìm <code>bàn phim</code> thay bằng <b>bàn phím</b>.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Before / After comparison -->
+        <h3 style="color:var(--navy);margin:24px 0 12px">🔍 Đối chiếu kết quả hoàn thành:</h3>
+        <div class="before-after-grid">
+          <div class="ba-column before">
+            <div class="ba-header">
+              <span style="font-weight:800;color:#991b1b">VĂN BẢN XÁO TRỘN (BEFORE)</span>
+              <span class="ba-badge">Đảo lộn thời gian</span>
+            </div>
+            <div class="ba-body">
+              KẾ HOẠCH HỌC TẬP BUỔI TỐI CỦA EM<br><br>
+              <mark class="bad">Em chuẩn bị đi ngủ lúc 10 giờ đêm.</mark> Em ăn cơm tối cùng gia đình lúc 7 giờ. Em ngồi vào bàn học bài lúc 7 giờ 30 phút. <mark class="bad">Hôm nay trời mưa to làm ướt hết sân bóng đá ở ngoài ngõ.</mark><br><br>
+              Khi ngồi học, em <mark class="bad">chu y ngôi đúng</mark> tư thế để bảo vệ cột sống và mắt. Em bật <mark class="bad">máy tinh</mark> để vào lớp học trực tuyến môn Tin học. Em dùng <mark class="bad">bàn phim</mark> để gõ bài tập nhanh và chính xác. Em luôn <mark class="bad">hoan thanh</mark> bài tập trước khi giải trí. Chúc các bạn một ngày học tập thật tốt!
+            </div>
+          </div>
+
+          <div class="ba-column after">
+            <div class="ba-header">
+              <span style="font-weight:800;color:#166534">VĂN BẢN CHUẨN XÁC (AFTER)</span>
+              <span class="ba-badge">Logic 100%</span>
+            </div>
+            <div class="ba-body">
+              KẾ HOẠCH HỌC TẬP BUỔI TỐI CỦA EM<br><br>
+              <mark class="good">Em ăn cơm tối cùng gia đình lúc 7 giờ. Em ngồi vào bàn học bài lúc 7 giờ 30 phút. Em chuẩn bị đi ngủ lúc 10 giờ đêm.</mark><br><br>
+              Khi ngồi học, em <mark class="good">chú ý ngồi đúng</mark> tư thế để bảo vệ cột sống và mắt. Em bật <mark class="good">máy tính</mark> để vào lớp học trực tuyến môn Tin học. Em dùng <mark class="good">bàn phím</mark> để gõ bài tập nhanh và chính xác. Em luôn <mark class="good">hoàn thành</mark> bài tập trước khi giải trí. Chúc các bạn một ngày học tập thật tốt!
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- TAB 4: ĐÁP ÁN & THANG ĐIỂM DÀNH CHO GIÁO VIÊN -->
+    <div class="tab-panel" id="tab3">
+      <article class="card">
+        <div class="card-title-row">
+          <div>
+            <span class="card-kicker">Tài liệu nội bộ · Hướng dẫn chấm bài</span>
+            <h2>Đáp Án Chi Tiết & Thang Điểm 30 Điểm</h2>
+          </div>
+          <span style="font-weight:900;color:#0369a1;background:#e0f2fe;padding:4px 12px;border-radius:99px;font-size:0.85rem">Dành cho Giáo viên</span>
+        </div>
+
+        <div class="info-box blue">
+          <b>📌 Nguyên tắc chấm bài của Giáo viên:</b>
+          <p>Ưu tiên kỹ năng thao tác chuẩn xác, không làm mất chữ xung quanh, hiểu đúng bản chất Cut/Copy/Undo và không xóa hết gõ lại từ đầu. Học sinh có thể dùng từ ngữ tự nhiên khi trả lời câu hỏi tự luận.</p>
+        </div>
+
+        <h3 style="color:var(--navy);margin:20px 0 10px">📊 Cấu trúc tổng điểm (30 điểm):</h3>
+        <table class="rubric-table">
+          <thead>
+            <tr>
+              <th style="width:25%">Phần bài tập</th>
+              <th style="width:50%">Nội dung đánh giá</th>
+              <th style="width:25%">Điểm tối đa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Bài 1: Tự luận & Phím tắt</b></td>
+              <td>5 câu hỏi tự luận ngắn về nguyên tắc chỉnh sửa, phím tắt và xử lý tình huống an toàn.</td>
+              <td><span class="pts-badge">10 điểm (2đ/câu)</span></td>
+            </tr>
+            <tr>
+              <td><b>Bài 2: Thực hành sửa bài văn lỗi</b></td>
+              <td>Xóa câu lặp (2đ), dời câu đúng vị trí (2đ), sửa 4 lỗi chính tả (3đ), Replace All từ lặp (2đ), đặt tên tệp chuẩn (1đ).</td>
+              <td><span class="pts-badge">10 điểm</span></td>
+            </tr>
+            <tr>
+              <td><b>Bài 3: Bài tập về nhà xáo trộn</b></td>
+              <td>Sắp xếp thời gian logic (3đ), xóa câu lạc đề (2đ), sửa 3 lỗi chính tả (2đ), đổi từ máy tính/bàn phím (2đ), chia sẻ link nộp bài (1đ).</td>
+              <td><span class="pts-badge">10 điểm</span></td>
+            </tr>
+            <tr style="background:#f0fdf4;font-weight:900">
+              <td colspan="2" style="color:#166534">TỔNG ĐIỂM TOÀN BỘ BUỔI 02:</td>
+              <td style="color:#166534;font-size:1.1rem">30 Điểm</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Bảng lỗi thường gặp -->
+        <h3 style="color:var(--navy);margin:28px 0 12px">⚠️ Bảng lỗi thường gặp & Gợi ý phản hồi nhanh:</h3>
+        <table class="rubric-table">
+          <thead>
+            <tr>
+              <th style="width:30%">Hiện tượng lỗi của học sinh</th>
+              <th style="width:40%">Nguyên nhân</th>
+              <th style="width:30%">Lời nhận xét / Hướng dẫn khắc phục</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Mất cả đoạn văn xung quanh</b></td>
+              <td>Học sinh kéo rê chuột quá đà hoặc vội ấn Delete mà chưa nhìn kỹ vùng bôi xanh.</td>
+              <td><i>"Em hãy ấn Ctrl + Z ngay một lần để lấy lại đoạn văn, sau đó nháy đúp hoặc nháy 3 lần để chọn chuẩn xác hơn nhé."</i></td>
+            </tr>
+            <tr>
+              <td><b>Câu cắt đi rồi biến mất luôn</b></td>
+              <td>Bấm Cut xong rồi làm việc khác, hoặc lại bấm Copy chữ khác đè lên Clipboard.</td>
+              <td><i>"Sau khi bấm Ctrl+X, em nhớ di chuyển ngay đến vị trí mới và bấm Ctrl+V ngay nhé."</i></td>
+            </tr>
+            <tr>
+              <td><b>Replace All sửa nhầm từ đúng</b></td>
+              <td>Gõ từ cần tìm quá ngắn hoặc trùng với từ ghép khác trong văn bản.</td>
+              <td><i>"Trước khi bấm Replace All, em hãy bấm nút Tìm tiếp (Next) để kiểm tra 1-2 từ mẫu xem có đúng từ cần sửa không."</i></td>
+            </tr>
+            <tr>
+              <td><b>Đặt tên tệp không đúng quy ước</b></td>
+              <td>Để nguyên 'Untitled document' hoặc đặt tên không có họ tên, lớp.</td>
+              <td><i>"Em hãy bấm vào góc trên bên trái đổi tên theo mẫu: TÊN BÀI - LỚP - HỌ TÊN để thầy cô dễ chấm nhé."</i></td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function switchTab(index) {
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
+      document.querySelectorAll('.tab-panel').forEach((panel, i) => {
+        panel.classList.toggle('active', i === index);
+      });
+      window.scrollTo({ top: 380, behavior: 'smooth' });
+    }
+
+    function toggleHint(hintId) {
+      const el = document.getElementById(hintId);
+      if (el) el.classList.toggle('show');
+    }
+
+    let toastTimer;
+    function copyText(sourceId, msg) {
+      const text = document.getElementById(sourceId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('📋 ' + msg);
+      }).catch(() => {
+        showToast('Đã chọn đoạn văn, hãy bấm Ctrl+C để sao chép!');
+      });
+    }
+
+    function showToast(text) {
+      const t = document.getElementById('toast');
+      t.textContent = text;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+    }
+  </script>
+</body>
+</html>

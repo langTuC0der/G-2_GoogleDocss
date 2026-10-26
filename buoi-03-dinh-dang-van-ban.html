@@ -1,0 +1,2488 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bài giảng 3D tương tác Buổi 3: Từ văn bản thường thành văn bản đẹp (Google Docs THCS) xây dựng trên nền tảng Impress.js">
+  <title>Buổi 3 · Từ văn bản thường thành văn bản đẹp | 3D Impress Presentation</title>
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       1. CORE DESIGN TOKENS & RESET
+       ============================================================ */
+    :root {
+      --bg-space: #070e20;
+      --navy-900: #0b152d;
+      --navy-800: #132448;
+      --blue-600: #2563eb;
+      --blue-500: #3b82f6;
+      --blue-100: #dbeafe;
+      --blue-50: #eff6ff;
+      --amber-500: #f59e0b;
+      --amber-400: #fbbf24;
+      --amber-100: #fef3c7;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-100: #d1fae5;
+      --rose-600: #e11d48;
+      --rose-500: #f43f5e;
+      --rose-100: #ffe4e6;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --line-glass: rgba(255, 255, 255, 0.22);
+      --card-bg: rgba(255, 255, 255, 0.98);
+      --card-dark-bg: linear-gradient(145deg, #122144, #0b152d);
+      --shadow-step: 0 35px 80px -15px rgba(0, 7, 24, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.6);
+      --shadow-hover: 0 45px 95px -20px rgba(11, 26, 61, 0.65), 0 0 0 2px rgba(59, 130, 246, 0.4);
+      --radius-step: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 15% 15%, #18336a 0%, #070e20 45%, #030713 100%);
+      background-attachment: fixed;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid var(--blue-500); outline-offset: 3px; }
+
+    /* ============================================================
+       2. IMPRESS.JS 3D CANVAS & STEP STYLES
+       ============================================================ */
+    .impress-enabled { pointer-events: none; }
+    .impress-enabled #impress,
+    .impress-enabled .step,
+    .impress-enabled .hud,
+    .impress-enabled button,
+    .impress-enabled a,
+    .impress-enabled input,
+    .impress-enabled select,
+    .impress-enabled .modal {
+      pointer-events: auto;
+    }
+
+    #impress {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .step {
+      position: relative;
+      width: 1120px;
+      min-height: 660px;
+      padding: 44px 50px;
+      margin: 0 auto;
+      border-radius: var(--radius-step);
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-step);
+      opacity: 0.2;
+      filter: blur(1.5px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: default;
+    }
+
+    .step.active {
+      opacity: 1;
+      filter: none;
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Cosmic Overview Mode */
+    #impress.step-overview .step {
+      opacity: 0.88 !important;
+      filter: none !important;
+      cursor: pointer !important;
+    }
+    #impress.step-overview .step:hover {
+      transform: scale(1.05);
+      border-color: var(--amber-400);
+      box-shadow: 0 0 45px rgba(245, 158, 11, 0.5);
+    }
+
+    /* Overview step itself must be completely transparent to reveal all 3D slides */
+    #overview.step {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      min-height: auto !important;
+      padding: 0 !important;
+      opacity: 1 !important;
+      filter: none !important;
+      cursor: default !important;
+      pointer-events: none !important;
+    }
+    #impress.step-overview #overview.step {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      cursor: default !important;
+    }
+    #impress.step-overview #overview.step:hover {
+      transform: none !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+    .overview-hero-capsule {
+      pointer-events: auto !important;
+      text-align: center;
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 34px 46px;
+      border-radius: 28px;
+      background: rgba(11, 21, 45, 0.94);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 50px rgba(37, 99, 235, 0.4);
+      backdrop-filter: blur(22px);
+      color: #ffffff;
+    }
+    .overview-hero-capsule h1 {
+      color: #ffffff !important;
+      font-size: 3.2rem;
+      margin: 8px 0 14px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+    .overview-hero-capsule p {
+      color: #e2e8f0 !important;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    /* Substep animations */
+    .substep {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .substep.substep-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Step Dark Theme Variant */
+    .step.dark {
+      background: var(--card-dark-bg);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 40px 90px rgba(0, 0, 0, 0.7);
+    }
+    .step.dark h1, .step.dark h2, .step.dark h3 {
+      color: #ffffff !important;
+    }
+    .step.dark p {
+      color: #e2e8f0 !important;
+    }
+    .step.dark .lead {
+      color: #cbd5e1 !important;
+    }
+    .step.dark .card {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+    }
+    .step.dark .card p { color: #e2e8f0 !important; }
+    .step.dark .card b { color: #ffffff !important; }
+
+    /* Light Step Text Contrast Enforcement: deep slate on white cards */
+    .step:not(.dark):not(#overview) h1,
+    .step:not(.dark):not(#overview) h2,
+    .step:not(.dark):not(#overview) h3 {
+      color: var(--navy-900);
+    }
+    .step:not(.dark):not(#overview) p {
+      color: var(--ink-soft);
+    }
+    .step:not(.dark):not(#overview) .lead {
+      color: var(--ink-soft);
+    }
+    .step:not(.dark):not(#overview) .card b {
+      color: var(--navy-900);
+    }
+    .step:not(.dark):not(#overview) .card p {
+      color: var(--ink-soft);
+    }
+
+    /* ============================================================
+       3. TYPOGRAPHY & COMMON COMPONENTS
+       ============================================================ */
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+      margin: 0 0 12px;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+    h1 { font-size: 3.2rem; font-weight: 900; }
+    h2 { font-size: 2.35rem; font-weight: 800; }
+    h3 { font-size: 1.45rem; font-weight: 700; }
+    p { margin: 0 0 16px; line-height: 1.6; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--blue-600);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+    .step.dark .eyebrow { color: var(--amber-400); }
+    .eyebrow::before {
+      content: "";
+      width: 24px;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--amber-500);
+    }
+    .accent { color: var(--blue-600); }
+    .step.dark .accent { color: #60a5fa; }
+    .mark {
+      background: linear-gradient(transparent 60%, rgba(251, 191, 36, 0.45) 60%);
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+    .lead {
+      font-size: 1.25rem;
+      color: var(--muted);
+      max-width: 820px;
+      margin-bottom: 24px;
+      font-weight: 400;
+    }
+    .step.dark .lead { color: #94a3b8; }
+
+    .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 100px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      font-weight: 700;
+      font-size: 0.82rem;
+      border: 1px solid var(--blue-100);
+    }
+    .step.dark .pill {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #e2e8f0;
+    }
+
+    /* Grids & Layouts */
+    .split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 48px;
+    }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    /* Cards */
+    .card {
+      padding: 24px;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 35px rgba(37, 99, 235, 0.12);
+    }
+    .card b { display: block; font-size: 1.05rem; margin: 12px 0 6px; color: var(--navy-900); }
+    .card p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+
+    .step-no {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 1.15rem;
+    }
+
+    /* Rules row */
+    .rule {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .rule:last-child { border-bottom: 0; }
+    .rule i {
+      display: grid;
+      place-items: center;
+      flex: 0 0 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      font-style: normal;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .rule b { display: block; font-size: 1.05rem; color: var(--navy-900); margin-bottom: 2px; }
+    .rule span { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+
+    /* Visual Guides */
+    .visual-guide {
+      margin: 0;
+      padding: 16px;
+      border-radius: 20px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+    .visual-guide img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+    .visual-guide img:hover { transform: scale(1.02); }
+    .visual-guide figcaption {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      text-align: left;
+    }
+    .visual-guide figcaption b { color: var(--navy-900); }
+
+    /* Callout & Feedbacks */
+    .feedback {
+      margin-top: 18px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: #eff6ff;
+      border-left: 5px solid var(--blue-600);
+      color: #1e3a8a;
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+    .learner-cue {
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: #fffbeb;
+      border-left: 5px solid var(--amber-500);
+      color: #78350f;
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 44px;
+      padding: 0 20px;
+      border-radius: 12px;
+      border: 0;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      background: var(--blue-600);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      background: #1d4ed8;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+    }
+    .btn.secondary {
+      background: #e2e8f0;
+      color: var(--ink);
+      box-shadow: none;
+    }
+    .btn.secondary:hover { background: #cbd5e1; }
+    .btn.amber {
+      background: var(--amber-500);
+      color: var(--navy-900);
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+    }
+    .btn.amber:hover { background: var(--amber-400); }
+
+    /* ============================================================
+       4. INTERACTIVE DEMO TOOLBAR & EDITOR SANDBOX (Step 8)
+       ============================================================ */
+    .sandbox-panel {
+      padding: 24px;
+      border-radius: 20px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+    }
+    .sandbox-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 10px;
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+    }
+    .tool {
+      min-width: 42px;
+      height: 40px;
+      padding: 0 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tool:hover { background: #f1f5f9; border-color: var(--blue-500); }
+    .tool[aria-pressed="true"] {
+      background: var(--blue-600);
+      border-color: var(--blue-600);
+      color: #ffffff;
+    }
+    .tool.amber[aria-pressed="true"] {
+      background: var(--amber-500);
+      border-color: var(--amber-500);
+      color: var(--navy-900);
+    }
+    .sandbox-editor {
+      min-height: 180px;
+      padding: 24px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+    }
+    .editor-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      margin: 0 0 12px;
+      color: var(--navy-900);
+      transition: all 0.25s ease;
+    }
+    .editor-body {
+      font-size: 1rem;
+      margin: 0;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      transition: all 0.25s ease;
+    }
+
+    /* ============================================================
+       5. CHALLENGE / PRACTICE CARDS WITH TIMERS (Steps 9, 13, 15)
+       ============================================================ */
+    .challenge-card {
+      padding: 34px 40px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, #1e3a8a, #0f172a);
+      color: #ffffff;
+      box-shadow: 0 25px 65px rgba(15, 23, 42, 0.4);
+    }
+    .challenge-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .timer-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 130px;
+      padding: 12px 18px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+    }
+    .timer-badge b {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.1rem;
+      color: var(--amber-400);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .timer-badge span {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-top: 4px;
+      font-weight: 700;
+    }
+    .task-list {
+      display: grid;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 1rem;
+    }
+    .task-item i {
+      display: grid;
+      place-items: center;
+      flex: 0 0 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--amber-400);
+      color: var(--navy-900);
+      font-style: normal;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+    }
+    .answer-panel {
+      display: none;
+      margin-top: 16px;
+      padding: 16px 20px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.15);
+      border-left: 4px solid var(--amber-400);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+    .answer-panel.show { display: block; }
+
+    /* Rubric Table on Step 15 */
+    .rubric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .rubric-item {
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      text-align: center;
+    }
+    .rubric-item b {
+      display: block;
+      color: var(--amber-400);
+      font-size: 1.15rem;
+      font-family: 'Outfit', sans-serif;
+      margin-bottom: 4px;
+    }
+
+    /* ============================================================
+       6. INTERACTIVE LIST LAB (Step 12)
+       ============================================================ */
+    .list-lab {
+      padding: 22px;
+      border-radius: 18px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+    }
+    .list-lab-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .list-tabs { display: flex; gap: 8px; }
+    .list-tab {
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .list-tab[aria-pressed="true"] {
+      background: var(--blue-600);
+      border-color: var(--blue-600);
+      color: #ffffff;
+    }
+    .list-example-box {
+      min-height: 140px;
+      padding: 18px 24px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    /* ============================================================
+       7. INTERACTIVE 10-QUESTION QUIZ (Step 16)
+       ============================================================ */
+    .quiz-container {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 28px;
+      align-items: start;
+    }
+    .quiz-card {
+      padding: 30px;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+    .quiz-option-list {
+      display: grid;
+      gap: 10px;
+      margin: 18px 0;
+    }
+    .quiz-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      font-size: 1rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .quiz-btn:hover { background: #eff6ff; border-color: var(--blue-500); }
+    .quiz-btn .letter-badge {
+      display: grid;
+      place-items: center;
+      flex: 0 0 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--blue-100);
+      color: var(--blue-600);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+    }
+    .quiz-btn.correct {
+      background: var(--emerald-100);
+      border-color: var(--emerald-500);
+      color: #065f46;
+    }
+    .quiz-btn.correct .letter-badge {
+      background: var(--emerald-500);
+      color: #ffffff;
+    }
+    .quiz-btn.wrong {
+      background: var(--rose-100);
+      border-color: var(--rose-500);
+      color: #9f1239;
+    }
+    .quiz-btn.wrong .letter-badge {
+      background: var(--rose-500);
+      color: #ffffff;
+    }
+    .quiz-sidebar {
+      padding: 26px;
+      border-radius: 20px;
+      background: var(--navy-900);
+      color: #ffffff;
+      text-align: center;
+    }
+    .score-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--amber-400);
+      line-height: 1;
+      margin: 12px 0 16px;
+    }
+    .quiz-dot-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin: 18px 0;
+    }
+    .quiz-dot {
+      display: grid;
+      place-items: center;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .quiz-dot.done { background: var(--emerald-500); color: #ffffff; }
+
+    /* ============================================================
+       8. FIXED HEADS-UP DISPLAY (HUD) OVERLAYS
+       ============================================================ */
+    .top-hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(16px, 3vw, 40px);
+      background: rgba(7, 14, 32, 0.82);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(18px);
+      color: #ffffff;
+    }
+    .hud-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .brand-icon {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--blue-600), #1d4ed8);
+      color: #ffffff;
+      font-size: 1.25rem;
+      font-weight: 900;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+    .hud-station-tag {
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--amber-400);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .hud-progress-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: min(440px, 36vw);
+    }
+    .hud-progress-labels {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-size: 0.74rem;
+      color: #94a3b8;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    .hud-progress-bar-track {
+      width: 100%;
+      height: 6px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+    }
+    .hud-progress-bar-fill {
+      width: 6%;
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--blue-500), var(--emerald-500));
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hud-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hud-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 40px;
+      padding: 0 14px;
+      border-radius: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .hud-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+    .hud-btn.active {
+      background: var(--blue-600);
+      border-color: var(--blue-500);
+    }
+
+    /* Bottom HUD Bar */
+    .bottom-hud {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+      border-radius: 18px;
+      background: rgba(7, 14, 32, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(16px);
+      color: #ffffff;
+    }
+    .nav-arrow-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 12px;
+      border: 0;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .nav-arrow-btn:hover { background: rgba(255, 255, 255, 0.22); }
+    .nav-arrow-btn.next {
+      background: var(--blue-600);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+    .nav-arrow-btn.next:hover { background: #1d4ed8; }
+    .nav-counter {
+      min-width: 90px;
+      text-align: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+    }
+    .nav-counter b { color: var(--amber-400); }
+    .key-hint {
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+
+    /* Drawers: Notes & Teaching Explanations */
+    .drawer {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      width: min(440px, calc(100vw - 40px));
+      max-height: calc(100vh - 105px);
+      overflow-y: auto;
+      padding: 24px;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+      z-index: 60;
+      transform: translateX(calc(100% + 40px));
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .drawer-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 0;
+      background: #f1f5f9;
+      color: var(--ink);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .teaching-box {
+      margin-top: 10px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border-left: 4px solid var(--blue-500);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+    .teaching-box b { display: block; color: var(--navy-900); text-transform: uppercase; font-size: 0.76rem; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .teaching-box p { margin: 0; }
+
+    /* Lightbox modal for zoom */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: none;
+      place-items: center;
+      padding: 30px;
+      background: rgba(3, 7, 18, 0.88);
+      backdrop-filter: blur(8px);
+    }
+    .lightbox.show { display: grid; }
+    .lightbox-content {
+      max-width: 90vw;
+      max-height: 85vh;
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 20px;
+      position: relative;
+    }
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 75vh;
+      border-radius: 12px;
+      display: block;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: -16px;
+      right: -16px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--rose-500);
+      color: #ffffff;
+      border: 0;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 80px;
+      transform: translate(-50%, 20px);
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: var(--navy-900);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 80;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    /* Spotlight compare states */
+    .spot-title .pretty-title { outline: 4px solid var(--amber-400); background: #fef3c7; border-radius: 8px; }
+    .spot-list .pretty-list { outline: 4px solid var(--blue-500); background: #eff6ff; border-radius: 8px; }
+    .spot-space .pretty-list li { margin: 12px 0; background: #ecfdf5; border-radius: 6px; }
+
+    /* Media responsiveness */
+    @media (max-width: 900px) {
+      .step { width: 92vw; padding: 24px; min-height: 520px; }
+      .split, .grid2, .grid3, .quiz-container { grid-template-columns: 1fr; }
+      .hud-progress-wrap { display: none; }
+      .hud-brand span { display: none; }
+    }
+  </style>
+</head>
+<body class="impress-not-supported">
+
+  <!-- ============================================================
+       TOP FIXED HEADS-UP DISPLAY (HUD)
+       ============================================================ -->
+  <header class="top-hud">
+    <div class="hud-brand">
+      <a href="index.html" class="brand-icon" title="Về trung tâm khóa học">D</a>
+      <span>Docs Lab · Buổi 03</span>
+      <span class="hud-station-tag" id="hudSectionLabel">Mở đầu</span>
+    </div>
+
+    <div class="hud-progress-wrap">
+      <div class="hud-progress-labels">
+        <span id="hudStepTitle">Khởi hành</span>
+        <b id="hudTimeLabel">0–3 phút</b>
+      </div>
+      <div class="hud-progress-bar-track">
+        <div class="hud-progress-bar-fill" id="hudProgressBar"></div>
+      </div>
+    </div>
+
+    <div class="hud-actions">
+      <button class="hud-btn" id="overviewBtn" title="Xem toàn cảnh 3D vũ trụ bài giảng">
+        🔭 <span>Toàn cảnh 3D</span>
+      </button>
+      <button class="hud-btn" id="explainToggleBtn" title="Giải thích mở rộng sư phạm">
+        💡 <span>Sư phạm</span>
+      </button>
+      <button class="hud-btn" id="notesToggleBtn" title="Ghi chú giáo viên">
+        ☷ <span>Ghi chú</span>
+      </button>
+      <button class="hud-btn" id="fullscreenBtn" title="Toàn màn hình">
+        ⛶
+      </button>
+      <a href="index.html" class="hud-btn" title="Về trang khóa học">
+        ⌂
+      </a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       IMPRESS 3D PRESENTATION CONTAINER
+       ============================================================ -->
+  <div id="impress" data-transition-duration="900" data-width="1200" data-height="740">
+
+    <!-- ------------------------------------------------------------
+         STEP 1: KHỞI HÀNH (INTRO)
+         Coords: x=0, y=0, z=0
+         ------------------------------------------------------------ -->
+    <div id="step-intro" class="step dark"
+         data-x="0" data-y="0" data-z="0"
+         data-section="Mở đầu" data-time="0–3 phút"
+         data-title="Từ văn bản thường thành văn bản đẹp"
+         data-notes="Nhắc lại Buổi 2: chỉnh sửa nội dung đúng (Select, Cut, Copy, Paste, Find/Replace). Hôm nay học cách làm tài liệu dễ đọc và có thứ bậc thị giác.">
+      <div class="split">
+        <div>
+          <span class="eyebrow">Buổi 03 · Thời lượng 100 phút</span>
+          <h1>Từ văn bản thường thành <span class="accent">văn bản đẹp.</span></h1>
+          <p class="lead">Dùng chữ, màu, khoảng cách và danh sách để người đọc nắm bắt ý chính ngay trong 3 giây đầu tiên.</p>
+          <div class="pills">
+            <span class="pill">🔤 Font & Cỡ chữ</span>
+            <span class="pill">✍️ Bold · Italic · Underline</span>
+            <span class="pill">📐 Căn lề · Giãn dòng</span>
+            <span class="pill">🔢 Bullet · Numbering</span>
+          </div>
+        </div>
+        <figure class="visual-guide" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15);">
+          <img src="assets/buoi03/truoc-sau.svg" alt="So sánh văn bản trước khi định dạng và sau khi có tiêu đề cùng danh sách">
+          <figcaption style="color: #cbd5e1;"><b>Một nội dung, hai trải nghiệm đọc:</b> Em thấy mắt mình bị thu hút vào đâu đầu tiên?</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 2: MỤC TIÊU & LỘ TRÌNH (GOALS & AGENDA)
+         Coords: x=1400, y=0, z=0
+         ------------------------------------------------------------ -->
+    <div id="step-goals" class="step"
+         data-x="1400" data-y="0" data-z="0"
+         data-section="Mục tiêu" data-time="3–5 phút"
+         data-title="Cuối buổi, em làm được gì?"
+         data-notes="Giới thiệu ba năng lực đầu ra và khung 5 chặng học tập 100 phút. Học sinh tự định dạng tiêu đề, danh sách và hoàn thiện một trang nội quy lớp.">
+      <span class="eyebrow">Mục tiêu & Lộ trình</span>
+      <h2>Cuối buổi 3, em làm chủ những gì?</h2>
+      <div class="grid3" style="margin-top: 24px;">
+        <div class="card">
+          <span class="step-no">1</span>
+          <b>Tạo thứ bậc chữ</b>
+          <p>Lựa chọn font chữ hài hòa, cỡ chữ phân cấp và nhấn mạnh từ khóa có chủ đích.</p>
+        </div>
+        <div class="card">
+          <span class="step-no">2</span>
+          <b>Sắp xếp nhịp đọc</b>
+          <p>Căn lề chuẩn mực, giãn dòng và giãn đoạn thông minh bằng công cụ (không gõ Space/Enter).</p>
+        </div>
+        <div class="card">
+          <span class="step-no">3</span>
+          <b>Sản phẩm thực tế</b>
+          <p>Soạn thảo và chuẩn hóa hoàn chỉnh văn bản “10 quy tắc của lớp em” sẵn sàng in ấn/chia sẻ.</p>
+        </div>
+      </div>
+      <div class="grid4" style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line);">
+        <div style="background: #f8fafc; padding: 14px; border-radius: 12px;">
+          <b style="color: var(--blue-600); display: block; font-size: 0.82rem;">0–15'</b>
+          <span style="font-size: 0.85rem; color: var(--muted);">Quan sát & Nguyên tắc</span>
+        </div>
+        <div style="background: #f8fafc; padding: 14px; border-radius: 12px;">
+          <b style="color: var(--blue-600); display: block; font-size: 0.82rem;">15–35'</b>
+          <span style="font-size: 0.85rem; color: var(--muted);">Chữ, Màu & Tiêu đề</span>
+        </div>
+        <div style="background: #f8fafc; padding: 14px; border-radius: 12px;">
+          <b style="color: var(--blue-600); display: block; font-size: 0.82rem;">35–60'</b>
+          <span style="font-size: 0.85rem; color: var(--muted);">Căn lề & Danh sách</span>
+        </div>
+        <div style="background: #f8fafc; padding: 14px; border-radius: 12px;">
+          <b style="color: var(--blue-600); display: block; font-size: 0.82rem;">60–100'</b>
+          <span style="font-size: 0.85rem; color: var(--muted);">Thực hành lớn & Quiz</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 3: KHỞI ĐỘNG (BEFORE / AFTER)
+         Coords: x=2800, y=0, z=-200, rotate=10
+         ------------------------------------------------------------ -->
+    <div id="step-before-after" class="step"
+         data-x="2800" data-y="0" data-z="-200" data-rotate="10"
+         data-section="Khởi động" data-time="5–10 phút"
+         data-title="Before / After: Khác biệt ở đâu?"
+         data-notes="Cho học sinh so sánh 2 bản cùng nội dung. Hỏi: Mắt nhìn vào đâu trước? Nhấn mạnh: cùng chữ nhưng định dạng làm thay đổi tốc độ đọc.">
+      <span class="eyebrow">Khởi động · Before vs After</span>
+      <h2>Cùng nội dung, khác <span class="mark">trải nghiệm đọc</span></h2>
+      <div class="grid2" style="margin-top: 18px;">
+        <div class="card" style="background: #fff5f5; border-color: #fecdd3;">
+          <h3 style="color: var(--rose-600); font-size: 1.15rem;">❌ Trước khi định dạng (Bản thô)</h3>
+          <p style="font-family: Arial, sans-serif; font-size: 0.95rem; line-height: 1.6; color: #475569;">
+            5 cách học tập hiệu quả chuẩn bị bài trước khi đến lớp ghi chú các ý quan trọng ôn lại bài mỗi ngày hỏi khi chưa hiểu nghỉ ngơi hợp lý
+          </p>
+          <div style="font-size: 0.82rem; color: var(--rose-600); font-weight: 700;">
+            ⚠️ Không có tiêu đề, không dòng ngắt, mắt phải đọc từng chữ mới hiểu.
+          </div>
+        </div>
+        <div class="card" id="afterCard" style="background: #f0fdf4; border-color: #bbf7d0;">
+          <h3 style="color: var(--emerald-600); font-size: 1.15rem;">✅ Sau khi định dạng chuẩn</h3>
+          <div class="pretty-title" style="color: var(--blue-600); font-size: 1.15rem; font-weight: 800; text-align: center; margin-bottom: 8px;">
+            5 CÁCH HỌC TẬP HIỆU QUẢ
+          </div>
+          <ol class="pretty-list" style="margin: 0; padding-left: 24px; font-size: 0.95rem; color: #1e293b; line-height: 1.6;">
+            <li>Chuẩn bị bài trước khi đến lớp</li>
+            <li>Ghi chú các ý quan trọng</li>
+            <li>Ôn lại bài mỗi ngày</li>
+            <li>Hỏi khi chưa hiểu</li>
+            <li>Nghỉ ngơi hợp lý</li>
+          </ol>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 16px;">
+        <button class="btn secondary" id="spotlightBtn" type="button">
+          ▶ Làm nổi bật từng cải tiến (Tiêu đề → Danh sách → Giãn cách)
+        </button>
+        <span class="tiny" id="spotlightText" style="color: var(--muted); font-size: 0.85rem;">Bấm để soi từng điểm khác biệt.</span>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 4: NGUYÊN TẮC NỀN TẢNG (SELECTION RULE)
+         Coords: x=2800, y=1300, z=0, rotate-x=20
+         ------------------------------------------------------------ -->
+    <div id="step-selection-rule" class="step"
+         data-x="2800" data-y="1300" data-z="0" data-rotate-x="20"
+         data-section="Nguyên tắc" data-time="10–15 phút"
+         data-title="Chọn đúng phần trước khi bấm nút"
+         data-notes="Phân biệt định dạng ký tự (áp dụng vào chữ được chọn) và định dạng đoạn (áp dụng cho cả đoạn chứa con trỏ). Nhắc nguyên tắc: Bôi đen đúng phạm vi.">
+      <div class="split">
+        <div>
+          <span class="eyebrow">Nguyên tắc cốt lõi</span>
+          <h2>Chọn đúng phần trước khi <span class="accent">bấm công cụ</span></h2>
+          <p class="lead">Đổi kiểu chữ: chọn một từ/câu. Căn lề hoặc giãn dòng: đặt con trỏ vào đoạn hoặc chọn cả đoạn.</p>
+          <div class="rule">
+            <i>1</i>
+            <div>
+              <b>Chọn văn bản (Selection)</b>
+              <span>Dùng chuột bôi đen chính xác từ, câu hoặc đoạn cần biến đổi.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <i>2</i>
+            <div>
+              <b>Chọn công cụ phù hợp</b>
+              <span>Áp dụng nút định dạng trên thanh công cụ của Google Docs.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <i>3</i>
+            <div>
+              <b>Đọc lại và kiểm tra</b>
+              <span>Quan sát sự hài hòa và tính nhất quán trên toàn bộ trang.</span>
+            </div>
+          </div>
+        </div>
+        <figure class="visual-guide">
+          <img src="assets/buoi03/chon-pham-vi.svg" alt="Minh họa chọn một từ và chọn cả đoạn trước khi định dạng">
+          <figcaption><b>Chỉ vào hình:</b> Vùng vàng là chọn một từ; vùng xanh là chọn cả đoạn. Muốn căn giữa tiêu đề, ta đặt con trỏ ở đâu?</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 5: TRẠM 1: FONT & CỠ CHỮ (TYPOGRAPHY HIERARCHY)
+         Coords: x=1400, y=1300, z=200, rotate-y=-20
+         ------------------------------------------------------------ -->
+    <div id="step-font-size" class="step"
+         data-x="1400" data-y="1300" data-z="200" data-rotate-y="-20"
+         data-section="Chữ và Cỡ" data-time="15–20 phút"
+         data-title="Font và Cỡ chữ tạo thứ bậc thị giác"
+         data-notes="Demo đổi tiêu đề lên cỡ 20pt. Thân bài 11-12pt. Thảo luận vì sao không dùng quá 2-3 font trong cùng một trang văn bản.">
+      <span class="eyebrow">Bộ công cụ 1 · Typography</span>
+      <h2>Font và Font Size tạo <span class="accent">thứ bậc thị giác</span></h2>
+      <div class="grid4" style="margin-top: 18px;">
+        <div class="card">
+          <b style="color: var(--blue-600); font-size: 1.2rem;">Font chữ</b>
+          <p>Kiểu chữ. Ưu tiên font dễ đọc như Arial, Roboto, Times New Roman.</p>
+        </div>
+        <div class="card">
+          <b style="color: var(--blue-600); font-size: 1.2rem;">20 pt</b>
+          <p>Cỡ chữ chuẩn gợi ý cho tiêu đề chính của bài thực hành.</p>
+        </div>
+        <div class="card">
+          <b style="color: var(--blue-600); font-size: 1.2rem;">11–12 pt</b>
+          <p>Cỡ chữ tiêu chuẩn cho phần nội dung thân bài để đọc lâu không mỏi mắt.</p>
+        </div>
+        <div class="card">
+          <b style="color: var(--blue-600); font-size: 1.2rem;">Nhất quán</b>
+          <p>Cùng cấp độ nội dung thì luôn giữ cùng một cỡ và một kiểu chữ.</p>
+        </div>
+      </div>
+      <figure class="visual-guide" style="margin-top: 20px;">
+        <img src="assets/buoi03/thu-bac-chu.svg" alt="Minh họa ba cấp cỡ chữ trong cùng một tài liệu">
+        <figcaption><b>Quy tắc dễ nhớ:</b> Tiêu đề lớn nhất → Ý phụ nhỏ hơn → Nội dung ổn định. Cho học sinh che nhãn cỡ chữ rồi đoán đâu là tiêu đề.</figcaption>
+      </figure>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 6: TRẠM 2: NHẤN CÓ CHỦ ĐÍCH (BOLD / ITALIC / UNDERLINE)
+         Coords: x=0, y=1300, z=400, rotate-z=-10
+         ------------------------------------------------------------ -->
+    <div id="step-emphasis" class="step"
+         data-x="0" data-y="1300" data-z="400" data-rotate-z="-10"
+         data-section="Nhấn mạnh" data-time="20–25 phút"
+         data-title="Bold · Italic · Underline: Nhấn có chủ đích"
+         data-notes="Demo B/I/U. Hỏi: Nên in đậm từ nào trong câu 'Hạn nộp bài là thứ Sáu'? Giải thích: Chỉ bôi đậm từ khóa quan trọng nhất.">
+      <span class="eyebrow">Bộ công cụ 2 · Nhấn mạnh</span>
+      <h2>Bold, Italic, Underline: <span class="mark">nhấn có chủ đích</span></h2>
+      <div class="grid3" style="margin-top: 20px;">
+        <div class="card">
+          <span class="step-no" style="font-weight: 900;">B</span>
+          <b>Bold · In đậm (Ctrl+B)</b>
+          <p>Dành riêng cho tiêu đề, từ khóa định nghĩa, hoặc mốc thời gian quan trọng.</p>
+        </div>
+        <div class="card">
+          <span class="step-no" style="font-style: italic;">I</span>
+          <b>Italic · In nghiêng (Ctrl+I)</b>
+          <p>Dành cho lời dặn dò, lưu ý nhẹ nhàng, hoặc trích dẫn ngắn.</p>
+        </div>
+        <div class="card">
+          <span class="step-no" style="text-decoration: underline;">U</span>
+          <b>Underline · Gạch chân (Ctrl+U)</b>
+          <p>Dùng rất tiết chế! Tránh gạch chân quá nhiều vì dễ gây nhầm với đường link web.</p>
+        </div>
+      </div>
+      <div class="feedback">
+        <b>Ví dụ thực tế:</b> <strong>Hạn nộp bài:</strong> thứ Sáu tuần này. <em>(Nhớ kiểm tra tên tài liệu trước khi nộp).</em>
+      </div>
+      <div class="learner-cue">
+        <b>💡 Mini thử thách 30 giây:</b> Thử tưởng tượng nếu cả câu đều in đậm, người đọc có còn tìm được chữ "thứ Sáu" nhanh nữa không?
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 7: TRẠM 3: MÀU CHỮ VS HIGHLIGHT (TEXT COLOR & HIGHLIGHT)
+         Coords: x=-1400, y=1300, z=200, rotate-y=25
+         ------------------------------------------------------------ -->
+    <div id="step-color-highlight" class="step"
+         data-x="-1400" data-y="1300" data-z="200" data-rotate-y="25"
+         data-section="Màu & Tô sáng" data-time="25–30 phút"
+         data-title="Màu chữ và Highlight khác nhau thế nào?"
+         data-notes="Text Color đổi màu nét chữ; Highlight tô nền sau chữ. Luôn giữ độ tương phản tốt: chữ tối trên nền sáng. Không dùng highlight toàn trang.">
+      <div class="split">
+        <div>
+          <span class="eyebrow">Bộ công cụ 3 · Màu sắc</span>
+          <h2>Màu chữ và <span class="accent">Highlight</span> khác nhau thế nào?</h2>
+          <div class="rule">
+            <i>🎨</i>
+            <div>
+              <b>Text Color (Màu chữ)</b>
+              <span>Thay đổi màu của từng nét chữ. Rất hợp cho tiêu đề chính hoặc các danh mục bài học.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <i>✦</i>
+            <div>
+              <b>Highlight (Màu tô sáng)</b>
+              <span>Tô một dải màu nền phía sau chữ, giống như dùng bút dạ quang highlight trên sách vở.</span>
+            </div>
+          </div>
+          <div class="feedback">
+            <b>Quy tắc vàng:</b> Chỉ dùng tối đa 1–2 màu nhấn trong một trang. Luôn đảm bảo chữ rõ ràng, dễ đọc trên nền giấy trắng.
+          </div>
+        </div>
+        <figure class="visual-guide">
+          <img src="assets/buoi03/mau-va-to-sang.svg" alt="Minh họa sự khác nhau giữa màu chữ và tô sáng">
+          <figcaption><b>Quan sát:</b> Bên trái màu nằm trên nét chữ; bên phải màu nằm dưới nền chữ. Nếu tô vàng cả trang thì còn từ nào nổi bật nữa không?</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 8: PHÒNG THÍ NGHIỆM TƯƠNG TÁC (SANDBOX DEMO)
+         Coords: x=-1400, y=0, z=0, scale=1.15
+         ------------------------------------------------------------ -->
+    <div id="step-demo-lab" class="step"
+         data-x="-1400" data-y="0" data-z="0" data-scale="1.15"
+         data-section="Demo Lab" data-time="30–35 phút"
+         data-title="Phòng thí nghiệm định dạng tương tác"
+         data-notes="Mời học sinh trực tiếp bấm các nút trên slide để quan sát kết quả tức thì. Sau đó bấm nút Đặt lại và yêu cầu học sinh mô tả nút nào tác động lên chữ, nút nào tác động lên cả đoạn.">
+      <span class="eyebrow">Phòng thí nghiệm tương tác · Live Sandbox</span>
+      <h2>Thử nghiệm định dạng ngay trên <span class="accent">văn bản mẫu</span></h2>
+      <div class="sandbox-panel">
+        <div class="sandbox-toolbar" role="toolbar" aria-label="Thanh công cụ mô phỏng">
+          <button class="tool" data-style="bold" aria-pressed="false" title="In đậm (Bold)"><b>B</b></button>
+          <button class="tool" data-style="italic" aria-pressed="false" title="In nghiêng (Italic)"><i>I</i></button>
+          <button class="tool" data-style="underline" aria-pressed="false" title="Gạch chân (Underline)"><u>U</u></button>
+          <button class="tool" data-style="size" aria-pressed="false">Cỡ chữ 20pt</button>
+          <button class="tool" data-style="color" aria-pressed="false">Màu xanh</button>
+          <button class="tool amber" data-style="highlight" aria-pressed="false">Tô sáng vàng</button>
+          <button class="tool" data-style="center" aria-pressed="false">Căn giữa</button>
+          <button class="tool" data-style="spacing" aria-pressed="false">Giãn dòng 1.8</button>
+          <button class="tool" id="resetDemoBtn" style="margin-left: auto; color: var(--rose-600); border-color: var(--rose-500);">↺ Đặt lại</button>
+        </div>
+        <div class="sandbox-editor">
+          <h3 class="editor-title" id="demoTitle">5 CÁCH HỌC TẬP HIỆU QUẢ</h3>
+          <p class="editor-body" id="demoBody">Chuẩn bị bài trước khi đến lớp, ghi chép cẩn thận và ôn lại bài mỗi ngày giúp em tiến bộ nhanh chóng.</p>
+        </div>
+      </div>
+      <figure class="visual-guide" style="margin-top: 14px;">
+        <img src="assets/buoi03/thanh-cong-cu.svg" alt="Sơ đồ mô phỏng thanh công cụ định dạng Google Docs">
+        <figcaption><b>Vị trí trên Google Docs thật:</b> Hãy bôi đen chữ trước khi nhấn các nút tương ứng trên thanh công cụ.</figcaption>
+      </figure>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 9: THỬ THÁCH 1: BIẾN ĐỔI TIÊU ĐỀ
+         Coords: x=-1400, y=-1300, z=200, rotate-x=-20
+         ------------------------------------------------------------ -->
+    <div id="step-challenge-1" class="step"
+         data-x="-1400" data-y="-1300" data-z="200" data-rotate-x="-20"
+         data-section="Thực hành 1" data-time="35–45 phút"
+         data-title="Thực hành nhỏ 1: Biến đổi tiêu đề"
+         data-notes="Học sinh mở Google Docs thật. Bật đồng hồ 10 phút. Yêu cầu làm theo thứ tự: Cỡ 20 -> Bold -> Căn giữa -> Đổi màu -> Thử Undo (Ctrl+Z) và Redo (Ctrl+Y).">
+      <div class="challenge-card">
+        <div class="challenge-header">
+          <div>
+            <span class="eyebrow" style="color: var(--amber-400);">Thử thách nhỏ 1</span>
+            <h2 style="margin: 4px 0 8px;">Biến đổi tiêu đề chuyên nghiệp</h2>
+            <p style="color: #cbd5e1; margin: 0;">Văn bản gốc cần xử lý: <strong>5 CÁCH HỌC TẬP HIỆU QUẢ</strong></p>
+          </div>
+          <div class="timer-badge">
+            <b id="timerDisplay1">10:00</b>
+            <span>THỜI GIAN LÀM</span>
+          </div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <i>1</i>
+            <span>Chọn toàn bộ dòng tiêu đề và đặt cỡ chữ thành <strong>20 pt</strong>.</span>
+          </div>
+          <div class="task-item">
+            <i>2</i>
+            <span>In đậm (Bold), căn giữa (Align Center) và đổi sang một màu chữ trang nhã.</span>
+          </div>
+          <div class="task-item">
+            <i>3</i>
+            <span>Nhấn Undo (Ctrl+Z) một lần để quan sát, sau đó nhấn Redo (Ctrl+Y) để hoàn tất.</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 18px;">
+          <button class="btn amber" data-timer-btn="timerDisplay1">▶ Bắt đầu đếm giờ</button>
+          <button class="btn secondary" data-toggle-answer="answerBox1">Xem tiêu chí chấm</button>
+        </div>
+        <div class="answer-panel" id="answerBox1">
+          ✅ <strong>Đạt yêu cầu khi:</strong> Tiêu đề đạt cỡ 20, in đậm, căn giữa chính xác, màu sắc tương phản rõ ràng và học sinh giải thích được thao tác Undo/Redo đã tác động gì.
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 10: TRẠM 4: CĂN LỀ CHUẨN MỰC (ALIGNMENT)
+         Coords: x=0, y=-1300, z=400, rotate-z=15
+         ------------------------------------------------------------ -->
+    <div id="step-alignment" class="step"
+         data-x="0" data-y="-1300" data-z="400" data-rotate-z="15"
+         data-section="Căn chỉnh" data-time="45–50 phút"
+         data-title="Căn lề bằng công cụ, không gõ phím Space"
+         data-notes="Phân biệt căn lề bằng Align với việc gõ nhiều dấu cách (Space). Nhấn mạnh: gõ Space sẽ làm tài liệu lệch ngay khi thay đổi cỡ chữ hoặc thêm từ.">
+      <span class="eyebrow">Bộ công cụ 4 · Định dạng đoạn</span>
+      <h2>Căn lề bằng công cụ, <span class="mark">tuyệt đối không gõ Space</span></h2>
+      <div class="grid3" style="margin-top: 20px;">
+        <div class="card">
+          <span class="step-no">≡</span>
+          <b>Căn trái · Align Left (Ctrl+Shift+L)</b>
+          <p>Mặc định cho hầu hết các đoạn văn bản thân bài và danh sách để mắt đọc tự nhiên.</p>
+        </div>
+        <div class="card">
+          <span class="step-no">☰</span>
+          <b>Căn giữa · Center (Ctrl+Shift+E)</b>
+          <p>Rất phù hợp cho tiêu đề chính, tên tác giả, hoặc các câu khẩu hiệu ngắn gọn.</p>
+        </div>
+        <div class="card">
+          <span class="step-no">≣</span>
+          <b>Căn phải · Align Right (Ctrl+Shift+R)</b>
+          <p>Phù hợp cho một số thông tin đặc thù như ngày tháng năm, chữ ký ở góc dưới.</p>
+        </div>
+      </div>
+      <figure class="visual-guide" style="margin-top: 20px;">
+        <img src="assets/buoi03/can-le.svg" alt="Ba cách căn lề: trái, giữa và phải">
+        <figcaption><b>Thí nghiệm tư duy:</b> Nếu thêm chữ vào tiêu đề căn giữa bằng công cụ, chữ tự tỏa đều 2 bên. Nếu căn bằng phím Space, tiêu đề sẽ lập tức bị lệch sang một bên!</figcaption>
+      </figure>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 11: TRẠM 5: NHỊP THỞ TÀI LIỆU (SPACING)
+         Coords: x=1400, y=-1300, z=200, rotate-y=-20
+         ------------------------------------------------------------ -->
+    <div id="step-spacing" class="step"
+         data-x="1400" data-y="-1300" data-z="200" data-rotate-y="-20"
+         data-section="Khoảng cách" data-time="50–55 phút"
+         data-title="Line Spacing vs Paragraph Spacing"
+         data-notes="Phân biệt Line Spacing (giãn dòng trong đoạn) và Paragraph Spacing (giãn giữa 2 đoạn). Nghiêm cấm gõ nhiều phím Enter trống để tạo khoảng cách.">
+      <div class="split">
+        <div>
+          <span class="eyebrow">Bộ công cụ 5 · Nhịp thở văn bản</span>
+          <h2>Line Spacing và Paragraph Spacing</h2>
+          <div class="rule">
+            <i>↕</i>
+            <div>
+              <b>Line Spacing (Giãn dòng)</b>
+              <span>Khoảng cách giữa các dòng trong cùng một đoạn văn (ví dụ: 1.15 hoặc 1.5 dòng).</span>
+            </div>
+          </div>
+          <div class="rule">
+            <i>↧</i>
+            <div>
+              <b>Paragraph Spacing (Giãn đoạn)</b>
+              <span>Khoảng cách trước (Add space before) hoặc sau (Add space after) mỗi đoạn văn.</span>
+            </div>
+          </div>
+          <div class="feedback">
+            <b>Cảnh báo thói quen xấu:</b> Không nhấn phím Enter 3–4 lần liên tục để đẩy chữ xuống! Hãy để Paragraph Spacing tự động tạo khoảng cách đẹp và ổn định.
+          </div>
+        </div>
+        <figure class="visual-guide">
+          <img src="assets/buoi03/gian-dong-doan.svg" alt="Sơ đồ giãn dòng trong đoạn và giãn đoạn giữa hai đoạn">
+          <figcaption><b>Phân biệt bằng mắt:</b> Mũi tên vàng chỉ khoảng giữa các dòng; mũi tên xanh chỉ khoảng giữa hai đoạn. Muốn tách 2 đoạn xa nhau, ta chỉnh mục nào?</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 12: TRẠM 6: TỔ CHỨC DANH SÁCH (BULLET VS NUMBERING)
+         Coords: x=2800, y=-1300, z=0, rotate-x=15
+         ------------------------------------------------------------ -->
+    <div id="step-lists" class="step"
+         data-x="2800" data-y="-1300" data-z="0" data-rotate-x="15"
+         data-section="Danh sách" data-time="55–60 phút"
+         data-title="Bullet hay Numbering?"
+         data-notes="Bullet cho nhóm ý ngang hàng không cần thứ tự (đồ dùng học tập). Numbering cho quy trình, các bước, thứ tự ưu tiên. Thử nghiệm ngay trong List Lab.">
+      <span class="eyebrow">Bộ công cụ 6 · Tổ chức ý</span>
+      <h2>Khi nào dùng Bullet? Khi nào dùng Numbering?</h2>
+      <div class="list-lab" style="margin-top: 16px;">
+        <div class="list-lab-head">
+          <h3 style="margin: 0; font-size: 1.15rem;">Thử nghiệm với danh sách đồ dùng học tập</h3>
+          <div class="list-tabs">
+            <button class="list-tab" data-mode="raw">Văn bản thường</button>
+            <button class="list-tab" data-mode="bullet" aria-pressed="true">• Bullet</button>
+            <button class="list-tab" data-mode="number">1. Numbering</button>
+          </div>
+        </div>
+        <div class="list-example-box" id="listPreviewBox"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+          <p id="listExplanationText" style="margin: 0; font-size: 0.88rem; color: var(--muted);"></p>
+          <button class="btn secondary" id="addRulerBtn" type="button" style="height: 38px;">+ Thêm Thước kẻ</button>
+        </div>
+      </div>
+      <div class="grid2" style="margin-top: 18px;">
+        <div class="card" style="padding: 16px;">
+          <b>• Bullet (Gạch đầu dòng)</b>
+          <p>Dành cho các ý <strong>ngang hàng nhau</strong>, không quan trọng trước sau (ví dụ: nguyên liệu làm bánh, đồ dùng trong cặp).</p>
+        </div>
+        <div class="card" style="padding: 16px;">
+          <b>1. Numbering (Đánh số tự động)</b>
+          <p>Dành cho <strong>quy trình</strong>, các bước thực hiện, hoặc bảng xếp hạng cần số thứ tự rõ ràng.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 13: THỬ THÁCH 2: CẶP SÁCH CỦA EM
+         Coords: x=4200, y=-1300, z=300, rotate-y=30
+         ------------------------------------------------------------ -->
+    <div id="step-challenge-2" class="step"
+         data-x="4200" data-y="-1300" data-z="300" data-rotate-y="30"
+         data-section="Thực hành 2" data-time="60–70 phút"
+         data-title="Thực hành nhỏ 2: Cặp sách của em"
+         data-notes="Học sinh nhập 5 dòng đồ dùng, bôi đen cả 5 dòng và bấm Bullet. Sau đó chuyển sang Numbering và thêm một món mới để chứng kiến số tự động nhảy.">
+      <div class="challenge-card">
+        <div class="challenge-header">
+          <div>
+            <span class="eyebrow" style="color: var(--amber-400);">Thử thách nhỏ 2</span>
+            <h2 style="margin: 4px 0 8px;">Cặp sách của em · Danh sách thông minh</h2>
+            <p style="color: #cbd5e1; margin: 0;">Chuyển 5 dòng văn bản rời rạc thành danh sách có cấu trúc.</p>
+          </div>
+          <div class="timer-badge">
+            <b id="timerDisplay2">10:00</b>
+            <span>THỜI GIAN LÀM</span>
+          </div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <i>1</i>
+            <span>Gõ 5 dòng: <em>Sách giáo khoa · Vở bài tập · Bút viết · Thước kẻ · Máy tính bỏ túi</em>.</span>
+          </div>
+          <div class="task-item">
+            <i>2</i>
+            <span>Bôi đen 5 dòng và chuyển thành danh sách <strong>Bullet</strong> tự động.</span>
+          </div>
+          <div class="task-item">
+            <i>3</i>
+            <span>Đổi sang <strong>Numbering</strong>, sau đó chèn thêm <em>Hộp bút</em> vào giữa và xem các số tự dời!</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 18px;">
+          <button class="btn amber" data-timer-btn="timerDisplay2">▶ Bắt đầu đếm giờ</button>
+          <button class="btn secondary" data-toggle-answer="answerBox2">Xem tiêu chí chấm</button>
+        </div>
+        <div class="answer-panel" id="answerBox2">
+          ✅ <strong>Đạt yêu cầu khi:</strong> Danh sách hiển thị đủ các món, sử dụng đúng nút Bullet/Numbering của phần mềm (không tự gõ dấu chấm tròn hay gõ số 1, 2 bằng tay).
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 14: THỬ THÁCH 3: TRỪ TÀ SPACE & ENTER
+         Coords: x=4200, y=0, z=200, rotate-z=-20
+         ------------------------------------------------------------ -->
+    <div id="step-challenge-3" class="step"
+         data-x="4200" data-y="0" data-z="200" data-rotate-z="-20"
+         data-section="Thực hành 3" data-time="70–80 phút"
+         data-title="Thực hành nhỏ 3: Sửa lỗi trình bày"
+         data-notes="Chiếu tài liệu căn bằng phím Space và Enter sai. Học sinh dùng Align Center và Paragraph Spacing để dọn dẹp tài liệu sạch sẽ và chuyên nghiệp.">
+      <span class="eyebrow">Thử thách nhỏ 3 · Tinh chỉnh bố cục</span>
+      <h2>Sửa tài liệu căn bằng <span class="accent">Space và Enter thừa</span></h2>
+      <div class="grid2" style="margin-top: 20px;">
+        <div class="card" style="background: #fff1f2; border-color: #fecdd3; font-family: monospace; white-space: pre-wrap; font-size: 0.95rem; line-height: 1.8;">
+       NỘI QUY LỚP EM
+
+
+1. Đi học đúng giờ.    
+
+
+2. Giữ lớp sạch sẽ.
+        </div>
+        <div class="card">
+          <h3 style="color: var(--blue-600); font-size: 1.2rem;">3 bước chuẩn hóa chuyên nghiệp</h3>
+          <div class="rule">
+            <i>1</i>
+            <div>
+              <b>Xóa hết các dấu Space thừa ở đầu dòng</b>
+              <span>Đặt con trỏ vào tiêu đề rồi bấm nút <strong>Align Center</strong>.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <i>2</i>
+            <div>
+              <b>Xóa các dòng Enter trống</b>
+              <span>Sử dụng <strong>Paragraph Spacing</strong> (Add space after paragraph) để tạo khoảng cách giữa các điều.</span>
+            </div>
+          </div>
+          <div class="rule">
+            <i>3</i>
+            <div>
+              <b>Kiểm tra bằng cách chèn thêm từ</b>
+              <span>Nếu văn bản vẫn giữ nguyên bố cục cân đối thì em đã làm chuẩn 100%!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="learner-cue">
+        <b>💡 Bí kíp kiểm chứng:</b> Đổi cỡ chữ tiêu đề lên 24pt. Nếu nó vẫn nằm giữa trang là căn đúng; nếu nó trôi dạt sang bên phải là do vẫn còn phím Space ẩn!
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 15: SẢN PHẨM LỚN: 10 QUY TẮC CỦA LỚP EM
+         Coords: x=4200, y=1300, z=0, scale=1.2
+         ------------------------------------------------------------ -->
+    <div id="step-final-project" class="step"
+         data-x="4200" data-y="1300" data-z="0" data-scale="1.2"
+         data-section="Bài tổng hợp" data-time="80–90 phút"
+         data-title="Sản phẩm lớn: 10 quy tắc của lớp em"
+         data-notes="Học sinh tạo tài liệu mới trên Drive: 10 quy tắc của lớp em. Yêu cầu: Tiêu đề nổi bật, đoạn giới thiệu 2-3 câu, 10 điều đánh số Numbering, highlight 1 câu then chốt.">
+      <div class="challenge-card">
+        <div class="challenge-header">
+          <div>
+            <span class="eyebrow" style="color: var(--amber-400);">Sản phẩm thực tế cuối buổi</span>
+            <h2 style="margin: 4px 0 8px;">10 quy tắc của lớp em</h2>
+            <p style="color: #cbd5e1; margin: 0;">Tài liệu hoàn chỉnh kết hợp toàn bộ kỹ năng đã học trong buổi 3.</p>
+          </div>
+          <div class="timer-badge">
+            <b id="timerDisplay3">10:00</b>
+            <span>THỜI GIAN LÀM</span>
+          </div>
+        </div>
+        <div class="task-list">
+          <div class="task-item">
+            <i>1</i>
+            <span>Tiêu đề nổi bật: Cỡ 20pt, in đậm, căn giữa, màu sắc đẹp mắt.</span>
+          </div>
+          <div class="task-item">
+            <i>2</i>
+            <span>Đoạn mở đầu giới thiệu 2–3 câu với giãn dòng (Line Spacing) dễ đọc.</span>
+          </div>
+          <div class="task-item">
+            <i>3</i>
+            <span>Viết đúng 10 quy tắc bằng công cụ <strong>Numbering tự động</strong>.</span>
+          </div>
+          <div class="task-item">
+            <i>4</i>
+            <span>Tô sáng (Highlight) một câu quan trọng nhất mà em tâm đắc.</span>
+          </div>
+        </div>
+        <div class="rubric-grid">
+          <div class="rubric-item">
+            <b>2 điểm</b>
+            <span>Tiêu đề thứ bậc</span>
+          </div>
+          <div class="rubric-item">
+            <b>2 điểm</b>
+            <span>Đoạn giới thiệu</span>
+          </div>
+          <div class="rubric-item">
+            <b>4 điểm</b>
+            <span>10 quy tắc Numbering</span>
+          </div>
+          <div class="rubric-item">
+            <b>2 điểm</b>
+            <span>Highlight & Khoảng cách</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 14px;">
+          <button class="btn amber" data-timer-btn="timerDisplay3">▶ Bắt đầu đếm giờ</button>
+          <button class="btn secondary" data-toggle-answer="answerBox3">Checklist tự chấm bài</button>
+        </div>
+        <div class="answer-panel" id="answerBox3">
+          📋 <strong>Checklist học sinh:</strong> [ ] Tên file đúng quy chuẩn · [ ] Tiêu đề cỡ 20 căn giữa · [ ] Đủ 10 số tự động · [ ] Có 1 câu Highlight vàng · [ ] Không dùng Space/Enter thủ công · [ ] Đã lưu vào Drive.
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 16: ĐẤU TRƯỜNG QUIZ (10 CÂU TRẮC NGHIỆM)
+         Coords: x=2800, y=2600, z=300, rotate-x=-25
+         ------------------------------------------------------------ -->
+    <div id="step-quiz" class="step"
+         data-x="2800" data-y="2600" data-z="300" data-rotate-x="-25"
+         data-section="Quiz" data-time="90–98 phút"
+         data-title="Đấu trường Quiz: 10 câu trắc nghiệm"
+         data-notes="10 câu hỏi kiểm tra kỹ năng chọn công cụ theo tình huống thực tế. Mỗi câu có giải thích củng cố sư phạm ngay sau khi bấm.">
+      <span class="eyebrow">Đấu trường kiến thức · Thử thách 10 câu</span>
+      <h2>Kiểm tra cuối buổi: Em định dạng thế nào?</h2>
+      <div class="quiz-container" style="margin-top: 16px;">
+        <div class="quiz-card">
+          <div class="pill" id="quizCountLabel">Câu 1 / 10</div>
+          <h3 id="quizQuestionText" style="margin: 14px 0 16px; font-size: 1.25rem;">Đang tải câu hỏi...</h3>
+          <div class="quiz-option-list" id="quizOptionList"></div>
+          <div class="feedback" id="quizFeedbackBox" style="margin-top: 14px;">Chọn đáp án đúng nhất.</div>
+          <div style="margin-top: 16px;">
+            <button class="btn" id="quizNextBtn" style="display: none;">Câu tiếp theo →</button>
+          </div>
+        </div>
+        <aside class="quiz-sidebar">
+          <span style="font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">Điểm số của em</span>
+          <div class="score-display">
+            <span id="quizScoreNumber">0</span>/10
+          </div>
+          <button class="btn secondary" id="quizResetBtn" style="width: 100%; height: 38px; font-size: 0.85rem;">↺ Làm lại từ đầu</button>
+          <div class="quiz-dot-grid" id="quizDotsContainer"></div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 17: TỔNG KẾT & BÀI VỀ NHÀ (SUMMARY & HOMEWORK)
+         Coords: x=0, y=2600, z=100
+         ------------------------------------------------------------ -->
+    <div id="step-summary" class="step dark"
+         data-x="0" data-y="2600" data-z="100"
+         data-section="Tổng kết" data-time="98–100 phút"
+         data-title="Tổng kết Buổi 3 & Bài tập về nhà"
+         data-notes="Chốt lại 3 nguyên tắc lớn: Thứ bậc chữ, khoảng cách bằng công cụ, danh sách tự động. Hướng dẫn bài tập về nhà: Thực đơn bữa sáng lành mạnh (Google Docs + PDF).">
+      <span class="eyebrow">Hoàn thành Buổi 3</span>
+      <h1>Đẹp là <span class="accent">rõ ý</span> và dễ đọc.</h1>
+      <div class="grid3" style="margin: 24px 0;">
+        <div class="card" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); color: #fff;">
+          <b style="color: var(--amber-400);">1. Chữ và Màu sắc</b>
+          <p style="color: #cbd5e1;">Tiêu đề nổi bật, phân cấp rõ ràng; nhấn mạnh có chủ đích bằng Bold/Italic; màu sắc tương phản cao.</p>
+        </div>
+        <div class="card" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); color: #fff;">
+          <b style="color: var(--amber-400);">2. Khoảng cách thở</b>
+          <p style="color: #cbd5e1;">Căn lề bằng Align và giãn đoạn bằng Paragraph Spacing; tuyệt đối không dùng phím Space hay Enter thừa.</p>
+        </div>
+        <div class="card" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); color: #fff;">
+          <b style="color: var(--amber-400);">3. Danh sách khoa học</b>
+          <p style="color: #cbd5e1;">Bullet cho nhóm ý ngang hàng; Numbering cho quy trình các bước để máy tự động quản lý số thứ tự.</p>
+        </div>
+      </div>
+      <div class="challenge-card" style="padding: 24px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16);">
+        <h3 style="color: var(--amber-400); margin: 0 0 8px;">🏠 Bài tập về nhà: "Thực đơn bữa sáng lành mạnh"</h3>
+        <p style="margin: 0; color: #e2e8f0; font-size: 0.95rem; line-height: 1.6;">
+          Tạo tài liệu gồm: Tiêu đề nổi bật · Danh sách 5 món ăn sáng bằng Bullet/Numbering · Sử dụng Bold/Italic hài hòa · Highlight món em thích nhất · Căn chỉnh lề và khoảng cách đẹp mắt. <br>
+          <strong>Sản phẩm nộp:</strong> Link Google Docs kèm file PDF xuất trực tiếp từ tài liệu.
+        </p>
+      </div>
+      <div style="display: flex; gap: 12px; margin-top: 24px;">
+        <a class="btn amber" href="index.html">⌂ Về trung tâm khóa học</a>
+        <button class="btn secondary" id="restartPresentationBtn">↺ Xem lại từ đầu</button>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------
+         STEP 18: TOÀN CẢNH 3D VŨ TRỤ BÀI HỌC (COSMIC OVERVIEW)
+         Coords: x=1400, y=650, z=5000, scale=6
+         ------------------------------------------------------------ -->
+    <div id="overview" class="step"
+         data-x="1400" data-y="650" data-z="5000" data-scale="6"
+         data-section="Toàn cảnh" data-time="Tổng quan"
+         data-title="Toàn cảnh 3D Vũ trụ Buổi 3"
+         data-notes="Góc nhìn toàn cảnh 3D từ trên cao. Bấm vào bất kỳ ô slide nào trên bản đồ để camera bay tới ngay slide đó!">
+      <div class="overview-hero-capsule">
+        <span class="eyebrow" style="color: var(--amber-400); margin-bottom: 8px;">VŨ TRỤ BÀI HỌC 3D</span>
+        <h1>Toàn cảnh Buổi 03</h1>
+        <p>
+          Tất cả 17 trạm kiến thức được kết nối trong không gian 3D. <br>
+          <span style="color: #93c5fd; font-size: 1.05rem;">👉 <strong>Bấm vào bất kỳ tấm thẻ slide nào</strong> xung quanh để camera bay trực tiếp tới trạm đó!</span>
+        </p>
+        <button class="btn amber" id="backToIntroBtn" style="min-height: 44px; padding: 0 24px; font-size: 1rem;">🚀 Bắt đầu từ đầu</button>
+      </div>
+    </div>
+
+  </div> <!-- /#impress -->
+
+  <!-- ============================================================
+       BOTTOM FIXED CONTROLS BAR
+       ============================================================ -->
+  <nav class="bottom-hud">
+    <button class="nav-arrow-btn" id="prevSlideBtn" title="Slide trước (Phím Mũi tên trái)">
+      ← <span>Trước</span>
+    </button>
+    <div class="nav-counter">
+      <span id="currentSlideNum">1</span> / <span id="totalSlideNum">17</span>
+    </div>
+    <button class="nav-arrow-btn next" id="nextSlideBtn" title="Slide tiếp (Phím Mũi tên phải hoặc Space)">
+      <span>Tiếp</span> →
+    </button>
+    <span class="key-hint" title="Phím tắt điều khiển">⌨ Space / ← / → / O</span>
+  </nav>
+
+  <!-- ============================================================
+       TEACHER NOTES DRAWER (Panel phải)
+       ============================================================ -->
+  <aside class="drawer" id="notesDrawer">
+    <div class="drawer-header">
+      <h3 style="margin: 0; font-size: 1.2rem; color: var(--navy-900);">☷ Ghi chú giáo viên</h3>
+      <button class="drawer-close" id="closeNotesBtn">×</button>
+    </div>
+    <div id="notesDrawerBody" style="color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6;">
+      Đang tải ghi chú...
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       PEDAGOGICAL EXPLANATIONS DRAWER (Panel sư phạm)
+       ============================================================ -->
+  <aside class="drawer" id="explainDrawer">
+    <div class="drawer-header">
+      <h3 style="margin: 0; font-size: 1.2rem; color: var(--navy-900);">💡 Giải thích sư phạm chi tiết</h3>
+      <button class="drawer-close" id="closeExplainBtn">×</button>
+    </div>
+    <div id="explainDrawerBody">
+      <!-- Injected dynamically per step -->
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       LIGHTBOX MODAL FOR ZOOMING SVG MINH HỌA
+       ============================================================ -->
+  <div class="lightbox" id="zoomLightbox" role="dialog" aria-modal="true">
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="closeLightboxBtn">×</button>
+      <img id="lightboxImg" src="" alt="Hình phóng to">
+      <p id="lightboxCaption" style="margin: 12px 4px 0; color: var(--ink-soft); font-size: 0.92rem; font-weight: 500;"></p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOAST NOTIFICATION COMPONENT
+       ============================================================ -->
+  <div class="toast" id="toastMessage">Thông báo</div>
+
+  <!-- ============================================================
+       SCRIPTS: IMPRESS.JS + SLIDE ORCHESTRATION & LOGIC
+       ============================================================ -->
+  <script src="assets/js/impress.js"></script>
+  <script>
+    // ------------------------------------------------------------
+    // 1. DATA: TEACHING EXPLANATIONS FOR ALL 17 STEPS
+    // ------------------------------------------------------------
+    const pedagogicalData = [
+      {
+        title: "Văn bản đẹp giúp người đọc tìm ý",
+        concept: "Một tài liệu tốt cho mắt biết đâu là tiêu đề, đâu là ý chính và đâu là phần giải thích. Định dạng là cách dẫn đường cho người đọc.",
+        demo: "Cho lớp nhìn mẫu 5 giây rồi che lại; hỏi các em còn nhớ tiêu đề và mấy ý đầu tiên không.",
+        ask: "Nếu mọi dòng đều to, đậm và nhiều màu, ý nào sẽ thực sự nổi bật?",
+        watch: "Học sinh thường hiểu 'đẹp' là thêm thật nhiều màu. Nhấn mạnh sự rõ ràng trước trang trí."
+      },
+      {
+        title: "Ba năng lực cần đạt",
+        concept: "Buổi học nối từ nhận biết công cụ sang chọn công cụ theo mục đích: nhấn ý, tạo nhịp đọc, sắp xếp danh sách.",
+        demo: "Yêu cầu học sinh tự nói một việc có thể dùng Bold, một việc cần Alignment và một việc cần Numbering.",
+        ask: "Đâu là dấu hiệu để biết em đã định dạng đúng chứ không chỉ bấm đúng nút?",
+        watch: "Một sản phẩm vẫn cần đọc được và nhất quán sau khi sửa nội dung."
+      },
+      {
+        title: "So sánh trước và sau",
+        concept: "Bản trước thiếu thứ bậc; bản sau có tiêu đề riêng, các ý tách thành dòng và số thứ tự giúp quét nhanh.",
+        demo: "Bấm 'Làm nổi bật từng cải tiến': chỉ lần lượt vào tiêu đề, danh sách, khoảng cách; mỗi lần dừng để học sinh mô tả tác dụng.",
+        ask: "Mắt em tìm thấy tiêu đề trong bản sau nhanh hơn nhờ cỡ chữ, màu hay vị trí?",
+        watch: "Cùng một nội dung nhưng định dạng làm thay đổi tốc độ đọc, không làm thay đổi ý nghĩa."
+      },
+      {
+        title: "Phạm vi chọn quyết định kết quả",
+        concept: "Định dạng ký tự áp dụng vào chữ được bôi đen. Căn lề và giãn dòng tác động đến đoạn chứa con trỏ hoặc các đoạn đã chọn.",
+        demo: "Bôi đen một từ rồi in đậm; đặt con trỏ trong đoạn rồi căn giữa để học sinh thấy phạm vi khác nhau.",
+        ask: "Nếu muốn cả tiêu đề đổi màu nhưng chỉ một chữ đổi màu, lỗi nằm ở bước nào?",
+        watch: "Nhắc học sinh nhìn vùng đang được chọn trước khi đổi định dạng."
+      },
+      {
+        title: "Font và cỡ chữ tạo cấp bậc",
+        concept: "Font là kiểu chữ; Font Size là độ lớn. Tiêu đề có thể lớn hơn thân bài, nhưng các tiêu đề cùng cấp nên giống nhau.",
+        demo: "Đổi tiêu đề từ 11 lên 20 rồi so sánh với thân bài 11–12. Để học sinh chọn mức dễ đọc nhất.",
+        ask: "Vì sao một trang dùng năm kiểu chữ khác nhau lại khó đọc?",
+        watch: "20 pt chỉ là cỡ gợi ý cho bài này, không phải quy định cố định cho mọi tài liệu."
+      },
+      {
+        title: "Bold, Italic, Underline có vai trò khác nhau",
+        concept: "Bold tạo trọng tâm mạnh; Italic phù hợp chú thích hoặc tên tác phẩm; Underline dùng tiết chế vì dễ giống đường liên kết.",
+        demo: "Cho học sinh tô đậm duy nhất cụm 'Hạn nộp' và so sánh với việc in đậm cả câu.",
+        ask: "Nếu cả đoạn đều in đậm, người đọc còn biết điểm nào quan trọng nhất không?",
+        watch: "Có thể kết hợp hai kiểu khi thật cần, nhưng tránh làm mọi chữ đều nổi bật."
+      },
+      {
+        title: "Màu chữ và màu nền",
+        concept: "Text Color đổi màu nét chữ. Highlight giữ màu chữ và tô nền phía sau. Độ tương phản quyết định khả năng đọc.",
+        demo: "Đổi tiêu đề sang xanh; tô vàng một câu then chốt. Chiếu thử chữ vàng trên nền trắng để học sinh nhận ra vấn đề tương phản.",
+        ask: "Trong bản nội quy, em sẽ tô sáng cả đoạn hay chỉ một câu?",
+        watch: "Màu nên mang ý nghĩa lặp lại nhất quán, chẳng hạn cùng màu cho các tiêu đề."
+      },
+      {
+        title: "Thử và quan sát từng nút",
+        concept: "Mô phỏng cho thấy tác dụng của từng công cụ trên một mẫu. Trong Google Docs thật, phải chọn đúng phần trước khi bấm.",
+        demo: "Bật Bold, đổi cỡ, căn giữa, đổi màu lần lượt; sau mỗi lần hỏi 'điều gì thay đổi?'. Bấm Đặt lại để bắt đầu lượt khác.",
+        ask: "Nút nào chỉ thay chữ, nút nào tác động đến cả đoạn?",
+        watch: "Mô phỏng không lưu vào Drive; sản phẩm thực hành cần làm trong Google Docs."
+      },
+      {
+        title: "Biến đổi tiêu đề theo đúng thứ tự",
+        concept: "Chuỗi thao tác gợi ý: chọn tiêu đề → cỡ 20 → Bold → căn giữa → chọn một màu dễ đọc → kiểm tra.",
+        demo: "Cho một học sinh làm mẫu, sau đó nhấn Ctrl+Z rồi Ctrl+Y hoặc nút Redo để thấy thay đổi được phục hồi.",
+        ask: "Undo một lần hoàn tác thao tác nào nếu em vừa đổi màu sau cùng?",
+        watch: "Nhắc học sinh quan sát trạng thái sau từng lần Undo/Redo để không đi quá xa."
+      },
+      {
+        title: "Alignment là thuộc tính của đoạn",
+        concept: "Căn lề được tính dựa trên khung đoạn. Dấu cách ở đầu dòng chỉ đẩy chữ tạm thời và dễ lệch khi nội dung thay đổi.",
+        demo: "Gõ một tiêu đề với nhiều Space, thêm vài chữ trước nó rồi so sánh với cùng tiêu đề dùng Align Center.",
+        ask: "Cách nào còn giữ tiêu đề ở giữa khi em thay đổi độ dài tiêu đề?",
+        watch: "Thông thường tiêu đề ngắn căn giữa, thân bài căn trái; không cần căn giữa mọi đoạn."
+      },
+      {
+        title: "Giãn dòng khác giãn đoạn",
+        concept: "Line Spacing là khoảng giữa các dòng trong một đoạn. Paragraph Spacing là khoảng giữa hai đoạn; chúng giải quyết hai vấn đề khác nhau.",
+        demo: "Đổi giãn dòng đoạn A, rồi thêm khoảng sau đoạn A mà không chèn Enter. Cho lớp xác định phần nào thay đổi.",
+        ask: "Muốn hai đoạn cách nhau hơn nhưng các dòng trong mỗi đoạn vẫn như cũ thì chỉnh gì?",
+        watch: "Không dùng Enter lặp nhiều lần để tạo khoảng trắng vì bố cục dễ vỡ khi sửa."
+      },
+      {
+        title: "Chọn Bullet hay Numbering theo mục đích",
+        concept: "Bullet dùng cho các mục ngang hàng, không có trước sau. Numbering dùng cho bước làm hoặc danh sách cần vị trí rõ ràng; số được cập nhật tự động.",
+        demo: "Trong khung thử bên dưới, đổi từ Bullet sang Numbering rồi thêm 'Thước'. Quan sát số mục mới xuất hiện mà không phải gõ số tay.",
+        ask: "'Sách, vở, bút' cần thứ tự không? 'Mở tệp, chọn chữ, định dạng' thì sao?",
+        watch: "Khi đổi kiểu, chọn cả các dòng cần chuyển. Không tự gõ ký hiệu hoặc số vào từng dòng."
+      },
+      {
+        title: "Bài tập danh sách đồ dùng",
+        concept: "Mục tiêu là dùng công cụ danh sách thật, biết đổi qua lại và thấy phần mềm tự quản lý số thứ tự.",
+        demo: "Cho học sinh thêm 'Tẩy' vào giữa danh sách Numbering, rồi quan sát các số phía sau tự dời.",
+        ask: "Điều gì xảy ra nếu em gõ 1., 2., 3. bằng tay rồi chèn thêm mục ở giữa?",
+        watch: "Chỉ chọn năm dòng nội dung, tránh chọn cả tiêu đề nếu không muốn tiêu đề trở thành một mục."
+      },
+      {
+        title: "Space và Enter không phải công cụ căn chỉnh",
+        concept: "Space dùng tách từ; Enter kết thúc đoạn. Dùng nhiều lần để tạo bố cục khiến tài liệu lệch khi font, cỡ chữ hoặc lề đổi.",
+        demo: "Đổi cỡ chữ của tiêu đề đang căn bằng Space để thấy nó lệch; xóa Space và dùng Align Center. Xóa Enter thừa rồi giãn đoạn.",
+        ask: "Vì sao bản in hoặc màn hình khác có thể hiển thị lệch dù trên máy em đang đúng?",
+        watch: "Lưu ý giữ một Enter đúng để tạo đoạn mới, chỉ xóa các Enter thừa."
+      },
+      {
+        title: "Sản phẩm tổng hợp: 10 quy tắc của lớp",
+        concept: "Bài làm cần có cấu trúc dễ đọc: tiêu đề, đoạn dẫn, 10 mục đánh số tự động và một câu quan trọng được tô sáng.",
+        demo: "Trước khi làm, cho lớp tự đề xuất hai quy tắc. Sau khi làm, dùng rubric 2–2–4–2 để phản hồi cụ thể.",
+        ask: "Nếu thêm một quy tắc mới ở vị trí thứ ba, Numbering giúp ích gì?",
+        watch: "Kiểm tra số mục đủ 10 và xem highlight có làm chữ khó đọc hay không."
+      },
+      {
+        title: "Quiz kiểm tra quyết định, không chỉ tên nút",
+        concept: "Mỗi câu là một tình huống chọn công cụ phù hợp. Phần giải thích sau đáp án là lúc củng cố lý do.",
+        demo: "Mời học sinh giải thích trước khi bấm chọn; sau đáp án, yêu cầu một em sửa lại lựa chọn sai bằng lời.",
+        ask: "Khi nhiều bạn cùng sai câu về giãn đoạn, em sẽ demo lại điều gì?",
+        watch: "Dùng điểm để xác định kỹ năng cần ôn thêm; không chỉ đọc đáp án A/B/C/D."
+      },
+      {
+        title: "Chốt ba nguyên tắc chuyển sang Buổi 4",
+        concept: "Định dạng tốt làm rõ thứ bậc, tạo nhịp đọc và giữ cấu trúc nhất quán. Buổi sau sẽ tổ chức tài liệu bằng Styles và Heading.",
+        demo: "Cho học sinh nhìn lại bài '10 quy tắc' và nói một thay đổi nhỏ giúp bài dễ đọc hơn.",
+        ask: "Nếu thêm nhiều trang nữa, làm sao giữ mọi tiêu đề cùng kiểu?",
+        watch: "Bài về nhà yêu cầu Google Docs và PDF; giáo viên cung cấp nơi nộp và quy tắc đặt tên tệp."
+      }
+    ];
+
+    // ------------------------------------------------------------
+    // 2. DATA: 10 QUIZ QUESTIONS
+    // ------------------------------------------------------------
+    const quizQuestions = [
+      {
+        q: 'Tiêu đề “5 CÁCH HỌC TẬP HIỆU QUẢ” cần định dạng nào để tạo thứ bậc thị giác tốt nhất?',
+        a: ['Cỡ chữ 20pt, in đậm, căn giữa', 'Cỡ chữ 8pt, căn trái', 'Gõ nhiều phím Space trước tiêu đề', 'Gạch chân toàn bộ cả trang'],
+        c: 0,
+        e: 'Tiêu đề nổi bật nhờ cỡ lớn (20pt), in đậm (Bold) và căn giữa trang.'
+      },
+      {
+        q: 'Muốn đổi màu sắc cho các ký tự trong dòng tiêu đề, em dùng công cụ nào?',
+        a: ['Highlight (Tô sáng)', 'Text Color (Màu văn bản)', 'Line Spacing (Giãn dòng)', 'Numbering (Đánh số)'],
+        c: 1,
+        e: 'Text Color tác động trực tiếp vào màu của từng nét chữ.'
+      },
+      {
+        q: 'Công cụ Highlight (Tô sáng) tác động vào phần nào của văn bản?',
+        a: ['Màu nền phía sau chữ', 'Lề trái của trang', 'Tên tệp trên Google Drive', 'Số trang tài liệu'],
+        c: 0,
+        e: 'Highlight tô một lớp màu nền sau chữ giống như bút dạ quang.'
+      },
+      {
+        q: 'Muốn đưa dòng tiêu đề vào chính giữa trang giấy, cách làm nào là chuẩn xác?',
+        a: ['Gõ thật nhiều dấu cách (Space)', 'Bấm nút Align Center (Căn giữa)', 'Nhấn phím Enter nhiều lần', 'Thêm các dấu chấm phía trước'],
+        c: 1,
+        e: 'Align Center tự động tính toán và giữ tiêu đề ở chính giữa ngay cả khi sửa nội dung.'
+      },
+      {
+        q: 'Line Spacing (Giãn dòng) có tác dụng gì?',
+        a: ['Điều chỉnh khoảng cách giữa các dòng trong cùng một đoạn', 'Thay đổi màu của nét chữ', 'Tự động đánh số thứ tự', 'Đổi kiểu font chữ'],
+        c: 0,
+        e: 'Line Spacing chỉnh khoảng cách giữa các dòng kề nhau trong một đoạn văn.'
+      },
+      {
+        q: 'Paragraph Spacing (Giãn đoạn) dùng để làm gì?',
+        a: ['Tạo khoảng cách trước hoặc sau mỗi đoạn văn', 'Thay đổi màu sắc văn bản', 'Sao chép đoạn văn bản', 'Đổi tên tài liệu'],
+        c: 0,
+        e: 'Paragraph Spacing giúp các đoạn văn có khoảng thở thoáng đãng mà không cần gõ Enter thừa.'
+      },
+      {
+        q: 'Danh sách đồ dùng đi học gồm: sách, vở, bút, thước. Em nên dùng loại danh sách nào?',
+        a: ['Bullet (Dấu đầu dòng)', 'Numbering (Đánh số)', 'Căn phải toàn bộ', 'Highlight toàn trang'],
+        c: 0,
+        e: 'Bullet phù hợp cho nhóm các đồ dùng ngang hàng, không phân biệt thứ tự trước sau.'
+      },
+      {
+        q: 'Một bản quy trình gồm Bước 1, Bước 2, Bước 3 thì nên dùng công cụ nào?',
+        a: ['Bullet', 'Numbering tự động', 'Gõ số 1, 2, 3 bằng tay', 'Gõ dấu cách thủ công'],
+        c: 1,
+        e: 'Numbering tự động đánh số và sẽ tự dời số thứ tự khi em chèn thêm hoặc xóa bớt bước.'
+      },
+      {
+        q: 'Sau khi đổi màu nhầm, muốn quay lại thao tác trước đó một bước, em dùng phím tắt nào?',
+        a: ['Ctrl + Z (Undo)', 'Ctrl + F (Tìm kiếm)', 'Ctrl + V (Dán)', 'Đóng trình duyệt'],
+        c: 0,
+        e: 'Ctrl + Z (Undo) giúp hoàn tác ngay thao tác vừa thực hiện.'
+      },
+      {
+        q: 'Một văn bản đẹp và chuyên nghiệp thường có đặc điểm cốt lõi nào?',
+        a: ['Mỗi từ dùng một màu sắc sặc sỡ', 'Nhất quán, có thứ bậc thị giác và khoảng cách hợp lý', 'Toàn bộ chữ in đậm và gạch chân', 'Nhiều dòng Enter trống'],
+        c: 1,
+        e: 'Sự nhất quán và thứ bậc giúp người đọc nắm bắt thông tin nhanh chóng và chuẩn xác.'
+      }
+    ];
+
+    // ------------------------------------------------------------
+    // 3. INITIALIZE IMPRESS.JS
+    // ------------------------------------------------------------
+    const impressApi = impress();
+    impressApi.init();
+
+    // Elements & State
+    const allSteps = Array.from(document.querySelectorAll('.step:not(#overview)'));
+    let currentStepIndex = 0;
+
+    // Toast helper
+    let toastTimeout;
+    function showToast(msg) {
+      const toastEl = document.getElementById('toastMessage');
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toastEl.classList.remove('show'), 2600);
+    }
+
+    // ------------------------------------------------------------
+    // 4. STEP ENTER & NAVIGATION SYNC
+    // ------------------------------------------------------------
+    document.addEventListener("impress:stepenter", function (event) {
+      const target = event.target;
+      const targetId = target.id;
+      const impressRoot = document.getElementById('impress');
+
+      if (targetId === 'overview') {
+        impressRoot.classList.add('step-overview');
+        document.getElementById('hudSectionLabel').textContent = 'Toàn cảnh';
+        document.getElementById('hudStepTitle').textContent = 'Vũ trụ Buổi 3';
+        document.getElementById('hudTimeLabel').textContent = '3D Canvas';
+        document.getElementById('currentSlideNum').textContent = '🌌';
+        document.getElementById('hudProgressBar').style.width = '100%';
+        return;
+      }
+
+      impressRoot.classList.remove('step-overview');
+      const stepIdx = allSteps.indexOf(target);
+      if (stepIdx !== -1) {
+        currentStepIndex = stepIdx;
+        const section = target.dataset.section || 'Nội dung';
+        const time = target.dataset.time || '';
+        const title = target.dataset.title || '';
+        const notes = target.dataset.notes || '';
+
+        document.getElementById('hudSectionLabel').textContent = section;
+        document.getElementById('hudStepTitle').textContent = title;
+        document.getElementById('hudTimeLabel').textContent = time;
+        document.getElementById('currentSlideNum').textContent = currentStepIndex + 1;
+        document.getElementById('totalSlideNum').textContent = allSteps.length;
+
+        const progressPercent = Math.round(((currentStepIndex + 1) / allSteps.length) * 100);
+        document.getElementById('hudProgressBar').style.width = `${progressPercent}%`;
+
+        // Update speaker notes
+        document.getElementById('notesDrawerBody').textContent = notes || 'Không có ghi chú thêm cho slide này.';
+
+        // Update pedagogical drawer if open
+        renderPedagogicalDrawer(currentStepIndex);
+      }
+    });
+
+    // Overview buttons
+    document.getElementById('overviewBtn').onclick = () => impressApi.goto('overview');
+    document.getElementById('backToIntroBtn').onclick = () => impressApi.goto('step-intro');
+
+    // Bottom Navigation Buttons
+    document.getElementById('prevSlideBtn').onclick = () => impressApi.prev();
+    document.getElementById('nextSlideBtn').onclick = () => impressApi.next();
+    document.getElementById('restartPresentationBtn').onclick = () => impressApi.goto('step-intro');
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', function (e) {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+      if (e.key === 'o' || e.key === 'O') {
+        e.preventDefault();
+        impressApi.goto('overview');
+      } else if (e.key === 'n' || e.key === 'N') {
+        e.preventDefault();
+        toggleDrawer('notesDrawer');
+      } else if (e.key === 'g' || e.key === 'G') {
+        e.preventDefault();
+        toggleDrawer('explainDrawer');
+      }
+    });
+
+    // Fullscreen Toggle
+    document.getElementById('fullscreenBtn').onclick = () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen?.();
+      } else {
+        document.exitFullscreen?.();
+      }
+    };
+
+    // ------------------------------------------------------------
+    // 5. DRAWERS LOGIC (NOTES & PEDAGOGY)
+    // ------------------------------------------------------------
+    function toggleDrawer(drawerId) {
+      const drawer = document.getElementById(drawerId);
+      const otherId = drawerId === 'notesDrawer' ? 'explainDrawer' : 'notesDrawer';
+      document.getElementById(otherId).classList.remove('open');
+
+      const isOpen = drawer.classList.toggle('open');
+      if (drawerId === 'notesDrawer') {
+        document.getElementById('notesToggleBtn').classList.toggle('active', isOpen);
+        document.getElementById('explainToggleBtn').classList.remove('active');
+      } else {
+        document.getElementById('explainToggleBtn').classList.toggle('active', isOpen);
+        document.getElementById('notesToggleBtn').classList.remove('active');
+        if (isOpen) renderPedagogicalDrawer(currentStepIndex);
+      }
+    }
+
+    document.getElementById('notesToggleBtn').onclick = () => toggleDrawer('notesDrawer');
+    document.getElementById('explainToggleBtn').onclick = () => toggleDrawer('explainDrawer');
+    document.getElementById('closeNotesBtn').onclick = () => {
+      document.getElementById('notesDrawer').classList.remove('open');
+      document.getElementById('notesToggleBtn').classList.remove('active');
+    };
+    document.getElementById('closeExplainBtn').onclick = () => {
+      document.getElementById('explainDrawer').classList.remove('open');
+      document.getElementById('explainToggleBtn').classList.remove('active');
+    };
+
+    function renderPedagogicalDrawer(idx) {
+      const item = pedagogicalData[idx] || pedagogicalData[0];
+      const container = document.getElementById('explainDrawerBody');
+      container.innerHTML = `
+        <h4 style="color: var(--blue-600); margin: 0 0 12px; font-size: 1.1rem;">Trạm ${idx + 1}: ${item.title}</h4>
+        <div class="teaching-box" style="border-left-color: var(--blue-500); background: #eff6ff;">
+          <b>Ý nghĩa sư phạm cốt lõi</b>
+          <p>${item.concept}</p>
+        </div>
+        <div class="teaching-box" style="border-left-color: var(--emerald-500); background: #ecfdf5;">
+          <b>Gợi ý thao tác Demo trực quan</b>
+          <p>${item.demo}</p>
+        </div>
+        <div class="teaching-box" style="border-left-color: var(--amber-500); background: #fffbeb;">
+          <b>Câu hỏi gợi mở cho học sinh</b>
+          <p>${item.ask}</p>
+        </div>
+        <div class="teaching-box" style="border-left-color: var(--rose-500); background: #fff1f2;">
+          <b>Lỗi tư duy học sinh thường gặp</b>
+          <p>${item.watch}</p>
+        </div>
+      `;
+    }
+
+    // ------------------------------------------------------------
+    // 6. SPOTLIGHT COMPARE (STEP 3)
+    // ------------------------------------------------------------
+    const spotlightBtn = document.getElementById('spotlightBtn');
+    const spotlightText = document.getElementById('spotlightText');
+    const afterCard = document.getElementById('afterCard');
+    let spotStage = 0;
+    const spotLabels = [
+      '1. Tiêu đề: cỡ chữ lớn, in hoa, màu xanh và căn giữa tạo điểm nhấn đầu tiên.',
+      '2. Danh sách: mỗi ý thành một dòng đánh số, mắt quét nhanh không bị sót.',
+      '3. Khoảng cách: các ý có khoảng thở thoáng đãng, không bị dính chùm.'
+    ];
+
+    if (spotlightBtn) {
+      spotlightBtn.onclick = () => {
+        afterCard.classList.remove('spot-title', 'spot-list', 'spot-space');
+        void afterCard.offsetWidth; // trigger reflow
+        const classes = ['spot-title', 'spot-list', 'spot-space'];
+        afterCard.classList.add(classes[spotStage]);
+        spotlightText.textContent = spotLabels[spotStage];
+        spotStage = (spotStage + 1) % 3;
+      };
+    }
+
+    // ------------------------------------------------------------
+    // 7. INTERACTIVE SANDBOX DEMO (STEP 8)
+    // ------------------------------------------------------------
+    const demoTitle = document.getElementById('demoTitle');
+    const demoBody = document.getElementById('demoBody');
+    const resetDemoBtn = document.getElementById('resetDemoBtn');
+
+    document.querySelectorAll('.sandbox-toolbar .tool[data-style]').forEach(btn => {
+      btn.onclick = () => {
+        const style = btn.dataset.style;
+        const pressed = btn.getAttribute('aria-pressed') === 'true';
+        btn.setAttribute('aria-pressed', String(!pressed));
+
+        if (style === 'bold') demoTitle.style.fontWeight = pressed ? 'normal' : '800';
+        if (style === 'italic') demoTitle.style.fontStyle = pressed ? 'normal' : 'italic';
+        if (style === 'underline') demoTitle.style.textDecoration = pressed ? 'none' : 'underline';
+        if (style === 'size') demoTitle.style.fontSize = pressed ? '20px' : '26px';
+        if (style === 'color') demoTitle.style.color = pressed ? '' : '#2563eb';
+        if (style === 'highlight') demoTitle.style.backgroundColor = pressed ? '' : '#fef08a';
+        if (style === 'center') demoTitle.style.textAlign = pressed ? 'left' : 'center';
+        if (style === 'spacing') demoBody.style.lineHeight = pressed ? '1.6' : '2.2';
+      };
+    });
+
+    if (resetDemoBtn) {
+      resetDemoBtn.onclick = () => {
+        demoTitle.style.fontWeight = 'normal';
+        demoTitle.style.fontStyle = 'normal';
+        demoTitle.style.textDecoration = 'none';
+        demoTitle.style.fontSize = '20px';
+        demoTitle.style.color = '';
+        demoTitle.style.backgroundColor = '';
+        demoTitle.style.textAlign = 'left';
+        demoBody.style.lineHeight = '1.6';
+        document.querySelectorAll('.sandbox-toolbar .tool[data-style]').forEach(b => b.setAttribute('aria-pressed', 'false'));
+        showToast('↺ Đã đặt lại văn bản mẫu ban đầu');
+      };
+    }
+
+    // ------------------------------------------------------------
+    // 8. PRACTICE TIMERS & ANSWER TOGGLES (STEPS 9, 13, 15)
+    // ------------------------------------------------------------
+    const activeTimers = new Map();
+
+    document.querySelectorAll('[data-timer-btn]').forEach(btn => {
+      btn.onclick = () => {
+        const targetId = btn.dataset.timerBtn;
+        const displayEl = document.getElementById(targetId);
+
+        if (activeTimers.has(targetId)) {
+          clearInterval(activeTimers.get(targetId));
+          activeTimers.delete(targetId);
+          btn.textContent = '▶ Tiếp tục';
+          showToast('⏸ Đã tạm dừng đếm giờ');
+          return;
+        }
+
+        let [mins, secs] = displayEl.textContent.split(':').map(Number);
+        let totalSeconds = mins * 60 + secs;
+        if (totalSeconds <= 0) totalSeconds = 600;
+
+        btn.textContent = '⏸ Tạm dừng';
+        showToast('⏱ Bắt đầu tính giờ 10:00!');
+
+        const interval = setInterval(() => {
+          totalSeconds--;
+          const m = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+          const s = String(totalSeconds % 60).padStart(2, '0');
+          displayEl.textContent = `${m}:${s}`;
+
+          if (totalSeconds <= 0) {
+            clearInterval(interval);
+            activeTimers.delete(targetId);
+            btn.textContent = '↺ Làm lại';
+            showToast('🎉 Hết giờ! Cùng thầy cô kiểm tra thành phẩm nhé!');
+          }
+        }, 1000);
+
+        activeTimers.set(targetId, interval);
+      };
+    });
+
+    document.querySelectorAll('[data-toggle-answer]').forEach(btn => {
+      btn.onclick = () => {
+        const answerEl = document.getElementById(btn.dataset.toggleAnswer);
+        answerEl.classList.toggle('show');
+      };
+    });
+
+    // ------------------------------------------------------------
+    // 9. LIST LAB LOGIC (STEP 12)
+    // ------------------------------------------------------------
+    const listPreviewBox = document.getElementById('listPreviewBox');
+    const listExplanationText = document.getElementById('listExplanationText');
+    const addRulerBtn = document.getElementById('addRulerBtn');
+    let currentListMode = 'bullet';
+    let hasAddedRuler = false;
+    const baseListItems = ['Sách giáo khoa Toán', 'Vở ghi bài học', 'Bút bi xanh'];
+
+    function renderListLab() {
+      if (!listPreviewBox) return;
+      const items = hasAddedRuler ? [...baseListItems, 'Thước kẻ 20cm'] : baseListItems;
+      let html = '';
+
+      if (currentListMode === 'raw') {
+        html = items.map(it => `<div>${it}</div>`).join('');
+        listExplanationText.textContent = 'Văn bản thường: Chưa có dấu hiệu cho biết đây là một nhóm đồ dùng.';
+      } else if (currentListMode === 'bullet') {
+        html = `<ul style="margin: 0; padding-left: 24px;">${items.map(it => `<li>${it}</li>`).join('')}</ul>`;
+        listExplanationText.textContent = 'Bullet: Nhóm các đồ dùng ngang hàng, đổi thứ tự không thay đổi ý nghĩa.';
+      } else {
+        html = `<ol style="margin: 0; padding-left: 24px;">${items.map(it => `<li>${it}</li>`).join('')}</ol>`;
+        listExplanationText.textContent = 'Numbering: Số thứ tự tự động; khi thêm Thước kẻ, máy tự tăng số mà không cần gõ tay.';
+      }
+
+      listPreviewBox.innerHTML = html;
+      document.querySelectorAll('.list-tab').forEach(t => {
+        t.setAttribute('aria-pressed', String(t.dataset.mode === currentListMode));
+      });
+      addRulerBtn.disabled = hasAddedRuler;
+      addRulerBtn.textContent = hasAddedRuler ? '✓ Đã thêm Thước kẻ' : '+ Thêm Thước kẻ';
+    }
+
+    document.querySelectorAll('.list-tab').forEach(tab => {
+      tab.onclick = () => {
+        currentListMode = tab.dataset.mode;
+        renderListLab();
+      };
+    });
+    if (addRulerBtn) {
+      addRulerBtn.onclick = () => {
+        hasAddedRuler = true;
+        renderListLab();
+        showToast('Đã thêm Thước kẻ vào danh sách tự động!');
+      };
+    }
+    renderListLab();
+
+    // ------------------------------------------------------------
+    // 10. INTERACTIVE 10-QUESTION QUIZ (STEP 16)
+    // ------------------------------------------------------------
+    let quizIndex = 0;
+    let quizScore = 0;
+    let quizAnsweredStatus = Array(quizQuestions.length).fill(false);
+
+    function renderQuizStep() {
+      const q = quizQuestions[quizIndex];
+      document.getElementById('quizCountLabel').textContent = `Câu ${quizIndex + 1} / ${quizQuestions.length}`;
+      document.getElementById('quizQuestionText').textContent = q.q;
+
+      const optionsHtml = q.a.map((ans, i) => `
+        <button class="quiz-btn" data-choice-index="${i}">
+          <span class="letter-badge">${String.fromCharCode(65 + i)}</span>
+          <span>${ans}</span>
+        </button>
+      `).join('');
+      document.getElementById('quizOptionList').innerHTML = optionsHtml;
+
+      document.getElementById('quizFeedbackBox').textContent = 'Chọn một đáp án đúng nhất.';
+      document.getElementById('quizFeedbackBox').className = 'feedback';
+      document.getElementById('quizNextBtn').style.display = 'none';
+
+      // Update dots
+      const dotsHtml = quizQuestions.map((_, i) => `
+        <div class="quiz-dot ${quizAnsweredStatus[i] ? 'done' : ''}">${i + 1}</div>
+      `).join('');
+      document.getElementById('quizDotsContainer').innerHTML = dotsHtml;
+
+      document.querySelectorAll('[data-choice-index]').forEach(btn => {
+        btn.onclick = () => handleQuizChoice(Number(btn.dataset.choiceIndex));
+      });
+    }
+
+    function handleQuizChoice(chosenIndex) {
+      if (quizAnsweredStatus[quizIndex]) return;
+      const q = quizQuestions[quizIndex];
+      const isCorrect = chosenIndex === q.c;
+      quizAnsweredStatus[quizIndex] = true;
+
+      if (isCorrect) quizScore++;
+      document.getElementById('quizScoreNumber').textContent = quizScore;
+
+      document.querySelectorAll('[data-choice-index]').forEach((btn, idx) => {
+        if (idx === q.c) btn.classList.add('correct');
+        else if (idx === chosenIndex) btn.classList.add('wrong');
+      });
+
+      const feedbackEl = document.getElementById('quizFeedbackBox');
+      feedbackEl.textContent = `${isCorrect ? '✅ Chính xác!' : '💡 Chưa đúng.'} ${q.e}`;
+      feedbackEl.style.backgroundColor = isCorrect ? '#ecfdf5' : '#fff1f2';
+      feedbackEl.style.color = isCorrect ? '#065f46' : '#9f1239';
+
+      document.getElementById('quizDotsContainer').children[quizIndex].classList.add('done');
+
+      const nextBtn = document.getElementById('quizNextBtn');
+      nextBtn.style.display = 'inline-flex';
+      nextBtn.textContent = quizIndex === quizQuestions.length - 1 ? 'Xem kết quả chung cuộc' : 'Câu tiếp theo →';
+    }
+
+    document.getElementById('quizNextBtn').onclick = () => {
+      if (quizIndex < quizQuestions.length - 1) {
+        quizIndex++;
+        renderQuizStep();
+      } else {
+        showToast(`🎉 Xuất sắc! Em hoàn thành với ${quizScore}/${quizQuestions.length} điểm!`);
+      }
+    };
+
+    document.getElementById('quizResetBtn').onclick = () => {
+      quizIndex = 0;
+      quizScore = 0;
+      quizAnsweredStatus = Array(quizQuestions.length).fill(false);
+      document.getElementById('quizScoreNumber').textContent = '0';
+      renderQuizStep();
+      showToast('↺ Đã làm lại bài trắc nghiệm từ đầu');
+    };
+    renderQuizStep();
+
+    // ------------------------------------------------------------
+    // 11. LIGHTBOX FOR SVG VISUAL GUIDES
+    // ------------------------------------------------------------
+    const zoomLightbox = document.getElementById('zoomLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+
+    document.querySelectorAll('.visual-guide img').forEach(img => {
+      img.onclick = () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxCaption.textContent = img.closest('figure')?.querySelector('figcaption')?.textContent || '';
+        zoomLightbox.classList.add('show');
+      };
+    });
+
+    closeLightboxBtn.onclick = () => zoomLightbox.classList.remove('show');
+    zoomLightbox.onclick = (e) => {
+      if (e.target === zoomLightbox) zoomLightbox.classList.remove('show');
+    };
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && zoomLightbox.classList.contains('show')) {
+        zoomLightbox.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>
