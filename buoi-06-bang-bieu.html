@@ -401,9 +401,10 @@
     .quiz-btn.correct { background: #ecfdf5 !important; border-color: var(--emerald-500) !important; color: #065f46 !important; }
     .quiz-btn.wrong { background: #fff1f2 !important; border-color: var(--rose-500) !important; color: #9f1239 !important; }
     .letter-badge { width: 28px; height: 28px; border-radius: 8px; background: #ffffff; border: 1px solid var(--line); display: grid; place-items: center; font-size: 0.85rem; font-weight: 800; color: var(--teal-600); flex-shrink: 0; }
-    .quiz-feedback { margin-top: 16px; padding: 12px 16px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+    .quiz-feedback { margin-top: 16px; padding: 14px 18px; border-radius: 12px; font-size: 0.92rem; font-weight: 600; display: none; align-items: flex-start; gap: 10px; line-height: 1.5; }
     .quiz-dots { display: flex; gap: 6px; }
-    .quiz-dot { width: 22px; height: 22px; border-radius: 6px; background: #e2e8f0; display: grid; place-items: center; font-size: 0.72rem; font-weight: 800; color: var(--muted); }
+    .quiz-dot { width: 22px; height: 22px; border-radius: 6px; background: #e2e8f0; display: grid; place-items: center; font-size: 0.72rem; font-weight: 800; color: var(--muted); transition: all 0.2s ease; }
+    .quiz-dot.current { border: 2px solid var(--teal-600); transform: scale(1.15); box-shadow: 0 0 8px rgba(13, 148, 136, 0.5); }
     .quiz-dot.done { background: var(--emerald-500); color: white; }
 
     /* Modals & Toast */
@@ -1358,9 +1359,18 @@
         <div class="quiz-q-title" id="quizQuestionText">Đang tải câu hỏi...</div>
         <div class="quiz-options" id="quizOptionsWrap"></div>
 
-        <div class="quiz-feedback" id="quizFeedbackBox" style="display:none">
-          <span id="quizFeedbackText">Giải thích câu trả lời</span>
-          <button class="btn-hud" id="quizNextBtn" style="background:var(--teal-600);border:none;margin-left:auto">Câu tiếp theo ›</button>
+        <div class="quiz-feedback" id="quizFeedbackBox">
+          <span style="font-size:1.3rem;flex-shrink:0">💡</span>
+          <span id="quizFeedbackText" style="flex:1">Giải thích câu trả lời</span>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+          <div style="font-size:0.88rem;color:var(--muted);font-weight:600" id="quizStatusHint">
+            Chọn một đáp án đúng nhất để tiếp tục.
+          </div>
+          <button type="button" class="btn-hud" id="quizNextBtn" style="display:none;background:var(--teal-600);color:#ffffff;padding:10px 24px;font-size:0.95rem;font-weight:700;border-radius:10px;border:none;cursor:pointer;pointer-events:auto;position:relative;z-index:30;box-shadow:0 4px 14px rgba(13,148,136,0.35);white-space:nowrap;transition:all 0.2s ease">
+            Câu tiếp theo ➔
+          </button>
         </div>
       </div>
     </div>
@@ -1859,13 +1869,28 @@
 
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
+        btn.type = 'button';
         btn.className = 'quiz-btn';
         btn.innerHTML = `<span class="letter-badge">${letters[idx]}</span> <span>${opt}</span>`;
-        btn.onclick = () => handleAnswer(idx);
+        btn.onclick = (e) => {
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          handleAnswer(idx);
+        };
         optionsWrap.appendChild(btn);
       });
 
       document.getElementById('quizFeedbackBox').style.display = 'none';
+      const nextBtn = document.getElementById('quizNextBtn');
+      nextBtn.style.display = 'none';
+      document.getElementById('quizStatusHint').textContent = 'Chọn một đáp án đúng nhất để tiếp tục.';
+
+      // Highlight active dot
+      document.querySelectorAll('.quiz-dot').forEach((d, i) => {
+        d.classList.toggle('current', i === quizIndex);
+      });
     }
 
     function handleAnswer(chosenIdx) {
@@ -1879,31 +1904,85 @@
         buttons[chosenIdx].classList.add('correct');
         quizScore++;
         document.getElementById('quizScoreNumber').textContent = quizScore;
-        document.getElementById(`qDot${quizIndex}`).classList.add('done');
+        const dot = document.getElementById(`qDot${quizIndex}`);
+        if (dot) dot.classList.add('done');
         showToast('🎉 Chính xác! Tuyệt vời!');
       } else {
         buttons[chosenIdx].classList.add('wrong');
         buttons[q.answer].classList.add('correct');
-        document.getElementById(`qDot${quizIndex}`).style.background = '#f43f5e';
-        document.getElementById(`qDot${quizIndex}`).style.color = '#fff';
+        const dot = document.getElementById(`qDot${quizIndex}`);
+        if (dot) {
+          dot.style.background = '#f43f5e';
+          dot.style.color = '#fff';
+        }
         showToast('Chưa chính xác, hãy xem giải thích bên dưới nhé!');
       }
 
-      buttons.forEach(b => b.style.pointerEvents = 'none');
+      buttons.forEach(b => {
+        b.style.pointerEvents = 'none';
+        b.disabled = true;
+      });
+
       const feedbackBox = document.getElementById('quizFeedbackBox');
       const feedbackText = document.getElementById('quizFeedbackText');
-      feedbackText.textContent = `💡 Giải thích: ${q.explain}`;
+      feedbackText.textContent = q.explain;
       feedbackBox.style.display = 'flex';
       feedbackBox.style.background = (chosenIdx === q.answer) ? '#ecfdf5' : '#fff1f2';
       feedbackBox.style.color = (chosenIdx === q.answer) ? '#065f46' : '#9f1239';
+      feedbackBox.style.border = (chosenIdx === q.answer) ? '1px solid #a7f3d0' : '1px solid #fecdd3';
+
+      const nextBtn = document.getElementById('quizNextBtn');
+      nextBtn.style.display = 'inline-flex';
+      if (quizIndex === quizQuestions.length - 1) {
+        nextBtn.textContent = '🎉 Xem kết quả chung cuộc';
+        nextBtn.style.background = 'var(--emerald-600)';
+      } else {
+        nextBtn.textContent = 'Câu tiếp theo ➔';
+        nextBtn.style.background = 'var(--teal-600)';
+      }
+
+      document.getElementById('quizStatusHint').textContent = (chosenIdx === q.answer)
+        ? '🎉 Tuyệt vời! Bấm nút bên phải để sang câu tiếp theo.'
+        : '📖 Hãy đọc kỹ giải thích, sau đó bấm tiếp tục.';
     }
 
-    document.getElementById('quizNextBtn').onclick = () => {
+    const quizNextBtnEl = document.getElementById('quizNextBtn');
+    quizNextBtnEl.onclick = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       if (quizIndex < quizQuestions.length - 1) {
         quizIndex++;
         renderQuizStep();
       } else {
         showToast(`🎉 Xuất sắc! Em hoàn thành bài quiz với ${quizScore}/${quizQuestions.length} điểm!`);
+        const optionsWrap = document.getElementById('quizOptionsWrap');
+        optionsWrap.innerHTML = `
+          <div style="text-align:center;padding:28px 20px;background:#f0fdf4;border-radius:18px;border:2px solid #86efac;margin-top:10px">
+            <div style="font-size:3rem;margin-bottom:8px">🏆</div>
+            <h3 style="color:#166534;font-size:1.6rem;margin:0 0 8px">Chúc Mừng Em Đã Chinh Phục Thử Thách!</h3>
+            <p style="font-size:1.1rem;color:#15803d;margin:0 0 18px">
+              Điểm số cuối cùng: <b>${quizScore} / ${quizQuestions.length}</b> (${Math.round((quizScore / quizQuestions.length) * 100)}%)
+            </p>
+            <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
+              <button type="button" class="btn-hud" id="btnRestartQuiz" style="background:#059669;color:white;padding:10px 22px;border:none;cursor:pointer">↺ Làm Lại Thử Thách</button>
+              <button type="button" class="btn-hud" onclick="impress().goto('step-summary')" style="background:var(--navy-900);color:white;padding:10px 22px;border:none;cursor:pointer">Sang Trạm Tổng Kết ➔</button>
+            </div>
+          </div>
+        `;
+        document.getElementById('quizFeedbackBox').style.display = 'none';
+        quizNextBtnEl.style.display = 'none';
+        document.getElementById('quizStatusHint').textContent = 'Đã hoàn thành toàn bộ 10 câu hỏi!';
+        document.getElementById('btnRestartQuiz').onclick = (re) => {
+          if (re) { re.preventDefault(); re.stopPropagation(); }
+          quizIndex = 0;
+          quizScore = 0;
+          quizAnsweredStatus = Array(quizQuestions.length).fill(false);
+          document.getElementById('quizScoreNumber').textContent = '0';
+          quizDotsWrap.innerHTML = quizQuestions.map((_, i) => `<div class="quiz-dot" id="qDot${i}">${i+1}</div>`).join('');
+          renderQuizStep();
+        };
       }
     };
     renderQuizStep();
