@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#162a54"/>
+    </linearGradient>
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="920" height="460" rx="20" fill="url(#bgGrad)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="460" y="42" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">BA KIỂU MỤC LỤC &amp; VŨ KHÍ CẬP NHẬT TỰ ĐỘNG (UPDATE TOC)</text>
+  <text x="460" y="68" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#93c5fd" text-anchor="middle">Đường chấm dóng hàng · Số trang thẳng tắp · Nút Refresh thần kỳ khi sửa bài</text>
+
+  <!-- Main Container Card -->
+  <g transform="translate(40, 88)" filter="url(#shadow)">
+    <rect width="840" height="344" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+
+    <!-- Left: 3 Styles Cards -->
+    <g transform="translate(25, 20)">
+      <!-- Card 1: Dotted line (Recommended) -->
+      <g transform="translate(0, 0)">
+        <rect width="450" height="82" rx="10" fill="#f0fdf4" stroke="#10b981" stroke-width="1.5"/>
+        <rect x="12" y="10" width="130" height="20" rx="4" fill="#10b981"/>
+        <text x="77" y="24" font-family="'Inter', sans-serif" font-size="8.5" font-weight="800" fill="#ffffff" text-anchor="middle">⭐ KIỂU 1: ĐƯỜNG CHẤM DÓNG</text>
+        <text x="150" y="24" font-family="'Inter', sans-serif" font-size="8" font-weight="600" fill="#047857">(Chuẩn sách giáo khoa &amp; báo cáo THCS)</text>
+
+        <g transform="translate(14, 38)">
+          <text x="0" y="14" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#0f172a">1. Khởi động dự án</text>
+          <line x1="105" y1="12" x2="385" y2="12" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="2 3"/>
+          <text x="410" y="14" font-family="'Inter', sans-serif" font-size="9.5" font-weight="800" fill="#047857" text-anchor="end">Trang 1</text>
+
+          <text x="0" y="32" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#0f172a">2. Nghiên cứu thực địa</text>
+          <line x1="125" y1="30" x2="385" y2="30" stroke="#6ee7b7" stroke-width="1.5" stroke-dasharray="2 3"/>
+          <text x="410" y="32" font-family="'Inter', sans-serif" font-size="9.5" font-weight="800" fill="#047857" text-anchor="end">Trang 4</text>
+        </g>
+      </g>
+
+      <!-- Card 2: Plain text with page numbers -->
+      <g transform="translate(0, 95)">
+        <rect width="450" height="82" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+        <rect x="12" y="10" width="140" height="20" rx="4" fill="#64748b"/>
+        <text x="82" y="24" font-family="'Inter', sans-serif" font-size="8.5" font-weight="800" fill="#ffffff" text-anchor="middle">KIỂU 2: CÓ SỐ TRANG TRƠN</text>
+        <text x="160" y="24" font-family="'Inter', sans-serif" font-size="8" font-weight="500" fill="#64748b">(Không có đường kẻ chấm nối)</text>
+
+        <g transform="translate(14, 38)">
+          <text x="0" y="14" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#334155">1. Khởi động dự án</text>
+          <text x="410" y="14" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#475569" text-anchor="end">1</text>
+
+          <text x="0" y="32" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#334155">2. Nghiên cứu thực địa</text>
+          <text x="410" y="32" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#475569" text-anchor="end">4</text>
+        </g>
+      </g>
+
+      <!-- Card 3: Blue Links (No page numbers) -->
+      <g transform="translate(0, 190)">
+        <rect width="450" height="82" rx="10" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.2"/>
+        <rect x="12" y="10" width="135" height="20" rx="4" fill="#2563eb"/>
+        <text x="79" y="24" font-family="'Inter', sans-serif" font-size="8.5" font-weight="800" fill="#ffffff" text-anchor="middle">KIỂU 3: LIÊN KẾT XANH</text>
+        <text x="155" y="24" font-family="'Inter', sans-serif" font-size="8" font-weight="600" fill="#1e40af">(Không số trang · Tối ưu web &amp; điện thoại)</text>
+
+        <g transform="translate(14, 38)">
+          <text x="0" y="14" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#2563eb" text-decoration="underline"><u>🔗 1. Khởi động dự án</u></text>
+          <text x="0" y="32" font-family="'Inter', sans-serif" font-size="9" font-weight="700" fill="#2563eb" text-decoration="underline"><u>🔗 2. Nghiên cứu thực địa</u></text>
+        </g>
+      </g>
+
+      <text x="225" y="295" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#0f172a" text-anchor="middle">Menu: Chèn (Insert) ➔ Bảng mục lục (Table of contents) ➔ Chọn 1 trong 3 mẫu</text>
+    </g>
+
+    <!-- Right: The Magical Refresh Button -->
+    <g transform="translate(500, 20)">
+      <rect width="315" height="295" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+      
+      <g transform="translate(20, 20)">
+        <circle cx="24" cy="24" r="22" fill="#10b981"/>
+        <text x="24" y="32" font-family="'Inter', sans-serif" font-size="20" text-anchor="middle">🔄</text>
+
+        <text x="60" y="20" font-family="'Outfit', sans-serif" font-size="13" font-weight="800" fill="#ffffff">NÚT LÀM MỚI (REFRESH)</text>
+        <text x="60" y="36" font-family="'Inter', sans-serif" font-size="9.5" font-weight="600" fill="#34d399">Update table of contents</text>
+
+        <line x1="0" y1="58" x2="275" y2="58" stroke="#334155" stroke-width="1.5"/>
+
+        <text x="0" y="80" font-family="'Inter', sans-serif" font-size="10.5" font-weight="800" fill="#60a5fa">❓ KHI NÀO CẦN BẤM NÚT NÀY?</text>
+        <text x="0" y="100" font-family="'Inter', sans-serif" font-size="9" font-weight="500" fill="#cbd5e1" line-height="1.6">
+          • Khi em viết thêm 2 trang bài làm văn khiến các chương sau bị tụt số trang.
+        </text>
+        <text x="0" y="130" font-family="'Inter', sans-serif" font-size="9" font-weight="500" fill="#cbd5e1" line-height="1.6">
+          • Khi em sửa lại câu chữ của một tiêu đề (Ví dụ: "Hậu quả" ➔ "Hậu quả nghiêm trọng").
+        </text>
+        <text x="0" y="160" font-family="'Inter', sans-serif" font-size="9" font-weight="500" fill="#cbd5e1" line-height="1.6">
+          • Khi em thêm hoặc xóa bớt một mục Heading mới.
+        </text>
+
+        <rect x="0" y="190" width="275" height="58" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1"/>
+        <text x="12" y="210" font-family="'Inter', sans-serif" font-size="9.5" font-weight="800" fill="#fbbf24">💡 CÁCH BẤM:</text>
+        <text x="12" y="226" font-family="'Inter', sans-serif" font-size="8.8" font-weight="500" fill="#f1f5f9">
+          Nhấp chuột vào bất kỳ đâu trong Bảng mục lục, biểu tượng <b style="color:#34d399">vòng tròn xoay 🔄</b> sẽ hiện ra ở góc trái!
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>

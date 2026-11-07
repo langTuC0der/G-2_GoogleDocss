@@ -1,0 +1,1232 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bài giảng 3D tương tác Buổi 12: Final Project — Cẩm Nang Học Tập Dành Cho Học Sinh THCS (Google Docs THCS) — Khóa học chuyên sâu với Impress.js">
+  <title>Buổi 12 · Final Project: Cẩm Nang Học Tập THCS (25 Trạm 3D) | Docs Lab THCS</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-space: #070e20;
+      --navy-900: #0b152d;
+      --navy-800: #132448;
+      --blue-600: #2563eb;
+      --blue-500: #3b82f6;
+      --blue-100: #dbeafe;
+      --blue-50: #eff6ff;
+      --teal-600: #0d9488;
+      --teal-500: #14b8a6;
+      --teal-100: #ccfbf1;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-100: #d1fae5;
+      --amber-500: #f59e0b;
+      --amber-400: #fbbf24;
+      --amber-100: #fef3c7;
+      --rose-600: #e11d48;
+      --rose-500: #f43f5e;
+      --rose-100: #ffe4e6;
+      --purple-600: #7c3aed;
+      --purple-500: #8b5cf6;
+      --purple-100: #ede9fe;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --card-bg: rgba(255, 255, 255, 0.98);
+      --card-dark-bg: linear-gradient(145deg, #101e3d, #091226);
+      --shadow-step: 0 35px 80px -15px rgba(0, 7, 24, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.6);
+      --shadow-hover: 0 45px 95px -20px rgba(11, 26, 61, 0.65), 0 0 0 2px rgba(245, 158, 11, 0.4);
+      --radius-step: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 50% 20%, #1c1936 0%, #070e20 60%, #030712 100%);
+      color: var(--ink);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Impress pointer events */
+    .impress-enabled { pointer-events: none; }
+    .impress-enabled #impress,
+    .impress-enabled .step,
+    .impress-enabled .hud,
+    .impress-enabled button,
+    .impress-enabled a,
+    .impress-enabled input,
+    .impress-enabled select,
+    .impress-enabled .modal,
+    .impress-enabled .interactive-box {
+      pointer-events: auto;
+    }
+
+    /* Step Card Base */
+    .step {
+      width: 1080px;
+      min-height: 640px;
+      padding: 44px 52px;
+      border-radius: var(--radius-step);
+      background: var(--card-bg);
+      box-shadow: var(--shadow-step);
+      opacity: 0.22;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.6s ease;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+    .step.active {
+      opacity: 1;
+      transform: scale(1.02);
+      box-shadow: var(--shadow-hover);
+    }
+    .step.dark {
+      background: var(--card-dark-bg);
+      color: #f8fafc;
+      box-shadow: 0 35px 85px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; margin-top: 0; line-height: 1.25; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      background: var(--amber-100);
+      color: var(--amber-500);
+    }
+    .step.dark .eyebrow {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+    .step-title {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+    .step.dark .step-title { color: #ffffff; }
+    .step-desc {
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin-bottom: 24px;
+    }
+    .step.dark .step-desc { color: #cbd5e1; }
+
+    /* Grids & Cards */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .feature-card {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+      transition: all 0.25s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px -8px rgba(0,0,0,0.08);
+      border-color: var(--amber-500);
+    }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+    .feature-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
+    .feature-desc { font-size: 14px; line-height: 1.55; color: var(--muted); }
+
+    /* SVG Showcase */
+    .svg-showcase {
+      width: 100%;
+      height: 380px;
+      border-radius: 18px;
+      background: #0f172a;
+      overflow: hidden;
+      border: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .svg-showcase img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Interactive Box */
+    .interactive-box {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    }
+
+    /* HUD Top Bar */
+    .hud-top {
+      position: fixed;
+      top: 18px;
+      left: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+    .hud-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(11, 21, 45, 0.85);
+      backdrop-filter: blur(14px);
+      padding: 8px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      pointer-events: auto;
+      text-decoration: none;
+    }
+    .hud-brand img { width: 24px; height: 24px; }
+    .hud-brand-title { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
+
+    .hud-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(11, 21, 45, 0.85);
+      backdrop-filter: blur(14px);
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      pointer-events: auto;
+    }
+    .hud-btn {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .hud-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-1px);
+    }
+    .hud-btn.primary {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      border: none;
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+    }
+    .hud-btn.primary:hover {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    /* HUD Bottom Bar */
+    .hud-bottom {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(11, 21, 45, 0.9);
+      backdrop-filter: blur(14px);
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      pointer-events: auto;
+    }
+    .nav-arrow {
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .nav-arrow:hover { background: #f59e0b; transform: scale(1.1); }
+    .step-counter {
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      min-width: 90px;
+      text-align: center;
+    }
+    .step-counter span { color: #ffffff; font-weight: 800; font-size: 15px; }
+
+    /* Teacher Guide Drawer */
+    #teacherDrawer {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 400px;
+      height: 100vh;
+      background: #0f172a;
+      border-left: 1px solid #334155;
+      color: #f8fafc;
+      z-index: 200;
+      transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -10px 0 30px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      pointer-events: auto;
+    }
+    #teacherDrawer.open { right: 0; }
+    .drawer-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1e293b;
+    }
+    .drawer-title { font-weight: 700; font-size: 16px; color: #fbbf24; }
+    .drawer-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Modal Shortcuts */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 250;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      width: 640px;
+      max-width: 92vw;
+      padding: 32px;
+      color: #f8fafc;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+    }
+    .shortcut-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #1e293b;
+    }
+    kbd {
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #fbbf24;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: monospace;
+      box-shadow: 0 2px 0 #000000;
+    }
+  </style>
+</head>
+<body class="impress-not-supported">
+
+  <!-- HUD Top -->
+  <header class="hud-top">
+    <a href="index.html" class="hud-brand" title="Quay về Danh mục GĐ2">
+      <img src="assets/buoi03/google-docs-icon.svg" alt="Docs Logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23f59e0b%22><rect width=%2224%22 height=%2224%22 rx=%224%22/></svg>'">
+      <span class="hud-brand-title">Docs THCS · Buổi 12 (Final)</span>
+    </a>
+
+    <div class="hud-controls">
+      <a href="buoi-12-bai-tap.html" class="hud-btn" target="_blank" title="Mở Phiếu bài tập &amp; Rubric">
+        🏆 Đề Án &amp; Rubric 40đ
+      </a>
+      <button class="hud-btn" onclick="toggleTeacherDrawer()" title="Sổ tay giáo viên">
+        👨‍🏫 Hướng Dẫn GV
+      </button>
+      <button class="hud-btn" onclick="openShortcutsModal()" title="Phím tắt">
+        ⌨ Bảng Vàng Phím Tắt
+      </button>
+      <a href="#overview" class="hud-btn primary" title="Xem toàn cảnh 3D">
+        🪐 Toàn Cảnh
+      </a>
+    </div>
+  </header>
+
+  <!-- HUD Bottom -->
+  <footer class="hud-bottom">
+    <button class="nav-arrow" id="btnPrev" onclick="impress().prev()" title="Trạm trước (Phím Mũi tên Trái)">❮</button>
+    <div class="step-counter">
+      TRẠM <span id="currentStepNum">1</span> / 25
+    </div>
+    <button class="nav-arrow" id="btnNext" onclick="impress().next()" title="Trạm sau (Phím Space hoặc Mũi tên Phải)">❯</button>
+  </footer>
+
+  <!-- ============================================================
+       IMPRESS CONTAINER (25 SPATIAL 3D STATIONS)
+       ============================================================ -->
+  <div id="impress" data-transition-duration="850">
+
+    <!-- TRẠM 1: HERO INTRO (Dark) -->
+    <div id="step-intro" class="step dark" data-x="0" data-y="0" data-z="0" data-scale="1">
+      <div class="eyebrow">🏆 BUỔI 12 · FINAL PROJECT CHUNG KHOÁ</div>
+      <h1 class="step-title" style="font-size: 46px; background: linear-gradient(135deg, #fbbf24, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Cẩm Nang Học Tập Dành Cho Học Sinh THCS
+      </h1>
+      <p class="step-desc" style="max-width: 780px; font-size: 19px;">
+        Chào mừng các em đến với ngày hội báo cáo chung cuộc! Đây là lúc tinh hoa của <strong>toàn bộ 12 buổi học</strong> được hội tụ trong một tác phẩm cẩm nang hoàn chỉnh: từ trang bìa trang trọng, mục lục tự động, bảng biểu, hình ảnh, phân quyền cộng tác đến xuất bản PDF đỉnh cao.
+      </p>
+
+      <div class="grid-3" style="margin-top: 36px;">
+        <div class="feature-card" style="background: rgba(15, 23, 42, 0.8); border-color: #854d0e;">
+          <div class="feature-icon" style="background: #854d0e; color: #fde68a;">👥</div>
+          <div class="feature-title" style="color: #fef08a;">Nhóm 3–4 Thành Viên</div>
+          <div class="feature-desc" style="color: #cbd5e1;">Phân công rõ ràng, phối hợp ăn ý, cùng nhau tạo nên kỳ tích.</div>
+        </div>
+        <div class="feature-card" style="background: rgba(15, 23, 42, 0.8); border-color: #064e3b;">
+          <div class="feature-icon" style="background: #064e3b; color: #6ee7b7;">🧩</div>
+          <div class="feature-title" style="color: #a7f3d0;">12 Kỹ Năng Tích Hợp</div>
+          <div class="feature-desc" style="color: #cbd5e1;">Vận dụng trọn vẹn Heading, Table, Image, TOC, Comment, Version.</div>
+        </div>
+        <div class="feature-card" style="background: rgba(15, 23, 42, 0.8); border-color: #831843;">
+          <div class="feature-icon" style="background: #831843; color: #fbcfe8;">📄</div>
+          <div class="feature-title" style="color: #fbcfe8;">01 Docs + 01 PDF</div>
+          <div class="feature-desc" style="color: #cbd5e1;">Xuất bản ấn phẩm cẩm nang học tập để đời dành cho học sinh cấp 2.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 2: ĐỀ BÀI CHÍNH THỨC -->
+    <div id="step-brief" class="step" data-x="1400" data-y="0" data-z="0">
+      <div class="eyebrow">📋 ĐỀ BÀI CHÍNH THỨC</div>
+      <h2 class="step-title">Dự Án: "Cẩm Nang Học Tập Dành Cho Học Sinh THCS"</h2>
+      <p class="step-desc">Một cuốn cẩm nang thực chiến giúp các bạn cùng trang lứa học giỏi hơn, quản lý thời gian tốt hơn và an toàn trên Internet:</p>
+
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="feature-card">
+          <h3 style="color: #d97706; font-size: 20px;">Quy mô &amp; Hình thức:</h3>
+          <ul style="font-size: 14px; color: #334155; line-height: 1.8;">
+            <li><strong>Nhóm:</strong> 3–4 học sinh (bầu 1 Nhóm trưởng).</li>
+            <li><strong>Thời lượng thực hiện:</strong> 100 phút tại lớp.</li>
+            <li><strong>Độ dài tài liệu:</strong> Từ 3 đến 5 trang A4 hoàn chỉnh.</li>
+            <li><strong>Sản phẩm nộp:</strong> 01 link Google Docs (có lịch sử) + 01 file PDF.</li>
+          </ul>
+        </div>
+        <div class="feature-card" style="background: #fefce8; border-color: #fde047;">
+          <h3 style="color: #854d0e; font-size: 20px;">Ý nghĩa thực tiễn:</h3>
+          <p style="font-size: 14px; color: #713f12; line-height: 1.7;">
+            Cuốn cẩm nang không chỉ là bài tập chấm điểm, mà sẽ được chia sẻ cho các bạn trong khối 6, 7 tham khảo trong năm học mới. Đây là tác phẩm đại diện cho năng lực công nghệ thông tin THCS của nhóm em!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 3: SVG SHOWCASE 1 - ROADMAP 100 MIN -->
+    <div id="step-roadmap-svg" class="step" data-x="2800" data-y="0" data-z="0">
+      <div class="eyebrow">⏳ LỘ TRÌNH 100 PHÚT</div>
+      <h2 class="step-title">Thời Gian Biểu 100 Phút Chung Kết</h2>
+      <p class="step-desc">Quan sát lộ trình 7 chặng để quản lý thời gian hiệu quả cùng đồng đội:</p>
+
+      <div class="svg-showcase">
+        <img src="assets/buoi12/final-project-roadmap-100min.svg" alt="100 Minute Final Project Roadmap">
+      </div>
+    </div>
+
+    <!-- TRẠM 4: 8 ĐỀ MỤC CẤU TRÚC GỢI Ý -->
+    <div id="step-structure" class="step" data-x="4200" data-y="0" data-z="0">
+      <div class="eyebrow">📑 CẤU TRÚC CẨM NANG</div>
+      <h2 class="step-title">8 Đề Mục Gợi Ý Trong Cẩm Nang</h2>
+      <p class="step-desc">Nhóm có thể tùy biến sáng tạo, nhưng cần đảm bảo bố cục khoa học, logic:</p>
+
+      <div class="grid-4" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="feature-title">1. Trang Bìa</div>
+          <p class="feature-desc">Title, ảnh logo, tên thành viên, lớp và năm học 2026.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">2. Mục Lục</div>
+          <p class="feature-desc">Mục lục tự động Table of Contents có số trang.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">3. Giới Thiệu</div>
+          <p class="feature-desc">Lời ngỏ, mục đích cuốn cẩm nang gửi học sinh THCS.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">4. Cách Học Hiệu Quả</div>
+          <p class="feature-desc">Phương pháp Pomodoro, sơ đồ tư duy, bảng ghi chú Cornell.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">5. Quản Lý Thời Gian</div>
+          <p class="feature-desc">Thời khóa biểu khoa học, cân bằng học tập và giải trí.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">6. Internet An Toàn</div>
+          <p class="feature-desc">Bảo vệ mật khẩu, phòng tránh lừa đảo mạng xã hội.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">7. Mẹo Máy Tính</div>
+          <p class="feature-desc">Bảng phím tắt Docs, mẹo tra cứu Google thông minh.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">8. Lời Kết</div>
+          <p class="feature-desc">Thông điệp truyền cảm hứng và lời chúc thi đua.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 5: THỰC HÀNH NHỎ 1 - PHÂN CÔNG VAI TRÒ -->
+    <div id="step-challenge-1" class="step" data-x="4200" data-y="1200" data-z="0">
+      <div class="eyebrow" style="background: #fef3c7; color: #d97706;">⚡ THỰC HÀNH NHỎ 1 (10 PHÚT)</div>
+      <h2 class="step-title">Phân Công 4 Vai Trò Vàng Trong Nhóm</h2>
+      <p class="step-desc">Thành công của dự án nằm ở sự phân chia nhiệm vụ mạch lạc ngay từ phút đầu tiên:</p>
+
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="feature-card" style="border-left: 6px solid #2563eb;">
+          <h4 style="color: #1d4ed8; font-size: 18px;">Bạn A: Trưởng Nhóm &amp; Nội Dung</h4>
+          <p style="font-size: 13.5px; color: #475569;">Soạn thảo lời mở đầu, quy tắc học tập và định hướng nội dung cốt lõi của cuốn cẩm nang.</p>
+        </div>
+        <div class="feature-card" style="border-left: 6px solid #10b981;">
+          <h4 style="color: #047857; font-size: 18px;">Bạn B: Chuyên Viên Đồ Họa &amp; Bảng Biểu</h4>
+          <p style="font-size: 13.5px; color: #475569;">Tìm kiếm ảnh minh họa sắc nét, thiết kế bảng Thời khóa biểu và bảng Mẹo máy tính hài hòa.</p>
+        </div>
+        <div class="feature-card" style="border-left: 6px solid #f59e0b;">
+          <h4 style="color: #b45309; font-size: 18px;">Bạn C: Kỹ Sư Định Dạng (Formatting)</h4>
+          <p style="font-size: 13.5px; color: #475569;">Đảm bảo phân cấp Heading 1, 2, giãn dòng 1.25, căn đều 2 bên và thiết lập Header &amp; Footer số trang.</p>
+        </div>
+        <div class="feature-card" style="border-left: 6px solid #8b5cf6;">
+          <h4 style="color: #6d28d9; font-size: 18px;">Bạn D: Thư Ký Kiểm Tra &amp; Xuất Bản PDF</h4>
+          <p style="font-size: 13.5px; color: #475569;">Chèn Mục lục tự động, soát lỗi chính tả, điều tra Lịch sử phiên bản và xuất file PDF hoàn mỹ.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 6: 13 TIÊU CHUẨN KỸ THUẬT -->
+    <div id="step-tech-specs" class="step" data-x="2800" data-y="1200" data-z="0">
+      <div class="eyebrow">⚙ TIÊU CHUẨN KỸ THUẬT</div>
+      <h2 class="step-title">13 Kỹ Năng Docs Bắt Buộc Trong Cẩm Nang</h2>
+      <p class="step-desc">Kiểm tra danh mục 13 vũ khí công nghệ đã học từ Buổi 1 đến Buổi 11:</p>
+
+      <div class="grid-3" style="margin-top: 20px;">
+        <div class="feature-card"><strong style="color:#2563eb;">1. Title:</strong> Tiêu đề chính trang bìa to nổi bật.</div>
+        <div class="feature-card"><strong style="color:#2563eb;">2. Heading 1:</strong> Đề mục lớn từng phần.</div>
+        <div class="feature-card"><strong style="color:#2563eb;">3. Heading 2:</strong> Các mục con phân cấp rõ ràng.</div>
+        <div class="feature-card"><strong style="color:#059669;">4. Formatting:</strong> Căn đều 2 bên, giãn dòng 1.25.</div>
+        <div class="feature-card"><strong style="color:#059669;">5. Bullet &amp; Number:</strong> Danh sách gạch đầu dòng khoa học.</div>
+        <div class="feature-card"><strong style="color:#059669;">6. Table:</strong> Bảng có dòng tiêu đề phối màu đẹp.</div>
+        <div class="feature-card"><strong style="color:#d97706;">7. Image:</strong> Ảnh bọc chữ wrap text, căn đối xứng.</div>
+        <div class="feature-card"><strong style="color:#d97706;">8. Hyperlink:</strong> Chèn liên kết dẫn nguồn an toàn.</div>
+        <div class="feature-card"><strong style="color:#d97706;">9. Header/Footer:</strong> Tên cẩm nang và số trang tự động.</div>
+        <div class="feature-card"><strong style="color:#7c3aed;">10. Table of Contents:</strong> Mục lục tự động có số trang.</div>
+        <div class="feature-card"><strong style="color:#7c3aed;">11. Comment:</strong> Trao đổi góp ý lề phải có Reply.</div>
+        <div class="feature-card"><strong style="color:#7c3aed;">12. Suggesting:</strong> Đề xuất sửa chữa vết mực xanh.</div>
+      </div>
+    </div>
+
+    <!-- TRẠM 7: SVG SHOWCASE 2 - RUBRIC 360 -->
+    <div id="step-rubric-svg" class="step" data-x="1400" data-y="1200" data-z="0">
+      <div class="eyebrow">📊 MA TRẬN ĐÁNH GIÁ 40 ĐIỂM</div>
+      <h2 class="step-title">Rubric 360° Toàn Diện (4 Trụ Cột x 10 Điểm)</h2>
+      <p class="step-desc">Quan sát tiêu chuẩn chấm điểm chi tiết để nhóm phấn đấu đạt điểm tối đa:</p>
+
+      <div class="svg-showcase">
+        <img src="assets/buoi12/rubric-360-evaluation.svg" alt="360 Degree Evaluation Rubric">
+      </div>
+    </div>
+
+    <!-- TRẠM 8: NGHỆ THUẬT TRANG BÌA -->
+    <div id="step-cover-craft" class="step" data-x="0" data-y="1200" data-z="0">
+      <div class="eyebrow" style="background: #fef3c7; color: #d97706;">🎨 THIẾT KẾ TRANG BÌA</div>
+      <h2 class="step-title">Trang Bìa Ấn Tượng: Bộ Mặt Của Cẩm Nang</h2>
+      <p class="step-desc">Trang bìa chuyên nghiệp tạo ấn tượng thị giác mạnh mẽ ngay từ giây đầu tiên:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="feature-title">Tiêu Đề &amp; Phụ Đề</div>
+          <p class="feature-desc">Dùng Style <strong>Title</strong> cỡ chữ 28–32pt, in đậm, màu sắc trang nhã (Xanh đậm hoặc Đỏ đô).</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Thông Tin Nhóm Tác Giả</div>
+          <p class="feature-desc">Ghi rõ: Tên các thành viên, Chi đội lớp, Trường THCS và Năm học 2026–2027.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Ngắt Trang (Page Break)</div>
+          <p class="feature-desc">Nhấn <kbd>Ctrl + Enter</kbd> ở cuối bìa để đẩy Mục lục sang trang 2 độc lập hoàn hảo!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 9: MỤC LỤC TỰ ĐỘNG TOC -->
+    <div id="step-toc-sync" class="step" data-x="-1400" data-y="1200" data-z="0">
+      <div class="eyebrow">📑 MỤC LỤC TỰ ĐỘNG</div>
+      <h2 class="step-title">Mục Lục TOC: Đừng Quên Bấm Nút Cập Nhật!</h2>
+      <p class="step-desc">Mục lục là tấm bản đồ dẫn lối độc giả khám phá toàn bộ cuốn cẩm nang:</p>
+
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="feature-card">
+          <h4 style="color: #2563eb; font-size: 18px;">Quy trình chèn mục lục:</h4>
+          <ol style="font-size: 14px; color: #334155; line-height: 1.8;">
+            <li>Đặt con trỏ ở Trang 2 (sau trang bìa).</li>
+            <li>Vào <strong>Chèn ➔ Mục lục</strong> ➔ Chọn kiểu có số trang bên phải.</li>
+            <li>Toàn bộ Heading 1, 2 sẽ tự động thu gom vào bảng mục lục.</li>
+          </ol>
+        </div>
+        <div class="feature-card" style="background: #f0fdf4;">
+          <h4 style="color: #059669; font-size: 18px;">Thao tác sống còn trước khi nộp bài:</h4>
+          <p style="font-size: 14px; color: #166534; line-height: 1.7;">
+            Sau khi các bạn gõ thêm nội dung hoặc chèn ảnh làm nhảy số trang, Thư ký nhóm <strong>phải nhấp vào mục lục ➔ bấm biểu tượng Mũi tên xoay tròn (Cập nhật mục lục)</strong> để số trang luôn chính xác 100%!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 10: BẢNG BIỂU CHUYÊN NGHIỆP -->
+    <div id="step-table-craft" class="step" data-x="-1400" data-y="2400" data-z="0">
+      <div class="eyebrow">📊 BẢNG BIỂU &amp; LỊCH BIỂU</div>
+      <h2 class="step-title">Table: Trình Bày Thông Tin Gọn Gàng &amp; Dễ Hiểu</h2>
+      <p class="step-desc">Ứng dụng kỹ năng Buổi 6 để tạo bảng Thời khóa biểu hoặc Bảng mẹo phím tắt:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="feature-title">Header Row Nổi Bật</div>
+          <p class="feature-desc">Tô màu nền hàng tiêu đề (ví dụ: Xanh dương nhạt hoặc Xám ấm), in đậm chữ tiêu đề.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Căn Lề Hài Hòa</div>
+          <p class="feature-desc">Cột số thứ tự căn giữa, cột nội dung căn trái, cột thời gian hoặc số liệu căn giữa/phải.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Căn Đều Độ Rộng Cột</div>
+          <p class="feature-desc">Bôi đen bảng ➔ Chuột phải chọn <em>"Phân phối các cột đều nhau"</em> để bảng vuông vức.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 11: BỐ TRÍ ẢNH & LINK -->
+    <div id="step-image-layout" class="step" data-x="0" data-y="2400" data-z="0">
+      <div class="eyebrow">🖼 HÌNH ẢNH &amp; HYPERLINK</div>
+      <h2 class="step-title">Minh Họa Sống Động Kèm Trích Dẫn Nguồn</h2>
+      <p class="step-desc">Hình ảnh giúp cẩm nang trở nên hấp dẫn hơn đối với học sinh cấp 2:</p>
+
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="feature-card">
+          <h4 style="color: #2563eb; font-size: 18px;">Kỹ thuật bọc chữ Wrap Text:</h4>
+          <p style="font-size: 14px; color: #334155; line-height: 1.7;">
+            Bấm vào ảnh ➔ Chọn chế độ <strong>Bọc văn bản (Wrap text)</strong> ➔ Đặt khoảng cách lề khoảng 3mm. Đoạn văn sẽ ôm sát quanh ảnh một cách tự nhiên như tạp chí chuyên nghiệp.
+          </p>
+        </div>
+        <div class="feature-card">
+          <h4 style="color: #059669; font-size: 18px;">Chèn Hyperlink nguồn ảnh (<kbd>Ctrl + K</kbd>):</h4>
+          <p style="font-size: 14px; color: #334155; line-height: 1.7;">
+            Dưới mỗi ảnh, gõ một dòng chú thích nhỏ (cỡ 9pt, in nghiêng) và gắn hyperlink trích dẫn nguồn ảnh hoặc tài liệu tham khảo để đảm bảo tính bản quyền số.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 12: HEADER & FOOTER ĐÁNH SỐ TRANG -->
+    <div id="step-header-footer" class="step" data-x="1400" data-y="2400" data-z="0">
+      <div class="eyebrow">📑 HEADER, FOOTER &amp; PAGE NUMBER</div>
+      <h2 class="step-title">Đầu Trang, Chân Trang &amp; Đánh Số Trang Tự Động</h2>
+      <p class="step-desc">Điểm phân biệt giữa một tài liệu sơ sài và một ấn phẩm sách xuất bản:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="feature-title">Đầu Trang (Header)</div>
+          <p class="feature-desc">Gõ tên cẩm nang: <em>"Cẩm nang học tập THCS · Chi đội 7A"</em>, in nghiêng, cỡ 9pt, căn lề phải.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Đánh Số Trang Tự Động</div>
+          <p class="feature-desc">Vào <strong>Chèn ➔ Số trang</strong> ➔ Chọn kiểu số trang ở chân trang (Footer).</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Khác Biệt Trang Đầu</div>
+          <p class="feature-desc">Tick vào ô <strong>"Khác biệt trang đầu tiên"</strong> để trang bìa không bị hiện số 1 xấu xí!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 13: THỰC HÀNH NHỎ 2 - REVIEW CHÉO -->
+    <div id="step-challenge-2" class="step" data-x="2800" data-y="2400" data-z="0">
+      <div class="eyebrow" style="background: #fef3c7; color: #d97706;">⚡ THỰC HÀNH NHỎ 2 (10 PHÚT)</div>
+      <h2 class="step-title">Review Chéo Giữa Các Nhóm: Soi Sáng Tác Phẩm</h2>
+      <p class="step-desc">Vào phút thứ 70, Giáo viên ghép cặp: Nhóm 1 trao đổi quyền Nhận xét cho Nhóm 2:</p>
+
+      <div class="interactive-box">
+        <p style="font-size: 15px; line-height: 1.8; color: #1e293b;">
+          <strong>Nhiệm vụ của nhóm đánh giá:</strong> Mở bài của nhóm bạn và kiểm tra 5 tiêu chí:<br>
+          1. Bìa có Title và tên thành viên đầy đủ chưa?<br>
+          2. Các chương có ngắt trang bằng Page Break không?<br>
+          3. Mục lục tự động TOC đã được cập nhật chưa?<br>
+          4. Hình ảnh và bảng biểu có bị lệch trang không?<br>
+          5. <strong>Hành động:</strong> Để lại ít nhất <strong>02 Comment góp ý văn minh</strong> và <strong>01 Suggesting</strong> giúp bạn hoàn thiện bài!
+        </p>
+      </div>
+    </div>
+
+    <!-- TRẠM 14: LỊCH SỬ & ĐẶT TÊN BẢN DUYỆT -->
+    <div id="step-version-final" class="step" data-x="4200" data-y="2400" data-z="0">
+      <div class="eyebrow">⏳ LỊCH SỬ PHIÊN BẢN CHUNG CUỘC</div>
+      <h2 class="step-title">Đặt Tên Phiên Bản Final Trong Version History</h2>
+      <p class="step-desc">Đánh dấu cột mốc hoàn thành tác phẩm trước giờ nộp bài:</p>
+
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="feature-card">
+          <h4 style="color: #2563eb; font-size: 18px;">Thao tác bắt buộc của Nhóm trưởng:</h4>
+          <ol style="font-size: 14px; color: #334155; line-height: 1.8;">
+            <li>Nhấn <kbd>Ctrl + Alt + Shift + H</kbd> mở Lịch sử phiên bản.</li>
+            <li>Tại mốc thời gian hiện tại, bấm nút 3 chấm (⋮).</li>
+            <li>Chọn <strong>"Đặt tên cho phiên bản này"</strong>.</li>
+            <li>Gõ tên: <em>"BẢN FINAL CHÍNH THỨC - NHÓM [TÊN NHÓM]"</em>.</li>
+          </ol>
+        </div>
+        <div class="feature-card" style="background: #f0fdf4;">
+          <h4 style="color: #059669; font-size: 18px;">Ý nghĩa điểm số:</h4>
+          <p style="font-size: 14px; color: #166534; line-height: 1.7;">
+            Giáo viên sẽ mở Version History để chấm điểm tinh thần làm việc nhóm. Nếu thấy các mốc thời gian rõ ràng và tên phiên bản chỉn chu, nhóm em sẽ nhận trọn vẹn điểm thưởng Cộng tác!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 15: XUẤT BẢN FILE PDF -->
+    <div id="step-pdf-final" class="step" data-x="4200" data-y="3600" data-z="0">
+      <div class="eyebrow">📄 XUẤT BẢN FILE PDF</div>
+      <h2 class="step-title">Xuất Bản PDF: Đóng Gói Tác Phẩm Để Đời</h2>
+      <p class="step-desc">Khóa cứng vẻ đẹp của Cẩm nang trước khi nộp và trình chiếu:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="feature-title">Vào Tệp ➔ Tải Xuống</div>
+          <p class="feature-desc">Chọn định dạng <strong>Tài liệu PDF (.pdf)</strong> để tải về máy tính.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Kiểm Tra Lần Cuối</div>
+          <p class="feature-desc">Mở file PDF lướt từ trang bìa đến trang cuối xem có dòng chữ nào bị nhảy lẻ loi không.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Nộp Cả 2 Sản Phẩm</div>
+          <p class="feature-desc">Nộp 01 link Google Docs (quyền Người xem/Nhận xét) và 01 file PDF hoàn chỉnh.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 16: MẸO BÁO CÁO 2 PHÚT -->
+    <div id="step-pitch" class="step" data-x="2800" data-y="3600" data-z="0">
+      <div class="eyebrow">🎤 BÁO CÁO TRƯỚC LỚP</div>
+      <h2 class="step-title">Bí Quyết Thuyết Trình 2 Phút Chinh Phục Khán Phòng</h2>
+      <p class="step-desc">Mỗi nhóm có 2 phút chiếu file PDF trên máy chiếu và chia sẻ với cả lớp:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <h4 style="color: #2563eb; margin: 0 0 8px;">0:00 – 0:30</h4>
+          <strong style="color: #1e293b;">Chào hỏi &amp; Giới thiệu tên nhóm:</strong>
+          <p style="font-size: 13px; color: #64748b; margin-top: 6px;">Giới thiệu tên cẩm nang và thông điệp mà nhóm muốn gửi gắm tới học sinh THCS.</p>
+        </div>
+        <div class="feature-card">
+          <h4 style="color: #f59e0b; margin: 0 0 8px;">0:30 – 1:30</h4>
+          <strong style="color: #1e293b;">Chiếu trang tự hào nhất:</strong>
+          <p style="font-size: 13px; color: #64748b; margin-top: 6px;">Cuộn đến trang có bảng biểu hoặc mục lục đẹp nhất, chia sẻ cách nhóm phối hợp làm nên trang đó.</p>
+        </div>
+        <div class="feature-card">
+          <h4 style="color: #10b981; margin: 0 0 8px;">1:30 – 2:00</h4>
+          <strong style="color: #1e293b;">Bài học tâm đắc &amp; Lời cảm ơn:</strong>
+          <p style="font-size: 13px; color: #64748b; margin-top: 6px;">Chia sẻ kỹ năng Docs mà nhóm thấy hữu ích nhất sau 12 buổi học và cảm ơn thầy cô, bạn bè.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 17: SIMULATOR TƯƠNG TÁC -->
+    <div id="step-simulator" class="step" data-x="1400" data-y="3600" data-z="0">
+      <div class="eyebrow" style="background: #eff6ff; color: #2563eb;">🎮 BẢNG ĐIỀU KHIỂN DỰ ÁN THỜI GIAN THỰC</div>
+      <h2 class="step-title">Giả Lập Kiểm Tra 12 Tiêu Chuẩn Kỹ Thuật</h2>
+      <p class="step-desc">Bấm các nút kiểm tra để kiểm định độ hoàn thiện của Cẩm nang học tập:</p>
+
+      <div class="interactive-box" style="background: #f8fafc;">
+        <div style="display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap;">
+          <button class="hud-btn primary" onclick="simCheckLayout()">1. Soát Bố cục &amp; Bìa</button>
+          <button class="hud-btn" style="background: #059669; color: #fff;" onclick="simCheckTOC()">2. Kiểm tra Mục lục TOC</button>
+          <button class="hud-btn" style="background: #d97706; color: #fff;" onclick="simCheckTeam()">3. Kiểm tra Lịch sử nhóm</button>
+          <button class="hud-btn" style="background: #7c3aed; color: #fff;" onclick="simScoreProject()">4. Tổng kết điểm dự kiến</button>
+        </div>
+
+        <div id="simScreen" style="background: #ffffff; padding: 20px; border-radius: 10px; border: 1px solid #cbd5e1; min-height: 100px; font-size: 15px; line-height: 1.7;">
+          <div id="simContent">Sẵn sàng kiểm định chất lượng Cẩm nang THCS... Bấm các nút phía trên!</div>
+        </div>
+        <div id="simStatus" style="margin-top: 12px; font-size: 13px; color: #0284c7; font-weight: 600;">
+          Trạng thái: Đang chờ nhóm trưởng gửi kiểm định.
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 18: SVG SHOWCASE 4 - BEFORE & AFTER -->
+    <div id="step-before-after-svg" class="step" data-x="0" data-y="3600" data-z="0">
+      <div class="eyebrow">🌟 BEFORE &amp; AFTER TOÀN KHÓA</div>
+      <h2 class="step-title">Hành Trình Lột Xác Sau 12 Buổi Google Docs THCS</h2>
+      <p class="step-desc">Từ những thao tác vụng về ban đầu đến tác giả xuất bản cẩm nang học tập chuyên nghiệp:</p>
+
+      <div class="svg-showcase">
+        <img src="assets/buoi12/before-after-final-handbook.svg" alt="Before and After Final Handbook">
+      </div>
+    </div>
+
+    <!-- TRẠM 19: BÀI TẬP SAU BUỔI 12 - PORTFOLIO CÁ NHÂN -->
+    <div id="step-portfolio" class="step" data-x="-1400" data-y="3600" data-z="0">
+      <div class="eyebrow" style="background: #ede9fe; color: #7c3aed;">📁 BÀI TẬP VỀ NHÀ SAU BUỔI 12</div>
+      <h2 class="step-title">Hoàn Thiện Portfolio Google Docs Cá Nhân</h2>
+      <p class="step-desc">Tuyển tập 3 tác phẩm tự hào nhất của bản thân để lưu giữ làm hành trang học tập:</p>
+
+      <div class="svg-showcase" style="height: 340px; margin-bottom: 20px;">
+        <img src="assets/buoi12/portfolio-curation-showcase.svg" alt="Portfolio Showcase Model">
+      </div>
+
+      <div style="background: #f1f5f9; padding: 14px 20px; border-radius: 12px; font-size: 14px; color: #334155;">
+        Tạo 1 thư mục Google Drive: <strong>03 Google Docs + 03 PDF tương ứng + 01 Trang giới thiệu Portfolio</strong>. Nộp link Drive quyền Xem cho giáo viên.
+      </div>
+    </div>
+
+    <!-- TRẠM 20: NHÌN LẠI CHẶNG ĐƯỜNG 12 BUỔI -->
+    <div id="step-reflection" class="step" data-x="-1400" data-y="4800" data-z="0">
+      <div class="eyebrow">🌱 NHÌN LẠI CHẶNG ĐƯỜNG</div>
+      <h2 class="step-title">Chặng Đường 12 Buổi: Từng Bước Trưởng Thành</h2>
+      <p class="step-desc">12 buổi học là một chuỗi trải nghiệm đầy cảm xúc của các em:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <strong style="color: #2563eb;">Buổi 1 – 4: Nền Tảng</strong>
+          <p style="font-size: 13px; color: #64748b; margin-top: 6px;">Làm quen Docs, phím tắt gõ văn bản, định dạng font chữ và hệ thống Heading Styles chuẩn mực.</p>
+        </div>
+        <div class="feature-card">
+          <strong style="color: #059669;">Buổi 5 – 8: Trình Bày</strong>
+          <p style="font-size: 13px; color: #64748b; margin-top: 6px;">Chèn ảnh bọc chữ, kẻ bảng biểu thời khóa biểu, căn lề trang A4 và tạo mục lục tự động TOC.</p>
+        </div>
+        <div class="feature-card">
+          <strong style="color: #f59e0b;">Buổi 9 – 12: Làm Chủ &amp; Đồ Án</strong>
+          <p style="font-size: 13px; color: #64748b; margin-top: 6px;">Chia sẻ an toàn, cộng tác Comment/Suggesting, cỗ máy thời gian Version History và Final Project!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 21: QUIZ TỔNG KẾT 10 CÂU -->
+    <div id="step-quiz" class="step" data-x="0" data-y="4800" data-z="0">
+      <div class="eyebrow" style="background: #fdf2f8; color: #be185d;">🧠 TRẮC NGHIỆM TỔNG KẾT KHÓA HỌC</div>
+      <h2 class="step-title">Đại Thử Thách Quiz: Đấu Trí Chuyên Gia Docs</h2>
+      <p class="step-desc">10 câu hỏi bao quát trọn vẹn kiến thức của toàn bộ 12 buổi học:</p>
+
+      <div class="interactive-box" id="quizContainer">
+        <div id="quizQuestion" style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 16px;">
+          Đang tải câu hỏi...
+        </div>
+        <div id="quizOptions" style="display: flex; flex-direction: column; gap: 10px;">
+          <!-- Options rendered via JS -->
+        </div>
+        <div id="quizFeedback" style="margin-top: 16px; font-weight: 600; font-size: 14px;"></div>
+        <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+          <span id="quizScoreTracker" style="font-size: 13px; color: #64748b;">Câu 1 / 10 • Điểm: 0</span>
+          <button id="btnNextQuiz" class="hud-btn primary" onclick="nextQuizQuestion()" style="display: none;">Câu tiếp theo ❯</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 22: LỄ VINH DANH CHUYÊN GIA -->
+    <div id="step-graduation" class="step" data-x="1400" data-y="4800" data-z="0">
+      <div class="eyebrow" style="background: #ecfdf5; color: #059669;">🎓 LỄ VINH DANH</div>
+      <h2 class="step-title">Chứng Nhận: Chuyên Gia Google Docs THCS</h2>
+      <p class="step-desc">Chúc mừng tất cả các em đã xuất sắc hoàn thành khóa học kỹ năng cốt lõi:</p>
+
+      <div style="background: linear-gradient(135deg, #0b152d, #1e293b); border: 2px solid #fbbf24; border-radius: 18px; padding: 32px; color: #ffffff; text-align: center;">
+        <div style="font-size: 40px; margin-bottom: 12px;">🎖</div>
+        <h3 style="font-size: 24px; color: #fbbf24; margin: 0 0 8px;">CHỨNG NHẬN TỐT NGHIỆP GIAI ĐOẠN 2</h3>
+        <p style="font-size: 16px; color: #e2e8f0; max-width: 650px; margin: 0 auto 16px;">
+          Trao tặng cho các học sinh THCS đã làm chủ 12 kỹ năng xử lý văn bản đám mây, cộng tác thời gian thực và xuất bản tài liệu chuẩn mực quốc tế!
+        </p>
+        <span style="display: inline-block; background: rgba(251, 191, 36, 0.2); border: 1px solid #fbbf24; color: #fbbf24; padding: 6px 18px; border-radius: 999px; font-size: 13px; font-weight: 700;">
+          DOCS LAB THCS · NIÊN KHÓA 2026
+        </span>
+      </div>
+    </div>
+
+    <!-- TRẠM 23: BẢNG VÀNG PHÍM TẮT -->
+    <div id="step-shortcuts" class="step" data-x="2800" data-y="4800" data-z="0">
+      <div class="eyebrow">⌨ BẢNG VÀNG PHÍM TẮT TOÀN KHÓA</div>
+      <h2 class="step-title">Cẩm Nang Phím Tắt Trọn Bộ 12 Buổi</h2>
+      <p class="step-desc">Ghi lại để sử dụng suốt những năm tháng học tập cấp 2 và cấp 3:</p>
+
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="shortcut-row"><span>Ngắt trang sang trang mới:</span> <kbd>Ctrl + Enter</kbd></div>
+          <div class="shortcut-row"><span>Chèn liên kết web:</span> <kbd>Ctrl + K</kbd></div>
+          <div class="shortcut-row"><span>Thêm bình luận Comment:</span> <kbd>Ctrl + Alt + M</kbd></div>
+          <div class="shortcut-row"><span>Xem lịch sử phiên bản:</span> <kbd>Ctrl + Alt + Shift + H</kbd></div>
+        </div>
+        <div class="feature-card">
+          <div class="shortcut-row"><span>Nhập liệu bằng giọng nói:</span> <kbd>Ctrl + Shift + S</kbd></div>
+          <div class="shortcut-row"><span>Đếm số từ (Word Count):</span> <kbd>Ctrl + Shift + C</kbd></div>
+          <div class="shortcut-row"><span>In ấn &amp; Lưu PDF:</span> <kbd>Ctrl + P</kbd></div>
+          <div class="shortcut-row"><span>Xóa định dạng rác:</span> <kbd>Ctrl + \</kbd></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 24: TỔNG KẾT & THÔNG ĐIỆP (Dark) -->
+    <div id="step-summary" class="step dark" data-x="4200" data-y="4800" data-z="0">
+      <div class="eyebrow">🚀 LỜI KẾT VÀ TƯƠNG LAI SỐ</div>
+      <h2 class="step-title" style="color: #fbbf24;">Tự Tin Bước Vào Kỷ Nguyên Số</h2>
+      <p class="step-desc" style="color: #cbd5e1; font-size: 18px;">
+        Khóa học khép lại, nhưng hành trình khám phá công nghệ của các em chỉ mới bắt đầu. Những kỹ năng trình bày, cộng tác và bảo mật hôm nay sẽ là đôi cánh giúp các em bay cao trong mọi môn học và dự án tương lai!
+      </p>
+
+      <div style="margin-top: 40px; text-align: center;">
+        <a href="buoi-12-bai-tap.html" class="hud-btn primary" style="font-size: 16px; padding: 12px 28px;">
+          Bắt Đầu Hoàn Thiện Final Project Ngay ➔
+        </a>
+      </div>
+    </div>
+
+    <!-- TRẠM 25: OVERVIEW 3D BIG PICTURE -->
+    <div id="overview" class="step" data-x="1800" data-y="2400" data-z="3800" data-scale="4.8">
+      <!-- 3D Cosmos Overview of all 25 stations -->
+    </div>
+
+  </div>
+
+  <!-- TEACHER GUIDE DRAWER -->
+  <aside id="teacherDrawer">
+    <div class="drawer-header">
+      <span class="drawer-title">👨‍🏫 SỔ TAY GIÁO VIÊN · BUỔI 12</span>
+      <button class="nav-arrow" onclick="toggleTeacherDrawer()" style="width:28px; height:28px; font-size:12px;">✕</button>
+    </div>
+    <div class="drawer-body">
+      <h4 style="color: #fbbf24; margin-top: 0;">Mục tiêu trọng tâm:</h4>
+      <p>Tổ chức ngày hội Final Project 100 phút, đánh giá toàn diện năng lực học sinh qua sản phẩm "Cẩm nang học tập THCS" và hướng dẫn hoàn thiện Portfolio cá nhân.</p>
+
+      <h4 style="color: #fbbf24;">Kịch bản 100 phút:</h4>
+      <ul>
+        <li><strong>0-10':</strong> Giới thiệu đề bài &amp; Ma trận Rubric 40 điểm.</li>
+        <li><strong>10-20':</strong> Bầu nhóm trưởng &amp; phân công 4 vai trò.</li>
+        <li><strong>20-30':</strong> Dựng khung dàn ý Heading &amp; Bìa.</li>
+        <li><strong>30-70':</strong> 40 phút cao điểm thực hiện cẩm nang.</li>
+        <li><strong>70-80':</strong> Review chéo giữa các nhóm bằng Comment.</li>
+        <li><strong>80-90':</strong> Cập nhật Mục lục TOC &amp; Xuất bản PDF.</li>
+        <li><strong>90-98':</strong> Mỗi nhóm 2 phút báo cáo nhanh.</li>
+        <li><strong>98-100':</strong> Tổng kết, trao chứng nhận &amp; bế mạc.</li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- SHORTCUTS MODAL -->
+  <div id="shortcutsModal" class="modal-overlay" onclick="closeShortcutsModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="margin: 0; color: #fbbf24; font-size: 22px;">⌨ Bảng Vàng Phím Tắt Docs THCS</h3>
+        <button class="nav-arrow" onclick="closeShortcutsModal()" style="width:28px; height:28px; font-size:12px;">✕</button>
+      </div>
+      <div class="shortcut-row"><span>Ngắt trang:</span> <kbd>Ctrl + Enter</kbd></div>
+      <div class="shortcut-row"><span>Chèn liên kết web:</span> <kbd>Ctrl + K</kbd></div>
+      <div class="shortcut-row"><span>Thêm bình luận:</span> <kbd>Ctrl + Alt + M</kbd></div>
+      <div class="shortcut-row"><span>Lịch sử phiên bản:</span> <kbd>Ctrl + Alt + Shift + H</kbd></div>
+      <div class="shortcut-row"><span>Nhập giọng nói:</span> <kbd>Ctrl + Shift + S</kbd></div>
+      <div class="shortcut-row"><span>Đếm số từ:</span> <kbd>Ctrl + Shift + C</kbd></div>
+      <div class="shortcut-row"><span>In / Xuất PDF:</span> <kbd>Ctrl + P</kbd></div>
+    </div>
+  </div>
+
+  <!-- IMPRESS JS -->
+  <script src="assets/js/impress.js"></script>
+  <script>
+    // Init Impress
+    impress().init();
+
+    // Track Step Numbers
+    const stepIds = [
+      "step-intro", "step-brief", "step-roadmap-svg", "step-structure",
+      "step-challenge-1", "step-tech-specs", "step-rubric-svg", "step-cover-craft",
+      "step-toc-sync", "step-table-craft", "step-image-layout", "step-header-footer",
+      "step-challenge-2", "step-version-final", "step-pdf-final", "step-pitch",
+      "step-simulator", "step-before-after-svg", "step-portfolio", "step-reflection",
+      "step-quiz", "step-graduation", "step-shortcuts", "step-summary", "overview"
+    ];
+
+    document.addEventListener("impress:stepenter", function(event) {
+      const id = event.target.id;
+      const idx = stepIds.indexOf(id);
+      const counter = document.getElementById("currentStepNum");
+      if (counter && idx !== -1) {
+        counter.textContent = (idx + 1);
+      }
+    });
+
+    // Teacher Drawer Toggle
+    function toggleTeacherDrawer() {
+      document.getElementById("teacherDrawer").classList.toggle("open");
+    }
+
+    // Shortcuts Modal
+    function openShortcutsModal() {
+      document.getElementById("shortcutsModal").classList.add("open");
+    }
+    function closeShortcutsModal(e) {
+      if (!e || e.target.id === 'shortcutsModal' || e.target.tagName === 'BUTTON') {
+        document.getElementById("shortcutsModal").classList.remove("open");
+      }
+    }
+
+    // Simulator Logic
+    function simCheckLayout() {
+      const scr = document.getElementById("simContent");
+      scr.innerHTML = `
+        <div style="color:#059669; font-weight:bold;">✔ BỐ CỤC ĐẠT CHUẨN:</div>
+        <p style="margin:4px 0 0; color:#334155;">Đã có Trang bìa đẹp, ngắt trang Page Break sang Mục lục, Heading 1 &amp; Heading 2 phân cấp mạch lạc.</p>
+      `;
+      document.getElementById("simStatus").innerHTML = '<span style="color:#059669;">Trụ cột I: Đạt 10/10 điểm!</span>';
+    }
+
+    function simCheckTOC() {
+      const scr = document.getElementById("simContent");
+      scr.innerHTML = `
+        <div style="color:#2563eb; font-weight:bold;">✔ MỤC LỤC &amp; KỸ THUẬT DOCS:</div>
+        <p style="margin:4px 0 0; color:#334155;">Mục lục TOC đã liên kết tự động tới 8 đề mục, có đánh số trang Footer và bảng biểu có Header row.</p>
+      `;
+      document.getElementById("simStatus").innerHTML = '<span style="color:#2563eb;">Trụ cột II: Đạt 10/10 điểm!</span>';
+    }
+
+    function simCheckTeam() {
+      const scr = document.getElementById("simContent");
+      scr.innerHTML = `
+        <div style="color:#d97706; font-weight:bold;">✔ TINH THẦN CỘNG TÁC NHÓM:</div>
+        <p style="margin:4px 0 0; color:#334155;">4 bạn đều có con trỏ màu hoạt động, có 3 comment góp ý và đã đặt tên "Bản Final Chính Thức" trong Version History.</p>
+      `;
+      document.getElementById("simStatus").innerHTML = '<span style="color:#d97706;">Trụ cột III: Đạt 10/10 điểm!</span>';
+    }
+
+    function simScoreProject() {
+      alert("🏆 TỔNG KẾT ĐÁNH GIÁ FINAL PROJECT:\n• Trụ cột I (Bố cục & TOC): 10 / 10đ\n• Trụ cột II (Kỹ thuật Docs): 10 / 10đ\n• Trụ cột III (Cộng tác nhóm): 10 / 10đ\n• Trụ cột IV (PDF & Báo cáo): 10 / 10đ\n────────────────────\n🎉 TỔNG ĐIỂM DỰ KIẾN: 40 / 40 ĐIỂM (XUẤT SẮC)!");
+    }
+
+    // Quiz 10 Questions Engine
+    const quizData = [
+      {
+        q: "1. Để phân trang giữa Trang bìa và trang Mục lục một cách chuẩn xác, ta sử dụng thao tác nào?",
+        options: [
+          "Bấm Ctrl + Enter (Ngắt trang Page Break)",
+          "Bấm phím Enter 50 lần liên tục",
+          "Tạo file tài liệu mới hoàn toàn",
+          "Bấm phím cách (Space)"
+        ],
+        correct: 0,
+        exp: "Ctrl + Enter tạo dấu ngắt trang chuẩn, không bị xô lệch khi thêm bớt nội dung."
+      },
+      {
+        q: "2. Sau khi chỉnh sửa nội dung bài viết làm thay đổi số trang, thao tác nào giúp cập nhật lại Mục lục TOC?",
+        options: [
+          "Bấm vào mục lục rồi bấm biểu tượng Mũi tên xoay tròn (Cập nhật mục lục)",
+          "Xóa mục lục đi gõ lại bằng tay",
+          "Khởi động lại máy tính",
+          "Đổi tên file"
+        ],
+        correct: 0,
+        exp: "Nút Cập nhật mục lục tự động đồng bộ lại toàn bộ tiêu đề và số trang tức thì."
+      },
+      {
+        q: "3. Làm thế nào để trang bìa không bị hiện số trang (trang 1) ở phần chân trang?",
+        options: [
+          "Tick chọn ô 'Khác biệt trang đầu tiên' (Different first page)",
+          "Lấy bút xóa bôi lên màn hình",
+          "Xóa chân trang của cả bài",
+          "Không đánh số trang nữa"
+        ],
+        correct: 0,
+        exp: "'Khác biệt trang đầu tiên' giúp trang bìa không hiển thị header và footer."
+      },
+      {
+        q: "4. Chế độ bọc văn bản nào giúp hình ảnh nằm gọn giữa các dòng chữ như một trang tạp chí?",
+        options: [
+          "Bọc văn bản (Wrap text)",
+          "Xuống dòng (Break text)",
+          "Trong dòng văn bản (In line)",
+          "Phía sau văn bản (Behind text)"
+        ],
+        correct: 0,
+        exp: "Wrap text cho phép chữ ôm quanh các cạnh của hình ảnh mượt mà."
+      },
+      {
+        q: "5. Để phân biệt hàng tiêu đề của Bảng biểu (Table) với các hàng dữ liệu thông thường, ta nên làm gì?",
+        options: [
+          "Tô màu nền nổi bật cho hàng tiêu đề và in đậm chữ",
+          "Xóa toàn bộ đường viền",
+          "Để bảng trống không gõ chữ",
+          "Chỉ gõ 1 cột duy nhất"
+        ],
+        correct: 0,
+        exp: "Phối màu nền và in đậm hàng tiêu đề giúp bảng biểu dễ đọc và khoa học."
+      },
+      {
+        q: "6. Khi gửi tài liệu cho bạn bè để góp ý mà không muốn bạn lỡ tay xóa mất bài, em nên cấp quyền gì?",
+        options: ["Người nhận xét (Commenter)", "Chủ sở hữu (Owner)", "Người chỉnh sửa (Editor)", "Không chia sẻ"],
+        correct: 0,
+        exp: "Quyền Commenter chỉ cho phép bạn thêm bình luận và gợi ý đề xuất vết mực xanh."
+      },
+      {
+        q: "7. Trong Lịch sử phiên bản (Version History), thao tác nào giúp nhóm dễ dàng tìm lại mốc bài nộp quan trọng?",
+        options: [
+          "Bấm dấu 3 chấm chọn 'Đặt tên cho phiên bản này'",
+          "Chụp ảnh màn hình lưu vào điện thoại",
+          "Đổi mật khẩu tài khoản Google",
+          "Xóa các phiên bản cũ đi"
+        ],
+        correct: 0,
+        exp: "Đặt tên phiên bản giúp đánh dấu mốc lịch sử dễ nhớ và dễ khôi phục."
+      },
+      {
+        q: "8. Định dạng xuất bản nộp bài cuối cùng để đảm bảo không bị nhảy trang hay vỡ font trên mọi máy là gì?",
+        options: ["Tài liệu PDF (.pdf)", "File ảnh GIF", "File âm thanh MP3", "Tệp văn bản thuần .txt"],
+        correct: 0,
+        exp: "PDF là định dạng cố định trang chuẩn in ấn và nộp bài kiểm tra."
+      },
+      {
+        q: "9. Portfolio Google Docs cá nhân cuối khóa gồm những thành phần cốt lõi nào?",
+        options: [
+          "03 Google Docs tốt nhất + 03 PDF tương ứng + 01 trang giới thiệu Portfolio",
+          "100 bức ảnh chụp màn hình máy tính",
+          "Chỉ cần 1 bức ảnh đại diện",
+          "Không cần làm gì cả"
+        ],
+        correct: 0,
+        exp: "Portfolio là bộ hồ sơ tuyển tập các sản phẩm xuất sắc nhất phản ánh tiến bộ học tập."
+      },
+      {
+        q: "10. Giá trị lớn nhất mà học sinh nhận được sau 12 buổi học Google Docs THCS là gì?",
+        options: [
+          "Làm chủ kỹ năng số, tự tin làm việc nhóm, trình bày khoa học và xuất bản ấn phẩm chuyên nghiệp",
+          "Chỉ là biết gõ chữ nhanh hơn",
+          "Chỉ để chơi trò chơi máy tính",
+          "Biết cách xóa bài của bạn bè"
+        ],
+        correct: 0,
+        exp: "Đó là tư duy công nghệ, tác phong làm việc nhóm và năng lực số thế kỷ 21."
+      }
+    ];
+
+    let currentQ = 0;
+    let quizScore = 0;
+
+    function renderQuiz() {
+      const q = quizData[currentQ];
+      document.getElementById("quizQuestion").textContent = q.q;
+      const opts = document.getElementById("quizOptions");
+      opts.innerHTML = "";
+      document.getElementById("quizFeedback").textContent = "";
+      document.getElementById("btnNextQuiz").style.display = "none";
+      document.getElementById("quizScoreTracker").textContent = `Câu ${currentQ + 1} / ${quizData.length} • Điểm: ${quizScore}`;
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "hud-btn";
+        btn.style.textAlign = "left";
+        btn.style.padding = "12px 18px";
+        btn.style.fontSize = "14px";
+        btn.style.color = "#1e293b";
+        btn.style.background = "#f1f5f9";
+        btn.style.border = "1px solid #cbd5e1";
+        btn.innerHTML = `<strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}`;
+        btn.onclick = () => selectQuizAnswer(idx);
+        opts.appendChild(btn);
+      });
+    }
+
+    function selectQuizAnswer(chosenIdx) {
+      const q = quizData[currentQ];
+      const buttons = document.getElementById("quizOptions").querySelectorAll("button");
+      buttons.forEach(b => b.disabled = true);
+
+      const feedback = document.getElementById("quizFeedback");
+      if (chosenIdx === q.correct) {
+        buttons[chosenIdx].style.background = "#dcfce7";
+        buttons[chosenIdx].style.borderColor = "#10b981";
+        feedback.innerHTML = `<span style="color:#059669;">✔ Tuyệt vời! ${q.exp}</span>`;
+        quizScore += 10;
+      } else {
+        buttons[chosenIdx].style.background = "#fee2e2";
+        buttons[chosenIdx].style.borderColor = "#ef4444";
+        buttons[q.correct].style.background = "#dcfce7";
+        feedback.innerHTML = `<span style="color:#dc2626;">✖ Chưa đúng. ${q.exp}</span>`;
+      }
+
+      document.getElementById("quizScoreTracker").textContent = `Câu ${currentQ + 1} / ${quizData.length} • Điểm: ${quizScore}`;
+      document.getElementById("btnNextQuiz").style.display = "inline-flex";
+    }
+
+    function nextQuizQuestion() {
+      currentQ++;
+      if (currentQ < quizData.length) {
+        renderQuiz();
+      } else {
+        document.getElementById("quizContainer").innerHTML = `
+          <div style="text-align: center; padding: 24px;">
+            <h3 style="color:#d97706; font-size: 26px; margin-bottom: 12px;">🎉 CHÚC MỪNG EM ĐÃ HOÀN THÀNH TOÀN BỘ KHÓA HỌC!</h3>
+            <p style="font-size: 18px; color: #1e293b;">Điểm thi trắc nghiệm tổng kết: <strong>${quizScore} / 100</strong></p>
+            <p style="font-size: 14px; color: #64748b; margin-top: 10px;">${quizScore >= 80 ? 'Xuất sắc! Em chính thức trở thành Chuyên gia Google Docs THCS!' : 'Em hãy ôn lại bài và sẵn sàng cho bài báo cáo Final Project nhé!'}</p>
+            <button class="hud-btn primary" onclick="location.reload()" style="margin-top: 18px;">Làm lại Quiz</button>
+          </div>
+        `;
+      }
+    }
+
+    // Initial Quiz Load
+    renderQuiz();
+  </script>
+</body>
+</html>

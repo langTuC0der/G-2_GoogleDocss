@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <filter id="shadow2" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="920" height="460" rx="20" fill="url(#bgGrad2)"/>
+
+  <!-- Header -->
+  <text x="460" y="44" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">QUY TẮC VÀNG THAY ĐỔI KÍCH THƯỚC ẢNH (RESIZE)</text>
+  <text x="460" y="70" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#c7d2fe" text-anchor="middle">Bí quyết số 1 giúp ảnh của bạn luôn sắc nét, giữ trọn vẻ đẹp tự nhiên và không bao giờ bị méo mó</text>
+
+  <!-- Left Column: The Correct Way -->
+  <g transform="translate(45, 95)" filter="url(#shadow2)">
+    <rect width="390" height="325" rx="16" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <rect x="0" y="0" width="390" height="52" rx="16" fill="#ecfdf5"/>
+    <text x="195" y="32" font-family="'Outfit', sans-serif" font-size="16" font-weight="800" fill="#065f46" text-anchor="middle">✓ ĐÚNG: KÉO 4 ĐIỂM GÓC (CORNER HANDLES)</text>
+
+    <!-- Canvas area -->
+    <rect x="25" y="70" width="340" height="150" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+
+    <!-- Picture of cute Panda / Cat correctly proportioned -->
+    <g transform="translate(100, 85)">
+      <!-- Border selection box -->
+      <rect x="0" y="0" width="140" height="120" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="2" stroke-dasharray="4,4"/>
+      
+      <!-- Panda Face Illustration -->
+      <circle cx="70" cy="60" r="42" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+      <!-- Ears -->
+      <circle cx="40" cy="30" r="14" fill="#0f172a"/>
+      <circle cx="100" cy="30" r="14" fill="#0f172a"/>
+      <!-- Eyes patch -->
+      <ellipse cx="55" cy="55" rx="11" ry="8" fill="#0f172a" transform="rotate(-15 55 55)"/>
+      <circle cx="56" cy="54" r="3.5" fill="#ffffff"/>
+      <ellipse cx="85" cy="55" rx="11" ry="8" fill="#0f172a" transform="rotate(15 85 55)"/>
+      <circle cx="84" cy="54" r="3.5" fill="#ffffff"/>
+      <!-- Nose & Mouth -->
+      <ellipse cx="70" cy="70" rx="5" ry="3.5" fill="#0f172a"/>
+      <path d="M 66 75 Q 70 80 74 75" stroke="#0f172a" stroke-width="2" fill="none"/>
+
+      <!-- 4 Green Corner Handles -->
+      <circle cx="0" cy="0" r="7" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
+      <circle cx="140" cy="0" r="7" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
+      <circle cx="0" cy="120" r="7" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
+      <circle cx="140" cy="120" r="9" fill="#10b981" stroke="#ffffff" stroke-width="2.5"/>
+
+      <!-- Diagonal Resize Arrow at bottom-right corner -->
+      <path d="M 148 128 L 175 155 M 175 155 L 165 155 M 175 155 L 175 145" stroke="#059669" stroke-width="3" stroke-linecap="round"/>
+      <text x="145" y="165" font-family="'Inter', sans-serif" font-size="11" font-weight="800" fill="#059669">Kéo chéo</text>
+    </g>
+
+    <!-- Details Box -->
+    <rect x="25" y="232" width="340" height="75" rx="8" fill="#f0fdf4" stroke="#bbf7d0"/>
+    <text x="38" y="255" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#065f46">💡 Giữ nguyên tỉ lệ vàng (Aspect Ratio):</text>
+    <text x="38" y="274" font-family="'Inter', sans-serif" font-size="11.5" font-weight="500" fill="#14532d">• Chiều rộng và chiều cao tăng/giảm đồng thời.</text>
+    <text x="38" y="293" font-family="'Inter', sans-serif" font-size="11.5" font-weight="700" fill="#059669">✓ Động vật, con người, cảnh quan giữ trọn nét tự nhiên!</text>
+  </g>
+
+  <!-- Right Column: The Wrong Way -->
+  <g transform="translate(485, 95)" filter="url(#shadow2)">
+    <rect width="390" height="325" rx="16" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+    <rect x="0" y="0" width="390" height="52" rx="16" fill="#fff1f2"/>
+    <text x="195" y="32" font-family="'Outfit', sans-serif" font-size="16" font-weight="800" fill="#9f1239" text-anchor="middle">❌ SAI: KÉO CẠNH HÔNG / CẠNH ĐÁY</text>
+
+    <!-- Canvas area -->
+    <rect x="25" y="70" width="340" height="150" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+
+    <!-- Squished/Distorted Panda Illustration -->
+    <g transform="translate(70, 85)">
+      <!-- Distorted selection box: stretched horizontally, squashed vertically -->
+      <rect x="0" y="15" width="200" height="90" rx="8" fill="#ffe4e6" stroke="#f43f5e" stroke-width="2" stroke-dasharray="4,4"/>
+      
+      <!-- Stretched Panda Face -->
+      <ellipse cx="100" cy="60" rx="65" ry="32" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+      <!-- Squashed Ears -->
+      <ellipse cx="55" cy="38" rx="16" ry="10" fill="#0f172a"/>
+      <ellipse cx="145" cy="38" rx="16" ry="10" fill="#0f172a"/>
+      <!-- Squashed Eyes -->
+      <ellipse cx="75" cy="56" rx="14" ry="6" fill="#0f172a" transform="rotate(-10 75 56)"/>
+      <circle cx="76" cy="55" r="2.5" fill="#ffffff"/>
+      <ellipse cx="125" cy="56" rx="14" ry="6" fill="#0f172a" transform="rotate(10 125 56)"/>
+      <circle cx="124" cy="55" r="2.5" fill="#ffffff"/>
+      <!-- Squashed Nose & Mouth -->
+      <ellipse cx="100" cy="70" rx="8" ry="2.5" fill="#0f172a"/>
+
+      <!-- Red Side Handles causing distortion -->
+      <circle cx="200" cy="60" r="9" fill="#ef4444" stroke="#ffffff" stroke-width="2.5"/>
+      <path d="M 208 60 L 235 60 M 235 60 L 227 54 M 235 60 L 227 66" stroke="#dc2626" stroke-width="3" stroke-linecap="round"/>
+      <text x="210" y="80" font-family="'Inter', sans-serif" font-size="10.5" font-weight="800" fill="#dc2626">Kéo ngang</text>
+    </g>
+
+    <!-- Details Box -->
+    <rect x="25" y="232" width="340" height="75" rx="8" fill="#fff1f2" stroke="#fecdd3"/>
+    <text x="38" y="255" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#9f1239">⚠️ Hậu quả biến dạng nghiêm trọng:</text>
+    <text x="38" y="274" font-family="'Inter', sans-serif" font-size="11.5" font-weight="500" fill="#881337">• Ảnh bị bẹp dí sang ngang hoặc lùn tịt xuống dưới.</text>
+    <text x="38" y="293" font-family="'Inter', sans-serif" font-size="11.5" font-weight="700" fill="#dc2626">❌ Bị trừ điểm thẩm mỹ bài làm rất nặng!</text>
+  </g>
+</svg>

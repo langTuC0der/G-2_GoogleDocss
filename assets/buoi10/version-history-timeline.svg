@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%">
+  <defs>
+    <linearGradient id="vBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <filter id="shadowBox">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect width="960" height="540" fill="url(#vBg)"/>
+
+  <!-- Top Title -->
+  <rect x="250" y="20" width="460" height="42" rx="21" fill="#1e293b" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="480" y="47" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#c7d2fe" text-anchor="middle">
+    VERSION HISTORY (LỊCH SỬ PHIÊN BẢN): ĐIỀU TRA &amp; KHÔI PHỤC
+  </text>
+
+  <!-- Left Side: Main Document Preview showing highlighted user edits -->
+  <g transform="translate(40, 80)" filter="url(#shadowBox)">
+    <rect width="530" height="430" rx="14" fill="#ffffff"/>
+    
+    <!-- Doc Topbar -->
+    <rect width="530" height="48" rx="14" fill="#f8fafc"/>
+    <rect y="47" width="530" height="1" fill="#e2e8f0"/>
+    <circle cx="28" cy="24" r="8" fill="#3b82f6"/>
+    <text x="46" y="29" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Phiên bản: 14:32 (Đang xem)</text>
+
+    <!-- Restore button badge -->
+    <rect x="330" y="10" width="185" height="28" rx="6" fill="#1a73e8"/>
+    <text x="422" y="28" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">↺ Khôi phục phiên bản này</text>
+
+    <!-- Document Content with User Highlights -->
+    <text x="40" y="85" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e293b">KẾ HOẠCH DÃ NGOẠI CÔNG VIÊN YÊN SỞ</text>
+    
+    <!-- User A's edit (Blue highlight) -->
+    <rect x="38" y="105" width="454" height="48" rx="4" fill="#dbeafe"/>
+    <text x="46" y="124" font-family="Arial, sans-serif" font-size="12" fill="#1e3a8a">1. Mục đích: Tăng cường tinh thần đoàn kết tập thể lớp 7A3 qua các trò chơi</text>
+    <text x="46" y="142" font-family="Arial, sans-serif" font-size="12" fill="#1e3a8a">vận động ngoài trời và hoạt động bảo vệ môi trường.</text>
+    <rect x="420" y="108" width="65" height="18" rx="3" fill="#2563eb"/>
+    <text x="452" y="121" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">An sửa</text>
+
+    <!-- User B's edit (Green highlight) -->
+    <rect x="38" y="165" width="454" height="48" rx="4" fill="#d1fae5"/>
+    <text x="46" y="184" font-family="Arial, sans-serif" font-size="12" fill="#065f46">2. Thời gian: Chủ nhật, ngày 25/11. Tập trung lúc 07:00 tại cổng trường,</text>
+    <text x="46" y="202" font-family="Arial, sans-serif" font-size="12" fill="#065f46">xe 45 chỗ khởi hành đúng 07:30.</text>
+    <rect x="420" y="168" width="65" height="18" rx="3" fill="#059669"/>
+    <text x="452" y="181" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">Bình sửa</text>
+
+    <!-- User C's edit (Orange highlight) -->
+    <rect x="38" y="225" width="454" height="48" rx="4" fill="#ffedd5"/>
+    <text x="46" y="244" font-family="Arial, sans-serif" font-size="12" fill="#9a3412">3. Phân công: Chi chuẩn bị túi sơ cứu y tế, nước uống đóng chai.</text>
+    <text x="46" y="262" font-family="Arial, sans-serif" font-size="12" fill="#9a3412">Dũng quản lý flycam và chụp ảnh lưu niệm.</text>
+    <rect x="420" y="228" width="65" height="18" rx="3" fill="#ea580c"/>
+    <text x="452" y="241" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">Chi sửa</text>
+
+    <!-- Legend bar inside preview -->
+    <rect x="40" y="380" width="450" height="35" rx="6" fill="#f1f5f9"/>
+    <circle cx="60" cy="397" r="6" fill="#2563eb"/>
+    <text x="72" y="401" font-family="Arial, sans-serif" font-size="11" fill="#334155">An (Xanh)</text>
+    <circle cx="160" cy="397" r="6" fill="#059669"/>
+    <text x="172" y="401" font-family="Arial, sans-serif" font-size="11" fill="#334155">Bình (Lá)</text>
+    <circle cx="260" cy="397" r="6" fill="#ea580c"/>
+    <text x="272" y="401" font-family="Arial, sans-serif" font-size="11" fill="#334155">Chi (Cam)</text>
+    <text x="355" y="401" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#64748b">Ctrl + Alt + Shift + H</text>
+  </g>
+
+  <!-- Right Side: Version Panel (Timeline) -->
+  <g transform="translate(600, 80)" filter="url(#shadowBox)">
+    <rect width="320" height="430" rx="14" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    
+    <!-- Timeline Header -->
+    <text x="20" y="32" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#f8fafc">Lịch sử phiên bản</text>
+    <text x="20" y="52" font-family="Arial, sans-serif" font-size="11" fill="#94a3b8">Bấm vào bản cũ để xem lại nội dung</text>
+    <line x1="20" y1="65" x2="300" y2="65" stroke="#334155" stroke-width="1"/>
+
+    <!-- Timeline item 1 (Current) -->
+    <g transform="translate(20, 80)">
+      <circle cx="10" cy="12" r="8" fill="#38bdf8"/>
+      <line x1="10" y1="20" x2="10" y2="90" stroke="#475569" stroke-width="2"/>
+      <rect x="30" y="0" width="250" height="65" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="1"/>
+      <text x="42" y="20" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#38bdf8">15:00 Hôm nay</text>
+      <text x="42" y="38" font-family="Arial, sans-serif" font-size="11" fill="#e2e8f0">Bản nộp cô giáo (Bản 3)</text>
+      <text x="42" y="53" font-family="Arial, sans-serif" font-size="10" fill="#94a3b8">3 người chỉnh sửa: An, Bình, Chi</text>
+    </g>
+
+    <!-- Timeline item 2 (Named version) -->
+    <g transform="translate(20, 165)">
+      <circle cx="10" cy="12" r="7" fill="#818cf8"/>
+      <line x1="10" y1="20" x2="10" y2="90" stroke="#475569" stroke-width="2"/>
+      <rect x="30" y="0" width="250" height="65" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+      <text x="42" y="20" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#c7d2fe">14:32 Hôm nay</text>
+      <text x="42" y="38" font-family="Arial, sans-serif" font-size="11" fill="#f1f5f9">Bản sau khi Bình góp ý</text>
+      <text x="42" y="53" font-family="Arial, sans-serif" font-size="10" fill="#94a3b8">Bình sửa lịch trình và xe bus</text>
+    </g>
+
+    <!-- Timeline item 3 (First draft) -->
+    <g transform="translate(20, 250)">
+      <circle cx="10" cy="12" r="6" fill="#64748b"/>
+      <rect x="30" y="0" width="250" height="65" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+      <text x="42" y="20" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#94a3b8">13:45 Hôm nay</text>
+      <text x="42" y="38" font-family="Arial, sans-serif" font-size="11" fill="#cbd5e1">Bản phác thảo ban đầu</text>
+      <text x="42" y="53" font-family="Arial, sans-serif" font-size="10" fill="#64748b">An tạo tài liệu</text>
+    </g>
+
+    <!-- Bottom tip -->
+    <rect x="20" y="340" width="280" height="65" rx="8" fill="#1e1b4b" stroke="#6366f1" stroke-width="1"/>
+    <text x="32" y="362" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#a5b4fc">💡 MẸO HAY THCS:</text>
+    <text x="32" y="380" font-family="Arial, sans-serif" font-size="11" fill="#c7d2fe">Bấm menu 3 chấm (⋮) chọn</text>
+    <text x="32" y="396" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#38bdf8">"Đặt tên phiên bản này" để dễ nhớ!</text>
+  </g>
+</svg>

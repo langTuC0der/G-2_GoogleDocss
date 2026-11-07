@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Phiếu bài tập thực hành & bài tập về nhà Buổi 6: Làm việc với Table — Row, Column, Merge Cells, Distribute Columns, Pastel Colors & 0pt Borders (Google Docs THCS). Kèm dữ liệu mẫu, Before/After, gợi ý và thang điểm 30 điểm.">
+  <title>Bài tập &amp; Thực hành Buổi 6 · Làm Việc Với Table &amp; Bảng Biểu (Docs Lab THCS)</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='8' y='8' width='48' height='48' rx='8' fill='%230d9488'/%3E%3Cpath d='M18 24h28M18 32h28M18 40h28M32 18v28' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #0b152d;
+      --navy-light: #162a54;
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --teal-soft: #f0fdfa;
+      --teal-border: #99f6e4;
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --blue-border: #bfdbfe;
+      --amber: #f59e0b;
+      --amber-soft: #fffbeb;
+      --green: #10b981;
+      --green-soft: #ecfdf5;
+      --red: #ef4444;
+      --red-soft: #fff1f2;
+      --purple: #8b5cf6;
+      --purple-soft: #f5f3ff;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --soft: #f8fafc;
+      --paper: #ffffff;
+      --shadow: 0 16px 45px rgba(11, 21, 45, 0.08);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: radial-gradient(circle at 10% 0%, rgba(13, 148, 136, 0.08), transparent 30rem), #f8fafc;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    button, a { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid rgba(13, 148, 136, 0.4); outline-offset: 3px; }
+
+    /* Topbar */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: 18px;
+      min-height: 70px; padding: 10px clamp(16px, 4vw, 48px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-family: 'Outfit', sans-serif; font-size: 1.15rem; }
+    .mark {
+      display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px;
+      color: white; background: linear-gradient(135deg, var(--teal), var(--blue)); font-weight: 900;
+    }
+    .crumb { color: var(--muted); font-size: 0.85rem; }
+    .crumb b { color: var(--ink); }
+    .top-actions { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+    .top-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 38px; padding: 0 14px;
+      border: 1px solid var(--line); border-radius: 11px;
+      background: white; font-size: 0.82rem; font-weight: 700;
+      transition: all 0.18s ease;
+    }
+    .top-link:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-1px); }
+    .top-link.highlight { background: var(--teal-soft); border-color: var(--teal-border); color: var(--teal); }
+    .top-link.primary { background: var(--teal); border-color: var(--teal); color: white; }
+
+    /* Page Container */
+    .page { width: min(1200px, 100%); margin: auto; padding: 28px clamp(16px, 4vw, 40px) 70px; }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #0b152d 0%, #132448 55%, #0d9488 100%);
+      border-radius: 24px; padding: clamp(28px, 4vw, 42px);
+      color: white; margin-bottom: 26px;
+      box-shadow: 0 20px 50px rgba(11, 21, 45, 0.25);
+      position: relative; overflow: hidden;
+    }
+    .hero-banner::after {
+      content: ""; position: absolute; right: -40px; bottom: -40px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(20, 184, 166, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #5eead4; margin-bottom: 8px;
+    }
+    .hero-banner h1 {
+      font-family: 'Outfit', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      margin: 0 0 12px; line-height: 1.15;
+    }
+    .hero-banner p { margin: 0 0 20px; color: #cbd5e1; max-width: 720px; font-size: 1rem; }
+    .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 99px;
+      background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px);
+      font-size: 0.8rem; font-weight: 700; color: white;
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--paper); border-radius: var(--radius);
+      border: 1px solid var(--line); box-shadow: var(--shadow);
+      padding: clamp(22px, 3vw, 34px); margin-bottom: 26px;
+    }
+    .card-head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 20px; gap: 16px; flex-wrap: wrap;
+    }
+    .card-head h2 {
+      font-family: 'Outfit', sans-serif; font-size: 1.45rem; margin: 0;
+      color: var(--navy); display: flex; align-items: center; gap: 10px;
+    }
+    .card-head p { margin: 4px 0 0; color: var(--muted); font-size: 0.9rem; }
+    .badge-step {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 800;
+    }
+
+    /* Compare Grid */
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px;
+    }
+    @media (max-width: 768px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+    .compare-pane {
+      border-radius: 14px; padding: 18px; border: 1.5px solid;
+    }
+    .pane-before { background: var(--red-soft); border-color: #fecdd3; }
+    .pane-after { background: var(--green-soft); border-color: #a7f3d0; }
+    .pane-title {
+      font-weight: 800; font-size: 0.88rem; margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* Copy Box */
+    .copy-box {
+      background: #f1f5f9; border-radius: 12px; padding: 16px 20px;
+      border: 1px solid #cbd5e1; position: relative; margin: 14px 0;
+    }
+    .copy-box pre {
+      margin: 0; font-family: inherit; font-size: 0.88rem; white-space: pre-wrap; color: var(--ink); line-height: 1.7;
+    }
+    .btn-copy {
+      position: absolute; top: 12px; right: 12px;
+      padding: 6px 14px; border-radius: 8px; border: 1px solid #cbd5e1;
+      background: white; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s ease;
+    }
+    .btn-copy:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* Rubric Table */
+    .rubric-table {
+      width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 14px;
+    }
+    .rubric-table th, .rubric-table td {
+      padding: 12px 16px; border: 1px solid var(--line); text-align: left;
+    }
+    .rubric-table th { background: #f8fafc; font-weight: 800; color: var(--navy); }
+    .rubric-table tr:nth-child(even) td { background: #fafbfc; }
+
+    /* Interactive Checklist */
+    .check-list { display: grid; gap: 10px; margin-top: 14px; }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 18px; border-radius: 12px; border: 1.5px solid var(--line);
+      background: #fafbfc; cursor: pointer; transition: all 0.2s ease;
+    }
+    .check-item:hover { border-color: var(--teal); background: #f0fdfa; }
+    .check-item input[type="checkbox"] {
+      width: 20px; height: 20px; border-radius: 6px; accent-color: var(--teal);
+      margin-top: 2px; cursor: pointer;
+    }
+    .check-item.checked {
+      border-color: var(--teal); background: #f0fdfa;
+    }
+    .check-content { flex: 1; }
+    .check-title { font-weight: 700; font-size: 0.92rem; color: var(--navy); display: flex; align-items: center; justify-content: space-between; }
+    .check-desc { font-size: 0.82rem; color: var(--muted); margin-top: 3px; }
+
+    .score-summary-box {
+      margin-top: 20px; padding: 18px 24px; border-radius: 14px;
+      background: linear-gradient(135deg, #0b152d, #132448);
+      color: white; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 30px; right: 30px; z-index: 100;
+      background: var(--navy); color: white; padding: 12px 24px; border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-size: 0.88rem; font-weight: 700;
+      opacity: 0; transform: translateY(20px); transition: all 0.3s ease; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       TOPBAR
+       ============================================================ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark">06</div>
+      <div>
+        Docs Lab THCS
+        <div class="crumb">GĐ2 &gt; <b>Buổi 06 · Làm việc với Table</b></div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <a href="buoi-06-bang-bieu.html" class="top-link highlight">🌌 Mở Slide 3D Buổi 6</a>
+      <a href="https://docs.new" target="_blank" rel="noopener" class="top-link primary">📄 Tạo Google Docs Mới</a>
+      <button class="top-link" onclick="window.print()">🖨️ In Phiếu Học Tập</button>
+      <a href="index.html" class="top-link">🏠 Cổng Trung Tâm</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main class="page">
+
+    <!-- HERO BANNER -->
+    <div class="hero-banner">
+      <div class="eyebrow">HỌC LIỆU THỰC HÀNH &amp; RÈN LUYỆN · BUỔI 06</div>
+      <h1>Làm Việc Với Table &amp; Thiết Kế Bảng Biểu Chuẩn Đẹp</h1>
+      <p>
+        Học sinh tự tay thiết kế Thời khóa biểu học kỳ 5 ngày và Bảng kế hoạch học tập tuần hoàn chỉnh. Thành thạo kỹ thuật Gộp ô (Merge cells), Phân phối đều (Distribute columns), Căn lề đa chiều và phối màu Pastel trang nhã.
+      </p>
+      <div class="hero-pills">
+        <span class="hero-pill">🎯 Tổng điểm: 30 Điểm</span>
+        <span class="hero-pill">⏱️ Thời lượng: 100 phút</span>
+        <span class="hero-pill">🧩 Merge Cells Banner</span>
+        <span class="hero-pill">⚖️ Distribute Columns</span>
+        <span class="hero-pill">🎨 Bảng màu Pastel</span>
+        <span class="hero-pill">🪄 Kỹ thuật Viền 0pt</span>
+      </div>
+    </div>
+
+    <!-- SECTION 1: BEFORE / AFTER COMPARISON -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>⚖️ Tình Huống Thực Tế: Space / Tab vs. Table</h2>
+          <p>Hiểu vì sao các chuyên gia tin học luôn bắt buộc dùng Bảng biểu thay vì phím Space</p>
+        </div>
+        <span class="badge-step" style="background:var(--teal-soft);color:var(--teal)">Nguyên Tắc Cốt Lõi</span>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-pane pane-before">
+          <div class="pane-title" style="color:#be123c">
+            <span>❌ DÙNG PHÍM SPACE ĐỂ CANH CỘT</span>
+            <span style="font-size:0.75rem;padding:3px 8px;border-radius:6px;background:#fee2e2">Sai lầm phổ biến</span>
+          </div>
+          <p style="font-size:0.85rem;color:#881337;margin:0 0 10px">
+            Gõ phím Space lặp đi lặp lại để dạt chữ sang phải:
+          </p>
+          <div style="background:white;padding:12px;border-radius:8px;font-family:monospace;font-size:0.82rem;color:#475569;border:1px dashed #f43f5e;line-height:1.7">
+            Toán &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Thứ 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tiết 1<br>
+            Ngữ văn &nbsp; &nbsp; &nbsp; Thứ 3 &nbsp; &nbsp; &nbsp; &nbsp; Tiết 2<br>
+            Khoa học TN &nbsp; Thứ 4 &nbsp; Tiết 3
+          </div>
+          <p style="font-size:0.8rem;color:#9f1239;margin:8px 0 0">
+            ⚠️ <b>Hậu quả:</b> Đổi phông chữ hoặc mở trên điện thoại, các cột xộc xệch, thụt thò không thể kiểm soát!
+          </p>
+        </div>
+
+        <div class="compare-pane pane-after">
+          <div class="pane-title" style="color:#047857">
+            <span>✅ DÙNG TABLE ĐƯỢC PHÂN PHỐI ĐỀU</span>
+            <span style="font-size:0.75rem;padding:3px 8px;border-radius:6px;background:#d1fae5">Chuẩn mực THCS</span>
+          </div>
+          <p style="font-size:0.85rem;color:#065f46;margin:0 0 10px">
+            Dữ liệu cố định trong từng ô, căn lề và đổi màu độc lập:
+          </p>
+          <table style="width:100%;border-collapse:collapse;font-size:0.82rem;background:white;border-radius:6px;overflow:hidden;border:1px solid #10b981">
+            <tr style="background:#0d9488;color:white;font-weight:700">
+              <th style="padding:6px 10px;text-align:left">Môn học</th>
+              <th style="padding:6px 10px;text-align:center">Thứ</th>
+              <th style="padding:6px 10px;text-align:center">Tiết</th>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0">
+              <td style="padding:5px 10px">Toán</td>
+              <td style="padding:5px 10px;text-align:center">Thứ 2</td>
+              <td style="padding:5px 10px;text-align:center;font-weight:700">1</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc">
+              <td style="padding:5px 10px">Ngữ văn</td>
+              <td style="padding:5px 10px;text-align:center">Thứ 3</td>
+              <td style="padding:5px 10px;text-align:center;font-weight:700">2</td>
+            </tr>
+            <tr>
+              <td style="padding:5px 10px">Khoa học TN</td>
+              <td style="padding:5px 10px;text-align:center">Thứ 4</td>
+              <td style="padding:5px 10px;text-align:center;font-weight:700">3</td>
+            </tr>
+          </table>
+          <p style="font-size:0.8rem;color:#047857;margin:8px 0 0">
+            ✨ <b>Kết quả:</b> Thẳng hàng 100%, tự co giãn thông minh, in ấn hay xuất PDF đều vuông vắn.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: LIVE PRACTICE IN CLASS -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>🎯 Bài Thực Hành Trên Lớp: Thời Khóa Biểu Pro Học Kỳ II</h2>
+          <p>Thiết kế thời khóa biểu 5 ngày học chuẩn thẩm mỹ, phân loại môn học bằng màu Pastel</p>
+        </div>
+        <span class="badge-step" style="background:#eff6ff;color:var(--blue)">Thực Hành Tại Lớp · 30 Phút</span>
+      </div>
+
+      <!-- Step by step instructions -->
+      <div style="background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:20px">
+        <h3 style="margin-top:0;font-size:1.15rem;color:var(--navy);display:flex;align-items:center;gap:8px">
+          📝 5 Bước Thực Hiện Chi Tiết:
+        </h3>
+        <ol style="margin:0;padding-left:22px;line-height:1.85;font-size:0.92rem;color:var(--ink-soft)">
+          <li>
+            <b>Khởi tạo bảng ma trận:</b> Vào menu <code>Chèn (Insert)</code> → <code>Bảng (Table)</code> → Kéo chọn <b>7 Cột × 7 Hàng</b> (7×7).
+          </li>
+          <li>
+            <b>Gộp ô làm Banner Tiêu đề:</b> Bôi đen toàn bộ 7 ô ở <b>Hàng 1</b> → Nhấp chuột phải → Chọn <code>Gộp ô (Merge cells)</code>. Nhập tiêu đề: <code>THỜI KHÓA BIỂU HỌC KỲ II - NĂM HỌC 2026-2027</code>. Căn giữa (<kbd>Ctrl + E</kbd>), in đậm, cỡ chữ 14pt, đổi màu nền ô thành Xanh Navy (#1e3a8a) và màu chữ Trắng.
+          </li>
+          <li>
+            <b>Phân phối đều các cột:</b> Bôi đen từ cột <b>Thứ 2</b> đến cột <b>Thứ 6</b> → Nhấp chuột phải → Chọn <code>Phân phối các cột (Distribute columns)</code> để 5 cột thứ rộng bằng nhau 100%.
+          </li>
+          <li>
+            <b>Căn lề chuẩn mực:</b> 
+            Cột <i>Tiết</i> và dòng <i>Header thứ</i>: Căn giữa ngang (<kbd>Ctrl + E</kbd>). Chuột phải chọn <code>Tùy chọn bảng (Table properties)</code> → Mục <b>Ô (Cell)</b> → Căn chỉnh dọc chọn <b>Ở giữa (Middle)</b>.
+          </li>
+          <li>
+            <b>Phối màu Pastel phân loại môn:</b> Đặt con trỏ vào ô môn học → Chọn biểu tượng <b>Thùng sơn 🪣</b>:
+            <ul style="margin:4px 0 0;padding-left:18px;font-size:0.88rem">
+              <li>Toán học: Xanh da trời nhạt (Pastel Blue: #dbeafe)</li>
+              <li>Ngữ văn: Vàng kem nhạt (Pastel Yellow: #fef3c7)</li>
+              <li>Tiếng Anh: Xanh bạc hà (Pastel Mint: #d1fae5)</li>
+              <li>Tin học 7: Tím nhạt thanh lịch (Pastel Lavender: #ede9fe)</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Raw text snippet for quick copy-paste -->
+      <div class="copy-box">
+        <button class="btn-copy" id="btnCopyRawData">📋 Sao Chép Dữ Liệu Mẫu</button>
+        <span style="font-size:0.75rem;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:0.05em">
+          Dữ Liệu Thô Cần Điền Vào Bảng (Copy &amp; Paste):
+        </span>
+        <pre id="rawSnippetText">
+Hàng 1 (Gộp ô): THỜI KHÓA BIỂU HỌC KỲ II - NĂM HỌC 2026-2027
+Hàng 2 (Header): Tiết | Thứ Hai | Thứ Ba | Thứ Tư | Thứ Năm | Thứ Sáu | Ghi chú
+Tiết 1: Chào cờ | Toán | Ngữ văn | KHTN | Tin học 7 | Chuẩn bị bài
+Tiết 2: Toán | Toán | Ngữ văn | Lịch sử & ĐL | Tin học 7 | Phòng Lab
+Tiết 3: Ngữ văn | Tiếng Anh | Toán | GDCD | Tiếng Anh | 
+Tiết 4: Tiếng Anh | KHTN | Tin học 7 | Ngữ văn | Toán | 
+Tiết 5: KHTN | GDTC | Công nghệ | Âm nhạc | Sinh hoạt lớp | 
+        </pre>
+      </div>
+    </section>
+
+    <!-- SECTION 3: HOMEWORK ASSIGNMENT -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>🏠 Bài Tập Về Nhà: Bảng Kế Hoạch Ôn Tập Tuần (Study Planner)</h2>
+          <p>Tự lập kế hoạch học tập cá nhân và áp dụng tuyệt kỹ Bảng viền 0pt</p>
+        </div>
+        <span class="badge-step" style="background:#fffbeb;color:#b45309">Học Sinh Tự Thực Hiện Ở Nhà</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:20px">
+        <div>
+          <h3 style="margin-top:0;font-size:1.1rem;color:var(--navy)">Yêu Cầu Bài Tập:</h3>
+          <p style="font-size:0.9rem;color:var(--ink-soft);line-height:1.7">
+            Em hãy tạo một tài liệu Google Docs mới có tên: <code>Ke_hoach_on_tap_[TenHocSinh]_Lop7.gdoc</code> và thiết kế bảng kế hoạch học tập gồm 5 cột:
+          </p>
+          <ul style="padding-left:20px;font-size:0.88rem;line-height:1.8;color:var(--ink-soft)">
+            <li><b>Cột 1: Thứ / Ngày</b> (Từ Thứ Hai đến Chủ Nhật).</li>
+            <li><b>Cột 2: Môn cần ôn tập</b> (Toán, Văn, Anh, Tin, KHTN...).</li>
+            <li><b>Cột 3: Thời lượng</b> (45 phút, 60 phút, 90 phút).</li>
+            <li><b>Cột 4: Mục tiêu bài tập</b> (Ví dụ: Hoàn thành bài 1 đến bài 5 SGK).</li>
+            <li><b>Cột 5: Trạng thái hoàn thành</b> (Đã xong: Xanh lá / Đang làm: Vàng cam / Chưa làm: Xám nhạt).</li>
+          </ul>
+
+          <div style="background:#f0fdfa;padding:14px;border-radius:12px;border:1px solid #99f6e4;margin-top:14px">
+            <b style="color:var(--teal);font-size:0.88rem">🌟 Thử thách điểm 10 (Tuyệt kỹ Viền 0pt):</b>
+            <p style="margin:4px 0 0;font-size:0.82rem;color:#134e4a">
+              Ở cuối trang, hãy chèn một bảng <b>2 Cột × 1 Hàng</b>, chỉnh viền về <b>0pt</b> để tạo phần: Cột trái là <i>"Lời hứa của học sinh"</i> và Cột phải là <i>"Chữ ký xác nhận của Phụ huynh"</i> ngay ngắn song song!
+            </p>
+          </div>
+        </div>
+
+        <div style="background:#f8fafc;padding:20px;border-radius:14px;border:1px solid var(--line)">
+          <h4 style="margin-top:0;color:var(--navy)">Hộp Nộp Bài &amp; Tiêu Chuẩn Nộp:</h4>
+          <ol style="padding-left:18px;font-size:0.85rem;line-height:1.8;color:var(--ink-soft);margin-bottom:16px">
+            <li>Nộp file định dạng <b>PDF</b> (Vào Google Docs → <code>Tệp</code> → <code>Tải xuống</code> → <code>Tài liệu PDF (.pdf)</code>).</li>
+            <li>Đính kèm <b>Đường link Google Docs</b> có bật phân quyền: <code>Bất kỳ ai có đường liên kết</code> → Chọn <b>Người nhận xét (Commenter)</b>.</li>
+            <li>Gửi bài trước buổi học số 07 ít nhất 24 giờ để giáo viên chấm và nhận xét chi tiết.</li>
+          </ol>
+          <div style="background:white;padding:12px;border-radius:10px;border:1px dashed var(--teal);text-align:center">
+            <span style="font-size:0.8rem;font-weight:700;color:var(--teal)">✅ Sản phẩm hoàn chỉnh: 1 File PDF + 1 Link Google Docs</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: DETAILED RUBRIC (30 POINTS) -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>📊 Thang Điểm Đánh Giá Chi Tiết (Rubric 30 Điểm)</h2>
+          <p>Bảng tiêu chí chấm điểm minh bạch giúp học sinh tự kiểm tra trước khi nộp bài</p>
+        </div>
+        <span class="badge-step" style="background:#ecfdf5;color:var(--green)">Chuẩn Đánh Giá THCS</span>
+      </div>
+
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th style="width:25%">Tiêu chí</th>
+            <th style="width:50%">Mô tả chi tiết đạt điểm tối đa</th>
+            <th style="width:12%;text-align:center">Điểm tối đa</th>
+            <th style="width:13%;text-align:center">Tự chấm</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>1. Cấu trúc bảng &amp; Dữ liệu</b></td>
+            <td>Tạo đúng kích thước bảng (7×7 cho TKB / 5 cột cho Study Planner). Nhập đầy đủ dữ liệu không bỏ sót.</td>
+            <td style="text-align:center;font-weight:800;color:var(--teal)">5 điểm</td>
+            <td style="text-align:center;font-weight:700">__/5</td>
+          </tr>
+          <tr>
+            <td><b>2. Kỹ thuật Gộp ô (Merge cells)</b></td>
+            <td>Gộp trọn vẹn hàng đầu làm banner tiêu đề lớn, không bị sót ô hay làm méo bảng. Chữ in hoa rõ ràng.</td>
+            <td style="text-align:center;font-weight:800;color:var(--teal)">5 điểm</td>
+            <td style="text-align:center;font-weight:700">__/5</td>
+          </tr>
+          <tr>
+            <td><b>3. Phân phối đều (Distribute)</b></td>
+            <td>Áp dụng Distribute columns cho các cột thứ (Thứ 2 đến Thứ 6) rộng bằng nhau 100%, không lệch cột.</td>
+            <td style="text-align:center;font-weight:800;color:var(--teal)">5 điểm</td>
+            <td style="text-align:center;font-weight:700">__/5</td>
+          </tr>
+          <tr>
+            <td><b>4. Phối màu nền Pastel (Cell color)</b></td>
+            <td>Dùng Thùng sơn 🪣 tô màu nền ô dịu mắt; phân loại môn học khoa học; không dùng màu neon chói lòa.</td>
+            <td style="text-align:center;font-weight:800;color:var(--teal)">5 điểm</td>
+            <td style="text-align:center;font-weight:700">__/5</td>
+          </tr>
+          <tr>
+            <td><b>5. Căn lề Ngang &amp; Dọc (Alignment)</b></td>
+            <td>Cột Tiết và Thứ căn giữa ngang (<kbd>Ctrl + E</kbd>); áp dụng căn giữa chiều dọc (Middle) cân đối giữa ô.</td>
+            <td style="text-align:center;font-weight:800;color:var(--teal)">5 điểm</td>
+            <td style="text-align:center;font-weight:700">__/5</td>
+          </tr>
+          <tr>
+            <td><b>6. Tùy biến đường viền &amp; Thẩm mỹ</b></td>
+            <td>Độ dày viền thanh mảnh 0.5pt đến 1pt màu xám tinh tế (#cbd5e1); hoặc áp dụng bảng viền 0pt sáng tạo.</td>
+            <td style="text-align:center;font-weight:800;color:var(--teal)">5 điểm</td>
+            <td style="text-align:center;font-weight:700">__/5</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECTION 5: INTERACTIVE CHECKLIST -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>✅ Bảng Tự Đánh Giá Tương Tác (Self-Check Checklist)</h2>
+          <p>Tích chọn các mục em đã hoàn thành để hệ thống tính điểm thời gian thực!</p>
+        </div>
+        <span class="badge-step" style="background:#eff6ff;color:var(--blue)">Interactive Calculator</span>
+      </div>
+
+      <div class="check-list" id="checkListWrap">
+        <label class="check-item" data-points="5">
+          <input type="checkbox" class="rubric-cb">
+          <div class="check-content">
+            <div class="check-title">
+              <span>1. Khởi tạo đúng số Hàng &amp; số Cột theo đề bài</span>
+              <span style="color:var(--teal);font-weight:800">+5 điểm</span>
+            </div>
+            <div class="check-desc">Đã tạo bảng 7×7 trong Google Docs và điền đầy đủ dữ liệu các tiết học.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="5">
+          <input type="checkbox" class="rubric-cb">
+          <div class="check-content">
+            <div class="check-title">
+              <span>2. Gộp ô hàng đầu làm Banner tiêu đề hoành tráng</span>
+              <span style="color:var(--teal);font-weight:800">+5 điểm</span>
+            </div>
+            <div class="check-desc">Đã dùng lệnh Merge cells, căn giữa tiêu đề và đổi màu nền nổi bật.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="5">
+          <input type="checkbox" class="rubric-cb">
+          <div class="check-content">
+            <div class="check-title">
+              <span>3. Phân phối đều các cột (Distribute columns)</span>
+              <span style="color:var(--teal);font-weight:800">+5 điểm</span>
+            </div>
+            <div class="check-desc">5 cột Thứ 2 đến Thứ 6 có chiều rộng bằng nhau tăm tắp, không bị cột to cột bé.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="5">
+          <input type="checkbox" class="rubric-cb">
+          <div class="check-content">
+            <div class="check-title">
+              <span>4. Phối màu nền Pastel nhẹ nhàng, lịch sự</span>
+              <span style="color:var(--teal);font-weight:800">+5 điểm</span>
+            </div>
+            <div class="check-desc">Dùng biểu tượng Thùng sơn 🪣 với tone màu nhạt (Xanh, Vàng, Bạc hà, Tím), không nhức mắt.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="5">
+          <input type="checkbox" class="rubric-cb">
+          <div class="check-content">
+            <div class="check-title">
+              <span>5. Căn giữa cả chiều Ngang lẫn chiều Dọc (Middle)</span>
+              <span style="color:var(--teal);font-weight:800">+5 điểm</span>
+            </div>
+            <div class="check-desc">Đã vào Tùy chọn bảng → Cell vertical alignment chọn Middle để chữ nằm giữa ô.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="5">
+          <input type="checkbox" class="rubric-cb">
+          <div class="check-content">
+            <div class="check-title">
+              <span>6. Tùy chỉnh đường viền bảng thanh thoát hoặc viền 0pt</span>
+              <span style="color:var(--teal);font-weight:800">+5 điểm</span>
+            </div>
+            <div class="check-desc">Đường viền có độ dày 0.5pt đến 1pt màu xám nhã nhặn, bảng nằm cân đối giữa trang A4.</div>
+          </div>
+        </label>
+      </div>
+
+      <!-- Score summary banner -->
+      <div class="score-summary-box">
+        <div>
+          <span style="font-size:0.85rem;color:#99f6e4;font-weight:700;text-transform:uppercase">Điểm Tự Đánh Giá Của Em:</span>
+          <div style="font-size:2.2rem;font-family:'Outfit',sans-serif;font-weight:900;line-height:1.1;margin-top:2px">
+            <span id="totalScoreNum">0</span> / 30 Điểm
+          </div>
+        </div>
+        <div>
+          <span id="rankBadge" style="display:inline-block;padding:8px 18px;border-radius:99px;font-weight:800;font-size:0.9rem;background:rgba(255,255,255,0.15)">
+            🌱 Hãy bắt đầu tích chọn các mục em đã hoàn thành!
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: COMMON GOTCHAS & PRO TIPS -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>💡 4 Mẹo Thực Chiến &amp; Cạm Bẫy Cần Tránh</h2>
+          <p>Kinh nghiệm quý báu đúc kết từ hàng trăm bài tập Google Docs của học sinh THCS</p>
+        </div>
+        <span class="badge-step" style="background:var(--amber-soft);color:#b45309">Bí Quyết Điểm 10</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div style="background:#fffbeb;padding:18px;border-radius:14px;border:1px solid #fde68a">
+          <h4 style="margin-top:0;color:#b45309">⚠️ 1. Phân biệt Thùng sơn 🪣 vs Bút dạ Highlight 🖍️</h4>
+          <p style="font-size:0.88rem;color:#78350f;margin:0;line-height:1.6">
+            Rất nhiều bạn bôi đen chữ rồi bấm nút Highlight dẫn đến chỉ có chữ bị vệt màu loang lổ. Muốn cả ô vuông đổi màu đẹp mắt, luôn nhớ nhấp vào ô rồi bấm nút <b>Thùng sơn 🪣 (Màu nền ô)</b> trên thanh công cụ!
+          </p>
+        </div>
+
+        <div style="background:#eff6ff;padding:18px;border-radius:14px;border:1px solid #bfdbfe">
+          <h4 style="margin-top:0;color:#1d4ed8">⚡ 2. Phím tắt sinh thêm hàng tự động</h4>
+          <p style="font-size:0.88rem;color:#1e3a8a;margin:0;line-height:1.6">
+            Khi gõ đến ô cuối cùng ở góc dưới cùng bên phải, thay vì phải nhấp chuột phải chọn "Chèn hàng xuống dưới", em chỉ cần nhấn 1 phím duy nhất: <b>Phím Tab</b>! Google Docs sẽ tự động sinh thêm 1 dòng mới tinh.
+          </p>
+        </div>
+
+        <div style="background:#ecfdf5;padding:18px;border-radius:14px;border:1px solid #a7f3d0">
+          <h4 style="margin-top:0;color:#047857">✨ 3. Khắc phục chữ dính mép trên ô</h4>
+          <p style="font-size:0.88rem;color:#065f46;margin:0;line-height:1.6">
+            Khi tăng chiều cao hàng, chữ mặc định bị dính sát mép trên. Hãy bôi đen cả bảng → Chuột phải chọn <code>Tùy chọn bảng (Table properties)</code> → Mục <b>Ô (Cell)</b> → Căn chỉnh dọc chọn <b>Ở giữa (Middle)</b>!
+          </p>
+        </div>
+
+        <div style="background:#f5f3ff;padding:18px;border-radius:14px;border:1px solid #ddd6fe">
+          <h4 style="margin-top:0;color:#6d28d9">🪄 4. Bảng viền 0pt không hề bị mất dữ liệu</h4>
+          <p style="font-size:0.88rem;color:#4c1d95;margin:0;line-height:1.6">
+            Khi chỉnh viền về 0pt, trên màn hình máy tính có thể hiện đường chấm đứt mờ xám để em dễ nhập liệu, nhưng khi in ra giấy hoặc xuất PDF thì đường viền hoàn toàn vô hình!
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">Đã sao chép dữ liệu mẫu vào bộ nhớ tạm!</div>
+
+  <!-- SCRIPT -->
+  <script>
+    // 1. COPY TO CLIPBOARD
+    const btnCopyRawData = document.getElementById('btnCopyRawData');
+    const rawSnippetText = document.getElementById('rawSnippetText');
+    const toast = document.getElementById('toast');
+
+    btnCopyRawData.onclick = () => {
+      const textToCopy = rawSnippetText.textContent.trim();
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    };
+
+    // 2. INTERACTIVE CHECKLIST CALCULATOR
+    const checkboxes = document.querySelectorAll('.rubric-cb');
+    const totalScoreNum = document.getElementById('totalScoreNum');
+    const rankBadge = document.getElementById('rankBadge');
+
+    function updateScore() {
+      let currentScore = 0;
+      checkboxes.forEach(cb => {
+        const item = cb.closest('.check-item');
+        const points = parseInt(item.getAttribute('data-points'), 10);
+        if (cb.checked) {
+          currentScore += points;
+          item.classList.add('checked');
+        } else {
+          item.classList.remove('checked');
+        }
+      });
+
+      totalScoreNum.textContent = currentScore;
+
+      if (currentScore === 30) {
+        rankBadge.style.background = '#10b981';
+        rankBadge.style.color = '#ffffff';
+        rankBadge.textContent = '🏆 XUẤT SẮC! Đạt 30/30 điểm chuẩn chuyên gia Docs Lab!';
+      } else if (currentScore >= 20) {
+        rankBadge.style.background = '#2563eb';
+        rankBadge.style.color = '#ffffff';
+        rankBadge.textContent = '🌟 RẤT TỐT! Đã đạt hầu hết các tiêu chuẩn cốt lõi!';
+      } else if (currentScore > 0) {
+        rankBadge.style.background = '#f59e0b';
+        rankBadge.style.color = '#ffffff';
+        rankBadge.textContent = '⏳ Đang tiến bộ! Tiếp tục hoàn thiện các mục còn lại nhé!';
+      } else {
+        rankBadge.style.background = 'rgba(255,255,255,0.15)';
+        rankBadge.style.color = '#ffffff';
+        rankBadge.textContent = '🌱 Hãy bắt đầu tích chọn các mục em đã hoàn thành!';
+      }
+    }
+
+    checkboxes.forEach(cb => cb.addEventListener('change', updateScore));
+  </script>
+</body>
+</html>

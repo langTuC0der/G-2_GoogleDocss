@@ -1,0 +1,2075 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bài giảng 3D tương tác Buổi 7: Page Layout, Header và Footer (Google Docs THCS) — Khóa học chuyên sâu với Impress.js">
+  <title>Buổi 7 · Page Layout, Header &amp; Footer (25 Trạm 3D) | Docs Lab THCS</title>
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       1. CORE DESIGN TOKENS & RESET
+       ============================================================ */
+    :root {
+      --bg-space: #070e20;
+      --navy-900: #0b152d;
+      --navy-800: #132448;
+      --blue-600: #2563eb;
+      --blue-500: #3b82f6;
+      --blue-100: #dbeafe;
+      --blue-50: #eff6ff;
+      --cyan-600: #0284c7;
+      --cyan-500: #06b6d4;
+      --cyan-100: #cffafe;
+      --teal-600: #0d9488;
+      --teal-500: #14b8a6;
+      --teal-100: #ccfbf1;
+      --amber-500: #f59e0b;
+      --amber-400: #fbbf24;
+      --amber-100: #fef3c7;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-100: #d1fae5;
+      --rose-600: #e11d48;
+      --rose-500: #f43f5e;
+      --rose-100: #ffe4e6;
+      --purple-600: #7c3aed;
+      --purple-500: #8b5cf6;
+      --purple-100: #ede9fe;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --card-bg: rgba(255, 255, 255, 0.98);
+      --card-dark-bg: linear-gradient(145deg, #101e3d, #091226);
+      --shadow-step: 0 35px 80px -15px rgba(0, 7, 24, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.6);
+      --shadow-hover: 0 45px 95px -20px rgba(11, 26, 61, 0.65), 0 0 0 2px rgba(59, 130, 246, 0.4);
+      --radius-step: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 18% 18%, #16366f 0%, #070e20 48%, #030713 100%);
+      background-attachment: fixed;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid var(--blue-500); outline-offset: 3px; }
+
+    /* ============================================================
+       2. IMPRESS.JS 3D CANVAS & STEP STYLES
+       ============================================================ */
+    .impress-enabled { pointer-events: none; }
+    .impress-enabled #impress,
+    .impress-enabled .step,
+    .impress-enabled .hud,
+    .impress-enabled button,
+    .impress-enabled a,
+    .impress-enabled input,
+    .impress-enabled select,
+    .impress-enabled .modal,
+    .impress-enabled .interactive-box {
+      pointer-events: auto;
+    }
+
+    #impress {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .step {
+      position: relative;
+      width: 1120px;
+      min-height: 660px;
+      padding: 44px 50px;
+      margin: 0 auto;
+      border-radius: var(--radius-step);
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-step);
+      opacity: 0.18;
+      filter: blur(1.5px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: default;
+    }
+
+    .step.active {
+      opacity: 1;
+      filter: none;
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Cosmic Overview Mode */
+    #impress.step-overview .step {
+      opacity: 0.88 !important;
+      filter: none !important;
+      cursor: pointer !important;
+    }
+    #impress.step-overview .step:hover {
+      transform: scale(1.05);
+      border-color: var(--amber-400);
+      box-shadow: 0 0 45px rgba(245, 158, 11, 0.5);
+    }
+
+    #overview.step {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      min-height: auto !important;
+      padding: 0 !important;
+      opacity: 1 !important;
+      filter: none !important;
+      cursor: default !important;
+      pointer-events: none !important;
+    }
+    #impress.step-overview #overview.step {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      cursor: default !important;
+    }
+    #impress.step-overview #overview.step:hover {
+      transform: none !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+    .overview-hero-capsule {
+      pointer-events: auto !important;
+      text-align: center;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 38px 48px;
+      border-radius: 28px;
+      background: rgba(11, 21, 45, 0.94);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 50px rgba(37, 99, 235, 0.4);
+      backdrop-filter: blur(20px);
+      color: white;
+    }
+
+    /* Step Dark Theme */
+    .step.dark {
+      background: var(--card-dark-bg);
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 35px 85px rgba(0, 0, 0, 0.7);
+    }
+    .step.dark h1, .step.dark h2, .step.dark h3 { color: #ffffff; }
+    .step.dark p { color: #cbd5e1; }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+      margin-top: 0;
+      line-height: 1.18;
+      letter-spacing: -0.025em;
+    }
+    h1 { font-size: 2.75rem; font-weight: 900; }
+    h2 { font-size: 2.15rem; font-weight: 800; color: var(--navy-900); }
+    h3 { font-size: 1.45rem; font-weight: 700; color: var(--navy-800); }
+    p { margin-top: 0; line-height: 1.6; color: var(--ink-soft); font-size: 1.05rem; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--blue-600);
+      margin-bottom: 10px;
+    }
+    .step.dark .eyebrow { color: var(--cyan-500); }
+    .eyebrow::before {
+      content: "";
+      width: 18px;
+      height: 4px;
+      border-radius: 4px;
+      background: currentColor;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .badge-blue { background: var(--blue-50); color: var(--blue-600); border: 1px solid var(--blue-100); }
+    .badge-amber { background: var(--amber-100); color: #b45309; }
+    .badge-green { background: var(--emerald-100); color: var(--emerald-600); }
+    .badge-purple { background: var(--purple-100); color: var(--purple-600); }
+    .badge-rose { background: var(--rose-100); color: var(--rose-600); }
+    .badge-teal { background: var(--teal-100); color: var(--teal-600); }
+
+    /* Grid Layouts */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.08);
+      border-color: var(--blue-500);
+    }
+    .step.dark .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #f1f5f9;
+    }
+    .step.dark .card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--cyan-500);
+    }
+
+    /* Substep Animations */
+    #impress .step .substep {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #impress .step .substep.substep-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Diagram & Visual Guide Frames */
+    .visual-guide {
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.08);
+      background: #0b152d;
+      cursor: zoom-in;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .visual-guide:hover {
+      transform: scale(1.01);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16);
+    }
+    .visual-guide img, .visual-guide svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Interactive Simulator */
+    .simulator-box {
+      background: #ffffff;
+      border: 2px solid #bfdbfe;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.08);
+    }
+    .preview-sheet-frame {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #e2e8f0;
+      padding: 20px;
+      border-radius: 14px;
+      min-height: 380px;
+      transition: all 0.3s ease;
+    }
+    .live-sheet {
+      background: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+      border-radius: 4px;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ============================================================
+       3. FIXED HUD (CONTROLS, TOPBAR & DOCK)
+       ============================================================ */
+    .hud {
+      position: fixed;
+      z-index: 1000;
+      pointer-events: auto;
+    }
+
+    /* Top HUD */
+    .hud-top {
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: rgba(7, 14, 32, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      color: white;
+    }
+    .hud-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+    }
+    .hud-brand-badge {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue-600), var(--cyan-500));
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+    .hud-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-hud {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-hud:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: white;
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
+    .btn-hud.active {
+      background: var(--blue-600);
+      border-color: var(--blue-500);
+      color: white;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+
+    /* Bottom Floating Dock */
+    .hud-bottom {
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      background: rgba(11, 21, 45, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 99px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(20px);
+    }
+    .dock-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #94a3b8;
+      padding: 0 8px;
+    }
+    .dock-pill b { color: #f8fafc; }
+
+    /* ============================================================
+       4. QUIZ, CHALLENGES & MODALS
+       ============================================================ */
+    .quiz-card {
+      background: white;
+      border-radius: 22px;
+      padding: 26px 32px;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--line);
+    }
+    .quiz-question-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      margin-bottom: 20px;
+      line-height: 1.35;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .quiz-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      background: #f8fafc;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .quiz-btn:hover {
+      background: #eff6ff;
+      border-color: var(--blue-500);
+      transform: translateY(-2px);
+    }
+    .quiz-btn.correct {
+      background: #ecfdf5 !important;
+      border-color: var(--emerald-500) !important;
+      color: #065f46 !important;
+    }
+    .quiz-btn.wrong {
+      background: #fff1f2 !important;
+      border-color: var(--rose-500) !important;
+      color: #9f1239 !important;
+    }
+    .letter-badge {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #e2e8f0;
+      color: var(--navy-900);
+      font-weight: 800;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .quiz-btn.correct .letter-badge { background: var(--emerald-500); color: white; }
+    .quiz-btn.wrong .letter-badge { background: var(--rose-500); color: white; }
+
+    .quiz-feedback {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-top: 14px;
+    }
+    .quiz-dots {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 14px;
+    }
+    .quiz-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: grid;
+      place-items: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #64748b;
+    }
+    .quiz-dot.done { background: var(--emerald-500); color: white; }
+
+    /* Modals & Drawers */
+    .drawer {
+      position: fixed;
+      top: 64px;
+      bottom: 0;
+      width: 420px;
+      background: rgba(11, 21, 45, 0.96);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.7);
+      border-left: 1px solid rgba(255, 255, 255, 0.15);
+      z-index: 2000;
+      transform: translateX(105%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      color: white;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-right { right: 0; }
+    .drawer-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .drawer-header h3 { margin: 0; font-size: 1.15rem; color: #fff; }
+    .drawer-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    .drawer-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .teaching-box {
+      background: rgba(255, 255, 255, 0.06);
+      border-left: 4px solid var(--blue-500);
+      padding: 14px 18px;
+      border-radius: 0 12px 12px 0;
+      font-size: 0.9rem;
+    }
+    .teaching-box b { display: block; margin-bottom: 6px; font-size: 0.95rem; }
+
+    /* Keyboard Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      place-items: center;
+    }
+    .modal.open { display: grid; }
+    .modal-box {
+      background: white;
+      border-radius: 24px;
+      padding: 32px 36px;
+      max-width: 620px;
+      width: 90%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    /* Lightbox Zoom Modal */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 4000;
+      background: rgba(3, 7, 19, 0.92);
+      backdrop-filter: blur(14px);
+      place-items: center;
+      padding: 40px;
+    }
+    .lightbox-modal.show { display: grid; }
+    .lightbox-modal img {
+      max-width: 92vw;
+      max-height: 86vh;
+      border-radius: 16px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.2);
+    }
+    .lightbox-caption {
+      margin-top: 14px;
+      text-align: center;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%) translateY(30px);
+      background: rgba(15, 23, 42, 0.94);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 99px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 5000;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    kbd {
+      display: inline-block;
+      padding: 2px 7px;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #334155;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-bottom-width: 2px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body class="impress-not-supported">
+
+  <!-- ============================================================
+       TOPBAR HUD
+       ============================================================ -->
+  <header class="hud hud-top">
+    <div class="hud-brand">
+      <div class="hud-brand-badge">📄</div>
+      <div>
+        <span>GĐ2 · Buổi 07: Page Layout, Header &amp; Footer</span>
+        <small style="display:block;font-size:0.72rem;color:#94a3b8;font-weight:500">Khóa học Google Docs THCS · Docs Lab 1:1</small>
+      </div>
+    </div>
+
+    <div class="hud-top-actions">
+      <!-- Station Jump Dropdown -->
+      <select id="stationJumpSelect" class="btn-hud" style="color:white;background:#132448;border-color:#2563eb">
+        <option value="step-intro">Trạm 1: Khởi động Buổi 7</option>
+        <option value="step-goals">Trạm 2: 5 Mục tiêu cốt lõi</option>
+        <option value="step-why-page-setup">Trạm 3: Tại sao cần Page Setup?</option>
+        <option value="step-page-setup-anatomy">Trạm 4: Giải phẫu Page Setup</option>
+        <option value="step-portrait-vs-landscape">Trạm 5: Portrait hay Landscape?</option>
+        <option value="step-margins-rules">Trạm 6: 4 Lề trang chuẩn mực</option>
+        <option value="step-pageless-mode">Trạm 7: Chế độ Pageless</option>
+        <option value="step-challenge-1">Trạm 8: Thử thách 1 (Hướng trang)</option>
+        <option value="step-header-footer-anatomy">Trạm 9: Giải phẫu Header &amp; Footer</option>
+        <option value="step-how-to-header">Trạm 10: Thao tác Header/Footer</option>
+        <option value="step-different-first-page">Trạm 11: Different First Page</option>
+        <option value="step-page-numbers">Trạm 12: Đánh số trang tự động</option>
+        <option value="step-columns-concept">Trạm 13: Bố cục 2 Cột báo chí</option>
+        <option value="step-columns-anatomy">Trạm 14: Giải phẫu Cột &amp; Ngắt cột</option>
+        <option value="step-column-break">Trạm 15: Column Break vs Enter</option>
+        <option value="step-page-break">Trạm 16: Ngắt trang (Page Break)</option>
+        <option value="step-layout-studio">Trạm 17: Layout &amp; Header Studio</option>
+        <option value="step-challenge-2">Trạm 18: Thử thách 2 (Header chuẩn)</option>
+        <option value="step-challenge-3">Trạm 19: Thử thách 3 (Bắt lỗi)</option>
+        <option value="step-before-after">Trạm 20: So sánh Before / After</option>
+        <option value="step-final-project">Trạm 21: Đồ án Ngày hội thể thao</option>
+        <option value="step-homework">Trạm 22: Bài tập về nhà</option>
+        <option value="step-quiz">Trạm 23: Đấu trường Quiz 10 câu</option>
+        <option value="step-summary">Trạm 24: Tổng kết &amp; Phím tắt vàng</option>
+        <option value="overview">Trạm 25: Toàn cảnh không gian 3D</option>
+      </select>
+
+      <button class="btn-hud" id="btnToggleOverview" title="Xem sơ đồ 3D (O)">🌌 Toàn cảnh 3D</button>
+      <button class="btn-hud" id="btnTeacherGuide">📋 Sư phạm</button>
+      <button class="btn-hud" id="btnHelpShortcuts">⌨️ ?</button>
+      <a href="buoi-07-bai-tap.html" class="btn-hud" style="background:#059669;border-color:#10b981;color:white">📝 Phiếu bài tập</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       IMPRESS.JS 3D UNIVERSE CANVAS
+       ============================================================ -->
+  <div id="impress" data-transition-duration="950">
+
+    <!-- STEP 1: HERO INTRO (Dark) -->
+    <div id="step-intro" class="step dark"
+         data-x="0" data-y="0" data-z="0">
+      <span class="eyebrow">CHẶNG 02 · TRÌNH BÀY VĂN BẢN CHUYÊN NGHIỆP</span>
+      <h1>Buổi 07: Page Layout, Header &amp; Footer</h1>
+      <p style="font-size:1.35rem;max-width:850px;color:#cbd5e1;margin-bottom:28px">
+        Khám phá bí kíp biến văn bản thô lệch lề thành <b>ấn phẩm xuất bản chuẩn A4</b>: Căn 4 lề trang, phân biệt Portrait &amp; Landscape, đánh số trang tự động và định dạng 2 cột báo chí bắt mắt!
+      </p>
+
+      <div class="grid-4" style="margin-top:20px">
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">📐</div>
+          <h4 style="margin:0 0 6px;color:#fff">Page Setup</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Khổ A4 chuẩn Việt Nam &amp; 4 lề trang Nghị định 30.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">📑</div>
+          <h4 style="margin:0 0 6px;color:#fff">Header &amp; Footer</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Đầu trang trường học, chân trang bản quyền &amp; Different 1st page.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">🔢</div>
+          <h4 style="margin:0 0 6px;color:#fff">Page Number</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Đánh số trang tự động, bắt đầu từ trang 2 khéo léo.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">📰</div>
+          <h4 style="margin:0 0 6px;color:#fff">Columns &amp; Breaks</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Chia 2-3 cột báo chí và điều khiển ngắt cột thông minh.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:26px;display:flex;gap:12px;align-items:center">
+        <span class="badge badge-teal">⏱️ 100 Phút</span>
+        <span class="badge badge-blue">🚀 25 Trạm 3D</span>
+        <span class="badge badge-amber">🎯 3 Thử thách + 10 Quiz</span>
+        <span class="badge badge-purple">🏆 Sản phẩm: Tờ thông báo Thể thao</span>
+      </div>
+    </div>
+
+    <!-- STEP 2: LEARNING GOALS -->
+    <div id="step-goals" class="step"
+         data-x="1400" data-y="0" data-z="0">
+      <span class="eyebrow">CHUẨN ĐẦU RA BUỔI 07</span>
+      <h2>Năm Năng Lực Cốt Lõi Em Sẽ Làm Chủ Hôm Nay</h2>
+      <p>Sau 100 phút học tập và thực hành, em sẽ tự tin xử lý trọn vẹn bố cục bất kỳ trang văn bản nào:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:20px">
+        <div class="card" style="border-left:5px solid var(--blue-600)">
+          <span class="badge badge-blue" style="margin-bottom:8px">NĂNG LỰC 1</span>
+          <h3>Thiết lập trang (Page Setup)</h3>
+          <p style="font-size:0.95rem">Biết đổi từ Letter sang khổ A4 (210×297mm), căn lề chuẩn (Trên 2cm, Dưới 2cm, Trái 3cm, Phải 2cm) và chọn Portrait/Landscape.</p>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--emerald-600)">
+          <span class="badge badge-green" style="margin-bottom:8px">NĂNG LỰC 2</span>
+          <h3>Header &amp; Footer chuyên nghiệp</h3>
+          <p style="font-size:0.95rem">Tạo đầu trang mang tên trường học/môn học lặp lại đồng bộ. Bật tùy chọn "Different first page" để giữ bìa báo cáo trang trọng.</p>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--amber-500)">
+          <span class="badge badge-amber" style="margin-bottom:8px">NĂNG LỰC 3</span>
+          <h3>Đánh số trang (Page Number) tự động</h3>
+          <p style="font-size:0.95rem">Insert Page Numbers chuẩn ở góc chân trang bên phải, định dạng dạng "Trang X" hoặc "X/Y", không bao giờ gõ tay thủ công.</p>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--purple-600)">
+          <span class="badge badge-purple" style="margin-bottom:8px">NĂNG LỰC 4 &amp; 5</span>
+          <h3>Chia cột báo chí &amp; Ngắt cột (Column Break)</h3>
+          <p style="font-size:0.95rem">Chia văn bản thành 2-3 cột báo chí có đường kẻ giữa và dùng lệnh Column Break thay vì bấm phím Enter 20 lần.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: WHY PAGE SETUP (Tình huống khởi động) -->
+    <div id="step-why-page-setup" class="step"
+         data-x="2800" data-y="0" data-z="100" data-rotate-y="-10">
+      <span class="eyebrow">TÌNH HUỐNG THỰC TẾ</span>
+      <h2>Tại Sao Bài In Ra Bị Lệch Mép Hoặc Mất Chữ?</h2>
+      <p>Nhiều học sinh THCS gặp rắc rối khi gửi tài liệu đi in hoặc nộp bài cho thầy cô:</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card" style="background:#fff1f2;border-color:#fecdd3">
+          <div style="font-size:2.2rem;margin-bottom:10px">🇺🇸 ➔ 🇻🇳</div>
+          <h3 style="color:#be123c">Bẫy Khổ Giấy Letter</h3>
+          <p style="font-size:0.92rem;color:#881337">
+            Google Docs sinh ra ở Mỹ nên ngầm định chọn khổ giấy <b>Letter (216×279mm)</b>. Nhưng toàn bộ máy in và sách vở Việt Nam dùng khổ <b>A4 (210×297mm)</b>. Khi in sẽ bị hụt chiều dài và méo bố cục!
+          </p>
+        </div>
+
+        <div class="card" style="background:#fffbeb;border-color:#fde68a">
+          <div style="font-size:2.2rem;margin-bottom:10px">📐</div>
+          <h3 style="color:#b45309">Lề Trái Quá Mỏng</h3>
+          <p style="font-size:0.92rem;color:#78350f">
+            Khi đóng gáy lò xo hoặc bấm kim mép trái, nếu để lề trái 1.27cm (0.5 inch), gáy sách sẽ bấm đè mất 2 chữ đầu dòng của học sinh. Lề trái luôn cần tối thiểu <b>2.5cm đến 3cm</b>.
+          </p>
+        </div>
+
+        <div class="card" style="background:#f0fdf4;border-color:#bbf7d0">
+          <div style="font-size:2.2rem;margin-bottom:10px">✨</div>
+          <h3 style="color:#15803d">Thiếu Header &amp; Số Trang</h3>
+          <p style="font-size:0.92rem;color:#14532d">
+            Tài liệu nhiều trang in ra rơi rớt bị lẫn lộn thứ tự. Nếu có số trang và Header tên học sinh + trường lớp, bất kỳ ai nhặt được cũng biết ngay trang mấy của ai!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: PAGE SETUP ANATOMY (SVG) -->
+    <div id="step-page-setup-anatomy" class="step"
+         data-x="4200" data-y="0" data-z="200" data-rotate-y="-15">
+      <span class="eyebrow">SƠ ĐỒ TRỰC QUAN KHÔNG GIAN</span>
+      <h2>Giải Phẫu Thiết Lập Trang (Page Setup) Chuẩn Mực</h2>
+      <p>Quan sát 4 chiều lề trang và sự khác biệt giữa khổ Dọc (Portrait) và khổ Ngang (Landscape):</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi07/page-setup-anatomy.svg" alt="Giải phẫu thiết lập trang Page Setup">
+        <figcaption style="display:none">Sơ đồ giải phẫu Page Setup và 4 lề trang chuẩn</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-blue">Đường dẫn: Tệp ➔ Thiết lập trang (File ➔ Page setup)</span>
+      </div>
+    </div>
+
+    <!-- STEP 5: PORTRAIT VS LANDSCAPE -->
+    <div id="step-portrait-vs-landscape" class="step"
+         data-x="5600" data-y="0" data-z="100">
+      <span class="eyebrow">QUYẾT ĐỊNH THIẾT KẾ</span>
+      <h2>Khi Nào Dùng Khổ Dọc (Portrait) Và Khổ Ngang (Landscape)?</h2>
+      <p>Chọn đúng chiều xoay giấy giúp nội dung không bị dồn ép hay tràn trang vô lý:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="border:2px solid var(--blue-500)">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <span style="font-size:2rem">📄</span>
+            <div>
+              <h3 style="margin:0;color:var(--blue-600)">Khổ Dọc · Portrait (210 × 297 mm)</h3>
+              <small style="color:var(--muted)">Hướng đọc từ trên xuống dưới truyền thống</small>
+            </div>
+          </div>
+          <ul style="padding-left:20px;line-height:1.7;color:var(--ink-soft);font-size:0.95rem">
+            <li><b>Bài làm văn, bài tiểu luận</b>, cảm nghĩ học sinh.</li>
+            <li><b>Thông báo trường học, biên bản sinh hoạt lớp</b>.</li>
+            <li><b>Đơn xin phép, lý lịch học sinh</b>.</li>
+            <li><b>Bản tin 2 cột báo chí</b> (vẫn ưu tiên khổ dọc).</li>
+          </ul>
+          <div style="background:var(--blue-50);padding:8px 14px;border-radius:10px;font-size:0.85rem;color:var(--blue-600);font-weight:700">
+            👉 Chiếm 90% các tài liệu em sẽ soạn thảo thời học sinh!
+          </div>
+        </div>
+
+        <div class="card" style="border:2px solid var(--teal-500)">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <span style="font-size:2rem">📜</span>
+            <div>
+              <h3 style="margin:0;color:var(--teal-600)">Khổ Ngang · Landscape (297 × 210 mm)</h3>
+              <small style="color:var(--muted)">Mở rộng chiều ngang cho dữ liệu nhiều cột</small>
+            </div>
+          </div>
+          <ul style="padding-left:20px;line-height:1.7;color:var(--ink-soft);font-size:0.95rem">
+            <li><b>Thời khóa biểu 5–6 ngày trong tuần</b> nhiều tiết.</li>
+            <li><b>Bảng điểm tổng hợp</b> có trên 8 cột môn học.</li>
+            <li><b>Giấy khen, chứng chỉ, thư cảm ơn</b>.</li>
+            <li><b>Sơ đồ phả hệ, timeline lịch sử, bản đồ tư duy</b> dạng rộng.</li>
+          </ul>
+          <div style="background:var(--teal-100);padding:8px 14px;border-radius:10px;font-size:0.85rem;color:var(--teal-600);font-weight:700">
+            👉 Cứu cánh khi bảng biểu bị bóp nghẹt chữ trên khổ dọc!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 6: MARGINS RULES (Nghị định 30) -->
+    <div id="step-margins-rules" class="step"
+         data-x="5600" data-y="1100" data-z="0" data-rotate-z="90">
+      <span class="eyebrow">QUY CHUẨN SOẠN THẢO</span>
+      <h2>Bốn Lề Trang Vàng Theo Chuẩn Nghị Định 30/2020/NĐ-CP</h2>
+      <p>Việt Nam có quy định quốc gia cực kỳ rõ ràng về lề của một văn bản chuẩn chỉnh:</p>
+
+      <div class="grid-4" style="margin-top:20px">
+        <div class="card" style="text-align:center">
+          <span class="badge badge-blue" style="margin-bottom:8px">LỀ TRÊN (TOP)</span>
+          <div style="font-size:2.4rem;font-weight:900;color:var(--blue-600);margin:8px 0">2.0 cm</div>
+          <p style="font-size:0.85rem;color:var(--muted)">Đủ không gian cho Header mà không đè lên nội dung đầu trang.</p>
+        </div>
+
+        <div class="card" style="text-align:center">
+          <span class="badge badge-blue" style="margin-bottom:8px">LỀ DƯỚI (BOTTOM)</span>
+          <div style="font-size:2.4rem;font-weight:900;color:var(--blue-600);margin:8px 0">2.0 cm</div>
+          <p style="font-size:0.85rem;color:var(--muted)">Chừa chỗ cho Footer và số trang không bị mép máy in cắt phạm.</p>
+        </div>
+
+        <div class="card" style="text-align:center;border:2px solid var(--amber-500);background:#fffbeb">
+          <span class="badge badge-amber" style="margin-bottom:8px">LỀ TRÁI (LEFT) ⭐</span>
+          <div style="font-size:2.4rem;font-weight:900;color:#b45309;margin:8px 0">3.0 cm</div>
+          <p style="font-size:0.85rem;color:#78350f"><b>Rộng nhất!</b> Dành cho việc bấm ghim, kẹp hồ sơ và đóng gáy sách.</p>
+        </div>
+
+        <div class="card" style="text-align:center">
+          <span class="badge badge-blue" style="margin-bottom:8px">LỀ PHẢI (RIGHT)</span>
+          <div style="font-size:2.4rem;font-weight:900;color:var(--blue-600);margin:8px 0">2.0 cm</div>
+          <p style="font-size:0.85rem;color:var(--muted)">Giúp mép phải văn bản thoáng đãng, dễ theo dõi.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px;background:#f8fafc">
+        <b style="color:var(--navy-900)">💡 Cách chuyển đổi đơn vị trong Google Docs:</b>
+        <span style="font-size:0.92rem;color:var(--ink-soft)">
+          Nếu Google Docs của em đang hiển thị đơn vị <b>Inches (in)</b>, hãy nhập số kèm chữ "cm" vào ô (ví dụ: <kbd>3 cm</kbd>), Docs sẽ tự động quy đổi chính xác! Hoặc vào Cài đặt tài khoản Google chuyển ngôn ngữ sang Tiếng Việt.
+        </span>
+      </div>
+    </div>
+
+    <!-- STEP 7: PAGELESS MODE MODERN -->
+    <div id="step-pageless-mode" class="step"
+         data-x="4200" data-y="1100" data-z="-100" data-rotate-z="90">
+      <span class="eyebrow">TÍNH NĂNG ĐỘT PHÁ MỚI</span>
+      <h2>Chế Độ Phân Trang (Pages) vs Không Phân Trang (Pageless)</h2>
+      <p>Google Docs đã phát triển chế độ <b>Pageless</b> để xem tài liệu không giới hạn kích thước:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card">
+          <span class="badge badge-blue" style="margin-bottom:10px">CHẾ ĐỘ TRANG (PAGES)</span>
+          <h3 style="margin-top:0">Truyền Thống &amp; Để In Ấn</h3>
+          <p style="font-size:0.95rem">Mỗi trang có kích thước giấy xác định (như A4). Có khoảng cách trắng giữa các trang, có Header, Footer và số trang cố định.</p>
+          <div style="background:#eff6ff;padding:10px 14px;border-radius:10px;font-size:0.85rem;color:var(--blue-600);font-weight:700">
+            ✅ Bắt buộc dùng khi làm bài tập nộp thầy cô, in báo cáo, tạo tờ rơi!
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-purple" style="margin-bottom:10px">CHẾ ĐỘ KHÔNG PHÂN TRANG (PAGELESS)</span>
+          <h3 style="margin-top:0">Hiện Đại Cho Màn Hình</h3>
+          <p style="font-size:0.95rem">Tài liệu cuộn dài liên tục như một trang web. Bảng biểu và ảnh lớn tự động giãn nở vô hạn sang hai bên mà không bao giờ bị cắt đôi giữa 2 trang.</p>
+          <div style="background:#f5f3ff;padding:10px 14px;border-radius:10px;font-size:0.85rem;color:var(--purple-600);font-weight:700">
+            🚀 Thích hợp khi viết nháp dự án nhóm, ghi chú ý tưởng, tài liệu chỉ đọc trên web!
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top:18px;font-size:0.9rem;color:var(--muted)">
+        Chuyển đổi: <b>Tệp (File) ➔ Thiết lập trang ➔ Chọn tab "Không phân trang" (Pageless)</b> hoặc tab "Trang" (Pages).
+      </p>
+    </div>
+
+    <!-- STEP 8: MINI CHALLENGE 1 (Portrait / Landscape) -->
+    <div id="step-challenge-1" class="step"
+         data-x="2800" data-y="1100" data-z="-100">
+      <span class="eyebrow">MINI CHALLENGE 1 · THỰC HÀNH TƯ DUY</span>
+      <h2>Tình Huống Này Nên Chọn Portrait Hay Landscape?</h2>
+      <p>Hãy nhấp chọn đáp án đúng cho từng tình huống dưới đây để ghi điểm:</p>
+
+      <div class="card" style="padding:26px">
+        <div id="ch1QuestionText" style="font-size:1.25rem;font-weight:800;color:var(--navy-900);margin-bottom:16px">
+          Tình huống 1: Em cần làm "Thời khóa biểu cả tuần" gồm 7 cột (Thứ 2 đến Chủ nhật) và 8 hàng tiết học.
+        </div>
+
+        <div style="display:flex;gap:16px;margin-bottom:20px">
+          <button class="btn-hud" id="btnCh1Portrait" style="padding:14px 28px;font-size:1.05rem;background:#eff6ff;color:var(--blue-600);border-color:#bfdbfe">
+            📄 Khổ Dọc (Portrait)
+          </button>
+          <button class="btn-hud" id="btnCh1Landscape" style="padding:14px 28px;font-size:1.05rem;background:#f0fdfa;color:var(--teal-600);border-color:#99f6e4">
+            📜 Khổ Ngang (Landscape)
+          </button>
+        </div>
+
+        <div id="ch1Feedback" style="display:none;padding:14px 18px;border-radius:12px;font-size:0.95rem;font-weight:600"></div>
+
+        <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center">
+          <span id="ch1Progress" style="font-size:0.85rem;color:var(--muted)">Câu 1 / 3 tình huống</span>
+          <button class="btn-hud" id="btnCh1Next" style="display:none;background:var(--blue-600);color:white">Tiếp tục ➔</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 9: HEADER & FOOTER ANATOMY (SVG) -->
+    <div id="step-header-footer-anatomy" class="step"
+         data-x="1400" data-y="1100" data-z="0">
+      <span class="eyebrow">SƠ ĐỒ TRỰC QUAN KHÔNG GIAN</span>
+      <h2>Giải Phẫu Cấu Trúc Header &amp; Footer Đa Trang</h2>
+      <p>Hiểu cách nội dung đầu/chân trang tự động lặp lại và cách tách biệt trang bìa báo cáo:</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi07/header-footer-anatomy.svg" alt="Giải phẫu Header và Footer trong Google Docs">
+        <figcaption style="display:none">Sơ đồ giải phẫu Header và Footer và số trang tự động</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-green">Cơ chế: Sửa 1 lần ở 1 trang ➔ Tự cập nhật cho 100 trang!</span>
+      </div>
+    </div>
+
+    <!-- STEP 10: HOW TO HEADER & FOOTER -->
+    <div id="step-how-to-header" class="step"
+         data-x="0" data-y="1100" data-z="100">
+      <span class="eyebrow">THAO TÁC THỰC CHIẾN</span>
+      <h2>Làm Thế Nào Để Kích Hoạt &amp; Định Dạng Header?</h2>
+      <p>Chỉ với 2 bước cực kỳ đơn giản để bước vào chế độ thiết kế đầu trang:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="border-top:4px solid var(--blue-600)">
+          <span class="badge badge-blue" style="margin-bottom:8px">CÁCH 1 · PHÍM CHUỘT NHANH NHẤT ⚡</span>
+          <h3>Double-Click Mép Trên Của Trang</h3>
+          <p style="font-size:0.95rem">
+            Di chuột lên khoảng trắng cách mép trên giấy khoảng 1–2cm rồi <b>nhấp đúp chuột trái</b>. Đường nét đứt màu xanh sẽ hiện ra báo hiệu em đã vào vùng <b>Đầu trang (Header)</b>!
+          </p>
+          <div style="background:#eff6ff;padding:8px 12px;border-radius:8px;font-size:0.85rem;color:var(--blue-600)">
+            Tương tự: Nhấp đúp mép đáy giấy để vào vùng <b>Chân trang (Footer)</b>.
+          </div>
+        </div>
+
+        <div class="card" style="border-top:4px solid var(--emerald-600)">
+          <span class="badge badge-green" style="margin-bottom:8px">CÁCH 2 · THANH MENU CHÍNH QUY 📋</span>
+          <h3>Insert ➔ Header &amp; page number</h3>
+          <p style="font-size:0.95rem">
+            Trên thanh menu bấm: <b>Chèn (Insert) ➔ Đầu trang và chân trang (Headers &amp; footers) ➔ Đầu trang (Header)</b>.
+          </p>
+          <div style="background:#ecfdf5;padding:8px 12px;border-radius:8px;font-size:0.85rem;color:var(--emerald-600)">
+            Muốn thoát khỏi Header: Nhấp chuột đơn vào vùng nội dung thân bài ở giữa!
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px;background:#f8fafc">
+        <h4 style="margin:0 0 6px;color:var(--navy-900)">🎨 Gợi ý nội dung chuẩn cho Header học sinh THCS:</h4>
+        <p style="font-size:0.92rem;margin:0;color:var(--ink-soft)">
+          • Góc trái: <b>TRƯỜNG THCS NGUYỄN DU · LỚP 7A</b><br>
+          • Góc phải: <b>MÔN TIN HỌC · BÀI TẬP DỰ ÁN</b> (Thêm đường kẻ mảnh mờ phía dưới để tạo ranh giới tinh tế).
+        </p>
+      </div>
+    </div>
+
+    <!-- STEP 11: DIFFERENT FIRST PAGE -->
+    <div id="step-different-first-page" class="step"
+         data-x="0" data-y="2200" data-z="200" data-rotate-x="15">
+      <span class="eyebrow">BÍ QUYẾT XUẤT BẢN CHUYÊN NGHIỆP</span>
+      <h2>Tùy Chọn "Different First Page" (Trang Đầu Tiên Khác Biệt)</h2>
+      <p>Đây là điểm khác biệt giữa một học sinh nghiệp dư và một người thành thạo Google Docs:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px;align-items:center">
+        <div>
+          <div class="card" style="background:#fffbeb;border-color:#fde68a;margin-bottom:16px">
+            <h3 style="color:#b45309;margin-top:0">❓ Vấn Đề Gặp Phải:</h3>
+            <p style="font-size:0.92rem;color:#78350f;margin:0">
+              Trang 1 thường là <b>Trang bìa</b> (có ảnh lớn, tên đề tài, tên tác giả). Nếu Header và Số trang hiện lù lù ở trên đầu trang bìa thì sẽ cực kỳ tức mắt và xấu xí!
+            </p>
+          </div>
+
+          <div class="card" style="background:#f0fdf4;border-color:#bbf7d0">
+            <h3 style="color:#15803d;margin-top:0">✅ Giải Pháp: Chỉ 1 Click Chuột!</h3>
+            <p style="font-size:0.92rem;color:#14532d;margin:0">
+              Khi đang ở trong Header của trang 1, hãy tích vào ô kiểm:
+              <br><br>
+              <b style="font-size:1.05rem;background:white;padding:4px 10px;border-radius:6px;border:1px solid #86efac;color:#047857">
+                ☑ Trang đầu tiên khác nhau (Different first page)
+              </b>
+              <br><br>
+              Ngay lập tức, Header của Trang 1 trở thành vùng trống độc lập. Em có thể xóa sạch Header trang 1 mà các trang sau vẫn giữ nguyên!
+            </p>
+          </div>
+        </div>
+
+        <div class="card" style="text-align:center;padding:32px">
+          <div style="font-size:3.5rem;margin-bottom:12px">📑 ➔ 📄 📄</div>
+          <h4 style="margin:0 0 8px;color:var(--navy-900)">Quy Luật Phân Vùng</h4>
+          <p style="font-size:0.9rem;color:var(--muted)">
+            <b>Trang 1:</b> Trống Header · Trống Số trang.<br>
+            <b>Trang 2, 3, 4...:</b> Tự động hiện Header và Số trang liên tục!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 12: PAGE NUMBERS -->
+    <div id="step-page-numbers" class="step"
+         data-x="1400" data-y="2200" data-z="100">
+      <span class="eyebrow">KỸ NĂNG CỐT LÕI</span>
+      <h2>Đánh Số Trang Tự Động (Page Numbers) Chuẩn Xác</h2>
+      <p>Đừng bao giờ tự gõ con số 1, 2, 3 bằng tay vào chân trang!</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card" style="border-top:4px solid var(--rose-500)">
+          <h3 style="color:var(--rose-600)">❌ Sai Lầm Thường Gặp</h3>
+          <p style="font-size:0.92rem">
+            Học sinh nhấp đúp vào Footer rồi gõ phím số <kbd>1</kbd>. Hậu quả là <b>tất cả mọi trang trong tài liệu đều hiển thị số 1</b> vì Footer có tính chất lặp lại giống nhau!
+          </p>
+        </div>
+
+        <div class="card" style="border-top:4px solid var(--blue-500)">
+          <h3 style="color:var(--blue-600)">✅ Thao Tác Đúng Chuẩn</h3>
+          <p style="font-size:0.92rem">
+            Vào menu <b>Chèn (Insert) ➔ Số trang (Page numbers)</b>. Google Docs sẽ đưa ra 4 ô vuông mẫu vị trí (Đầu trang/Chân trang và Bắt đầu từ trang 1 hay trang 2).
+          </p>
+        </div>
+
+        <div class="card" style="border-top:4px solid var(--emerald-500)">
+          <h3 style="color:var(--emerald-600)">⭐ Định Dạng Trang X / Y</h3>
+          <p style="font-size:0.92rem">
+            Sau khi chèn số trang, em có thể gõ thêm chữ trước hoặc sau: <br>
+            Ví dụ gõ chữ: <code>Trang </code> trước số, và chèn thêm <code>Số trang</code> sau dấu <code>/</code> để thành <b>Trang 2 / 10</b>!
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;background:#eff6ff;padding:12px 20px;border-radius:12px;font-size:0.92rem;color:var(--blue-600);font-weight:700">
+        💡 Vị trí chuẩn quốc tế: Góc dưới cùng bên phải (Bottom-Right) hoặc Căn giữa đáy trang (Bottom-Center).
+      </div>
+    </div>
+
+    <!-- STEP 13: COLUMNS CONCEPT -->
+    <div id="step-columns-concept" class="step"
+         data-x="2800" data-y="2200" data-z="0">
+      <span class="eyebrow">NGHỆ THUẬT DÀN TRANG</span>
+      <h2>Bố Cục 2 Cột Báo Chí (Columns) Có Lợi Gì?</h2>
+      <p>Tại sao các tờ báo Thiếu niên Tiền phong, Khăn Quàng Đỏ đều chia bài viết làm 2-3 cột?</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">👁️</div>
+          <h3>Mắt Đọc Đỡ Mỏi</h3>
+          <p style="font-size:0.9rem">
+            Dòng chữ kéo dài từ mép trái sang mép phải khổ A4 khiến mắt phải đảo quá xa. Chia 2 cột tạo độ dài dòng lý tưởng (45–60 ký tự), đọc nhanh hơn gấp đôi!
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">📰</div>
+          <h3>Phong Cách Bản Tin Chuyên Nghiệp</h3>
+          <p style="font-size:0.9rem">
+            Biến tài liệu thông báo khô khan thành một tờ báo tường sinh động, hiện đại, thích hợp cho sự kiện thể thao, hội trại, văn nghệ.
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">⚡</div>
+          <h3>Tiết Kiệm Không Gian</h3>
+          <p style="font-size:0.9rem">
+            Khi có nhiều đoạn văn ngắn và danh sách môn thi đấu, chia 2 cột giúp tận dụng tối đa diện tích giấy, không để thừa khoảng trống vô ích.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 14: COLUMNS & BREAKS ANATOMY (SVG) -->
+    <div id="step-columns-anatomy" class="step"
+         data-x="4200" data-y="2200" data-z="-100">
+      <span class="eyebrow">SƠ ĐỒ TRỰC QUAN KHÔNG GIAN</span>
+      <h2>Giải Phẫu Định Dạng Cột &amp; Cơ Chế Ngắt Cột</h2>
+      <p>Quan sát cấu trúc 2 cột có tiêu đề trải rộng và đường kẻ phân cách ở giữa:</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi07/columns-and-breaks.svg" alt="Giải phẫu định dạng cột và ngắt cột">
+        <figcaption style="display:none">Sơ đồ giải phẫu Columns và Column Break trong Google Docs</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-purple">Menu: Định dạng ➔ Cột (Format ➔ Columns)</span>
+      </div>
+    </div>
+
+    <!-- STEP 15: COLUMN BREAK VS ENTER -->
+    <div id="step-column-break" class="step"
+         data-x="5600" data-y="2200" data-z="-200" data-rotate-y="15">
+      <span class="eyebrow">KỸ THUẬT KHỐNG CHẾ DÒNG CHẢY</span>
+      <h2>Column Break (Ngắt Cột): Tạm Biệt Thói Quen Bấm Enter 20 Lần!</h2>
+      <p>Muốn đoạn văn bản mới nhảy ngay sang đỉnh cột thứ 2? Hãy dùng vũ khí chuẩn mực:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="background:#fff1f2;border-color:#fecdd3">
+          <h3 style="color:var(--rose-600)">❌ Cách Làm Sai Tệ Hại: Spam Enter</h3>
+          <p style="font-size:0.92rem;color:#881337">
+            Học sinh đặt con trỏ ở cuối cột 1 rồi gõ liên tiếp 15–20 phím [Enter] cho đến khi chữ bị đẩy sang cột 2.
+          </p>
+          <div style="background:white;padding:12px;border-radius:10px;font-size:0.88rem;color:#9f1239">
+            ⚠️ <b>Hậu quả tai hại:</b> Khi em thêm bớt dù chỉ 1 từ ở cột 1, toàn bộ chữ ở cột 2 sẽ bị tụt văng xuống dưới hoặc tràn sang trang khác!
+          </div>
+        </div>
+
+        <div class="card" style="background:#ecfdf5;border-color:#a7f3d0">
+          <h3 style="color:var(--emerald-600)">✅ Cách Làm Chuẩn: Chèn Column Break</h3>
+          <p style="font-size:0.92rem;color:#065f46">
+            Đặt con trỏ chuột ngay trước chữ cái đầu tiên của đoạn văn muốn nhảy cột.
+          </p>
+          <div style="background:white;padding:12px;border-radius:10px;font-size:0.88rem;color:#047857">
+            👉 Vào menu: <b>Chèn (Insert) ➔ Ngắt (Break) ➔ Ngắt cột (Column break)</b>.
+            <br>
+            Nội dung lập tức bay sang đỉnh cột 2 một cách hoàn hảo và bất biến!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 16: PAGE BREAK VS COLUMN BREAK -->
+    <div id="step-page-break" class="step"
+         data-x="5600" data-y="3300" data-z="-100" data-rotate-z="-90">
+      <span class="eyebrow">PHÂN BIỆT RÕ RÀNG</span>
+      <h2>Ngắt Trang (Page Break) vs Ngắt Cột (Column Break)</h2>
+      <p>Hai công cụ ngắt mạnh mẽ nhất trong Google Docs mà mọi học sinh cần phân biệt:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="border-left:5px solid var(--blue-600)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <h3 style="margin:0;color:var(--blue-600)">Ngắt Trang · Page Break</h3>
+            <kbd>Ctrl + Enter</kbd>
+          </div>
+          <p style="font-size:0.95rem">
+            Đẩy toàn bộ nội dung phía sau con trỏ sang hẳn một <b>Trang giấy mới</b>. Dù trang hiện tại còn trống một nửa giấy, phần tiếp theo vẫn luôn bắt đầu ở đầu trang sau.
+          </p>
+          <span class="badge badge-blue">Dùng cho: Hết một chương lớn, bắt đầu trang Mục lục, chuyển sang Phụ lục.</span>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--purple-600)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <h3 style="margin:0;color:var(--purple-600)">Ngắt Cột · Column Break</h3>
+            <kbd>Chèn ➔ Ngắt ➔ Ngắt cột</kbd>
+          </div>
+          <p style="font-size:0.95rem">
+            Chỉ hoạt động khi tài liệu đang chia 2 hoặc 3 cột. Đẩy nội dung sang <b>Cột tiếp theo ngay trên cùng một trang giấy</b>.
+          </p>
+          <span class="badge badge-purple">Dùng cho: Tách riêng Cột Lịch thi đấu và Cột Cơ cấu giải thưởng.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 17: INTERACTIVE STUDIO (Simulator) -->
+    <div id="step-layout-studio" class="step"
+         data-x="4200" data-y="3300" data-z="0" data-scale="1.1">
+      <span class="eyebrow">TRẢI NGHIỆM TƯƠNG TÁC THỜI GIAN THỰC</span>
+      <h2>Phòng Thí Nghiệm: Page Layout &amp; Header Live Studio</h2>
+      <p>Thử nghiệm thay đổi hướng giấy, khổ A4, lề trang, 2 cột và Header/Footer ngay trên mô hình sống:</p>
+
+      <div class="grid-2 simulator-box" style="margin-top:16px;gap:24px">
+        <!-- Controls Panel -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <label style="font-weight:700;font-size:0.85rem;color:var(--navy-900);display:block;margin-bottom:6px">1. Hướng Giấy (Orientation):</label>
+            <div style="display:flex;gap:8px">
+              <button class="btn-hud active" id="simBtnPortrait" style="flex:1;justify-content:center">📄 Dọc (Portrait)</button>
+              <button class="btn-hud" id="simBtnLandscape" style="flex:1;justify-content:center">📜 Ngang (Landscape)</button>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-weight:700;font-size:0.85rem;color:var(--navy-900);display:block;margin-bottom:6px">2. Khổ Giấy (Paper Size):</label>
+            <div style="display:flex;gap:8px">
+              <button class="btn-hud active" id="simBtnA4" style="flex:1;justify-content:center">A4 (210×297mm)</button>
+              <button class="btn-hud" id="simBtnLetter" style="flex:1;justify-content:center">Letter (216×279mm)</button>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-weight:700;font-size:0.85rem;color:var(--navy-900);display:block;margin-bottom:6px">3. Bố Cục Cột (Columns):</label>
+            <div style="display:flex;gap:8px">
+              <button class="btn-hud active" id="simBtnCol1" style="flex:1;justify-content:center">1 Cột</button>
+              <button class="btn-hud" id="simBtnCol2" style="flex:1;justify-content:center">2 Cột Báo Chí</button>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-weight:700;font-size:0.85rem;color:var(--navy-900);display:block;margin-bottom:6px">4. Header &amp; Footer:</label>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer">
+                <input type="checkbox" id="simCheckHeader" checked> Bật Header: "TRƯỜNG THCS NGUYỄN DU"
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer">
+                <input type="checkbox" id="simCheckDiffFirst"> Bật "Different First Page" (Trang bìa)
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer">
+                <input type="checkbox" id="simCheckPageNum" checked> Đánh số trang góc dưới phải (Bottom Right)
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Preview Frame -->
+        <div class="preview-sheet-frame">
+          <div id="simSheet" class="live-sheet" style="width:230px;height:310px;padding:16px">
+            <!-- Simulated Header -->
+            <div id="simHeaderElem" style="border-bottom:1px solid #bfdbfe;padding-bottom:4px;margin-bottom:10px;display:flex;justify-content:space-between;font-size:8px;color:#1e40af;font-weight:800">
+              <span>TRƯỜNG THCS NGUYỄN DU</span>
+              <span>TIN HỌC 7</span>
+            </div>
+
+            <!-- Sheet Content -->
+            <div id="simContentElem" style="flex:1;display:flex;flex-direction:column;gap:6px">
+              <div style="background:#0f172a;height:12px;border-radius:2px;display:grid;place-items:center">
+                <span style="font-size:7px;color:white;font-weight:800">THÔNG BÁO HOẠT ĐỘNG</span>
+              </div>
+              <div id="simColumnsContainer" style="display:flex;gap:10px;flex:1">
+                <div style="flex:1;background:#f1f5f9;border-radius:4px;padding:6px;font-size:7px;color:#475569;line-height:1.4">
+                  <b>Cột 1:</b> Kế hoạch hoạt động ngoại khóa, thời gian tập trung tại sân trường lúc 07:30 sáng.
+                </div>
+                <div id="simCol2Elem" style="display:none;flex:1;background:#eff6ff;border-radius:4px;padding:6px;font-size:7px;color:#1e40af;line-height:1.4">
+                  <b>Cột 2:</b> Phân công các chi đội chuẩn bị dụng cụ, trang phục thi đấu và nước uống.
+                </div>
+              </div>
+            </div>
+
+            <!-- Simulated Footer -->
+            <div id="simFooterElem" style="border-top:1px solid #cbd5e1;padding-top:4px;margin-top:8px;display:flex;justify-content:space-between;font-size:7.5px;color:#64748b">
+              <span>Ban Phụ Trách Đội</span>
+              <span id="simPageNumElem" style="font-weight:800;color:#2563eb">Trang 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 18: MINI CHALLENGE 2 (Header Studio) -->
+    <div id="step-challenge-2" class="step"
+         data-x="2800" data-y="3300" data-z="100">
+      <span class="eyebrow">MINI CHALLENGE 2 · THỰC HÀNH CẤU HÌNH</span>
+      <h2>Thiết Lập Header &amp; Footer Cho Tập San Chi Đội 7A</h2>
+      <p>Em đang làm cẩm nang 5 trang cho lớp. Hãy chọn đúng phương án cài đặt chuẩn:</p>
+
+      <div class="card" style="padding:26px">
+        <h3 style="margin-top:0;color:var(--navy-900)">Yêu cầu: Trang 1 là Bìa tập san (không được có số trang), từ trang 2 trở đi mới hiện số "2", "3", "4", "5" ở chân trang.</h3>
+
+        <div style="display:flex;flex-direction:column;gap:12px;margin:20px 0">
+          <button class="quiz-btn" id="btnCh2OptA">
+            <span class="letter-badge">A</span>
+            <span>Xóa số trang ở trang 1 bằng phím Backspace (nó sẽ xóa luôn ở tất cả các trang khác).</span>
+          </button>
+          <button class="quiz-btn" id="btnCh2OptB">
+            <span class="letter-badge">B</span>
+            <span>Tích chọn "Different first page", sau đó vào Insert ➔ Page numbers ➔ Chọn mẫu bắt đầu từ trang 2.</span>
+          </button>
+          <button class="quiz-btn" id="btnCh2OptC">
+            <span class="letter-badge">C</span>
+            <span>Gõ thủ công số "2" vào trang 2 mà không dùng tính năng tự động.</span>
+          </button>
+        </div>
+
+        <div id="ch2Feedback" style="display:none;padding:14px 18px;border-radius:12px;font-size:0.95rem;font-weight:600"></div>
+      </div>
+    </div>
+
+    <!-- STEP 19: MINI CHALLENGE 3 (Bug Hunt) -->
+    <div id="step-challenge-3" class="step"
+         data-x="1400" data-y="3300" data-z="200">
+      <span class="eyebrow">MINI CHALLENGE 3 · THÁM TỬ TÀI LIỆU</span>
+      <h2>Bắt 3 Lỗi Trình Bày Trong Văn Bản Của Bạn Nam</h2>
+      <p>Bạn Nam vừa nộp bản tin CLB Bóng rổ nhưng mắc phải 3 lỗi lớn. Em có phát hiện ra không?</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card" id="cardBug1" style="cursor:pointer;border:2px dashed #cbd5e1;transition:all 0.25s ease">
+          <span class="badge badge-amber" style="margin-bottom:8px">LỖI 1 ?</span>
+          <h4 style="margin:0 0 6px">Khổ giấy Letter mặc định</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Nam chưa chuyển sang khổ A4 (210×297mm) nên in ra bị co ngắn chiều dọc.</p>
+          <button class="btn-hud" style="margin-top:10px;width:100%;justify-content:center">Nhấp để bắt lỗi này!</button>
+        </div>
+
+        <div class="card" id="cardBug2" style="cursor:pointer;border:2px dashed #cbd5e1;transition:all 0.25s ease">
+          <span class="badge badge-amber" style="margin-bottom:8px">LỖI 2 ?</span>
+          <h4 style="margin:0 0 6px">Spam 18 phím Enter để sang cột 2</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Thay vì dùng Column Break, Nam gõ Enter liên tục khiến dòng bị xô lệch.</p>
+          <button class="btn-hud" style="margin-top:10px;width:100%;justify-content:center">Nhấp để bắt lỗi này!</button>
+        </div>
+
+        <div class="card" id="cardBug3" style="cursor:pointer;border:2px dashed #cbd5e1;transition:all 0.25s ease">
+          <span class="badge badge-amber" style="margin-bottom:8px">LỖI 3 ?</span>
+          <h4 style="margin:0 0 6px">Gõ tay số "1" vào chân trang</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Hậu quả là sang trang 2 và trang 3 vẫn bị dính con số "1" không đổi.</p>
+          <button class="btn-hud" style="margin-top:10px;width:100%;justify-content:center">Nhấp để bắt lỗi này!</button>
+        </div>
+      </div>
+
+      <div id="bugHuntScoreBox" style="margin-top:20px;text-align:center;font-weight:800;color:var(--emerald-600);font-size:1.1rem;display:none">
+        🎉 Tuyệt vời! Em đã tìm thấy toàn bộ 3 lỗi kinh điển và nắm vững cách khắc phục!
+      </div>
+    </div>
+
+    <!-- STEP 20: BEFORE & AFTER FLYER (SVG) -->
+    <div id="step-before-after" class="step"
+         data-x="0" data-y="3300" data-z="100">
+      <span class="eyebrow">ĐỐI CHIẾU TRỰC QUAN</span>
+      <h2>So Sánh Before vs After: Tờ Thông Báo Sự Kiện</h2>
+      <p>Cùng ngắm nhìn sự biến đổi ngoạn mục từ bản nháp thô sang ấn phẩm chuyên nghiệp:</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi07/before-after-event-flyer.svg" alt="So sánh trực quan Before và After tờ thông báo">
+        <figcaption style="display:none">So sánh trực quan Before và After tờ thông báo sự kiện</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-teal">Chỉ tiêu: Khổ A4 · 4 Lề chuẩn · Header trường · 2 Cột báo chí · Số trang tự động</span>
+      </div>
+    </div>
+
+    <!-- STEP 21: FINAL PROJECT IN CLASS -->
+    <div id="step-final-project" class="step"
+         data-x="0" data-y="4400" data-z="0">
+      <span class="eyebrow">BÀI THỰC HÀNH TỔNG HỢP (30 ĐIỂM)</span>
+      <h2>Dự Án: Thiết Kế Thông Báo "Ngày Hội Thể Thao Học Đường"</h2>
+      <p>Em đóng vai trò Trưởng ban Truyền thông Chi đội, soạn thảo tờ thông báo gửi toàn trường:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="border-left:5px solid var(--blue-600)">
+          <h3 style="color:var(--blue-600);margin-top:0">📋 Tiêu Chí Đánh Giá Kỹ Thuật (30đ)</h3>
+          <ul style="padding-left:20px;line-height:1.75;font-size:0.92rem;color:var(--ink-soft);margin-bottom:0">
+            <li><b>Page Setup (6đ):</b> Khổ A4, lề Trên 2cm, Dưới 2cm, Trái 3cm, Phải 2cm.</li>
+            <li><b>Header (6đ):</b> "TRƯỜNG THCS NGUYỄN DU · NGÀY HỘI THỂ THAO 2026".</li>
+            <li><b>Footer &amp; Số trang (6đ):</b> Có dòng bản quyền BTC và số trang tự động ở góc phải.</li>
+            <li><b>Bố cục 2 Cột (6đ):</b> Cột 1 (Lịch thi đấu), Cột 2 (Điều lệ &amp; Thưởng), có đường kẻ giữa.</li>
+            <li><b>Ngắt cột Column Break (6đ):</b> Ngắt cột chuẩn xác, không dùng phím Enter thừa thãi.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;background:#f8fafc">
+          <div>
+            <span class="badge badge-green" style="margin-bottom:10px">SẢN PHẨM BÀN GIAO</span>
+            <h3 style="margin-top:0">Định Dạng Nộp Bài</h3>
+            <p style="font-size:0.92rem;color:var(--ink-soft)">
+              1. <b>File Google Docs:</b> Chia sẻ link quyền Commenter/Editor cho thầy cô.<br>
+              2. <b>File PDF xuất bản:</b> Tải về máy dạng PDF (Tệp ➔ Tải xuống ➔ Tài liệu PDF .pdf) để kiểm tra độ sắc nét của lề trang khi in!
+            </p>
+          </div>
+          <a href="buoi-07-bai-tap.html" class="btn-hud" style="background:var(--blue-600);color:white;justify-content:center;padding:12px">
+            📝 Mở Phiếu Thực Hành Chi Tiết ➔
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 22: HOMEWORK -->
+    <div id="step-homework" class="step"
+         data-x="1400" data-y="4400" data-z="-100">
+      <span class="eyebrow">BÀI TẬP VỀ NHÀ · CỦNG CỐ KIẾN THỨC</span>
+      <h2>Nhiệm Vụ Về Nhà: Thông Báo Họp Đại Hội Chi Đội 7A</h2>
+      <p>Áp dụng toàn bộ kiến thức buổi 7 để thiết kế giấy mời / thông báo họp lớp trang trọng:</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card">
+          <span class="badge badge-amber" style="margin-bottom:8px">BƯỚC 1</span>
+          <h4>Thiết Lập Trang A4</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Chọn khổ A4 dọc hoặc ngang tùy em sáng tạo. Lề trái luôn tối thiểu 2.5cm.</p>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-blue" style="margin-bottom:8px">BƯỚC 2</span>
+          <h4>Header &amp; Footer</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Header: "CHI ĐỘI 7A · ĐẠI HỘI CHI ĐỘI". Footer kèm số trang tự động.</p>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-teal" style="margin-bottom:8px">BƯỚC 3</span>
+          <h4>Hình Ảnh &amp; 2 Cột</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Chia 2 cột: Cột 1 (Thời gian &amp; Địa điểm), Cột 2 (Nội dung chương trình họp).</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px;background:#f0fdf4;border-color:#bbf7d0">
+        <b style="color:#15803d">📦 Sản phẩm nộp trước buổi 8:</b>
+        <span style="font-size:0.92rem;color:#14532d">
+          Nộp file PDF đã xuất bản từ Google Docs lên nhóm lớp hoặc gửi link Docs kèm quyền xem.
+        </span>
+      </div>
+    </div>
+
+    <!-- STEP 23: QUIZ 10 QUESTIONS -->
+    <div id="step-quiz" class="step"
+         data-x="2800" data-y="4400" data-z="-200" data-scale="1.05">
+      <span class="eyebrow">ĐẤU TRƯỜNG TRÍ TUỆ · KIỂM TRA NHANH</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <h2 style="margin:0">Trắc Nghiệm Kiến Thức Buổi 07 (10 Câu)</h2>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span class="badge badge-blue" id="quizCounterBadge">Câu hỏi 1 / 10</span>
+          <span class="badge badge-green">Điểm: <b id="quizScoreNumber">0</b> / 10</span>
+        </div>
+      </div>
+
+      <div class="quiz-card">
+        <div class="quiz-question-title" id="quizQuestionText">1. Khổ giấy mặc định khi tạo mới một tài liệu trên Google Docs là gì?</div>
+        <div class="quiz-options" id="quizOptionsWrap"></div>
+
+        <div class="quiz-feedback" id="quizFeedbackBox">
+          <span style="font-size:1.3rem">💡</span>
+          <span id="quizFeedbackText">Giải thích chi tiết sẽ hiện ở đây.</span>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+          <div class="quiz-dots" id="quizDotsWrap"></div>
+          <button class="btn-hud" id="quizNextBtn" style="background:var(--blue-600);color:white;padding:10px 20px">
+            Câu tiếp theo ➔
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 24: SUMMARY & CHEATSHEET (Dark) -->
+    <div id="step-summary" class="step dark"
+         data-x="4200" data-y="4400" data-z="0">
+      <span class="eyebrow">TỔNG KẾT BÀI HỌC</span>
+      <h1>Gói Gọn Kiến Thức Buổi 07 &amp; Cẩm Nang Phím Tắt</h1>
+      <p style="font-size:1.2rem;color:#cbd5e1;margin-bottom:24px">
+        Chúc mừng em đã hoàn thành xuất sắc chặng 2 về bố cục trang văn bản! Hãy lưu lại các phím tắt và nguyên tắc vàng:
+      </p>
+
+      <div class="grid-2" style="gap:24px">
+        <div class="card">
+          <h3 style="color:#fff;margin-top:0">⚡ 4 Phím Tắt Vàng</h3>
+          <table style="width:100%;font-size:0.92rem;color:#cbd5e1;line-height:2">
+            <tr><td><kbd>Ctrl + Enter</kbd></td><td>Ngắt trang mới (Page break) ngay lập tức</td></tr>
+            <tr><td><kbd>Ctrl + Alt + O</kbd> + <kbd>H</kbd></td><td>Mở nhanh Header (Đầu trang)</td></tr>
+            <tr><td><kbd>Double Click mép</kbd></td><td>Bật/tắt chế độ sửa Header hoặc Footer</td></tr>
+            <tr><td><kbd>Insert ➔ Break</kbd></td><td>Ngắt cột báo chí (Column break)</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3 style="color:#fff;margin-top:0">⭐ 3 Thói Quen Của Dân Chuyên Nghiệp</h3>
+          <ul style="padding-left:18px;font-size:0.92rem;color:#cbd5e1;line-height:1.75;margin:0">
+            <li><b>Luôn đổi sang khổ A4</b> ngay khi vừa mở tài liệu mới.</li>
+            <li><b>Không bao giờ gõ phím Enter liên tục</b> để đẩy chữ sang trang hoặc cột mới.</li>
+            <li><b>Luôn bật "Different first page"</b> khi bài tập có trang bìa báo cáo.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top:28px;display:flex;gap:14px;align-items:center">
+        <a href="buoi-07-bai-tap.html" class="btn-hud" style="background:#059669;padding:10px 20px;font-size:0.95rem">📝 Mở Phiếu Bài Tập Ngay</a>
+        <button class="btn-hud" onclick="impress().goto('overview')">🌌 Chiêm Ngưỡng Toàn Cảnh 3D</button>
+      </div>
+    </div>
+
+    <!-- STEP 25: COSMIC 3D OVERVIEW -->
+    <div id="overview" class="step"
+         data-x="2800" data-y="2200" data-z="7500" data-scale="8.5">
+      <div class="overview-hero-capsule">
+        <span class="badge badge-teal" style="margin-bottom:12px">SƠ ĐỒ TỔNG THỂ 25 TRẠM KHÔNG GIAN</span>
+        <h2 style="font-size:2.2rem;color:white;margin-bottom:8px">Toàn Cảnh Hành Trình Buổi 07 · Page Layout, Header &amp; Footer</h2>
+        <p style="font-size:1.05rem;color:#94a3b8;max-width:700px;margin:0 auto 20px">
+          Nhấp chuột trực tiếp vào bất kỳ thẻ trạm nào trên không gian 3D để phi thuyền camera phóng to vào trạm đó!
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn-hud active" onclick="impress().goto('step-intro')">Trạm 1: Khởi động</button>
+          <button class="btn-hud" onclick="impress().goto('step-page-setup-anatomy')">Trạm 4: Page Setup</button>
+          <button class="btn-hud" onclick="impress().goto('step-header-footer-anatomy')">Trạm 9: Header &amp; Footer</button>
+          <button class="btn-hud" onclick="impress().goto('step-columns-anatomy')">Trạm 14: Chia Cột</button>
+          <button class="btn-hud" onclick="impress().goto('step-layout-studio')">Trạm 17: Studio Sandbox</button>
+          <button class="btn-hud" onclick="impress().goto('step-quiz')">Trạm 23: Trắc nghiệm</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================================
+       TEACHER'S GUIDE DRAWER
+       ============================================================ -->
+  <div class="drawer drawer-right" id="teachingDrawer">
+    <div class="drawer-header">
+      <h3>📋 Hướng Dẫn Sư Phạm Dành Cho Giáo Viên</h3>
+      <button class="drawer-close-btn" id="drawerCloseBtn">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="teaching-box" style="background:#eff6ff;border-color:var(--blue-600)">
+        <b style="color:var(--blue-600)">⏱️ Phân bổ thời lượng 100 phút (Buổi 7)</b>
+        <p>• 15 phút: Tình huống thực tế &amp; Khổ giấy A4 vs Letter, Căn 4 lề trang.<br>
+        • 20 phút: Header, Footer, Different first page &amp; Số trang tự động.<br>
+        • 20 phút: Định dạng 2 Cột báo chí &amp; Column Break.<br>
+        • 30 phút: Thực hành tổng hợp Tờ thông báo Ngày hội thể thao 30đ.<br>
+        • 15 phút: Quiz 10 câu &amp; Giao nhiệm vụ về nhà.</p>
+      </div>
+
+      <div class="teaching-box" style="background:#ecfdf5;border-color:var(--emerald-600)">
+        <b style="color:var(--emerald-600)">💡 Câu hỏi tương tác gợi mở</b>
+        <p>"Tại sao khi em bấm ghim mép trái một tập bài văn nộp cô giáo, nếu lề trái quá hẹp thì sẽ xảy ra sự cố gì?"</p>
+      </div>
+
+      <div class="teaching-box" style="background:#fffbeb;border-color:var(--amber-500)">
+        <b style="color:var(--amber-500)">⚠️ Lưu ý khi học sinh thao tác</b>
+        <p>90% học sinh sẽ thử gõ số 1 vào chân trang và thắc mắc tại sao mọi trang đều ra số 1. Hãy cho học sinh tự vấp phải lỗi này trước khi chỉ ra tính năng Insert ➔ Page numbers!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       KEYBOARD SHORTCUTS MODAL
+       ============================================================ -->
+  <div class="modal" id="shortcutsModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" id="modalCloseBtn">✕</button>
+      <h3 style="margin-top:0;font-size:1.4rem;color:var(--navy-900)">⌨️ Phím Tắt Điều Khiển Bài Giảng 3D</h3>
+      <table style="width:100%;border-collapse:collapse;margin-top:16px;font-size:0.95rem">
+        <tr style="border-bottom:1px solid #e2e8f0">
+          <td style="padding:10px 0"><kbd>Space</kbd> / <kbd>→</kbd></td>
+          <td style="padding:10px 0;font-weight:600">Chuyển sang trạm tiếp theo</td>
+        </tr>
+        <tr style="border-bottom:1px solid #e2e8f0">
+          <td style="padding:10px 0"><kbd>←</kbd></td>
+          <td style="padding:10px 0;font-weight:600">Lùi về trạm trước đó</td>
+        </tr>
+        <tr style="border-bottom:1px solid #e2e8f0">
+          <td style="padding:10px 0"><kbd>O</kbd></td>
+          <td style="padding:10px 0;font-weight:600">Xem sơ đồ không gian 3D (Overview)</td>
+        </tr>
+        <tr style="border-bottom:1px solid #e2e8f0">
+          <td style="padding:10px 0"><kbd>Escape</kbd></td>
+          <td style="padding:10px 0;font-weight:600">Đóng phóng to hình ảnh hoặc đóng cửa sổ trợ giúp</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 0"><kbd>?</kbd></td>
+          <td style="padding:10px 0;font-weight:600">Bật/tắt hộp thoại trợ giúp này</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       LIGHTBOX ZOOM MODAL
+       ============================================================ -->
+  <div class="lightbox-modal" id="zoomLightbox">
+    <div>
+      <img id="lightboxImg" src="" alt="Zoomed Graphic">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toastBox">Thông báo</div>
+
+  <!-- ============================================================
+       SCRIPTS: IMPRESS.JS & APP ORCHESTRATION
+       ============================================================ -->
+  <script src="assets/js/impress.js"></script>
+  <script>
+    // ------------------------------------------------------------
+    // 1. DATA: 10 SCENARIO-BASED QUIZ QUESTIONS
+    // ------------------------------------------------------------
+    const quizQuestions = [
+      {
+        question: "Khổ giấy mặc định ban đầu khi tạo một file mới trên Google Docs là gì?",
+        options: ["Khổ A4 (210 × 297 mm)", "Khổ Letter (216 × 279 mm)", "Khổ A3", "Khổ B5"],
+        answer: 1,
+        explain: "Google Docs do công ty Mỹ phát triển nên mặc định chọn khổ Letter. Tại Việt Nam, quy chuẩn học đường và công sở luôn dùng khổ A4."
+      },
+      {
+        question: "Theo quy chuẩn soạn thảo văn bản, lề nào thường được chừa rộng nhất (khoảng 3.0 cm)?",
+        options: ["Lề Trên (Top)", "Lề Dưới (Bottom)", "Lề Trái (Left)", "Lề Phải (Right)"],
+        answer: 2,
+        explain: "Lề trái cần chừa rộng nhất (3cm) để khi bấm ghim, kẹp hồ sơ hoặc đóng gáy sách không bị che khuất các chữ đầu dòng."
+      },
+      {
+        question: "Khi nào em nên chuyển hướng giấy sang Khổ Ngang (Landscape)?",
+        options: [
+          "Khi viết bài văn nghị luận 3 trang",
+          "Khi làm đơn xin nghỉ học",
+          "Khi tạo Thời khóa biểu nhiều ngày hoặc Bảng điểm trên 8 cột",
+          "Khi viết thư thăm bạn bè"
+        ],
+        answer: 2,
+        explain: "Khổ ngang mở rộng chiều rộng trang lên 297mm, giúp bảng nhiều cột không bị bó nghẹt hoặc tràn vỡ bố cục."
+      },
+      {
+        question: "Thao tác chuột nhanh nhất để vào chế độ chỉnh sửa Header (Đầu trang) là gì?",
+        options: [
+          "Bấm chuột phải vào giữa trang",
+          "Nhấp đúp chuột trái vào sát mép trên cùng của trang",
+          "Nhấp chuột 3 lần vào dòng chữ đầu tiên",
+          "Kéo thanh cuộn lên trên cùng"
+        ],
+        answer: 1,
+        explain: "Chỉ cần nhấp đúp (Double-click) vào khoảng trắng sát mép trên hoặc dưới của giấy để mở Header hoặc Footer."
+      },
+      {
+        question: "Muốn trang bìa (Trang 1) KHÔNG hiển thị Header và Số trang, em cần bật tùy chọn nào?",
+        options: [
+          "Xóa Header ở trang 1",
+          "Tích chọn 'Different first page' (Trang đầu tiên khác nhau)",
+          "Bôi đen trang 1 và chọn Ẩn",
+          "Tạo trang 1 ở một file khác rồi ghép vào"
+        ],
+        answer: 1,
+        explain: "Tích chọn 'Different first page' giúp biến trang bìa thành phân vùng độc lập, không bị lặp lại Header/Footer của các trang sau."
+      },
+      {
+        question: "Tại sao KHÔNG NÊN tự gõ phím số '1' bằng tay vào vùng Chân trang (Footer)?",
+        options: [
+          "Vì phím số 1 sẽ bị đổi thành chữ cái A",
+          "Vì chân trang có tính chất lặp lại nên mọi trang sau đều sẽ mang con số 1",
+          "Vì Google Docs không cho phép gõ số trong Footer",
+          "Vì khi in ra số 1 sẽ bị biến mất"
+        ],
+        answer: 1,
+        explain: "Footer lặp lại y nguyên ở mọi trang. Để số nhảy tăng tự động (1, 2, 3...), em phải dùng tính năng Insert ➔ Page numbers."
+      },
+      {
+        question: "Đường dẫn để chèn số trang tự động trong Google Docs là gì?",
+        options: [
+          "Định dạng ➔ Cột",
+          "Chèn (Insert) ➔ Số trang (Page numbers)",
+          "Tệp ➔ Đánh số",
+          "Công cụ ➔ Đếm từ"
+        ],
+        answer: 1,
+        explain: "Vào menu Chèn (Insert) ➔ Số trang (Page numbers) và chọn vị trí chân trang góc dưới bên phải."
+      },
+      {
+        question: "Trong định dạng 2 cột, muốn đẩy một đoạn văn sang đầu cột 2 ngay lập tức, em dùng lệnh gì?",
+        options: [
+          "Gõ phím Enter liên tiếp 20 lần",
+          "Chèn (Insert) ➔ Ngắt (Break) ➔ Ngắt cột (Column break)",
+          "Bấm phím Tab 10 lần",
+          "Bấm phím Space cách nhiều lần"
+        ],
+        answer: 1,
+        explain: "Column Break (Ngắt cột) là công cụ chuyên dụng để ngắt cột chuẩn xác, không bị xô lệch khi chỉnh sửa nội dung cột 1."
+      },
+      {
+        question: "Tổ hợp phím tắt để thực hiện Ngắt Trang (Page Break) sang một trang mới là gì?",
+        options: ["Ctrl + Enter", "Shift + Enter", "Alt + Enter", "Ctrl + Space"],
+        answer: 0,
+        explain: "Ctrl + Enter là phím tắt thần thánh để ngắt sang trang giấy mới ngay lập tức mà không cần gõ nhiều dòng trống."
+      },
+      {
+        question: "Chế độ 'Không phân trang' (Pageless) trong Google Docs thích hợp nhất khi nào?",
+        options: [
+          "Khi cần in tài liệu ra máy in khổ giấy A4",
+          "Khi làm bài thi nộp giấy cho thầy cô",
+          "Khi soạn thảo ghi chú nhóm, chèn bảng rộng để xem cuộn trên màn hình máy tính",
+          "Khi cần đóng gáy sách tập san"
+        ],
+        answer: 2,
+        explain: "Pageless biến tài liệu thành trang web dài liên tục, phù hợp để đọc trên màn hình mà không bị ranh giới trang cắt ngang."
+      }
+    ];
+
+    // ------------------------------------------------------------
+    // 2. IMPRESS.JS LIFECYCLE & NAVIGATION
+    // ------------------------------------------------------------
+    const impressApi = impress();
+    impressApi.init();
+
+    const toastBox = document.getElementById('toastBox');
+    function showToast(msg) {
+      toastBox.textContent = msg;
+      toastBox.classList.add('show');
+      setTimeout(() => toastBox.classList.remove('show'), 2600);
+    }
+
+    const stationJumpSelect = document.getElementById('stationJumpSelect');
+    stationJumpSelect.onchange = (e) => {
+      impressApi.goto(e.target.value);
+    };
+
+    document.getElementById('btnToggleOverview').onclick = () => {
+      impressApi.goto('overview');
+    };
+
+    document.addEventListener('impress:stepenter', (event) => {
+      const stepId = event.target.id;
+      stationJumpSelect.value = stepId;
+
+      if (stepId === 'overview') {
+        document.getElementById('impress').classList.add('step-overview');
+      } else {
+        document.getElementById('impress').classList.remove('step-overview');
+      }
+    });
+
+    // Overview direct click
+    document.querySelectorAll('#impress .step').forEach(step => {
+      step.addEventListener('click', () => {
+        if (document.getElementById('impress').classList.contains('step-overview') && step.id !== 'overview') {
+          impressApi.goto(step.id);
+        }
+      });
+    });
+
+    // ------------------------------------------------------------
+    // 3. TEACHER'S DRAWER & MODALS
+    // ------------------------------------------------------------
+    const teachingDrawer = document.getElementById('teachingDrawer');
+    document.getElementById('btnTeacherGuide').onclick = () => teachingDrawer.classList.add('open');
+    document.getElementById('drawerCloseBtn').onclick = () => teachingDrawer.classList.remove('open');
+
+    const shortcutsModal = document.getElementById('shortcutsModal');
+    document.getElementById('btnHelpShortcuts').onclick = () => shortcutsModal.classList.add('open');
+    document.getElementById('modalCloseBtn').onclick = () => shortcutsModal.classList.remove('open');
+    shortcutsModal.onclick = (e) => {
+      if (e.target === shortcutsModal) shortcutsModal.classList.remove('open');
+    };
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        shortcutsModal.classList.toggle('open');
+      }
+      if (e.key.toLowerCase() === 'o') {
+        impressApi.goto('overview');
+      }
+      if (e.key === 'Escape') {
+        shortcutsModal.classList.remove('open');
+        teachingDrawer.classList.remove('open');
+        zoomLightbox.classList.remove('show');
+      }
+    });
+
+    // ------------------------------------------------------------
+    // 4. MINI CHALLENGE 1 (Portrait / Landscape)
+    // ------------------------------------------------------------
+    const ch1Scenarios = [
+      {
+        text: "Tình huống 1: Em cần làm 'Thời khóa biểu cả tuần' gồm 7 cột (Thứ 2 đến Chủ nhật) và 8 hàng tiết học.",
+        correct: "landscape",
+        explain: "Chính xác! Bảng 7 cột cần chiều ngang rộng rãi để môn học không bị vỡ dòng."
+      },
+      {
+        text: "Tình huống 2: Em viết 'Bài văn biểu cảm về người mẹ kính yêu' dài 3 trang giấy.",
+        correct: "portrait",
+        explain: "Chính xác! Bài văn nghị luận, biểu cảm luôn soạn thảo ở khổ dọc truyền thống."
+      },
+      {
+        text: "Tình huống 3: Em thiết kế 'Giấy khen Học sinh Xuất sắc' của lớp để đóng khung treo tường.",
+        correct: "landscape",
+        explain: "Chính xác! Giấy khen và chứng chỉ hầu như luôn sử dụng khổ ngang trang trọng."
+      }
+    ];
+
+    let ch1Idx = 0;
+    const ch1QuestionText = document.getElementById('ch1QuestionText');
+    const ch1Feedback = document.getElementById('ch1Feedback');
+    const ch1Progress = document.getElementById('ch1Progress');
+    const btnCh1Next = document.getElementById('btnCh1Next');
+
+    function checkCh1(choice) {
+      const cur = ch1Scenarios[ch1Idx];
+      ch1Feedback.style.display = 'block';
+      if (choice === cur.correct) {
+        ch1Feedback.style.background = '#ecfdf5';
+        ch1Feedback.style.color = '#065f46';
+        ch1Feedback.innerHTML = `🎉 <b>Xuất sắc!</b> ${cur.explain}`;
+        showToast('Chính xác 100%!');
+      } else {
+        ch1Feedback.style.background = '#fff1f2';
+        ch1Feedback.style.color = '#9f1239';
+        ch1Feedback.innerHTML = `⚠️ <b>Chưa hợp lý!</b> ${cur.explain}`;
+      }
+      btnCh1Next.style.display = 'inline-flex';
+    }
+
+    document.getElementById('btnCh1Portrait').onclick = () => checkCh1('portrait');
+    document.getElementById('btnCh1Landscape').onclick = () => checkCh1('landscape');
+
+    btnCh1Next.onclick = () => {
+      ch1Idx++;
+      if (ch1Idx < ch1Scenarios.length) {
+        ch1QuestionText.textContent = ch1Scenarios[ch1Idx].text;
+        ch1Feedback.style.display = 'none';
+        btnCh1Next.style.display = 'none';
+        ch1Progress.textContent = `Câu ${ch1Idx + 1} / ${ch1Scenarios.length} tình huống`;
+      } else {
+        ch1QuestionText.textContent = "🏆 Em đã hoàn thành xuất sắc Mini Challenge 1 và nắm vững tư duy chọn hướng giấy!";
+        document.getElementById('btnCh1Portrait').style.display = 'none';
+        document.getElementById('btnCh1Landscape').style.display = 'none';
+        btnCh1Next.style.display = 'none';
+        ch1Feedback.style.display = 'none';
+      }
+    };
+
+    // ------------------------------------------------------------
+    // 5. MINI CHALLENGE 2 & 3
+    // ------------------------------------------------------------
+    const ch2Feedback = document.getElementById('ch2Feedback');
+    document.getElementById('btnCh2OptB').onclick = () => {
+      ch2Feedback.style.display = 'block';
+      ch2Feedback.style.background = '#ecfdf5';
+      ch2Feedback.style.color = '#065f46';
+      ch2Feedback.innerHTML = '🎉 <b>Chính xác tuyệt đối!</b> Bật "Different first page" sẽ ngắt liên kết Header/Footer trang 1, sau đó chèn số trang tự động từ trang 2.';
+      showToast('Đạt điểm tối đa Challenge 2!');
+    };
+    const wrongCh2 = () => {
+      ch2Feedback.style.display = 'block';
+      ch2Feedback.style.background = '#fff1f2';
+      ch2Feedback.style.color = '#9f1239';
+      ch2Feedback.innerHTML = '❌ Chưa đúng! Nhớ rằng Footer có tính chất lặp lại. Sửa hoặc gõ tay ở 1 trang sẽ làm hỏng toàn bộ các trang khác.';
+    };
+    document.getElementById('btnCh2OptA').onclick = wrongCh2;
+    document.getElementById('btnCh2OptC').onclick = wrongCh2;
+
+    // Challenge 3: Bug Hunt
+    let bugsFound = 0;
+    function handleBugClick(card) {
+      if (!card.classList.contains('found')) {
+        card.classList.add('found');
+        card.style.background = '#ecfdf5';
+        card.style.borderColor = '#10b981';
+        card.querySelector('button').textContent = '✓ Đã tóm gọn lỗi!';
+        card.querySelector('button').style.background = '#10b981';
+        card.querySelector('button').style.color = '#fff';
+        bugsFound++;
+        showToast(`🎯 Đã bắt được ${bugsFound}/3 lỗi!`);
+        if (bugsFound === 3) {
+          document.getElementById('bugHuntScoreBox').style.display = 'block';
+        }
+      }
+    }
+    document.getElementById('cardBug1').onclick = () => handleBugClick(document.getElementById('cardBug1'));
+    document.getElementById('cardBug2').onclick = () => handleBugClick(document.getElementById('cardBug2'));
+    document.getElementById('cardBug3').onclick = () => handleBugClick(document.getElementById('cardBug3'));
+
+    // ------------------------------------------------------------
+    // 6. LIVE STUDIO SANDBOX (Step 17)
+    // ------------------------------------------------------------
+    const simSheet = document.getElementById('simSheet');
+    const simHeaderElem = document.getElementById('simHeaderElem');
+    const simFooterElem = document.getElementById('simFooterElem');
+    const simPageNumElem = document.getElementById('simPageNumElem');
+    const simCol2Elem = document.getElementById('simCol2Elem');
+
+    // Orientation toggle
+    document.getElementById('simBtnPortrait').onclick = () => {
+      document.getElementById('simBtnPortrait').classList.add('active');
+      document.getElementById('simBtnLandscape').classList.remove('active');
+      simSheet.style.width = '230px';
+      simSheet.style.height = '310px';
+      showToast('Đã đổi sang Khổ Dọc (Portrait)');
+    };
+    document.getElementById('simBtnLandscape').onclick = () => {
+      document.getElementById('simBtnLandscape').classList.add('active');
+      document.getElementById('simBtnPortrait').classList.remove('active');
+      simSheet.style.width = '320px';
+      simSheet.style.height = '230px';
+      showToast('Đã mở rộng Khổ Ngang (Landscape)');
+    };
+
+    // Columns toggle
+    document.getElementById('simBtnCol1').onclick = () => {
+      document.getElementById('simBtnCol1').classList.add('active');
+      document.getElementById('simBtnCol2').classList.remove('active');
+      simCol2Elem.style.display = 'none';
+      showToast('Bố cục 1 Cột toàn trang');
+    };
+    document.getElementById('simBtnCol2').onclick = () => {
+      document.getElementById('simBtnCol2').classList.add('active');
+      document.getElementById('simBtnCol1').classList.remove('active');
+      simCol2Elem.style.display = 'block';
+      showToast('Bố cục 2 Cột báo chí sắc sảo!');
+    };
+
+    // Header & Footer Checkboxes
+    document.getElementById('simCheckHeader').onchange = (e) => {
+      simHeaderElem.style.display = e.target.checked ? 'flex' : 'none';
+    };
+    document.getElementById('simCheckDiffFirst').onchange = (e) => {
+      if (e.target.checked) {
+        simHeaderElem.style.opacity = '0.2';
+        simPageNumElem.style.display = 'none';
+        showToast('Trang bìa: Đã ẩn Header & Số trang!');
+      } else {
+        simHeaderElem.style.opacity = '1';
+        simPageNumElem.style.display = 'inline';
+        showToast('Hiển thị đầy đủ Header & Số trang');
+      }
+    };
+    document.getElementById('simCheckPageNum').onchange = (e) => {
+      simPageNumElem.style.display = e.target.checked ? 'inline' : 'none';
+    };
+
+    // ------------------------------------------------------------
+    // 7. QUIZ ENGINE (10 QUESTIONS)
+    // ------------------------------------------------------------
+    let quizIndex = 0;
+    let quizScore = 0;
+    let quizAnsweredStatus = Array(quizQuestions.length).fill(false);
+
+    const quizDotsWrap = document.getElementById('quizDotsWrap');
+    quizDotsWrap.innerHTML = quizQuestions.map((_, i) => `<div class="quiz-dot" id="qDot${i}">${i+1}</div>`).join('');
+
+    function renderQuizStep() {
+      const q = quizQuestions[quizIndex];
+      document.getElementById('quizCounterBadge').textContent = `Câu hỏi ${quizIndex + 1} / ${quizQuestions.length}`;
+      document.getElementById('quizQuestionText').textContent = `${quizIndex + 1}. ${q.question}`;
+
+      const optionsWrap = document.getElementById('quizOptionsWrap');
+      optionsWrap.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-btn';
+        btn.innerHTML = `<span class="letter-badge">${letters[idx]}</span> <span>${opt}</span>`;
+        btn.onclick = () => handleAnswer(idx);
+        optionsWrap.appendChild(btn);
+      });
+
+      document.getElementById('quizFeedbackBox').style.display = 'none';
+    }
+
+    function handleAnswer(chosenIdx) {
+      if (quizAnsweredStatus[quizIndex]) return;
+      quizAnsweredStatus[quizIndex] = true;
+
+      const q = quizQuestions[quizIndex];
+      const buttons = document.querySelectorAll('.quiz-options .quiz-btn');
+
+      if (chosenIdx === q.answer) {
+        buttons[chosenIdx].classList.add('correct');
+        quizScore++;
+        document.getElementById('quizScoreNumber').textContent = quizScore;
+        document.getElementById(`qDot${quizIndex}`).classList.add('done');
+        showToast('🎉 Chính xác! Tuyệt vời!');
+      } else {
+        buttons[chosenIdx].classList.add('wrong');
+        buttons[q.answer].classList.add('correct');
+        document.getElementById(`qDot${quizIndex}`).style.background = '#f43f5e';
+        document.getElementById(`qDot${quizIndex}`).style.color = '#fff';
+        showToast('Chưa chính xác, hãy xem giải thích bên dưới nhé!');
+      }
+
+      buttons.forEach(b => b.style.pointerEvents = 'none');
+      const feedbackBox = document.getElementById('quizFeedbackBox');
+      const feedbackText = document.getElementById('quizFeedbackText');
+      feedbackText.textContent = `💡 Giải thích: ${q.explain}`;
+      feedbackBox.style.display = 'flex';
+      feedbackBox.style.background = (chosenIdx === q.answer) ? '#ecfdf5' : '#fff1f2';
+      feedbackBox.style.color = (chosenIdx === q.answer) ? '#065f46' : '#9f1239';
+    }
+
+    document.getElementById('quizNextBtn').onclick = () => {
+      if (quizIndex < quizQuestions.length - 1) {
+        quizIndex++;
+        renderQuizStep();
+      } else {
+        showToast(`🎉 Xuất sắc! Em hoàn thành bài quiz với ${quizScore}/${quizQuestions.length} điểm!`);
+      }
+    };
+    renderQuizStep();
+
+    // ------------------------------------------------------------
+    // 8. LIGHTBOX ZOOM
+    // ------------------------------------------------------------
+    const zoomLightbox = document.getElementById('zoomLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+
+    document.querySelectorAll('.visual-guide img').forEach(img => {
+      img.onclick = () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxCaption.textContent = img.closest('figure')?.querySelector('figcaption')?.textContent || '';
+        zoomLightbox.classList.add('show');
+      };
+    });
+
+    zoomLightbox.onclick = (e) => {
+      if (e.target === zoomLightbox || e.target === lightboxImg) {
+        zoomLightbox.classList.remove('show');
+      }
+    };
+  </script>
+</body>
+</html>
+

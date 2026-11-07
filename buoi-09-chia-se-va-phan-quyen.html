@@ -1,0 +1,1829 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bài giảng 3D tương tác Buổi 9: Sharing & Permission — Ai Được Làm Gì Với Tài Liệu Của Em? (Google Docs THCS) — Khóa học chuyên sâu với Impress.js">
+  <title>Buổi 9 · Chia Sẻ &amp; Phân Quyền An Toàn (25 Trạm 3D) | Docs Lab THCS</title>
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       1. CORE DESIGN TOKENS & RESET
+       ============================================================ */
+    :root {
+      --bg-space: #070e20;
+      --navy-900: #0b152d;
+      --navy-800: #132448;
+      --blue-600: #2563eb;
+      --blue-500: #3b82f6;
+      --blue-100: #dbeafe;
+      --blue-50: #eff6ff;
+      --cyan-600: #0284c7;
+      --cyan-500: #06b6d4;
+      --cyan-100: #cffafe;
+      --teal-600: #0d9488;
+      --teal-500: #14b8a6;
+      --teal-100: #ccfbf1;
+      --amber-500: #f59e0b;
+      --amber-400: #fbbf24;
+      --amber-100: #fef3c7;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-100: #d1fae5;
+      --rose-600: #e11d48;
+      --rose-500: #f43f5e;
+      --rose-100: #ffe4e6;
+      --purple-600: #7c3aed;
+      --purple-500: #8b5cf6;
+      --purple-100: #ede9fe;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --card-bg: rgba(255, 255, 255, 0.98);
+      --card-dark-bg: linear-gradient(145deg, #101e3d, #091226);
+      --shadow-step: 0 35px 80px -15px rgba(0, 7, 24, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.6);
+      --shadow-hover: 0 45px 95px -20px rgba(11, 26, 61, 0.65), 0 0 0 2px rgba(59, 130, 246, 0.4);
+      --radius-step: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 18% 18%, #16366f 0%, #070e20 48%, #030713 100%);
+      background-attachment: fixed;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid var(--blue-500); outline-offset: 3px; }
+
+    /* ============================================================
+       2. IMPRESS.JS 3D CANVAS & STEP STYLES
+       ============================================================ */
+    .impress-enabled { pointer-events: none; }
+    .impress-enabled #impress,
+    .impress-enabled .step,
+    .impress-enabled .hud,
+    .impress-enabled button,
+    .impress-enabled a,
+    .impress-enabled input,
+    .impress-enabled select,
+    .impress-enabled .modal,
+    .impress-enabled .interactive-box {
+      pointer-events: auto;
+    }
+
+    #impress {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .step {
+      position: relative;
+      width: 1120px;
+      min-height: 660px;
+      padding: 44px 50px;
+      margin: 0 auto;
+      border-radius: var(--radius-step);
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-step);
+      opacity: 0.18;
+      filter: blur(1.5px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: default;
+    }
+
+    .step.active {
+      opacity: 1;
+      filter: none;
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Cosmic Overview Mode */
+    #impress.step-overview .step {
+      opacity: 0.88 !important;
+      filter: none !important;
+      cursor: pointer !important;
+    }
+    #impress.step-overview .step:hover {
+      transform: scale(1.05);
+      border-color: var(--amber-400);
+      box-shadow: 0 0 45px rgba(245, 158, 11, 0.5);
+    }
+
+    #overview.step {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      min-height: auto !important;
+      padding: 0 !important;
+      opacity: 1 !important;
+      filter: none !important;
+      cursor: default !important;
+      pointer-events: none !important;
+    }
+    #impress.step-overview #overview.step {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      cursor: default !important;
+    }
+
+    .overview-hero-capsule {
+      pointer-events: auto !important;
+      text-align: center;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 38px 48px;
+      border-radius: 28px;
+      background: rgba(11, 21, 45, 0.94);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 50px rgba(37, 99, 235, 0.4);
+      backdrop-filter: blur(20px);
+      color: white;
+    }
+
+    /* Step Dark Theme */
+    .step.dark {
+      background: var(--card-dark-bg);
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 35px 85px rgba(0, 0, 0, 0.7);
+    }
+    .step.dark h1, .step.dark h2, .step.dark h3 { color: #ffffff; }
+    .step.dark p { color: #cbd5e1; }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+      margin-top: 0;
+      line-height: 1.18;
+      letter-spacing: -0.025em;
+    }
+    h1 { font-size: 2.75rem; font-weight: 900; }
+    h2 { font-size: 2.15rem; font-weight: 800; color: var(--navy-900); }
+    h3 { font-size: 1.45rem; font-weight: 700; color: var(--navy-800); }
+    p { margin-top: 0; line-height: 1.6; color: var(--ink-soft); font-size: 1.05rem; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--blue-600);
+      margin-bottom: 10px;
+    }
+    .step.dark .eyebrow { color: var(--cyan-500); }
+    .eyebrow::before {
+      content: "";
+      width: 18px;
+      height: 4px;
+      border-radius: 4px;
+      background: currentColor;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .badge-blue { background: var(--blue-50); color: var(--blue-600); border: 1px solid var(--blue-100); }
+    .badge-amber { background: var(--amber-100); color: #b45309; }
+    .badge-green { background: var(--emerald-100); color: var(--emerald-600); }
+    .badge-purple { background: var(--purple-100); color: var(--purple-600); }
+    .badge-rose { background: var(--rose-100); color: var(--rose-600); }
+    .badge-teal { background: var(--teal-100); color: var(--teal-600); }
+
+    /* Grid Layouts */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.08);
+      border-color: var(--blue-500);
+    }
+    .step.dark .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #f1f5f9;
+    }
+
+    /* Diagram & Visual Guide Frames */
+    .visual-guide {
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.08);
+      background: #0b152d;
+      cursor: zoom-in;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .visual-guide:hover {
+      transform: scale(1.01);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16);
+    }
+    .visual-guide img, .visual-guide svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Simulator / Sandbox Elements */
+    .simulator-box {
+      background: #ffffff;
+      border: 2px solid #bfdbfe;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.08);
+    }
+
+    /* ============================================================
+       3. FIXED HUD (CONTROLS, TOPBAR & DOCK)
+       ============================================================ */
+    .hud {
+      position: fixed;
+      z-index: 1000;
+      pointer-events: auto;
+    }
+
+    .hud-top {
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: rgba(7, 14, 32, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      color: white;
+    }
+    .hud-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+    }
+    .hud-brand-badge {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue-600), var(--emerald-600));
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+    .hud-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-hud {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-hud:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: white;
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
+    .btn-hud.active {
+      background: var(--blue-600);
+      border-color: var(--blue-500);
+      color: white;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+
+    /* ============================================================
+       4. QUIZ, CHALLENGES & MODALS
+       ============================================================ */
+    .quiz-card {
+      background: white;
+      border-radius: 22px;
+      padding: 26px 32px;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--line);
+    }
+    .quiz-question-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      margin-bottom: 20px;
+      line-height: 1.35;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .quiz-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      background: #f8fafc;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .quiz-btn:hover {
+      background: #eff6ff;
+      border-color: var(--blue-500);
+      transform: translateY(-2px);
+    }
+    .quiz-btn.correct {
+      background: #ecfdf5 !important;
+      border-color: var(--emerald-500) !important;
+      color: #065f46 !important;
+    }
+    .quiz-btn.wrong {
+      background: #fff1f2 !important;
+      border-color: var(--rose-500) !important;
+      color: #9f1239 !important;
+    }
+    .letter-badge {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #e2e8f0;
+      color: var(--navy-900);
+      font-weight: 800;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .quiz-btn.correct .letter-badge { background: var(--emerald-500); color: white; }
+    .quiz-btn.wrong .letter-badge { background: var(--rose-500); color: white; }
+
+    .quiz-feedback {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-top: 14px;
+    }
+    .quiz-dots {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 14px;
+    }
+    .quiz-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: grid;
+      place-items: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #64748b;
+    }
+    .quiz-dot.done { background: var(--emerald-500); color: white; }
+
+    /* Modals & Drawers */
+    .drawer {
+      position: fixed;
+      top: 64px;
+      bottom: 0;
+      width: 420px;
+      background: rgba(11, 21, 45, 0.96);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.7);
+      border-left: 1px solid rgba(255, 255, 255, 0.15);
+      z-index: 2000;
+      transform: translateX(105%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      color: white;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-right { right: 0; }
+    .drawer-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .drawer-header h3 { margin: 0; font-size: 1.15rem; color: #fff; }
+    .drawer-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    .drawer-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .teaching-box {
+      background: rgba(255, 255, 255, 0.06);
+      border-left: 4px solid var(--blue-500);
+      padding: 14px 18px;
+      border-radius: 0 12px 12px 0;
+      font-size: 0.9rem;
+    }
+    .teaching-box b { display: block; margin-bottom: 6px; font-size: 0.95rem; }
+
+    /* Keyboard Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      place-items: center;
+    }
+    .modal.open { display: grid; }
+    .modal-box {
+      background: white;
+      border-radius: 24px;
+      padding: 32px 36px;
+      max-width: 620px;
+      width: 90%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    /* Lightbox Zoom Modal */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 4000;
+      background: rgba(3, 7, 19, 0.92);
+      backdrop-filter: blur(14px);
+      place-items: center;
+      padding: 40px;
+    }
+    .lightbox-modal.show { display: grid; }
+    .lightbox-modal img {
+      max-width: 92vw;
+      max-height: 86vh;
+      border-radius: 16px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.2);
+    }
+    .lightbox-caption {
+      margin-top: 14px;
+      text-align: center;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%) translateY(30px);
+      background: rgba(15, 23, 42, 0.94);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 99px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 5000;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    kbd {
+      display: inline-block;
+      padding: 2px 7px;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #334155;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-bottom-width: 2px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body class="impress-not-supported">
+
+  <!-- ============================================================
+       TOPBAR HUD
+       ============================================================ -->
+  <header class="hud hud-top">
+    <div class="hud-brand">
+      <div class="hud-brand-badge">🔐</div>
+      <div>
+        <span>GĐ2 · Buổi 09: Sharing &amp; Permissions</span>
+        <small style="display:block;font-size:0.72rem;color:#94a3b8;font-weight:500">Khóa học Google Docs THCS · Chặng 3: Cộng tác &amp; Xuất bản</small>
+      </div>
+    </div>
+
+    <div class="hud-top-actions">
+      <!-- Station Jump Dropdown -->
+      <select id="stationJumpSelect" class="btn-hud" style="color:white;background:#132448;border-color:#2563eb">
+        <option value="step-intro">Trạm 1: Khởi động Buổi 9</option>
+        <option value="step-goals">Trạm 2: 5 Mục tiêu cốt lõi</option>
+        <option value="step-nightmare-story">Trạm 3: Cơn ác mộng mất bài</option>
+        <option value="step-permissions-svg">Trạm 4: 3 Cấp độ phân quyền</option>
+        <option value="step-viewer-deepdive">Trạm 5: Quyền Viewer (Xem)</option>
+        <option value="step-commenter-deepdive">Trạm 6: Quyền Commenter (Nhận xét)</option>
+        <option value="step-editor-deepdive">Trạm 7: Quyền Editor (Chỉnh sửa)</option>
+        <option value="step-challenge-1">Trạm 8: Thử thách 1 (Cấp quyền gì?)</option>
+        <option value="step-access-mode-svg">Trạm 9: Restricted vs Anyone with link</option>
+        <option value="step-add-collaborator-flow">Trạm 10: Thêm người bằng Email</option>
+        <option value="step-safety-principles-svg">Trạm 11: 4 Nguyên tắc an toàn số</option>
+        <option value="step-advanced-settings">Trạm 12: Bánh răng cài đặt ⚙️</option>
+        <option value="step-anonymous-animals">Trạm 13: Động vật ẩn danh 🦊</option>
+        <option value="step-transfer-ownership">Trạm 14: Thu hồi &amp; Chuyển quyền</option>
+        <option value="step-common-mistakes">Trạm 15: 4 Lỗi bảo mật kinh điển</option>
+        <option value="step-pro-tips">Trạm 16: Mẹo tạo link Template</option>
+        <option value="step-sharing-studio">Trạm 17: Sharing Studio Sandbox</option>
+        <option value="step-challenge-2">Trạm 18: Thử thách 2 (Kế hoạch trực nhật)</option>
+        <option value="step-challenge-3">Trạm 19: Thử thách 3 (Bắt lỗ hổng)</option>
+        <option value="step-before-after-svg">Trạm 20: So sánh Before / After</option>
+        <option value="step-final-project">Trạm 21: Thực hành Phân quyền 30đ</option>
+        <option value="step-homework">Trạm 22: Bài tập về nhà</option>
+        <option value="step-quiz">Trạm 23: Đấu trường Quiz 10 câu</option>
+        <option value="step-summary">Trạm 24: Tổng kết &amp; 4 Nguyên tắc vàng</option>
+        <option value="overview">Trạm 25: Toàn cảnh không gian 3D</option>
+      </select>
+
+      <button class="btn-hud" id="btnToggleOverview" title="Xem sơ đồ 3D (O)">🌌 Toàn cảnh 3D</button>
+      <button class="btn-hud" id="btnTeacherGuide">📋 Sư phạm</button>
+      <button class="btn-hud" id="btnHelpShortcuts">⌨️ ?</button>
+      <a href="buoi-09-bai-tap.html" class="btn-hud" style="background:#059669;border-color:#10b981;color:white">📝 Phiếu bài tập</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       IMPRESS.JS 3D UNIVERSE CANVAS
+       ============================================================ -->
+  <div id="impress" data-transition-duration="950">
+
+    <!-- STEP 1: HERO INTRO (Dark) -->
+    <div id="step-intro" class="step dark"
+         data-x="0" data-y="0" data-z="0">
+      <span class="eyebrow">CHẶNG 03 · CỘNG TÁC &amp; AN TOÀN SỐ</span>
+      <h1>Buổi 09: Sharing &amp; Permission</h1>
+      <p style="font-size:1.35rem;max-width:850px;color:#cbd5e1;margin-bottom:28px">
+        <b>Ai được phép làm gì với tài liệu của em?</b> Làm chủ nghệ thuật chia sẻ đám mây an toàn: Phân biệt Viewer, Commenter, Editor, kiểm soát chế độ Restricted vs Anyone with link và bảo vệ dữ liệu cá nhân học đường!
+      </p>
+
+      <div class="grid-4" style="margin-top:20px">
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">👁️</div>
+          <h4 style="margin:0 0 6px;color:#fff">Viewer (Xem)</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Chỉ được đọc, tuyệt đối không sửa đổi hay làm hỏng nội dung.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">💬</div>
+          <h4 style="margin:0 0 6px;color:#fff">Commenter (Góp ý)</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Được viết nhận xét và đề xuất sửa mà không làm bẩn bài gốc.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">✏️</div>
+          <h4 style="margin:0 0 6px;color:#fff">Editor (Chỉnh sửa)</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Toàn quyền sửa, xóa và chia sẻ tiếp. Chỉ cấp cho bạn cùng nhóm!</p>
+        </div>
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">🛡️</div>
+          <h4 style="margin:0 0 6px;color:#fff">An Toàn Số</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Nguyên tắc cấp quyền tối thiểu và bảo mật thông tin riêng tư.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:26px;display:flex;gap:12px;align-items:center">
+        <span class="badge badge-teal">⏱️ 100 Phút</span>
+        <span class="badge badge-blue">🚀 25 Trạm 3D</span>
+        <span class="badge badge-amber">🎯 3 Thử thách + 10 Quiz</span>
+        <span class="badge badge-purple">🏆 Sản phẩm: Phân quyền Kế hoạch trực nhật</span>
+      </div>
+    </div>
+
+    <!-- STEP 2: LEARNING GOALS -->
+    <div id="step-goals" class="step"
+         data-x="1400" data-y="0" data-z="0">
+      <span class="eyebrow">CHUẨN ĐẦU RA BUỔI 09</span>
+      <h2>Năm Năng Lực Cốt Lõi Em Sẽ Làm Chủ Hôm Nay</h2>
+      <p>Sau bài học này, em sẽ tự tin chia sẻ tài liệu như một chuyên gia quản trị đám mây:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:20px">
+        <div class="card" style="border-left:5px solid var(--blue-600)">
+          <span class="badge badge-blue" style="margin-bottom:8px">NĂNG LỰC 1</span>
+          <h3>Thao Tác Nút Share (Chia Sẻ)</h3>
+          <p style="font-size:0.95rem">Mở hộp thoại Share, nhập đúng địa chỉ Gmail của thầy cô/bạn bè và gửi kèm lời nhắn giải thích nhiệm vụ.</p>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--cyan-600)">
+          <span class="badge badge-teal" style="margin-bottom:8px">NĂNG LỰC 2</span>
+          <h3>Phân Biệt Restricted vs Public Link</h3>
+          <p style="font-size:0.95rem">Hiểu vì sao 90% tài liệu học tập nên để ở chế độ <b>Bị hạn chế (Restricted)</b> để không bị người lạ xâm nhập.</p>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--emerald-600)">
+          <span class="badge badge-green" style="margin-bottom:8px">NĂNG LỰC 3</span>
+          <h3>Chọn Đúng Vai Trò: Viewer vs Commenter vs Editor</h3>
+          <p style="font-size:0.95rem">Biết rõ khi nào cấp Viewer (thầy cô chấm), Commenter (bạn góp ý) và Editor (bạn cùng làm).</p>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--purple-600)">
+          <span class="badge badge-purple" style="margin-bottom:8px">NĂNG LỰC 4 &amp; 5</span>
+          <h3>An Toàn Số &amp; Cài Đặt Khóa Sao Chép</h3>
+          <p style="font-size:0.95rem">Biết cách khóa quyền tải xuống/in ấn để bảo vệ bản quyền bài làm và thu hồi quyền (Remove access) khi kết thúc dự án.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: NIGHTMARE STORY -->
+    <div id="step-nightmare-story" class="step"
+         data-x="2800" data-y="0" data-z="100" data-rotate-y="-10">
+      <span class="eyebrow">TÌNH HUỐNG THỰC TẾ HỌC ĐƯỜNG</span>
+      <h2>Cơn Ác Mộng Của Lớp Trưởng Khi Gửi Nhầm Link Editor!</h2>
+      <p>Câu chuyện có thật xảy ra ở rất nhiều lớp học THCS:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="background:#fff1f2;border-color:#fecdd3">
+          <div style="font-size:2.2rem;margin-bottom:10px">😱 🌐 💥</div>
+          <h3 style="color:#be123c">Chuyện Gì Đã Xảy Ra?</h3>
+          <p style="font-size:0.92rem;color:#881337">
+            Lớp trưởng Tuấn soạn thảo <b>Kế hoạch cắm trại và trực nhật</b> suốt cả tuần. Muốn gửi vào nhóm Zalo lớp để các bạn xem ngày giờ, Tuấn vội vàng chọn: <br>
+            <b style="color:#b91c1c">"Bất kỳ ai có đường liên kết ➔ Người chỉnh sửa (Editor)"</b>.
+          </p>
+          <div style="background:white;padding:10px;border-radius:8px;font-size:0.85rem;color:#9f1239;font-weight:700">
+            ⚠️ Kết quả: Vài bạn tinh nghịch bấm vào xóa mất 2 trang kế hoạch, đổi tên các tổ và gõ linh tinh vào tài liệu!
+          </div>
+        </div>
+
+        <div class="card" style="background:#f0fdf4;border-color:#bbf7d0">
+          <div style="font-size:2.2rem;margin-bottom:10px">💡 🛡️ ✨</div>
+          <h3 style="color:#15803d">Bài Học Xương Máu</h3>
+          <p style="font-size:0.92rem;color:#14532d">
+            Nếu Tuấn hiểu nguyên tắc phân quyền, bạn ấy chỉ cần chọn: <br>
+            <b style="color:#047857">"Bất kỳ ai có liên kết ➔ Người xem (Viewer)"</b> hoặc <b style="color:#047857">Người nhận xét (Commenter)</b>.
+          </p>
+          <div style="background:white;padding:10px;border-radius:8px;font-size:0.85rem;color:#047857;font-weight:700">
+            👉 Cả lớp vẫn đọc được bài thoải mái mà không một ai có thể sửa hay xóa mất 1 chữ nào của lớp trưởng!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: PERMISSIONS SVG -->
+    <div id="step-permissions-svg" class="step"
+         data-x="4200" data-y="0" data-z="200" data-rotate-y="-15">
+      <span class="eyebrow">SƠ ĐỒ TRỰC QUAN KHÔNG GIAN</span>
+      <h2>Giải Phẫu 3 Cấp Độ Phân Quyền Trong Google Docs</h2>
+      <p>Quan sát quyền hạn được phép và bị cấm của từng vai trò:</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi09/sharing-access-levels.svg" alt="Ba cấp độ phân quyền trong Google Docs">
+        <figcaption style="display:none">Sơ đồ 3 cấp độ phân quyền: Viewer, Commenter, Editor</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-blue">Viewer (Xem) · Commenter (Góp ý) · Editor (Chỉnh sửa)</span>
+      </div>
+    </div>
+
+    <!-- STEP 5: VIEWER DEEP DIVE -->
+    <div id="step-viewer-deepdive" class="step"
+         data-x="5600" data-y="0" data-z="100">
+      <span class="eyebrow">VAI TRÒ 1 · AN TOÀN TUYỆT ĐỐI</span>
+      <h2>Quyền Viewer (Người Xem): Chiếc Kính Cường Lực Bảo Vệ</h2>
+      <p>Khi em chỉ muốn người khác đọc nội dung mà không được phép can thiệp:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="border-top:4px solid var(--blue-600)">
+          <h3 style="color:var(--blue-600);margin-top:0">👁️ Người Xem Thấy Giao Diện Gì?</h3>
+          <p style="font-size:0.92rem">
+            • Không có thanh công cụ gõ chữ, không có con trỏ nhấp nháy.<br>
+            • Không thể bấm phím Backspace hay Delete để xóa bài.<br>
+            • Có một thông báo nhỏ trên cùng: <b>"Chỉ xem (View only)"</b>.
+          </p>
+        </div>
+
+        <div class="card" style="border-top:4px solid var(--emerald-600)">
+          <h3 style="color:var(--emerald-600);margin-top:0">🎯 Khi Nào Cần Cấp Viewer?</h3>
+          <ul style="padding-left:18px;font-size:0.92rem;line-height:1.75;margin:0">
+            <li>Nộp bài tập đã hoàn thành cho thầy cô chấm điểm.</li>
+            <li>Gửi Nội quy lớp học hoặc Thông báo họp phụ huynh.</li>
+            <li>Chia sẻ tài liệu mẫu, cẩm nang cho bạn bè đọc tham khảo.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;background:#eff6ff;padding:12px 18px;border-radius:12px;font-size:0.9rem;color:var(--blue-600);font-weight:700">
+        💡 Đây là mức quyền phổ biến nhất em nên dùng khi nộp bài tập cuối kỳ!
+      </div>
+    </div>
+
+    <!-- STEP 6: COMMENTER DEEP DIVE -->
+    <div id="step-commenter-deepdive" class="step"
+         data-x="5600" data-y="1100" data-z="0" data-rotate-z="90">
+      <span class="eyebrow">VAI TRÒ 2 · CỘNG TÁC VĂN MINH</span>
+      <h2>Quyền Commenter (Người Nhận Xét): Góp Ý Không Làm Bẩn Bài</h2>
+      <p>Tuyệt chiêu để xin phản hồi từ bạn bè mà không lo bài bị sửa lung tung:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card">
+          <span class="badge badge-green" style="margin-bottom:8px">ĐƯỢC PHÉP</span>
+          <h3 style="margin-top:0">Bình Luận &amp; Đề Xuất (Suggesting)</h3>
+          <p style="font-size:0.92rem">
+            Người nhận xét có thể bôi đen chữ để viết nhận xét bên lề phải (Comment). Nếu họ gõ chữ vào bài, chữ đó sẽ hiện dưới dạng <b>vết mực xanh đề xuất</b> chứ không đè mất chữ gốc của em!
+          </p>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-amber" style="margin-bottom:8px">QUYỀN QUYẾT ĐỊNH THUỘC VỀ EM</span>
+          <h3 style="margin-top:0">Chủ Bài Có Nút Duyệt / Từ Chối</h3>
+          <p style="font-size:0.92rem">
+            Nếu em thấy bạn góp ý hay: bấm <b>Dấu tích xanh (Accept) ✓</b> để áp dụng.<br>
+            Nếu em không thích: bấm <b>Dấu gạch chéo đỏ (Reject) ✕</b>, đề xuất biến mất ngay lập tức!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 7: EDITOR DEEP DIVE -->
+    <div id="step-editor-deepdive" class="step"
+         data-x="4200" data-y="1100" data-z="-100" data-rotate-z="90">
+      <span class="eyebrow">VAI TRÒ 3 · CON DAO HAI LƯỠI</span>
+      <h2>Quyền Editor (Chỉnh Sửa): Quyền Năng Đi Kèm Trách Nhiệm</h2>
+      <p>Chỉ trao quyền này cho những người em thực sự tin tưởng cùng chịu trách nhiệm:</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">⚡</div>
+          <h4>Sửa Trực Tiếp</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft)">Viết, sửa, xóa, định dạng và chèn ảnh y hệt như chủ nhân của tài liệu.</p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">👥</div>
+          <h4>Chia Sẻ Tiếp</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft)">Theo mặc định, Editor có thể tự ý mời thêm người khác vào sửa bài cùng.</p>
+        </div>
+
+        <div class="card" style="border:2px solid var(--rose-500);background:#fff1f2">
+          <div style="font-size:2rem;margin-bottom:8px">⚠️</div>
+          <h4 style="color:var(--rose-600)">Rủi Ro Lớn Nhất</h4>
+          <p style="font-size:0.88rem;color:#881337">Nếu Editor lỡ tay nhấn Ctrl + A rồi Backspace, toàn bộ tài liệu sẽ biến mất!</p>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;background:#fef3c7;padding:12px 18px;border-radius:12px;font-size:0.9rem;color:#b45309">
+        📌 <b>Nguyên tắc vàng:</b> Chỉ cấp Editor cho bạn cùng nhóm làm đồ án chung (nhóm 3–4 bạn cùng viết bài)!
+      </div>
+    </div>
+
+    <!-- STEP 8: MINI CHALLENGE 1 (Choose Permission) -->
+    <div id="step-challenge-1" class="step"
+         data-x="2800" data-y="1100" data-z="-100">
+      <span class="eyebrow">MINI CHALLENGE 1 · PHÂN VAI CHUẨN XÁC</span>
+      <h2>Tình Huống Này Em Sẽ Cấp Quyền Gì?</h2>
+      <p>Em vừa hoàn thành bài thuyết trình Lịch sử và muốn gửi cho 3 đối tượng sau:</p>
+
+      <div class="card" style="padding:26px">
+        <div style="background:#f1f5f9;padding:14px;border-radius:10px;margin-bottom:16px;font-size:0.95rem;line-height:1.7">
+          1. <b>Cô giáo bộ môn Lịch sử:</b> Nhận bài để đọc chấm điểm thi giữa kỳ.<br>
+          2. <b>Bạn Linh (Học giỏi Văn):</b> Đọc rà soát lỗi chính tả và góp ý cách diễn đạt.<br>
+          3. <b>Bạn Nam (Thành viên cùng nhóm):</b> Trực tiếp viết phần 2 của bài thuyết trình.
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <button class="quiz-btn" id="btnCh1OptA">
+            <span class="letter-badge">A</span>
+            <span>Cấp Editor cho cả 3 người cho tiện.</span>
+          </button>
+          <button class="quiz-btn" id="btnCh1OptB">
+            <span class="letter-badge">B</span>
+            <span>Cô giáo: Viewer · Bạn Linh: Commenter · Bạn Nam: Editor.</span>
+          </button>
+          <button class="quiz-btn" id="btnCh1OptC">
+            <span class="letter-badge">C</span>
+            <span>Cô giáo: Editor · Bạn Linh: Viewer · Bạn Nam: Commenter.</span>
+          </button>
+        </div>
+
+        <div id="ch1Feedback" style="display:none;padding:14px 18px;border-radius:12px;font-size:0.95rem;font-weight:600;margin-top:16px"></div>
+      </div>
+    </div>
+
+    <!-- STEP 9: ACCESS MODE SVG -->
+    <div id="step-access-mode-svg" class="step"
+         data-x="1400" data-y="1100" data-z="0">
+      <span class="eyebrow">SƠ ĐỒ TRỰC QUAN KHÔNG GIAN</span>
+      <h2>Chế Độ Truy Cập Chung: Restricted vs Anyone With The Link</h2>
+      <p>Khám phá chiếc chìa khóa cổng bảo vệ tài liệu của em trước toàn bộ không gian mạng:</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi09/restricted-vs-public-link.svg" alt="Restricted vs Anyone with the link">
+        <figcaption style="display:none">Sơ đồ so sánh Restricted và Anyone with the link</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-teal">Restricted (An toàn riêng tư) vs Anyone with link (Mở rộng công cộng)</span>
+      </div>
+    </div>
+
+    <!-- STEP 10: ADD COLLABORATOR FLOW -->
+    <div id="step-add-collaborator-flow" class="step"
+         data-x="0" data-y="1100" data-z="100">
+      <span class="eyebrow">QUY TRÌNH THỰC CHIẾN</span>
+      <h2>Quy Trình 4 Bước Thêm Người Bằng Email Chuẩn Chỉ</h2>
+      <p>Cách thêm đích danh thầy cô và bạn bè vào tài liệu một cách lịch sự, trang trọng:</p>
+
+      <div class="grid-4" style="margin-top:20px">
+        <div class="card" style="text-align:center">
+          <div style="font-size:2rem;margin-bottom:8px">1️⃣</div>
+          <h4>Bấm Nút Share</h4>
+          <p style="font-size:0.85rem;color:var(--muted)">Nút màu xanh lớn ở góc trên cùng bên phải màn hình.</p>
+        </div>
+
+        <div class="card" style="text-align:center">
+          <div style="font-size:2rem;margin-bottom:8px">2️⃣</div>
+          <h4>Nhập Email</h4>
+          <p style="font-size:0.85rem;color:var(--muted)">Nhập chính xác địa chỉ Gmail (ví dụ: <code>thaygiao@gmail.com</code>).</p>
+        </div>
+
+        <div class="card" style="text-align:center;border:2px solid var(--blue-500)">
+          <div style="font-size:2rem;margin-bottom:8px">3️⃣ ⭐</div>
+          <h4 style="color:var(--blue-600)">Chọn Mức Quyền</h4>
+          <p style="font-size:0.85rem;color:var(--muted)">Bấm menu bên cạnh để chọn đúng: Viewer, Commenter hoặc Editor.</p>
+        </div>
+
+        <div class="card" style="text-align:center">
+          <div style="font-size:2rem;margin-bottom:8px">4️⃣</div>
+          <h4>Viết Lời Nhắn &amp; Gửi</h4>
+          <p style="font-size:0.85rem;color:var(--muted)">Ghi rõ: <i>"Em chào cô, em gửi cô bài tập Tin học..."</i> rồi bấm Gửi (Send).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 11: SAFETY PRINCIPLES SVG -->
+    <div id="step-safety-principles-svg" class="step"
+         data-x="0" data-y="2200" data-z="200" data-rotate-x="15">
+      <span class="eyebrow">AN TOÀN SỐ HỌC ĐƯỜNG</span>
+      <h2>Bốn Nguyên Tắc Vàng Cấp Quyền Tối Thiểu (Least Privilege)</h2>
+      <p>Học sinh thông minh trên không gian mạng luôn biết cách tự bảo vệ mình:</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi09/digital-safety-principles.svg" alt="Nguyên tắc an toàn số trong Google Docs">
+        <figcaption style="display:none">Sơ đồ 4 nguyên tắc an toàn số khi chia sẻ tài liệu</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-rose">Không chia sẻ SĐT, địa chỉ nhà hay thông tin cá nhân!</span>
+      </div>
+    </div>
+
+    <!-- STEP 12: ADVANCED SETTINGS GEAR -->
+    <div id="step-advanced-settings" class="step"
+         data-x="1400" data-y="2200" data-z="100">
+      <span class="eyebrow">TÍNH NĂNG NÂNG CAO</span>
+      <h2>Bánh Răng Cài Đặt Chia Sẻ ⚙️: Khóa Quyền Sao Chép</h2>
+      <p>Hai tùy chọn bí mật trong biểu tượng bánh răng góc trên hộp thoại Share:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card">
+          <h4 style="margin-top:0;color:var(--navy-900)">1. Giới Hạn Quyền Của Editor</h4>
+          <p style="font-size:0.92rem;color:var(--ink-soft)">
+            Bỏ tích: <i>"Người chỉnh sửa có thể thay đổi các quyền và chia sẻ"</i>.
+          </p>
+          <div style="background:#eff6ff;padding:10px 14px;border-radius:10px;font-size:0.85rem;color:var(--blue-600)">
+            👉 Ngăn chặn việc bạn cùng nhóm tự ý chia sẻ tài liệu của em cho người khác mà em không biết!
+          </div>
+        </div>
+
+        <div class="card">
+          <h4 style="margin-top:0;color:var(--navy-900)">2. Chống Tải Xuống, In &amp; Sao Chép</h4>
+          <p style="font-size:0.92rem;color:var(--ink-soft)">
+            Bỏ tích: <i>"Người xem và người nhận xét có thể thấy tùy chọn để tải xuống, in và sao chép"</i>.
+          </p>
+          <div style="background:#ecfdf5;padding:10px 14px;border-radius:10px;font-size:0.85rem;color:var(--emerald-600)">
+            👉 Khóa chặt nút Copy và In ấn! Người khác chỉ có thể đọc bài trên màn hình, không sao chép trộm được!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 13: ANONYMOUS ANIMALS -->
+    <div id="step-anonymous-animals" class="step"
+         data-x="2800" data-y="2200" data-z="0">
+      <span class="eyebrow">HIỆN TƯỢNG GOOGLE DOCS</span>
+      <h2>Bí Ẩn "Động Vật Ẩn Danh" 🦊 🐼 🦄: Họ Là Ai?</h2>
+      <p>Khi mở tài liệu, đôi khi em thấy xuất hiện <i>"Cáo ẩn danh"</i>, <i>"Gấu trúc ẩn danh"</i> ở góc trên bên phải:</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">❓</div>
+          <h4>Vì Sao Xuất Hiện?</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft)">Khi tài liệu được đặt ở chế độ <b>Anyone with the link</b> và người bấm vào xem chưa đăng nhập tài khoản Google.</p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">🎭</div>
+          <h4>Google Đặt Tên Vui</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft)">Google tự động gán tên các con vật ngẫu nhiên như: <i>Anonymous Dingo, Chupacabra, Axolotl...</i></p>
+        </div>
+
+        <div class="card" style="border:2px solid var(--amber-500)">
+          <div style="font-size:2rem;margin-bottom:8px">🛡️</div>
+          <h4>Cách Tắt Hoàn Toàn</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft)">Chuyển quyền truy cập chung về <b>Restricted (Bị hạn chế)</b>, các động vật ẩn danh sẽ biến mất 100%!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 14: TRANSFER & REVOKE -->
+    <div id="step-transfer-ownership" class="step"
+         data-x="4200" data-y="2200" data-z="-100">
+      <span class="eyebrow">QUẢN LÝ VÒNG ĐỜI TÀI LIỆU</span>
+      <h2>Chuyển Quyền Sở Hữu &amp; Thu Hồi Quyền (Remove Access)</h2>
+      <p>Khi học kỳ kết thúc hoặc bài tập nhóm đã hoàn thành xuất sắc:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="border-left:5px solid var(--rose-500)">
+          <h3 style="color:var(--rose-600);margin-top:0">🗑️ Thu Hồi Quyền (Xóa Quyền Truy Cập)</h3>
+          <p style="font-size:0.92rem">
+            Nhấp vào nút Share ➔ Bấm vào menu bên cạnh tên bạn đó ➔ Chọn <b>Xóa quyền truy cập (Remove access)</b>. Bạn đó sẽ ngay lập tức bị đẩy ra ngoài và không xem được bài nữa.
+          </p>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--blue-600)">
+          <h3 style="color:var(--blue-600);margin-top:0">👑 Chuyển Quyền Sở Hữu (Transfer Ownership)</h3>
+          <p style="font-size:0.92rem">
+            Khi em chuyển lớp hoặc bàn giao dự án cho bạn khác: Chọn <b>Đặt làm chủ sở hữu (Make owner)</b>. Tài liệu sẽ chính thức thuộc về bạn đó và trừ dung lượng Drive của bạn ấy!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 15: COMMON MISTAKES -->
+    <div id="step-common-mistakes" class="step"
+         data-x="5600" data-y="2200" data-z="-200" data-rotate-y="15">
+      <span class="eyebrow">CẢNH BÁO LỖI BẢO MẬT</span>
+      <h2>Bốn Lỗi Chia Sẻ Tai Hại Cần Tuyệt Đối Tránh</h2>
+      <p>Rất nhiều học sinh THCS bị trừ điểm vì mắc phải các lỗi này:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:20px">
+        <div class="card" style="border-left:4px solid var(--rose-500)">
+          <h4 style="color:var(--rose-600);margin:0 0 6px">1. Quên Mở Quyền (Khóa Restricted Mà Không Thêm Thầy Cô)</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft);margin:0">
+            Copy link nộp bài tập nhưng vẫn để chế độ Restricted và không thêm email cô giáo. Khi cô mở bài ra sẽ bị báo: <i>"Bạn cần có quyền truy cập"</i> ➔ 0 điểm nộp muộn!
+          </p>
+        </div>
+
+        <div class="card" style="border-left:4px solid var(--rose-500)">
+          <h4 style="color:var(--rose-600);margin:0 0 6px">2. Cấp Editor Công Khai Trên Mạng</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft);margin:0">
+            Để chế độ Anyone with link + Editor rồi đăng lên Facebook hoặc nhóm chat. Bất kỳ ai vào cũng xóa sạch bài của em chỉ trong 5 giây!
+          </p>
+        </div>
+
+        <div class="card" style="border-left:4px solid var(--rose-500)">
+          <h4 style="color:var(--rose-600);margin:0 0 6px">3. Lộ Mật Khẩu &amp; Số Điện Thoại Cá Nhân</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft);margin:0">
+            Ghi thông tin tài khoản hoặc số điện thoại riêng trong file chia sẻ công khai khiến bị kẻ gian quấy rối hoặc lừa đảo.
+          </p>
+        </div>
+
+        <div class="card" style="border-left:4px solid var(--rose-500)">
+          <h4 style="color:var(--rose-600);margin:0 0 6px">4. Không Kiểm Tra Bằng Trình Duyệt Ẩn Danh</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft);margin:0">
+            Trước khi gửi link nộp bài, không mở thử bằng tab Ẩn danh (Incognito) để kiểm tra xem người ngoài có đọc được bài hay không.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 16: PRO TIPS (Template link) -->
+    <div id="step-pro-tips" class="step"
+         data-x="5600" data-y="3300" data-z="-100" data-rotate-z="-90">
+      <span class="eyebrow">TUYỆT CHIÊU CỦA CHUYÊN GIA</span>
+      <h2>Mẹo Tạo Link Bắt Buộc Tạo Bản Sao (/copy)</h2>
+      <p>Muốn chia sẻ tài liệu mẫu cho cả lớp nhưng muốn mỗi bạn tự nhân bản 1 bản riêng?</p>
+
+      <div class="card" style="background:#eff6ff;border:2px solid #bfdbfe;padding:26px">
+        <h3 style="margin-top:0;color:var(--blue-600)">🪄 Bí Mật Nằm Ở Đuôi Đường Link:</h3>
+        <p style="font-size:0.95rem;color:var(--ink-soft)">
+          Khi copy link tài liệu, đuôi link thường có chữ: <br>
+          <code style="background:white;padding:4px 8px;border-radius:6px;color:#dc2626">https://docs.google.com/document/d/.../edit</code>
+        </p>
+        <p style="font-size:0.95rem;color:var(--ink-soft)">
+          Hãy xóa chữ <code>edit</code> ở cuối và thay bằng chữ: <br>
+          <code style="background:white;padding:4px 8px;border-radius:6px;color:#047857;font-weight:800">https://docs.google.com/document/d/.../copy</code>
+        </p>
+        <div style="background:white;padding:12px;border-radius:10px;font-size:0.9rem;color:#1e40af;font-weight:700;margin-top:10px">
+          ✨ Khi ai đó bấm vào link này, Google Docs sẽ hiện nút: <b>"Bạn có muốn tạo bản sao của tài liệu này không?"</b>. Bài gốc của em an toàn 100%!
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 17: SHARING STUDIO (Simulator) -->
+    <div id="step-sharing-studio" class="step"
+         data-x="4200" data-y="3300" data-z="0" data-scale="1.1">
+      <span class="eyebrow">PHÒNG THÍ NGHIỆM TƯƠNG TÁC THỜI GIAN THỰC</span>
+      <h2>Phòng Thí Nghiệm: Google Docs Sharing Studio</h2>
+      <p>Thử nghiệm cấu hình quyền truy cập và kiểm tra mức độ an toàn ngay lập tức:</p>
+
+      <div class="grid-2 simulator-box" style="margin-top:16px;gap:24px">
+        <!-- Controls Panel -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <label style="font-weight:700;font-size:0.85rem;color:var(--navy-900);display:block;margin-bottom:6px">1. Chế Độ Truy Cập Chung:</label>
+            <div style="display:flex;gap:8px">
+              <button class="btn-hud active" id="simBtnRestricted" style="flex:1;justify-content:center">🔒 Restricted (Bị hạn chế)</button>
+              <button class="btn-hud" id="simBtnPublic" style="flex:1;justify-content:center">🌐 Anyone with link</button>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-weight:700;font-size:0.85rem;color:var(--navy-900);display:block;margin-bottom:6px">2. Mức Quyền Áp Dụng:</label>
+            <div style="display:flex;gap:8px">
+              <button class="btn-hud active" id="simBtnViewer" style="flex:1;justify-content:center">👁️ Viewer</button>
+              <button class="btn-hud" id="simBtnCommenter" style="flex:1;justify-content:center">💬 Commenter</button>
+              <button class="btn-hud" id="simBtnEditor" style="flex:1;justify-content:center">✏️ Editor</button>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-weight:700;font-size:0.85rem;color:var(--navy-900);display:block;margin-bottom:6px">3. Bảo Mật Nâng Cao:</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer">
+              <input type="checkbox" id="simCheckLockCopy" checked> Khóa quyền tải xuống, in và sao chép 🔒
+            </label>
+          </div>
+        </div>
+
+        <!-- Live Status Display -->
+        <div style="background:#0f172a;border-radius:14px;padding:20px;color:white;display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <span style="font-size:0.8rem;color:#94a3b8;font-weight:800;text-transform:uppercase">ĐÁNH GIÁ ĐỘ AN TOÀN SỐ</span>
+              <span id="simSafetyBadge" class="badge badge-green">AN TOÀN CAO ⭐⭐⭐</span>
+            </div>
+            <h3 id="simSafetyTitle" style="color:#ffffff;margin:0 0 8px;font-size:1.25rem">Cấu Hình Chuẩn Mực Học Đường</h3>
+            <p id="simSafetyDesc" style="font-size:0.88rem;color:#cbd5e1;line-height:1.6;margin:0">
+              Tài liệu chỉ mở cho những email được chỉ định. Người xem chỉ có thể đọc, không thể sửa đổi hay sao chép bài làm của em.
+            </p>
+          </div>
+          <div id="simRecommendationBox" style="background:rgba(255,255,255,0.08);padding:10px 14px;border-radius:8px;font-size:0.82rem;color:#93c5fd">
+            💡 Thích hợp nhất: Nộp bài tập cho thầy cô giáo chấm điểm.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 18: MINI CHALLENGE 2 -->
+    <div id="step-challenge-2" class="step"
+         data-x="2800" data-y="3300" data-z="100">
+      <span class="eyebrow">MINI CHALLENGE 2 · THỰC HÀNH TỔNG HỢP</span>
+      <h2>Phân Quyền Cho Kế Hoạch Trực Nhật Lớp 7A</h2>
+      <p>Lớp em có 40 học sinh. Em là lớp trưởng và cần công khai Lịch trực nhật trong tuần:</p>
+
+      <div class="card" style="padding:26px">
+        <h3 style="margin-top:0;color:var(--navy-900)">Yêu cầu: Cả lớp đều đọc được lịch, các tổ trưởng được ghi chú góp ý, nhưng KHÔNG ai được tự ý đổi tên người trực nhật.</h3>
+
+        <div style="display:flex;flex-direction:column;gap:12px;margin:20px 0">
+          <button class="quiz-btn" id="btnCh2OptA">
+            <span class="letter-badge">A</span>
+            <span>Đặt Anyone with the link ➔ Editor để ai thích thì tự vào chỉnh.</span>
+          </button>
+          <button class="quiz-btn" id="btnCh2OptB">
+            <span class="letter-badge">B</span>
+            <span>Đặt Anyone with the link ➔ Viewer (cho cả lớp xem), và thêm email của 4 tổ trưởng với quyền Commenter.</span>
+          </button>
+          <button class="quiz-btn" id="btnCh2OptC">
+            <span class="letter-badge">C</span>
+            <span>Đặt Restricted và không chia sẻ cho ai cả.</span>
+          </button>
+        </div>
+
+        <div id="ch2Feedback" style="display:none;padding:14px 18px;border-radius:12px;font-size:0.95rem;font-weight:600"></div>
+      </div>
+    </div>
+
+    <!-- STEP 19: MINI CHALLENGE 3 (Bug Hunt) -->
+    <div id="step-challenge-3" class="step"
+         data-x="1400" data-y="3300" data-z="200">
+      <span class="eyebrow">MINI CHALLENGE 3 · THÁM TỬ AN TOÀN SỐ</span>
+      <h2>Bắt 3 Lỗ Hổng Bảo Mật Của Bạn Tuấn</h2>
+      <p>Bạn Tuấn vừa chia sẻ tài liệu bài tập nhóm nhưng mắc 3 lỗi an toàn nghiêm trọng:</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card" id="cardBug1" style="cursor:pointer;border:2px dashed #cbd5e1;transition:all 0.25s ease">
+          <span class="badge badge-amber" style="margin-bottom:8px">LỖI 1 ?</span>
+          <h4 style="margin:0 0 6px">Anyone with link ➔ Editor</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Ai nhặt được link cũng có thể xóa sạch bài làm chỉ sau 1 click chuột.</p>
+          <button class="btn-hud" style="margin-top:10px;width:100%;justify-content:center">Nhấp để bắt lỗi này!</button>
+        </div>
+
+        <div class="card" id="cardBug2" style="cursor:pointer;border:2px dashed #cbd5e1;transition:all 0.25s ease">
+          <span class="badge badge-amber" style="margin-bottom:8px">LỖI 2 ?</span>
+          <h4 style="margin:0 0 6px">Ghi SĐT và địa chỉ nhà trong bài</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Làm lộ dữ liệu nhạy cảm của bạn bè lên mạng internet công cộng.</p>
+          <button class="btn-hud" style="margin-top:10px;width:100%;justify-content:center">Nhấp để bắt lỗi này!</button>
+        </div>
+
+        <div class="card" id="cardBug3" style="cursor:pointer;border:2px dashed #cbd5e1;transition:all 0.25s ease">
+          <span class="badge badge-amber" style="margin-bottom:8px">LỖI 3 ?</span>
+          <h4 style="margin:0 0 6px">Không thu hồi quyền sau khi nộp bài</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Sau khi chấm điểm xong, vẫn để Editor mở khiến bài có thể bị sửa đổi ngoài ý muốn.</p>
+          <button class="btn-hud" style="margin-top:10px;width:100%;justify-content:center">Nhấp để bắt lỗi này!</button>
+        </div>
+      </div>
+
+      <div id="bugHuntScoreBox" style="margin-top:20px;text-align:center;font-weight:800;color:var(--emerald-600);font-size:1.1rem;display:none">
+        🎉 Xuất sắc! Em đã tìm thấy toàn bộ 3 lỗ hổng và nắm vững kỹ năng an toàn số!
+      </div>
+    </div>
+
+    <!-- STEP 20: BEFORE & AFTER SVG -->
+    <div id="step-before-after-svg" class="step"
+         data-x="0" data-y="3300" data-z="100">
+      <span class="eyebrow">ĐỐI CHIẾU TRỰC QUAN</span>
+      <h2>So Sánh Before vs After Cấu Hình Phân Quyền</h2>
+      <p>Cùng quan sát sự khác biệt giữa chia sẻ tùy tiện và chia sẻ an toàn chuyên nghiệp:</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi09/before-after-sharing-scenario.svg" alt="So sánh Before và After chia sẻ">
+        <figcaption style="display:none">So sánh trực quan Before và After phân quyền tài liệu</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-teal">Đúng người · Đúng quyền · Không lộ thông tin</span>
+      </div>
+    </div>
+
+    <!-- STEP 21: FINAL PROJECT IN CLASS -->
+    <div id="step-final-project" class="step"
+         data-x="0" data-y="4400" data-z="0">
+      <span class="eyebrow">BÀI THỰC HÀNH TỔNG HỢP (30 ĐIỂM)</span>
+      <h2>Dự Án: Kế Hoạch Trực Nhật Và Bảo Vệ Lớp Học 7A</h2>
+      <p>Tạo tài liệu phân công trực nhật và thực hiện thiết lập phân quyền thực tế:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="border-left:5px solid var(--blue-600)">
+          <h3 style="color:var(--blue-600);margin-top:0">📋 Tiêu Chí Đánh Giá (30đ)</h3>
+          <ul style="padding-left:20px;line-height:1.75;font-size:0.92rem;color:var(--ink-soft);margin-bottom:0">
+            <li><b>Soạn thảo bảng kế hoạch (6đ):</b> Bảng phân công 5 ngày trong tuần đẹp mắt.</li>
+            <li><b>Phân quyền Thầy/Cô (6đ):</b> Thêm đúng email giáo viên với quyền <b>Viewer</b>.</li>
+            <li><b>Phân quyền Tổ trưởng (6đ):</b> Thêm email bạn cùng lớp với quyền <b>Commenter</b>.</li>
+            <li><b>Bảo mật thông tin cá nhân (6đ):</b> Tuyệt đối không để lộ SĐT hay địa chỉ nhà.</li>
+            <li><b>Kiểm tra quyền truy cập (6đ):</b> Bật Restricted và khóa sao chép/tải xuống.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;background:#f8fafc">
+          <div>
+            <span class="badge badge-green" style="margin-bottom:10px">SẢN PHẨM BÀN GIAO</span>
+            <h3 style="margin-top:0">Quy Cách Nộp Bài</h3>
+            <p style="font-size:0.92rem;color:var(--ink-soft)">
+              Nộp link Google Docs kèm ảnh chụp màn hình hộp thoại Share thể hiện rõ ràng các quyền đã cấp cho từng đối tượng!
+            </p>
+          </div>
+          <a href="buoi-09-bai-tap.html" class="btn-hud" style="background:var(--blue-600);color:white;justify-content:center;padding:12px">
+            📝 Mở Phiếu Thực Hành Chi Tiết ➔
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 22: HOMEWORK -->
+    <div id="step-homework" class="step"
+         data-x="1400" data-y="4400" data-z="-100">
+      <span class="eyebrow">BÀI TẬP VỀ NHÀ · CỦNG CỐ KỸ NĂNG</span>
+      <h2>Nhiệm Vụ Về Nhà: Chia Sẻ Đúng Người – Đúng Quyền</h2>
+      <p>Thực hành tạo 1 tài liệu chia sẻ cho 3 người với 3 quyền khác nhau:</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card">
+          <span class="badge badge-blue" style="margin-bottom:8px">ĐỐI TƯỢNG 1</span>
+          <h4>Giáo Viên Bộ Môn</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Cấp quyền Viewer để đọc và chấm điểm bài tập.</p>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-green" style="margin-bottom:8px">ĐỐI TƯỢNG 2</span>
+          <h4>Bạn Thân Cùng Bàn</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Cấp quyền Commenter để nhờ đọc rà soát và góp ý.</p>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-amber" style="margin-bottom:8px">ĐỐI TƯỢNG 3</span>
+          <h4>Bạn Trưởng Nhóm</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Cấp quyền Editor để cùng chỉnh sửa nội dung.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px;background:#f0fdf4;border-color:#bbf7d0">
+        <b style="color:#15803d">📦 Sản phẩm nộp:</b>
+        <span style="font-size:0.92rem;color:#14532d">
+          Nộp link Google Docs và ghi chú ngắn giải thích lý do chọn từng mức quyền cho từng đối tượng.
+        </span>
+      </div>
+    </div>
+
+    <!-- STEP 23: QUIZ 10 QUESTIONS -->
+    <div id="step-quiz" class="step"
+         data-x="2800" data-y="4400" data-z="-200" data-scale="1.05">
+      <span class="eyebrow">ĐẤU TRƯỜNG TRÍ TUỆ · TÌNH HUỐNG AN TOÀN SỐ</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <h2 style="margin:0">Trắc Nghiệm An Toàn Số Buổi 09 (10 Câu)</h2>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span class="badge badge-blue" id="quizCounterBadge">Câu hỏi 1 / 10</span>
+          <span class="badge badge-green">Điểm: <b id="quizScoreNumber">0</b> / 10</span>
+        </div>
+      </div>
+
+      <div class="quiz-card">
+        <div class="quiz-question-title" id="quizQuestionText">1. Chế độ truy cập chung nào được khuyến nghị an toàn nhất cho tài liệu cá nhân?</div>
+        <div class="quiz-options" id="quizOptionsWrap"></div>
+
+        <div class="quiz-feedback" id="quizFeedbackBox">
+          <span style="font-size:1.3rem">💡</span>
+          <span id="quizFeedbackText">Giải thích chi tiết sẽ hiện ở đây.</span>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+          <div class="quiz-dots" id="quizDotsWrap"></div>
+          <button class="btn-hud" id="quizNextBtn" style="background:var(--blue-600);color:white;padding:10px 20px">
+            Câu tiếp theo ➔
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 24: SUMMARY & CHEATSHEET (Dark) -->
+    <div id="step-summary" class="step dark"
+         data-x="4200" data-y="4400" data-z="0">
+      <span class="eyebrow">TỔNG KẾT BÀI HỌC</span>
+      <h1>Gói Gọn Kiến Thức Buổi 09 &amp; 4 Nguyên Tắc Vàng</h1>
+      <p style="font-size:1.2rem;color:#cbd5e1;margin-bottom:24px">
+        Chúc mừng em đã làm chủ kỹ năng bảo mật và phân quyền tài liệu đám mây:
+      </p>
+
+      <div class="grid-2" style="gap:24px">
+        <div class="card">
+          <h3 style="color:#fff;margin-top:0">🛡️ 4 Nguyên Tắc An Toàn Cốt Tử</h3>
+          <ul style="padding-left:18px;font-size:0.92rem;color:#cbd5e1;line-height:1.75;margin:0">
+            <li><b>Không bao giờ cấp Editor + Anyone with the link.</b></li>
+            <li><b>Cấp quyền tối thiểu:</b> Cần xem thì cho Viewer, cần góp ý thì cho Commenter.</li>
+            <li><b>Không chia sẻ thông tin nhạy cảm:</b> SĐT, địa chỉ nhà, mật khẩu.</li>
+            <li><b>Xóa quyền truy cập</b> khi dự án nhóm kết thúc.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 style="color:#fff;margin-top:0">⭐ Mẹo Kiểm Tra Nhanh</h3>
+          <p style="font-size:0.92rem;color:#cbd5e1;line-height:1.7">
+            Trước khi gửi link nộp bài cho thầy cô, hãy copy link mở bằng <b>Cửa sổ ẩn danh (Ctrl + Shift + N)</b>. Nếu tab ẩn danh đọc được bài trơn tru, link của em đã sẵn sàng 100%!
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top:28px;display:flex;gap:14px;align-items:center">
+        <a href="buoi-09-bai-tap.html" class="btn-hud" style="background:#059669;padding:10px 20px;font-size:0.95rem">📝 Mở Phiếu Bài Tập Ngay</a>
+        <button class="btn-hud" onclick="impress().goto('overview')">🌌 Chiêm Ngưỡng Toàn Cảnh 3D</button>
+      </div>
+    </div>
+
+    <!-- STEP 25: COSMIC 3D OVERVIEW -->
+    <div id="overview" class="step"
+         data-x="2800" data-y="2200" data-z="7500" data-scale="8.5">
+      <div class="overview-hero-capsule">
+        <span class="badge badge-teal" style="margin-bottom:12px">SƠ ĐỒ TỔNG THỂ 25 TRẠM KHÔNG GIAN</span>
+        <h2 style="font-size:2.2rem;color:white;margin-bottom:8px">Toàn Cảnh Hành Trình Buổi 09 · Sharing &amp; Permissions</h2>
+        <p style="font-size:1.05rem;color:#94a3b8;max-width:700px;margin:0 auto 20px">
+          Nhấp chuột trực tiếp vào bất kỳ thẻ trạm nào trên không gian 3D để phi thuyền camera phóng to vào trạm đó!
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn-hud active" onclick="impress().goto('step-intro')">Trạm 1: Khởi động</button>
+          <button class="btn-hud" onclick="impress().goto('step-permissions-svg')">Trạm 4: 3 Cấp độ quyền</button>
+          <button class="btn-hud" onclick="impress().goto('step-access-mode-svg')">Trạm 9: Restricted vs Link</button>
+          <button class="btn-hud" onclick="impress().goto('step-safety-principles-svg')">Trạm 11: An toàn số</button>
+          <button class="btn-hud" onclick="impress().goto('step-sharing-studio')">Trạm 17: Studio Sandbox</button>
+          <button class="btn-hud" onclick="impress().goto('step-quiz')">Trạm 23: Trắc nghiệm</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TEACHER DRAWER -->
+  <div class="drawer drawer-right" id="teachingDrawer">
+    <div class="drawer-header">
+      <h3>📋 Hướng Dẫn Sư Phạm Dành Cho Giáo Viên</h3>
+      <button class="drawer-close-btn" id="drawerCloseBtn">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="teaching-box" style="background:#eff6ff;border-color:var(--blue-600)">
+        <b style="color:var(--blue-600)">⏱️ Phân bổ thời lượng 100 phút (Buổi 9)</b>
+        <p>• 15 phút: Tình huống mất bài &amp; 3 cấp độ Viewer, Commenter, Editor.<br>
+        • 20 phút: Restricted vs Anyone with link &amp; Thao tác thêm email.<br>
+        • 20 phút: An toàn số, bảo vệ thông tin riêng tư &amp; Khóa quyền sao chép.<br>
+        • 30 phút: Thực hành phân quyền Kế hoạch trực nhật 30đ.<br>
+        • 15 phút: Quiz 10 câu &amp; Giao bài tập về nhà.</p>
+      </div>
+
+      <div class="teaching-box" style="background:#ecfdf5;border-color:var(--emerald-600)">
+        <b style="color:var(--emerald-600)">💡 Câu hỏi tương tác mở đầu</b>
+        <p>"Nếu em gửi bài tập nộp cho cô nhưng để link ở chế độ Anyone with link + Editor, rủi ro lớn nhất có thể xảy ra là gì?"</p>
+      </div>
+
+      <div class="teaching-box" style="background:#fffbeb;border-color:var(--amber-500)">
+        <b style="color:var(--amber-500)">⚠️ Lưu ý khi học sinh thao tác</b>
+        <p>Học sinh thường hay nhầm giữa 'Sao chép đường liên kết' và 'Thêm email người nhận'. Hãy hướng dẫn học sinh kiểm tra kỹ quyền hạn trước khi gửi link!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEYBOARD MODAL -->
+  <div class="modal" id="shortcutsModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" id="modalCloseBtn">✕</button>
+      <h3 style="margin-top:0;font-size:1.4rem;color:var(--navy-900)">⌨️ Phím Tắt Điều Khiển Bài Giảng 3D</h3>
+      <table style="width:100%;border-collapse:collapse;margin-top:16px;font-size:0.95rem">
+        <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:10px 0"><kbd>Space</kbd> / <kbd>→</kbd></td><td style="padding:10px 0;font-weight:600">Trạm tiếp theo</td></tr>
+        <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:10px 0"><kbd>←</kbd></td><td style="padding:10px 0;font-weight:600">Trạm trước đó</td></tr>
+        <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:10px 0"><kbd>O</kbd></td><td style="padding:10px 0;font-weight:600">Xem toàn cảnh không gian 3D</td></tr>
+        <tr><td style="padding:10px 0"><kbd>?</kbd></td><td style="padding:10px 0;font-weight:600">Bật/tắt hộp thoại trợ giúp</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="lightbox-modal" id="zoomLightbox">
+    <div>
+      <img id="lightboxImg" src="" alt="Zoomed Graphic">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toastBox">Thông báo</div>
+
+  <script src="assets/js/impress.js"></script>
+  <script>
+    const quizQuestions = [
+      {
+        question: "Chế độ truy cập chung nào được khuyến nghị an toàn nhất cho tài liệu cá nhân của em?",
+        options: [
+          "Bất kỳ ai có đường liên kết (Anyone with the link)",
+          "Bị hạn chế (Restricted - chỉ người được thêm cụ thể mới mở được)",
+          "Công khai trên toàn bộ công cụ tìm kiếm Google",
+          "Chia sẻ cho toàn bộ danh bạ"
+        ],
+        answer: 1,
+        explain: "Restricted là chế độ an toàn nhất: chỉ những ai được em nhập đúng email mới mở được tài liệu."
+      },
+      {
+        question: "Khi nộp bài tập cho thầy cô chấm điểm, em nên cấp quyền nào là chuẩn xác nhất?",
+        options: ["Viewer (Người xem)", "Editor (Người chỉnh sửa)", "Commenter (Người nhận xét)", "Owner (Chủ sở hữu)"],
+        answer: 0,
+        explain: "Cấp quyền Viewer giúp thầy cô đọc bài chấm điểm mà bài của em không bị chỉnh sửa hay thay đổi ngoài ý muốn."
+      },
+      {
+        question: "Muốn nhờ bạn cùng bàn đọc rà soát lỗi chính tả và góp ý cách viết, em nên cấp quyền nào?",
+        options: ["Viewer", "Commenter (Người nhận xét)", "Editor", "Owner"],
+        answer: 1,
+        explain: "Commenter cho phép bạn viết nhận xét và đề xuất sửa bên lề, em có quyền duyệt (Accept) hoặc từ chối (Reject)."
+      },
+      {
+        question: "Hành động nào sau đây là NGUY HIỂM NHẤT đối với dữ liệu của em?",
+        options: [
+          "Cấp Viewer cho cô giáo",
+          "Đặt chế độ 'Anyone with the link' kèm quyền 'Editor' rồi đăng lên mạng",
+          "Tải tài liệu về máy dưới dạng PDF",
+          "Gửi link chế độ Restricted cho bạn cùng nhóm"
+        ],
+        answer: 1,
+        explain: "Anyone with link + Editor cho phép bất kỳ ai nhấp vào cũng có thể xóa sạch bài của em chỉ trong 1 giây."
+      },
+      {
+        question: "Thông tin nào sau đây TUYỆT ĐỐI KHÔNG NÊN ghi vào tài liệu chia sẻ công khai?",
+        options: [
+          "Tên môn học và tên lớp",
+          "Số điện thoại phụ huynh, địa chỉ nhà riêng và mật khẩu",
+          "Lời cảm ơn thầy cô giáo",
+          "Các mục lục của bài báo cáo"
+        ],
+        answer: 1,
+        explain: "Bảo mật dữ liệu cá nhân là nguyên tắc an toàn số hàng đầu để tránh bị kẻ gian lừa đảo hoặc quấy rối."
+      },
+      {
+        question: "Trong bánh răng Cài đặt chia sẻ ⚙️, tính năng nào giúp chống sao chép bài làm?",
+        options: [
+          "Bỏ tích 'Người xem và người nhận xét có thể thấy tùy chọn để tải xuống, in và sao chép'",
+          "Đổi phông chữ sang màu trắng",
+          "Đổi tên file thành Không tên",
+          "Tắt màn hình máy tính"
+        ],
+        answer: 0,
+        explain: "Bỏ tích tùy chọn này sẽ khóa tính năng Copy, Print và Download đối với toàn bộ người xem."
+      },
+      {
+        question: "Những biểu tượng 'Động vật ẩn danh' 🦊 🐼 xuất hiện khi nào?",
+        options: [
+          "Khi có virus xâm nhập",
+          "Khi tài liệu ở chế độ Anyone with link và có người xem chưa đăng nhập tài khoản Google",
+          "Khi tài liệu bị đầy bộ nhớ",
+          "Khi thầy cô giáo vào chấm bài"
+        ],
+        answer: 1,
+        explain: "Google Docs tự động đặt tên ngẫu nhiên cho những người truy cập qua link công khai mà không đăng nhập."
+      },
+      {
+        question: "Khi hoàn thành xong bài tập nhóm, việc làm nào thể hiện em là người làm việc chuyên nghiệp?",
+        options: [
+          "Để mặc quyền Editor mãi mãi",
+          "Thu hồi quyền truy cập (Remove access) hoặc chuyển Editor về Viewer để bảo vệ bài nộp cuối cùng",
+          "Xóa luôn file bài tập",
+          "Chặn email của các bạn trong nhóm"
+        ],
+        answer: 1,
+        explain: "Thu hồi quyền chỉnh sửa sau khi hoàn thành giúp bài nộp cuối cùng không bị chỉnh sửa nhầm lẫn."
+      },
+      {
+        question: "Đuôi liên kết nào giúp tự động nhắc người mở 'Tạo bản sao' (Make a copy) tài liệu?",
+        options: ["Thay đuôi /edit thành /copy", "Thay đuôi /edit thành /delete", "Thay đuôi /edit thành /save", "Thay đuôi /edit thành /view"],
+        answer: 0,
+        explain: "Thay /edit bằng /copy giúp người nhận bấm vào sẽ tự nhân bản 1 file riêng về Drive của họ mà không ảnh hưởng file gốc."
+      },
+      {
+        question: "Trước khi gửi link nộp bài thi cho thầy cô, cách kiểm tra tốt nhất là gì?",
+        options: [
+          "Gửi ngay mà không cần xem lại",
+          "Mở link bằng Cửa sổ ẩn danh (Incognito) để kiểm tra người ngoài có đọc được bài không",
+          "In ra giấy rồi scan lại",
+          "Hỏi bạn cùng bàn"
+        ],
+        answer: 1,
+        explain: "Tab ẩn danh mô phỏng đúng môi trường của người ngoài, giúp em biết chắc chắn link của mình có mở được hay không."
+      }
+    ];
+
+    const impressApi = impress();
+    impressApi.init();
+
+    const toastBox = document.getElementById('toastBox');
+    function showToast(msg) {
+      toastBox.textContent = msg;
+      toastBox.classList.add('show');
+      setTimeout(() => toastBox.classList.remove('show'), 2600);
+    }
+
+    const stationJumpSelect = document.getElementById('stationJumpSelect');
+    stationJumpSelect.onchange = (e) => impressApi.goto(e.target.value);
+    document.getElementById('btnToggleOverview').onclick = () => impressApi.goto('overview');
+
+    document.addEventListener('impress:stepenter', (event) => {
+      const stepId = event.target.id;
+      stationJumpSelect.value = stepId;
+      if (stepId === 'overview') document.getElementById('impress').classList.add('step-overview');
+      else document.getElementById('impress').classList.remove('step-overview');
+    });
+
+    document.querySelectorAll('#impress .step').forEach(step => {
+      step.addEventListener('click', () => {
+        if (document.getElementById('impress').classList.contains('step-overview') && step.id !== 'overview') {
+          impressApi.goto(step.id);
+        }
+      });
+    });
+
+    // Drawers & Modals
+    const teachingDrawer = document.getElementById('teachingDrawer');
+    document.getElementById('btnTeacherGuide').onclick = () => teachingDrawer.classList.add('open');
+    document.getElementById('drawerCloseBtn').onclick = () => teachingDrawer.classList.remove('open');
+
+    const shortcutsModal = document.getElementById('shortcutsModal');
+    document.getElementById('btnHelpShortcuts').onclick = () => shortcutsModal.classList.add('open');
+    document.getElementById('modalCloseBtn').onclick = () => shortcutsModal.classList.remove('open');
+    shortcutsModal.onclick = (e) => { if (e.target === shortcutsModal) shortcutsModal.classList.remove('open'); };
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) shortcutsModal.classList.toggle('open');
+      if (e.key.toLowerCase() === 'o') impressApi.goto('overview');
+      if (e.key === 'Escape') {
+        shortcutsModal.classList.remove('open');
+        teachingDrawer.classList.remove('open');
+        zoomLightbox.classList.remove('show');
+      }
+    });
+
+    // Challenges
+    const ch1Feedback = document.getElementById('ch1Feedback');
+    document.getElementById('btnCh1OptB').onclick = () => {
+      ch1Feedback.style.display = 'block';
+      ch1Feedback.style.background = '#ecfdf5';
+      ch1Feedback.style.color = '#065f46';
+      ch1Feedback.innerHTML = '🎉 <b>Chính xác tuyệt đối!</b> Đúng người - Đúng quyền: Cô chấm bài (Viewer), Bạn rà soát (Commenter), Bạn viết bài (Editor).';
+      showToast('Đạt điểm tối đa Challenge 1!');
+    };
+    const wrongCh1 = () => {
+      ch1Feedback.style.display = 'block';
+      ch1Feedback.style.background = '#fff1f2';
+      ch1Feedback.style.color = '#9f1239';
+      ch1Feedback.innerHTML = '❌ Chưa chuẩn! Cấp Editor bừa bãi sẽ khiến bài bị sửa đổi lung tung hoặc lỡ tay xóa mất.';
+    };
+    document.getElementById('btnCh1OptA').onclick = wrongCh1;
+    document.getElementById('btnCh1OptC').onclick = wrongCh1;
+
+    // Challenge 2
+    const ch2Feedback = document.getElementById('ch2Feedback');
+    document.getElementById('btnCh2OptB').onclick = () => {
+      ch2Feedback.style.display = 'block';
+      ch2Feedback.style.background = '#ecfdf5';
+      ch2Feedback.style.color = '#065f46';
+      ch2Feedback.innerHTML = '🎉 <b>Cực kỳ thông minh!</b> Cả lớp xem được lịch mà không sửa được, chỉ 4 tổ trưởng được góp ý Commenter.';
+      showToast('Đạt điểm tối đa Challenge 2!');
+    };
+    const wrongCh2 = () => {
+      ch2Feedback.style.display = 'block';
+      ch2Feedback.style.background = '#fff1f2';
+      ch2Feedback.style.color = '#9f1239';
+      ch2Feedback.innerHTML = '❌ Chưa hợp lý! Hoặc là tài liệu bị quậy phá, hoặc là cả lớp không xem được lịch trực nhật.';
+    };
+    document.getElementById('btnCh2OptA').onclick = wrongCh2;
+    document.getElementById('btnCh2OptC').onclick = wrongCh2;
+
+    // Challenge 3: Bug Hunt
+    let bugsFound = 0;
+    function handleBugClick(card) {
+      if (!card.classList.contains('found')) {
+        card.classList.add('found');
+        card.style.background = '#ecfdf5';
+        card.style.borderColor = '#10b981';
+        card.querySelector('button').textContent = '✓ Đã tóm gọn lỗi!';
+        card.querySelector('button').style.background = '#10b981';
+        card.querySelector('button').style.color = '#fff';
+        bugsFound++;
+        showToast(`🎯 Đã tóm được ${bugsFound}/3 lỗi an toàn!`);
+        if (bugsFound === 3) document.getElementById('bugHuntScoreBox').style.display = 'block';
+      }
+    }
+    document.getElementById('cardBug1').onclick = () => handleBugClick(document.getElementById('cardBug1'));
+    document.getElementById('cardBug2').onclick = () => handleBugClick(document.getElementById('cardBug2'));
+    document.getElementById('cardBug3').onclick = () => handleBugClick(document.getElementById('cardBug3'));
+
+    // Sharing Studio Simulator (Step 17)
+    let currentMode = 'restricted';
+    let currentPerm = 'viewer';
+    let isCopyLocked = true;
+
+    function updateSimulator() {
+      const title = document.getElementById('simSafetyTitle');
+      const desc = document.getElementById('simSafetyDesc');
+      const badge = document.getElementById('simSafetyBadge');
+      const rec = document.getElementById('simRecommendationBox');
+
+      if (currentMode === 'restricted') {
+        if (currentPerm === 'viewer') {
+          badge.className = 'badge badge-green';
+          badge.textContent = 'AN TOÀN CAO ⭐⭐⭐';
+          title.textContent = 'Cấu Hình Chuẩn Mực Học Đường';
+          desc.textContent = 'Tài liệu chỉ mở cho email được chỉ định. Người xem chỉ có thể đọc, không thể sửa đổi hay sao chép bài làm.';
+          rec.textContent = '💡 Thích hợp nhất: Nộp bài kiểm tra cho thầy cô giáo.';
+        } else if (currentPerm === 'commenter') {
+          badge.className = 'badge badge-green';
+          badge.textContent = 'AN TOÀN TỐT ⭐⭐⭐';
+          title.textContent = 'Cộng Tác Góp Ý Văn Minh';
+          desc.textContent = 'Chỉ bạn bè được thêm mới có thể viết nhận xét. Chủ tài liệu có toàn quyền duyệt hoặc từ chối.';
+          rec.textContent = '💡 Thích hợp nhất: Nhờ bạn bè đọc thử rà soát bài.';
+        } else {
+          badge.className = 'badge badge-amber';
+          badge.textContent = 'CẦN CẨN TRỌNG ⭐⭐';
+          title.textContent = 'Chỉnh Sửa Nhóm Nội Bộ';
+          desc.textContent = 'Những bạn được thêm có thể chỉnh sửa trực tiếp. Hãy đảm bảo đó là những bạn cùng làm bài nghiêm túc.';
+          rec.textContent = '💡 Thích hợp nhất: Nhóm 2-4 bạn cùng làm đồ án.';
+        }
+      } else {
+        if (currentPerm === 'editor') {
+          badge.className = 'badge badge-rose';
+          badge.textContent = 'CỰC KỲ NGUY HIỂM ⛔';
+          title.textContent = 'Lỗ Hổng Mất Bài Hoàn Toàn!';
+          desc.textContent = 'Bất kỳ ai trên internet bấm vào link cũng có thể xóa sạch bài của em chỉ trong 1 giây mà không cần xin phép!';
+          rec.textContent = '❌ TUYỆT ĐỐI CẤM SỬ DỤNG CHO BÀI TẬP QUAN TRỌNG!';
+        } else {
+          badge.className = 'badge badge-blue';
+          badge.textContent = 'CÔNG KHAI CÓ KIỂM SOÁT ⭐⭐';
+          title.textContent = 'Thông Báo Mở Toàn Trường';
+          desc.textContent = 'Ai có link cũng đọc được bài nhưng không một ai có thể sửa đổi nội dung.';
+          rec.textContent = '💡 Thích hợp: Tờ rơi sự kiện, thông báo cho cả phụ huynh.';
+        }
+      }
+    }
+
+    document.getElementById('simBtnRestricted').onclick = () => {
+      currentMode = 'restricted';
+      document.getElementById('simBtnRestricted').classList.add('active');
+      document.getElementById('simBtnPublic').classList.remove('active');
+      updateSimulator();
+    };
+    document.getElementById('simBtnPublic').onclick = () => {
+      currentMode = 'public';
+      document.getElementById('simBtnPublic').classList.add('active');
+      document.getElementById('simBtnRestricted').classList.remove('active');
+      updateSimulator();
+    };
+    document.getElementById('simBtnViewer').onclick = () => {
+      currentPerm = 'viewer';
+      document.getElementById('simBtnViewer').classList.add('active');
+      document.getElementById('simBtnCommenter').classList.remove('active');
+      document.getElementById('simBtnEditor').classList.remove('active');
+      updateSimulator();
+    };
+    document.getElementById('simBtnCommenter').onclick = () => {
+      currentPerm = 'commenter';
+      document.getElementById('simBtnCommenter').classList.add('active');
+      document.getElementById('simBtnViewer').classList.remove('active');
+      document.getElementById('simBtnEditor').classList.remove('active');
+      updateSimulator();
+    };
+    document.getElementById('simBtnEditor').onclick = () => {
+      currentPerm = 'editor';
+      document.getElementById('simBtnEditor').classList.add('active');
+      document.getElementById('simBtnViewer').classList.remove('active');
+      document.getElementById('simBtnCommenter').classList.remove('active');
+      updateSimulator();
+    };
+
+    // Quiz Engine
+    let quizIndex = 0;
+    let quizScore = 0;
+    let quizAnsweredStatus = Array(quizQuestions.length).fill(false);
+
+    const quizDotsWrap = document.getElementById('quizDotsWrap');
+    quizDotsWrap.innerHTML = quizQuestions.map((_, i) => `<div class="quiz-dot" id="qDot${i}">${i+1}</div>`).join('');
+
+    function renderQuizStep() {
+      const q = quizQuestions[quizIndex];
+      document.getElementById('quizCounterBadge').textContent = `Câu hỏi ${quizIndex + 1} / ${quizQuestions.length}`;
+      document.getElementById('quizQuestionText').textContent = `${quizIndex + 1}. ${q.question}`;
+
+      const optionsWrap = document.getElementById('quizOptionsWrap');
+      optionsWrap.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-btn';
+        btn.innerHTML = `<span class="letter-badge">${letters[idx]}</span> <span>${opt}</span>`;
+        btn.onclick = () => handleAnswer(idx);
+        optionsWrap.appendChild(btn);
+      });
+
+      document.getElementById('quizFeedbackBox').style.display = 'none';
+    }
+
+    function handleAnswer(chosenIdx) {
+      if (quizAnsweredStatus[quizIndex]) return;
+      quizAnsweredStatus[quizIndex] = true;
+
+      const q = quizQuestions[quizIndex];
+      const buttons = document.querySelectorAll('.quiz-options .quiz-btn');
+
+      if (chosenIdx === q.answer) {
+        buttons[chosenIdx].classList.add('correct');
+        quizScore++;
+        document.getElementById('quizScoreNumber').textContent = quizScore;
+        document.getElementById(`qDot${quizIndex}`).classList.add('done');
+        showToast('🎉 Chính xác! Tuyệt vời!');
+      } else {
+        buttons[chosenIdx].classList.add('wrong');
+        buttons[q.answer].classList.add('correct');
+        document.getElementById(`qDot${quizIndex}`).style.background = '#f43f5e';
+        document.getElementById(`qDot${quizIndex}`).style.color = '#fff';
+        showToast('Chưa chính xác, hãy xem giải thích nhé!');
+      }
+
+      buttons.forEach(b => b.style.pointerEvents = 'none');
+      const feedbackBox = document.getElementById('quizFeedbackBox');
+      const feedbackText = document.getElementById('quizFeedbackText');
+      feedbackText.textContent = `💡 Giải thích: ${q.explain}`;
+      feedbackBox.style.display = 'flex';
+      feedbackBox.style.background = (chosenIdx === q.answer) ? '#ecfdf5' : '#fff1f2';
+      feedbackBox.style.color = (chosenIdx === q.answer) ? '#065f46' : '#9f1239';
+    }
+
+    document.getElementById('quizNextBtn').onclick = () => {
+      if (quizIndex < quizQuestions.length - 1) {
+        quizIndex++;
+        renderQuizStep();
+      } else {
+        showToast(`🎉 Xuất sắc! Em hoàn thành bài quiz với ${quizScore}/${quizQuestions.length} điểm!`);
+      }
+    };
+    renderQuizStep();
+
+    // Lightbox
+    const zoomLightbox = document.getElementById('zoomLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+
+    document.querySelectorAll('.visual-guide img').forEach(img => {
+      img.onclick = () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxCaption.textContent = img.closest('figure')?.querySelector('figcaption')?.textContent || '';
+        zoomLightbox.classList.add('show');
+      };
+    });
+
+    zoomLightbox.onclick = (e) => {
+      if (e.target === zoomLightbox || e.target === lightboxImg) zoomLightbox.classList.remove('show');
+    };
+  </script>
+</body>
+</html>

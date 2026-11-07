@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Phiếu bài tập thực hành & bài tập về nhà Buổi 5: Ảnh, Liên kết và Đa phương tiện — Image, Wrap Text, Hyperlink & Footnote (Google Docs THCS). Kèm dữ liệu mẫu, Before/After, gợi ý và thang điểm 30 điểm.">
+  <title>Bài tập &amp; Thực hành Buổi 5 · Ảnh, Liên kết &amp; Đa phương tiện (Docs Lab THCS)</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='10' y='5' width='44' height='54' rx='10' fill='%232563eb'/%3E%3Cpath d='M20 18h16M20 28h24M20 38h18' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='48' cy='48' r='11' fill='%2310b981'/%3E%3Cpath d='m44 48 3 3 5-6' fill='none' stroke='%230f172a' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #0b152d;
+      --navy-light: #162a54;
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --blue-border: #bfdbfe;
+      --amber: #f59e0b;
+      --amber-soft: #fffbeb;
+      --green: #10b981;
+      --green-soft: #ecfdf5;
+      --red: #ef4444;
+      --red-soft: #fff1f2;
+      --purple: #8b5cf6;
+      --purple-soft: #f5f3ff;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --soft: #f8fafc;
+      --paper: #ffffff;
+      --shadow: 0 16px 45px rgba(11, 21, 45, 0.08);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.08), transparent 30rem), #f8fafc;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    button, a { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid rgba(37, 99, 235, 0.4); outline-offset: 3px; }
+
+    /* Topbar */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: 18px;
+      min-height: 70px; padding: 10px clamp(16px, 4vw, 48px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-family: 'Outfit', sans-serif; font-size: 1.15rem; }
+    .mark {
+      display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px;
+      color: white; background: linear-gradient(135deg, var(--blue), #1d4ed8); font-weight: 900;
+    }
+    .crumb { color: var(--muted); font-size: 0.85rem; }
+    .crumb b { color: var(--ink); }
+    .top-actions { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+    .top-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 38px; padding: 0 14px;
+      border: 1px solid var(--line); border-radius: 11px;
+      background: white; font-size: 0.82rem; font-weight: 700;
+      transition: all 0.18s ease;
+    }
+    .top-link:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+    .top-link.highlight { background: var(--blue-soft); border-color: var(--blue-border); color: var(--blue); }
+    .top-link.primary { background: var(--amber); border-color: var(--amber); color: var(--navy); }
+
+    /* Page Layout */
+    .page { width: min(1200px, 100%); margin: auto; padding: 28px clamp(16px, 4vw, 40px) 70px; }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #0b152d 0%, #152952 60%, #047857 100%);
+      border-radius: 24px; padding: clamp(28px, 4vw, 42px);
+      color: white; margin-bottom: 26px;
+      box-shadow: 0 20px 50px rgba(11, 21, 45, 0.25);
+      position: relative; overflow: hidden;
+    }
+    .hero-banner::after {
+      content: ""; position: absolute; right: -40px; bottom: -40px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #a7f3d0; margin-bottom: 8px;
+    }
+    .hero-banner h1 {
+      font-family: 'Outfit', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      margin: 0 0 12px; line-height: 1.15;
+    }
+    .hero-banner p { margin: 0 0 20px; color: #cbd5e1; max-width: 720px; font-size: 1rem; }
+    .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 99px;
+      background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px);
+      font-size: 0.8rem; font-weight: 700; color: white;
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--paper); border-radius: var(--radius);
+      border: 1px solid var(--line); box-shadow: var(--shadow);
+      padding: clamp(22px, 3vw, 34px); margin-bottom: 26px;
+    }
+    .card-head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 20px; gap: 16px; flex-wrap: wrap;
+    }
+    .card-head h2 {
+      font-family: 'Outfit', sans-serif; font-size: 1.45rem; margin: 0;
+      color: var(--navy); display: flex; align-items: center; gap: 10px;
+    }
+    .card-head p { margin: 4px 0 0; color: var(--muted); font-size: 0.9rem; }
+    .badge-step {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 800;
+    }
+
+    /* Comparison Box (Before / After) */
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px;
+    }
+    @media (max-width: 768px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+    .compare-pane {
+      border-radius: 14px; padding: 18px; border: 1.5px solid;
+    }
+    .pane-before { background: var(--red-soft); border-color: #fecdd3; }
+    .pane-after { background: var(--green-soft); border-color: #a7f3d0; }
+    .pane-title {
+      font-weight: 800; font-size: 0.88rem; margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* Code & Raw Text Snippet Box */
+    .copy-box {
+      background: #f1f5f9; border-radius: 12px; padding: 14px 18px;
+      border: 1px solid #cbd5e1; position: relative; margin: 12px 0;
+    }
+    .copy-box pre {
+      margin: 0; font-family: inherit; font-size: 0.9rem; white-space: pre-wrap; color: var(--ink);
+    }
+    .btn-copy {
+      position: absolute; top: 10px; right: 10px;
+      padding: 5px 12px; border-radius: 8px; border: 1px solid #cbd5e1;
+      background: white; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 5px; transition: all 0.15s ease;
+    }
+    .btn-copy:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* Rubric Table */
+    .rubric-table {
+      width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 14px;
+    }
+    .rubric-table th, .rubric-table td {
+      padding: 12px 16px; border: 1px solid var(--line); text-align: left;
+    }
+    .rubric-table th { background: #f8fafc; font-weight: 800; color: var(--navy); }
+    .rubric-table tr:nth-child(even) td { background: #fafbfc; }
+
+    /* Interactive Checklist */
+    .task-list { list-style: none; padding: 0; margin: 14px 0 0; }
+    .task-item {
+      display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+      border-radius: 10px; border: 1px solid var(--line); margin-bottom: 8px;
+      background: white; cursor: pointer; transition: background 0.15s ease;
+    }
+    .task-item:hover { background: #f8fafc; }
+    .task-item input { width: 18px; height: 18px; accent-color: var(--green); cursor: pointer; }
+    .task-item.checked span { text-decoration: line-through; color: var(--muted); }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(40px);
+      background: rgba(11, 21, 45, 0.95); color: white; padding: 10px 20px;
+      border-radius: 99px; font-size: 0.85rem; font-weight: 700; opacity: 0;
+      transition: all 0.25s ease; pointer-events: none; z-index: 100;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark">D5</div>
+      <div>
+        Docs Lab THCS
+        <div class="crumb">Buổi 5 · <b>Ảnh, Liên kết &amp; Đa phương tiện</b></div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <a href="buoi-05-anh-va-lien-ket.html" class="top-link highlight">
+        🌐 Mở Bài giảng 3D Impress
+      </a>
+      <a href="#du-an" class="top-link primary">
+        🏆 Dự án 20 phút
+      </a>
+      <a href="#btvn" class="top-link">
+        🏠 Bài tập về nhà
+      </a>
+      <button class="top-link" onclick="window.print()">
+        🖨️ In phiếu bài tập
+      </a>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div class="eyebrow">Phiếu thực hành &amp; Tự học có hướng dẫn</div>
+      <h1>Làm Chủ Ảnh, Wrap Text &amp; Siêu Liên Kết</h1>
+      <p>
+        Tài liệu đồng hành cùng bài giảng Buổi 5. Chứa đầy đủ dữ liệu mẫu (sao chép 1-click), hình mẫu Before / After trực quan, thang điểm 30 điểm và bảng kiểm tự đánh giá sản phẩm.
+      </p>
+
+      <div class="hero-pills">
+        <span class="hero-pill">⏱️ Thời lượng: 100 phút</span>
+        <span class="hero-pill">🎯 2 Thực hành nhỏ + 1 Dự án lớn</span>
+        <span class="hero-pill">📊 Thang điểm: 30 điểm</span>
+        <span class="hero-pill">⭐ Google Docs THCS</span>
+      </div>
+    </div>
+
+    <!-- Section 1: Thử thách nhỏ 1 -->
+    <section class="section-card" id="thuc-hanh-1">
+      <div class="card-head">
+        <div>
+          <h2><span class="badge-step" style="background: var(--blue-soft); color: var(--blue);">Thực hành 1</span> Động vật em yêu thích</h2>
+          <p>Mục tiêu: Chèn ảnh từ Web, thay đổi kích thước bằng 4 góc và thử nghiệm Wrap text.</p>
+        </div>
+        <span class="badge-step" style="background: #eff6ff; color: #1e40af;">⏱ 10 Phút · 5 Điểm</span>
+      </div>
+
+      <div class="copy-box">
+        <button class="btn-copy" onclick="copySnippet('snippet1')">📋 Sao chép dữ liệu</button>
+        <pre id="snippet1">CHÚ GẤU TRÚC ĐÁNG YÊU
+
+Gấu trúc lớn (Panda) là một trong những loài động vật quý hiếm và đáng yêu nhất hành tinh, có nguồn gốc từ vùng núi cao Tây Nam Trung Quốc. Thức ăn yêu thích của gấu trúc là những cành tre và trúc non xanh mướt. Một ngày, một chú gấu trúc trưởng thành có thể dành tới 12 giờ đồng hồ chỉ để ăn no nê hàng chục kilôgam lá trúc.</pre>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-pane pane-before">
+          <div class="pane-title" style="color: var(--red);">
+            <span>❌ LỖI THƯỜNG GẶP (BEFORE)</span>
+          </div>
+          <ul style="padding-left: 18px; margin: 0; font-size: 0.85rem; line-height: 1.6; color: #881337;">
+            <li>Ảnh để chế độ <b>In line with text</b> làm dòng chữ phía sau nhảy tít lên cao, hở khoảng trống lớn.</li>
+            <li>Học sinh quen tay kéo chấm ở cạnh bên khiến gấu trúc bị bẹp dí sang ngang.</li>
+            <li>Không chỉnh lề Margin khiến chữ chạm vào mép ảnh.</li>
+          </ul>
+        </div>
+
+        <div class="compare-pane pane-after">
+          <div class="pane-title" style="color: var(--green);">
+            <span>✓ KẾT QUẢ ĐẠT CHUẨN (AFTER)</span>
+          </div>
+          <ul style="padding-left: 18px; margin: 0; font-size: 0.85rem; line-height: 1.6; color: #064e3b;">
+            <li>Ảnh nằm ở góc trên bên phải hoặc bên trái, chế độ <b>Wrap text (Bao quanh)</b>.</li>
+            <li>Kéo 4 điểm góc giữ nguyên vẻ dễ thương tự nhiên của gấu trúc.</li>
+            <li>Lề ảnh chỉnh <b>3.2 mm</b> giúp các dòng chữ uốn quanh thoáng đãng.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Thử thách nhỏ 2 -->
+    <section class="section-card" id="thuc-hanh-2">
+      <div class="card-head">
+        <div>
+          <h2><span class="badge-step" style="background: var(--green-soft); color: var(--green);">Thực hành 2</span> Thẻ danh lam thắng cảnh Vịnh Hạ Long</h2>
+          <p>Mục tiêu: Bố cục ảnh kết hợp siêu liên kết phím tắt Ctrl + K gọn gàng.</p>
+        </div>
+        <span class="badge-step" style="background: #ecfdf5; color: #047857;">⏱ 10 Phút · 5 Điểm</span>
+      </div>
+
+      <div class="copy-box">
+        <button class="btn-copy" onclick="copySnippet('snippet2')">📋 Sao chép dữ liệu</button>
+        <pre id="snippet2">⭐ VỊNH HẠ LONG — DI SẢN THIÊN NHIÊN THẾ GIỚI
+
+Vịnh Hạ Long thuộc tỉnh Quảng Ninh là kỳ quan thiên nhiên nổi tiếng với hàng nghìn hòn đảo đá vôi kỳ vĩ nhô lên giữa biển xanh như ngọc bích. Em có thể tìm hiểu thêm thông tin chi tiết và ngắm các hang động huyền ảo tại bách khoa toàn thư Wikipedia để chuẩn bị cho chuyến du lịch hè sắp tới cùng gia đình.</pre>
+      </div>
+
+      <div style="background: #f8fafc; border-radius: 12px; padding: 16px; border: 1px solid var(--line); margin-top: 14px;">
+        <h4 style="margin: 0 0 8px; color: var(--navy);">Nhiệm vụ siêu liên kết (Ctrl + K):</h4>
+        <p style="font-size: 0.88rem; margin: 0; color: var(--ink-soft);">
+          Bôi đen cụm từ: <b>bách khoa toàn thư Wikipedia</b> → Bấm <b>Ctrl + K</b> → Dán đường link đích: <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px;">https://vi.wikipedia.org/wiki/Vịnh_Hạ_Long</code> → Bấm Áp dụng (Apply).
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 3: Bài thực hành tổng hợp (Dự án lớn) -->
+    <section class="section-card" id="du-an" style="border-top: 4px solid var(--amber);">
+      <div class="card-head">
+        <div>
+          <h2><span class="badge-step" style="background: var(--amber-soft); color: #b45309;">Dự án tổng hợp</span> Cẩm nang du lịch: "Địa điểm Việt Nam em muốn đến"</h2>
+          <p>Đóng vai một Travel Blogger trẻ để sáng tạo bài viết thuyết minh du lịch đa phương tiện cuốn hút.</p>
+        </div>
+        <span class="badge-step" style="background: #fffbeb; color: #92400e;">⏱ 20 Phút · 15 Điểm</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+        <div style="background: #f8fafc; border-radius: 14px; padding: 18px; border: 1px solid var(--line);">
+          <h4 style="margin: 0 0 10px; color: var(--blue);">1. Cấu trúc bài viết (100–150 từ)</h4>
+          <ul style="padding-left: 18px; margin: 0; font-size: 0.88rem; line-height: 1.7; color: var(--ink-soft);">
+            <li><b>Title:</b> Tên địa điểm nổi bật kèm Emoji (Ví dụ: <i>ĐÀ LẠT — THÀNH PHỐ NGÀN HOA 🌸</i>).</li>
+            <li><b>Heading 1 (Mục 1):</b> Vẻ đẹp thiên nhiên &amp; Khí hậu.</li>
+            <li><b>Heading 1 (Mục 2):</b> Món ngon &amp; Trải nghiệm không thể bỏ lỡ.</li>
+          </ul>
+        </div>
+
+        <div style="background: #f8fafc; border-radius: 14px; padding: 18px; border: 1px solid var(--line);">
+          <h4 style="margin: 0 0 10px; color: var(--green);">2. Yêu cầu Đa phương tiện bắt buộc</h4>
+          <ul style="padding-left: 18px; margin: 0; font-size: 0.88rem; line-height: 1.7; color: var(--ink-soft);">
+            <li><b>2–3 Hình ảnh:</b> 1 ảnh banner ngang đầu trang, 1 ảnh nhỏ lồng chữ Wrap text (kéo 4 góc chuẩn tỉ lệ).</li>
+            <li><b>1 Hyperlink:</b> Gắn vào cụm từ dẫn nguồn (Google Maps, Wikipedia, hoặc Cổng du lịch).</li>
+            <li><b>2 Ký tự đặc biệt:</b> Vào <i>Insert → Special characters</i> chèn icon phù hợp.</li>
+            <li><b>1 Footnote:</b> Dẫn nguồn ảnh cuối trang (Ctrl + Alt + F).</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4 style="margin: 0 0 10px; color: var(--navy);">Bảng kiểm tra (Checklist) hoàn thành nhiệm vụ</h4>
+      <ul class="task-list" id="projectChecklist">
+        <li class="task-item"><input type="checkbox"> <span>Đã đặt Title cỡ 20pt, Đậm, Căn giữa kèm icon ký tự đặc biệt</span></li>
+        <li class="task-item"><input type="checkbox"> <span>Đã tạo 2 Heading 1 phân đoạn nội dung rõ ràng</span></li>
+        <li class="task-item"><input type="checkbox"> <span>Đã chèn 2–3 hình ảnh từ Search the web và kéo 4 góc chuẩn tỉ lệ</span></li>
+        <li class="task-item"><input type="checkbox"> <span>Ít nhất 1 bức ảnh được cài đặt Wrap text với lề Margin 3.2mm</span></li>
+        <li class="task-item"><input type="checkbox"> <span>Đã tạo 1 Hyperlink bằng phím tắt Ctrl + K (không để lộ link trần)</span></li>
+        <li class="task-item"><input type="checkbox"> <span>Đã chèn 1 chú thích Footnote (Ctrl + Alt + F) ghi nguồn ảnh ở đáy trang</span></li>
+      </ul>
+    </section>
+
+    <!-- Section 4: Bài tập về nhà -->
+    <section class="section-card" id="btvn" style="border-top: 4px solid var(--purple);">
+      <div class="card-head">
+        <div>
+          <h2><span class="badge-step" style="background: var(--purple-soft); color: var(--purple);">Về nhà</span> Bài tập: Loài động vật em yêu thích</h2>
+          <p>Thời lượng: 15–30 phút. Nộp bài trước buổi học tiếp theo.</p>
+        </div>
+        <span class="badge-step" style="background: #f5f3ff; color: #6b21a8;">🏠 Tự học · 5 Điểm</span>
+      </div>
+
+      <p style="font-size: 0.95rem; color: var(--ink-soft);">
+        Tạo một trang tài liệu Google Docs mới giới thiệu về loài động vật mà em yêu quý hoặc muốn tìm hiểu (ví dụ: cá voi xanh, chim cánh cụt hoàng đế, chim ưng, chó husky...).
+      </p>
+
+      <div style="background: #faf5ff; border-radius: 14px; padding: 18px; border: 1.5px solid #e9d5ff; margin: 16px 0;">
+        <h4 style="margin: 0 0 8px; color: #6b21a8;">Quy cách nộp sản phẩm</h4>
+        <ol style="margin: 0; padding-left: 20px; font-size: 0.88rem; line-height: 1.8; color: #581c87;">
+          <li>Đặt tên file Google Docs: <code>[LỚP] - [HỌ VÀ TÊN] - BUOI 5 DONG VAT</code> (Ví dụ: <i>7A - NGUYEN VAN AN - BUOI 5 DONG VAT</i>).</li>
+          <li>Đầy đủ 1 Title, 2 đoạn văn (~100 từ), 2 hình ảnh không méo, 1 ảnh Wrap text, 1 Hyperlink và 1 Footnote.</li>
+          <li>Xuất file PDF bằng cách vào <b>Tệp (File) → Tải xuống (Download) → Tài liệu PDF (.pdf)</b>.</li>
+          <li>Nộp link Google Docs (bật quyền Xem/Nhận xét) và đính kèm file PDF vào thư mục nộp bài của lớp.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Section 5: Thang điểm chi tiết 30 điểm -->
+    <section class="section-card">
+      <div class="card-head">
+        <h2>Thang Điểm Đánh Giá Buổi 5 (Tổng: 30 Điểm)</h2>
+        <span class="badge-step" style="background: #f1f5f9; color: var(--navy);">Chuẩn đầu ra THCS</span>
+      </div>
+
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th style="width: 28%;">Thành phần</th>
+            <th style="width: 48%;">Tiêu chuẩn đạt điểm tối đa</th>
+            <th style="width: 14%;">Điểm</th>
+            <th style="width: 10%;">Tự chấm</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Thực hành nhỏ 1</b></td>
+            <td>Chèn ảnh chú gấu trúc, kéo 4 góc chuẩn tỉ lệ, đặt Wrap text lề 3.2mm.</td>
+            <td><b>5 điểm</b></td>
+            <td>___ / 5</td>
+          </tr>
+          <tr>
+            <td><b>Thực hành nhỏ 2</b></td>
+            <td>Tạo thẻ Hạ Long có icon ⭐, ảnh lồng chữ và hyperlink Ctrl+K vào từ Wikipedia.</td>
+            <td><b>5 điểm</b></td>
+            <td>___ / 5</td>
+          </tr>
+          <tr>
+            <td><b>Dự án lớn: Cấu trúc &amp; Chữ</b></td>
+            <td>Đủ Title lớn, 2 Heading 1, nội dung mạch lạc 100–150 từ, không lỗi chính tả.</td>
+            <td><b>5 điểm</b></td>
+            <td>___ / 5</td>
+          </tr>
+          <tr>
+            <td><b>Dự án lớn: Ảnh &amp; Wrap Text</b></td>
+            <td>2–3 ảnh sắc nét, không bị méo mó, ít nhất 1 ảnh Wrap text căn lề đẹp mắt.</td>
+            <td><b>5 điểm</b></td>
+            <td>___ / 5</td>
+          </tr>
+          <tr>
+            <td><b>Dự án lớn: Link &amp; Footnote</b></td>
+            <td>1 Hyperlink chuẩn xác + 1 Footnote trích dẫn nguồn ảnh cuối trang.</td>
+            <td><b>5 điểm</b></td>
+            <td>___ / 5</td>
+          </tr>
+          <tr>
+            <td><b>Bài tập về nhà</b></td>
+            <td>Hoàn thành bài viết loài động vật yêu thích, nộp đúng hạn link Docs + PDF.</td>
+            <td><b>5 điểm</b></td>
+            <td>___ / 5</td>
+          </tr>
+          <tr style="background: #f8fafc; font-weight: 800;">
+            <td colspan="2">TỔNG ĐIỂM TOÀN BUỔI 5</td>
+            <td style="color: var(--blue);">30 ĐIỂM</td>
+            <td style="color: var(--green);">___ / 30</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <div class="toast" id="copyToast">Đã sao chép vào bộ nhớ tạm!</div>
+
+  <script>
+    function copySnippet(elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('copyToast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    }
+
+    document.querySelectorAll('#projectChecklist input').forEach(checkbox => {
+      checkbox.onchange = () => {
+        checkbox.closest('li').classList.toggle('checked', checkbox.checked);
+      };
+    });
+  </script>
+</body>
+</html>

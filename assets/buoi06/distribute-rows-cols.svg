@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#042f2e"/>
+    </linearGradient>
+    <filter id="shadow3" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="920" height="460" rx="20" fill="url(#bgGrad3)"/>
+
+  <text x="460" y="44" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">PHÂN PHỐI ĐỀU CỘT &amp; HÀNG (DISTRIBUTE COLUMNS &amp; ROWS)</text>
+  <text x="460" y="70" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#a7f3d0" text-anchor="middle">Vũ khí bí mật biến những chiếc bảng méo mó, cột to cột bé thành bảng biểu chuẩn chỉ từng pixel</text>
+
+  <g transform="translate(60, 95)" filter="url(#shadow3)">
+    <rect width="800" height="325" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+
+    <!-- Left Box: BEFORE (Uneven ugly columns) -->
+    <g transform="translate(40, 28)">
+      <rect width="330" height="210" rx="10" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+      <rect x="0" y="0" width="330" height="36" rx="10 10 0 0" fill="#ffedd5"/>
+      <text x="165" y="24" font-family="'Outfit', sans-serif" font-size="12.5" font-weight="800" fill="#c2410c" text-anchor="middle">⚠️ TRƯỚC KHI PHÂN PHỐI (CỘT LỆCH)</text>
+
+      <g transform="translate(25, 55)">
+        <!-- Uneven table columns: 35px, 110px, 45px, 90px -->
+        <rect x="0" y="0" width="35" height="34" fill="#fdba74" stroke="#ea580c"/>
+        <text x="17.5" y="22" font-family="'Inter', sans-serif" font-size="9.5" font-weight="800" fill="#7c2d12" text-anchor="middle">T2</text>
+        <rect x="35" y="0" width="115" height="34" fill="#fdba74" stroke="#ea580c"/>
+        <text x="92.5" y="22" font-family="'Inter', sans-serif" font-size="10" font-weight="800" fill="#7c2d12" text-anchor="middle">Thứ 3 (Quá rộng)</text>
+        <rect x="150" y="0" width="40" height="34" fill="#fdba74" stroke="#ea580c"/>
+        <text x="170" y="22" font-family="'Inter', sans-serif" font-size="9.5" font-weight="800" fill="#7c2d12" text-anchor="middle">T4</text>
+        <rect x="190" y="0" width="90" height="34" fill="#fdba74" stroke="#ea580c"/>
+        <text x="235" y="22" font-family="'Inter', sans-serif" font-size="10" font-weight="800" fill="#7c2d12" text-anchor="middle">Thứ 5</text>
+
+        <!-- Row 2 -->
+        <rect x="0" y="34" width="35" height="45" fill="#fff" stroke="#cbd5e1"/>
+        <text x="17.5" y="60" font-family="'Inter', sans-serif" font-size="9" fill="#334155" text-anchor="middle">Toán</text>
+        <rect x="35" y="34" width="115" height="45" fill="#fff" stroke="#cbd5e1"/>
+        <text x="92.5" y="60" font-family="'Inter', sans-serif" font-size="10" fill="#334155" text-anchor="middle">Tin học 7</text>
+        <rect x="150" y="34" width="40" height="45" fill="#fff" stroke="#cbd5e1"/>
+        <text x="170" y="60" font-family="'Inter', sans-serif" font-size="9" fill="#334155" text-anchor="middle">Văn</text>
+        <rect x="190" y="34" width="90" height="45" fill="#fff" stroke="#cbd5e1"/>
+        <text x="235" y="60" font-family="'Inter', sans-serif" font-size="10" fill="#334155" text-anchor="middle">Anh văn</text>
+      </g>
+      <text x="165" y="175" font-family="'Inter', sans-serif" font-size="10.5" font-weight="700" fill="#9a3412" text-anchor="middle">Kéo chuột thủ công dễ bị méo mó, lệch cột</text>
+    </g>
+
+    <!-- Center Action Icon -->
+    <g transform="translate(385, 110)">
+      <circle cx="15" cy="15" r="22" fill="#059669" filter="url(#shadow3)"/>
+      <path d="M6 15h18M6 10l-3 5 3 5M24 10l3 5-3 5" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="15" y="55" font-family="'Inter', sans-serif" font-size="9.5" font-weight="800" fill="#059669" text-anchor="middle">DISTRIBUTE</text>
+      <text x="15" y="68" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#64748b" text-anchor="middle">Chia đều 1 click</text>
+    </g>
+
+    <!-- Right Box: AFTER (Even neat columns) -->
+    <g transform="translate(430, 28)">
+      <rect width="330" height="210" rx="10" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.5"/>
+      <rect x="0" y="0" width="330" height="36" rx="10 10 0 0" fill="#d1fae5"/>
+      <text x="165" y="24" font-family="'Outfit', sans-serif" font-size="12.5" font-weight="800" fill="#047857" text-anchor="middle">✨ SAU KHI PHÂN PHỐI (ĐỀU NHAU 100%)</text>
+
+      <g transform="translate(25, 55)">
+        <!-- Even table columns: 70px each (4 x 70 = 280px) -->
+        <rect x="0" y="0" width="70" height="34" fill="#10b981" stroke="#059669"/>
+        <text x="35" y="22" font-family="'Inter', sans-serif" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle">Thứ 2</text>
+        <rect x="70" y="0" width="70" height="34" fill="#10b981" stroke="#059669"/>
+        <text x="105" y="22" font-family="'Inter', sans-serif" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle">Thứ 3</text>
+        <rect x="140" y="0" width="70" height="34" fill="#10b981" stroke="#059669"/>
+        <text x="175" y="22" font-family="'Inter', sans-serif" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle">Thứ 4</text>
+        <rect x="210" y="0" width="70" height="34" fill="#10b981" stroke="#059669"/>
+        <text x="245" y="22" font-family="'Inter', sans-serif" font-size="10" font-weight="800" fill="#ffffff" text-anchor="middle">Thứ 5</text>
+
+        <!-- Row 2 -->
+        <rect x="0" y="34" width="70" height="45" fill="#fff" stroke="#cbd5e1"/>
+        <text x="35" y="60" font-family="'Inter', sans-serif" font-size="10" fill="#334155" text-anchor="middle">Toán</text>
+        <rect x="70" y="34" width="70" height="45" fill="#fff" stroke="#cbd5e1"/>
+        <text x="105" y="60" font-family="'Inter', sans-serif" font-size="10" fill="#334155" text-anchor="middle">Tin học 7</text>
+        <rect x="140" y="34" width="70" height="45" fill="#fff" stroke="#cbd5e1"/>
+        <text x="175" y="60" font-family="'Inter', sans-serif" font-size="10" fill="#334155" text-anchor="middle">Văn</text>
+        <rect x="210" y="34" width="70" height="45" fill="#fff" stroke="#cbd5e1"/>
+        <text x="245" y="60" font-family="'Inter', sans-serif" font-size="10" fill="#334155" text-anchor="middle">Anh văn</text>
+      </g>
+      <text x="165" y="175" font-family="'Inter', sans-serif" font-size="10.5" font-weight="700" fill="#047857" text-anchor="middle">Chiều rộng 4 cột bằng chính xác 70px mỗi cột!</text>
+    </g>
+
+    <!-- Bottom Instruction Bar -->
+    <g transform="translate(40, 255)">
+      <rect width="720" height="52" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="20" y="22" font-family="'Outfit', sans-serif" font-size="12" font-weight="800" fill="#059669">HƯỚNG DẪN THỰC HIỆN:</text>
+      <text x="20" y="40" font-family="'Inter', sans-serif" font-size="11.5" font-weight="600" fill="#334155">
+        Quét chọn các cột/hàng cần làm đều → Nhấp <tspan fill="#2563eb" font-weight="700">Chuột phải</tspan> → Chọn <tspan fill="#059669" font-weight="800">"Phân phối các cột" (Distribute columns)</tspan> hoặc <tspan fill="#059669" font-weight="800">"Phân phối các hàng" (Distribute rows)</tspan>.
+      </text>
+    </g>
+  </g>
+</svg>

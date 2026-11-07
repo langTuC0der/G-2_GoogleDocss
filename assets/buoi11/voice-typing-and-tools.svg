@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%">
+  <defs>
+    <linearGradient id="toolsBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1e38"/>
+    </linearGradient>
+    <filter id="shadowTool">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect width="960" height="540" fill="url(#toolsBg)"/>
+
+  <!-- Title Badge -->
+  <rect x="230" y="20" width="500" height="42" rx="21" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="480" y="47" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#38bdf8" text-anchor="middle">
+    CÔNG CỤ HỖ TRỢ ĐẮC LỰC: VOICE TYPING, WORD COUNT &amp; CHÍNH TẢ
+  </text>
+
+  <!-- Left: Voice Typing (Nhập bằng giọng nói) -->
+  <g transform="translate(60, 85)" filter="url(#shadowTool)">
+    <rect width="400" height="420" rx="16" fill="#ffffff"/>
+    
+    <!-- Header -->
+    <rect width="400" height="52" rx="16" fill="#f8fafc"/>
+    <text x="24" y="32" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e293b">1. Nhập Liệu Bằng Giọng Nói (Voice Typing)</text>
+    <text x="24" y="47" font-family="Arial, sans-serif" font-size="11" fill="#2563eb">Phím tắt: Ctrl + Shift + S</text>
+
+    <!-- Voice Widget Mockup -->
+    <g transform="translate(30, 75)">
+      <!-- Pulsing Mic Widget -->
+      <circle cx="50" cy="50" r="44" fill="#fee2e2"/>
+      <circle cx="50" cy="50" r="32" fill="#ef4444"/>
+      <!-- Mic icon -->
+      <rect x="44" y="36" width="12" height="20" rx="6" fill="#ffffff"/>
+      <path d="M38 46c0 6.6 5.4 12 12 12s12-5.4 12-12h-4c0 4.4-3.6 8-8 8s-8-3.6-8-8h-4z" fill="#ffffff"/>
+      <rect x="48" y="58" width="4" height="8" fill="#ffffff"/>
+      
+      <!-- Speech Wave animation bars -->
+      <g transform="translate(120, 35)">
+        <rect x="0" y="8" width="4" height="24" rx="2" fill="#ef4444"/>
+        <rect x="8" y="0" width="4" height="40" rx="2" fill="#ef4444"/>
+        <rect x="16" y="12" width="4" height="16" rx="2" fill="#ef4444"/>
+        <rect x="24" y="4" width="4" height="32" rx="2" fill="#ef4444"/>
+        <rect x="32" y="10" width="4" height="20" rx="2" fill="#ef4444"/>
+        <text x="45" y="26" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">Đang lắng nghe tiếng Việt...</text>
+      </g>
+    </g>
+
+    <!-- Output Box -->
+    <rect x="24" y="185" width="352" height="110" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="36" y="215" font-family="Arial, sans-serif" font-size="13" fill="#64748b">Văn bản được nhận diện tự động:</text>
+    <text x="36" y="245" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">
+      "Hôm nay em đang học cách sử dụng
+    </text>
+    <text x="36" y="272" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">
+      Google Docs rất hiệu quả và nhanh chóng."
+    </text>
+
+    <!-- Tips -->
+    <rect x="24" y="315" width="352" height="80" rx="8" fill="#eff6ff"/>
+    <text x="36" y="338" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1d4ed8">Mẹo nói dấu câu:</text>
+    <text x="36" y="358" font-family="Arial, sans-serif" font-size="11.5" fill="#334155">• Nói "Dấu phẩy" ➔ tự gõ dấu <strong>,</strong></text>
+    <text x="36" y="378" font-family="Arial, sans-serif" font-size="11.5" fill="#334155">• Nói "Dấu chấm" ➔ tự gõ dấu <strong>.</strong> | Nói "Xuống dòng" ➔ bấm Enter</text>
+  </g>
+
+  <!-- Right: Word Count & Spell Check -->
+  <g transform="translate(500, 85)" filter="url(#shadowTool)">
+    <rect width="400" height="420" rx="16" fill="#ffffff"/>
+    
+    <!-- Header -->
+    <rect width="400" height="52" rx="16" fill="#f8fafc"/>
+    <text x="24" y="32" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e293b">2. Đếm Số Từ &amp; Soát Lỗi Chính Tả</text>
+    <text x="24" y="47" font-family="Arial, sans-serif" font-size="11" fill="#059669">Phím tắt Đếm từ: Ctrl + Shift + C</text>
+
+    <!-- Word Count Dialog Mockup -->
+    <rect x="24" y="70" width="352" height="180" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+    <text x="40" y="98" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Số từ (Word Count)</text>
+    <line x1="40" y1="110" x2="350" y2="110" stroke="#cbd5e1" stroke-width="1"/>
+    
+    <text x="40" y="136" font-family="Arial, sans-serif" font-size="13" fill="#475569">Số trang (Pages):</text>
+    <text x="330" y="136" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="end">3</text>
+
+    <text x="40" y="162" font-family="Arial, sans-serif" font-size="13" fill="#475569">Số từ (Words):</text>
+    <text x="330" y="162" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0284c7" text-anchor="end">852 từ</text>
+
+    <text x="40" y="188" font-family="Arial, sans-serif" font-size="13" fill="#475569">Ký tự có khoảng trắng:</text>
+    <text x="330" y="188" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="end">4.620</text>
+
+    <text x="40" y="214" font-family="Arial, sans-serif" font-size="13" fill="#475569">Ký tự không tính dấu cách:</text>
+    <text x="330" y="214" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="end">3.840</text>
+
+    <!-- Spell Check Mockup -->
+    <rect x="24" y="265" width="352" height="130" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+    <text x="40" y="292" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#166534">Soát lỗi chính tả thông minh:</text>
+    <text x="40" y="320" font-family="Arial, sans-serif" font-size="13" fill="#334155">
+      "Lớp học đang thục hành..." 
+    </text>
+    <text x="145" y="320" font-family="Arial, sans-serif" font-size="13" fill="#dc2626" text-decoration="underline">thục</text>
+    
+    <!-- Fix suggestion chip -->
+    <rect x="40" y="340" width="220" height="38" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+    <text x="50" y="364" font-family="Arial, sans-serif" font-size="12" fill="#15803d">Gợi ý sửa: <strong>"thực hành"</strong> (Click để đổi)</text>
+  </g>
+</svg>

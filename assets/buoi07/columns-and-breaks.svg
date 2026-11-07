@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#162a54"/>
+    </linearGradient>
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="920" height="460" rx="20" fill="url(#bgGrad)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="460" y="42" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">KỸ THUẬT CHIA CỘT BÁO CHÍ (COLUMNS) &amp; NGẮT CỘT (COLUMN BREAK)</text>
+  <text x="460" y="68" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#93c5fd" text-anchor="middle">Định dạng 2-3 cột phong cách báo chí · Đường kẻ phân cách · Ngắt cột thông minh thay vì spam Enter</text>
+
+  <!-- Main Container Card -->
+  <g transform="translate(40, 88)" filter="url(#shadow)">
+    <rect width="840" height="344" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+
+    <!-- Left: Column Layout Diagram on A4 Page -->
+    <g transform="translate(30, 20)">
+      <rect x="0" y="0" width="350" height="260" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.8"/>
+      
+      <!-- Page Header & Big Title spanning 1 column across the top -->
+      <rect x="25" y="15" width="300" height="12" rx="3" fill="#1e3a8a"/>
+      <text x="175" y="24" font-family="'Outfit', sans-serif" font-size="9" font-weight="800" fill="#ffffff" text-anchor="middle">BẢN TIN THỂ THAO THCS — TIÊU ĐỀ CHÍNH TRẢI ĐẦU TRANG (1 CỘT)</text>
+      
+      <rect x="25" y="34" width="220" height="6" rx="2" fill="#94a3b8"/>
+      <line x1="25" y1="46" x2="325" y2="46" stroke="#e2e8f0" stroke-width="1.5"/>
+
+      <!-- 2 Columns Container -->
+      <g transform="translate(25, 55)">
+        <!-- Column 1 -->
+        <rect x="0" y="0" width="138" height="185" rx="5" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+        <rect x="8" y="8" width="80" height="9" rx="2" fill="#2563eb"/>
+        <text x="12" y="15" font-family="'Inter', sans-serif" font-size="7.5" font-weight="700" fill="#ffffff">CỘT 1: LỊCH THI ĐẤU</text>
+        
+        <rect x="8" y="24" width="122" height="5" rx="1.5" fill="#64748b"/>
+        <rect x="8" y="33" width="115" height="5" rx="1.5" fill="#64748b"/>
+        <rect x="8" y="42" width="122" height="5" rx="1.5" fill="#64748b"/>
+        <rect x="8" y="51" width="95" height="5" rx="1.5" fill="#64748b"/>
+        
+        <!-- Embedded Mini Photo in Column 1 -->
+        <rect x="8" y="62" width="122" height="42" rx="4" fill="#3b82f6"/>
+        <text x="69" y="86" font-family="'Inter', sans-serif" font-size="14" text-anchor="middle">⚽ 🏀</text>
+        
+        <rect x="8" y="110" width="122" height="5" rx="1.5" fill="#64748b"/>
+        <rect x="8" y="120" width="118" height="5" rx="1.5" fill="#64748b"/>
+        
+        <!-- Column Break Marker Badge -->
+        <rect x="8" y="140" width="122" height="28" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.2"/>
+        <text x="69" y="152" font-family="'Inter', sans-serif" font-size="8" font-weight="800" fill="#b45309" text-anchor="middle">⚡ COLUMN BREAK (NGẮT CỘT)</text>
+        <text x="69" y="162" font-family="'Inter', sans-serif" font-size="7" font-weight="600" fill="#92400e" text-anchor="middle">Đẩy đoạn kế tiếp sang cột 2 ngay lập tức ➔</text>
+
+        <!-- Divider Line Between Columns -->
+        <line x1="149" y1="5" x2="149" y2="180" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+        <!-- Column 2 -->
+        <rect x="160" y="0" width="140" height="185" rx="5" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+        <rect x="168" y="8" width="95" height="9" rx="2" fill="#16a34a"/>
+        <text x="172" y="15" font-family="'Inter', sans-serif" font-size="7.5" font-weight="700" fill="#ffffff">CỘT 2: ĐIỀU LỆ GIẢI</text>
+
+        <rect x="168" y="24" width="124" height="5" rx="1.5" fill="#64748b"/>
+        <rect x="168" y="33" width="118" height="5" rx="1.5" fill="#64748b"/>
+        <rect x="168" y="42" width="124" height="5" rx="1.5" fill="#64748b"/>
+        <rect x="168" y="52" width="105" height="5" rx="1.5" fill="#64748b"/>
+        
+        <rect x="168" y="68" width="124" height="48" rx="4" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+        <text x="174" y="84" font-family="'Inter', sans-serif" font-size="7.5" font-weight="700" fill="#15803d">🏆 Cơ cấu giải thưởng:</text>
+        <text x="174" y="96" font-family="'Inter', sans-serif" font-size="7" font-weight="600" fill="#334155">• 01 Giải Nhất: Cúp + Cờ</text>
+        <text x="174" y="106" font-family="'Inter', sans-serif" font-size="7" font-weight="600" fill="#334155">• 02 Giải Nhì: Huy chương bạc</text>
+
+        <rect x="168" y="124" width="124" height="5" rx="1.5" fill="#64748b"/>
+        <rect x="168" y="134" width="110" height="5" rx="1.5" fill="#64748b"/>
+        <rect x="168" y="144" width="85" height="5" rx="1.5" fill="#64748b"/>
+      </g>
+
+      <text x="175" y="280" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#1e293b" text-anchor="middle">Cột 1 và Cột 2 tự động cân bằng dòng · Có đường kẻ phân cách giữa các cột</text>
+    </g>
+
+    <!-- Right: How-to & Best Practices Card -->
+    <g transform="translate(410, 18)">
+      <rect width="400" height="305" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+      
+      <rect x="16" y="14" width="368" height="30" rx="6" fill="#0f172a"/>
+      <text x="200" y="34" font-family="'Outfit', sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">🛠️ QUY TRÌNH CHIA CỘT CHUẨN GOOGLE DOCS</text>
+
+      <!-- Step 1 -->
+      <g transform="translate(18, 54)">
+        <rect width="364" height="52" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="12" y="20" font-family="'Inter', sans-serif" font-size="10.5" font-weight="800" fill="#2563eb">Bước 1: Bôi đen đúng đoạn văn bản cần chia cột</text>
+        <text x="12" y="36" font-family="'Inter', sans-serif" font-size="9.2" font-weight="500" fill="#475569">💡 Đừng bôi đen cả Tiêu đề trang! Tiêu đề nên ở dạng 1 cột toàn trang.</text>
+      </g>
+
+      <!-- Step 2 -->
+      <g transform="translate(18, 114)">
+        <rect width="364" height="52" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="12" y="20" font-family="'Inter', sans-serif" font-size="10.5" font-weight="800" fill="#0d9488">Bước 2: Vào menu Định dạng (Format) ➔ Cột (Columns)</text>
+        <text x="12" y="36" font-family="'Inter', sans-serif" font-size="9.2" font-weight="500" fill="#475569">Chọn biểu tượng 2 Cột. Bấm "Tùy chọn khác" để bật đường kẻ giữa (Line between).</text>
+      </g>
+
+      <!-- Step 3 -->
+      <g transform="translate(18, 174)">
+        <rect width="364" height="52" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="12" y="20" font-family="'Inter', sans-serif" font-size="10.5" font-weight="800" fill="#7c3aed">Bước 3: Điều khiển ngắt cột bằng Column Break</text>
+        <text x="12" y="36" font-family="'Inter', sans-serif" font-size="9.2" font-weight="500" fill="#475569">Đặt con trỏ trước chữ cần nhảy cột ➔ Chèn (Insert) ➔ Ngắt ➔ Ngắt cột.</text>
+      </g>
+
+      <!-- Anti-pattern Warning -->
+      <g transform="translate(18, 234)">
+        <rect width="364" height="56" rx="8" fill="#fff1f2" stroke="#fecdd3" stroke-width="1"/>
+        <text x="12" y="19" font-family="'Inter', sans-serif" font-size="9.5" font-weight="800" fill="#be123c">❌ BẪY TỆ HẠI CỦA NGƯỜI MỚI BẮT ĐẦU:</text>
+        <text x="12" y="34" font-family="'Inter', sans-serif" font-size="8.8" font-weight="600" fill="#9f1239">Gõ hàng chục phím [Enter] để đẩy chữ sang cột bên cạnh.</text>
+        <text x="12" y="47" font-family="'Inter', sans-serif" font-size="8.5" font-weight="500" fill="#881337">Hậu quả: Chỉ cần sửa 1 từ ở cột 1, toàn bộ nội dung cột 2 sẽ bị tụt văng xuống!</text>
+      </g>
+    </g>
+  </g>
+</svg>
+

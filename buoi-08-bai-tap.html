@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Phiếu bài tập thực hành & bài tập về nhà Buổi 8: Document Outline & Table of Contents — Cây phân cấp Heading, Điều hướng thanh bên, Mục lục tự động & Nút làm mới 🔄 (Google Docs THCS). Kèm dữ liệu mẫu, Before/After, gợi ý và thang điểm 30 điểm.">
+  <title>Bài tập &amp; Thực hành Buổi 8 · Document Outline &amp; Mục Lục Tự Động (Docs Lab THCS)</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='10' y='6' width='44' height='52' rx='6' fill='%232563eb'/%3E%3Cpath d='M18 18h14M18 26h28M18 34h22M18 42h28' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='46' cy='18' r='5' fill='%2310b981'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #0b152d;
+      --navy-light: #162a54;
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --blue-soft: #eff6ff;
+      --blue-border: #bfdbfe;
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --teal-soft: #f0fdfa;
+      --teal-border: #99f6e4;
+      --amber: #f59e0b;
+      --amber-soft: #fffbeb;
+      --green: #10b981;
+      --green-soft: #ecfdf5;
+      --red: #ef4444;
+      --red-soft: #fff1f2;
+      --purple: #8b5cf6;
+      --purple-soft: #f5f3ff;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --soft: #f8fafc;
+      --paper: #ffffff;
+      --shadow: 0 16px 45px rgba(11, 21, 45, 0.08);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.08), transparent 30rem), #f8fafc;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    button, a { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid rgba(37, 99, 235, 0.4); outline-offset: 3px; }
+
+    /* Topbar */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: 18px;
+      min-height: 70px; padding: 10px clamp(16px, 4vw, 48px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-family: 'Outfit', sans-serif; font-size: 1.15rem; }
+    .mark {
+      display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px;
+      color: white; background: linear-gradient(135deg, var(--blue), var(--purple)); font-weight: 900;
+    }
+    .crumb { color: var(--muted); font-size: 0.85rem; }
+    .crumb b { color: var(--ink); }
+    .top-actions { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+    .top-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 38px; padding: 0 14px;
+      border: 1px solid var(--line); border-radius: 11px;
+      background: white; font-size: 0.82rem; font-weight: 700;
+      transition: all 0.18s ease;
+    }
+    .top-link:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+    .top-link.highlight { background: var(--blue-soft); border-color: var(--blue-border); color: var(--blue); }
+    .top-link.primary { background: var(--blue); border-color: var(--blue); color: white; }
+
+    /* Page Container */
+    .page { width: min(1200px, 100%); margin: auto; padding: 28px clamp(16px, 4vw, 40px) 70px; }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #0b152d 0%, #132448 55%, #7c3aed 100%);
+      border-radius: 24px; padding: clamp(28px, 4vw, 42px);
+      color: white; margin-bottom: 26px;
+      box-shadow: 0 20px 50px rgba(11, 21, 45, 0.25);
+      position: relative; overflow: hidden;
+    }
+    .hero-banner::after {
+      content: ""; position: absolute; right: -40px; bottom: -40px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #c4b5fd; margin-bottom: 8px;
+    }
+    .hero-banner h1 {
+      font-family: 'Outfit', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      margin: 0 0 12px; line-height: 1.15;
+    }
+    .hero-banner p { margin: 0 0 20px; color: #cbd5e1; max-width: 740px; font-size: 1rem; }
+    .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 99px;
+      background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px);
+      font-size: 0.8rem; font-weight: 700; color: white;
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--paper); border-radius: var(--radius);
+      border: 1px solid var(--line); box-shadow: var(--shadow);
+      padding: clamp(22px, 3vw, 34px); margin-bottom: 26px;
+    }
+    .card-head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 20px; gap: 16px; flex-wrap: wrap;
+    }
+    .card-head h2 {
+      font-family: 'Outfit', sans-serif; font-size: 1.45rem; margin: 0;
+      color: var(--navy); display: flex; align-items: center; gap: 10px;
+    }
+    .card-head p { margin: 4px 0 0; color: var(--muted); font-size: 0.9rem; }
+    .badge-step {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 800;
+    }
+
+    /* Compare Grid */
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px;
+    }
+    @media (max-width: 768px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+    .compare-pane {
+      border-radius: 14px; padding: 18px; border: 1.5px solid;
+    }
+    .pane-before { background: var(--red-soft); border-color: #fecdd3; }
+    .pane-after { background: var(--green-soft); border-color: #a7f3d0; }
+    .pane-title {
+      font-weight: 800; font-size: 0.88rem; margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* Copy Box */
+    .copy-box {
+      background: #f1f5f9; border-radius: 12px; padding: 16px 20px;
+      border: 1px solid #cbd5e1; position: relative; margin: 14px 0;
+    }
+    .copy-box pre {
+      margin: 0; font-family: inherit; font-size: 0.88rem; white-space: pre-wrap; color: var(--ink); line-height: 1.7;
+    }
+    .btn-copy {
+      position: absolute; top: 12px; right: 12px;
+      padding: 6px 14px; border-radius: 8px; border: 1px solid #cbd5e1;
+      background: white; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s ease;
+    }
+    .btn-copy:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* Rubric Table */
+    .rubric-table {
+      width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 14px;
+    }
+    .rubric-table th, .rubric-table td {
+      padding: 12px 16px; border: 1px solid var(--line); text-align: left;
+    }
+    .rubric-table th { background: #f8fafc; font-weight: 800; color: var(--navy); }
+    .rubric-table tr:nth-child(even) td { background: #fafbfc; }
+
+    /* Interactive Checklist */
+    .check-list { display: grid; gap: 10px; margin-top: 14px; }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 18px; border-radius: 12px; border: 1.5px solid var(--line);
+      background: #fafbfc; cursor: pointer; transition: all 0.2s ease;
+    }
+    .check-item:hover { border-color: var(--blue); background: #eff6ff; }
+    .check-item input[type="checkbox"] {
+      width: 20px; height: 20px; border-radius: 6px; accent-color: var(--blue);
+      margin-top: 2px; cursor: pointer;
+    }
+    .check-item.checked {
+      border-color: var(--blue); background: #eff6ff;
+    }
+    .check-content { flex: 1; }
+    .check-title { font-weight: 700; font-size: 0.92rem; color: var(--navy); display: flex; align-items: center; justify-content: space-between; }
+    .check-desc { font-size: 0.82rem; color: var(--muted); margin-top: 3px; }
+
+    .score-summary-box {
+      margin-top: 20px; padding: 18px 24px; border-radius: 14px;
+      background: linear-gradient(135deg, #0b152d, #132448);
+      color: white; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+    }
+
+    /* Step Grid */
+    .step-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px;
+    }
+    .step-box {
+      background: #f8fafc; border: 1px solid var(--line); border-radius: 14px; padding: 18px;
+    }
+    .step-box b { color: var(--blue); font-size: 0.88rem; display: block; margin-bottom: 6px; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 30px; right: 30px; z-index: 100;
+      background: var(--navy); color: white; padding: 12px 24px; border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-size: 0.88rem; font-weight: 700;
+      opacity: 0; transform: translateY(20px); transition: all 0.3s ease; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       TOPBAR
+       ============================================================ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark">08</div>
+      <div>
+        Docs Lab THCS
+        <div class="crumb">GĐ2 &gt; <b>Buổi 08 · Document Outline &amp; Mục Lục Tự Động</b></div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <a href="buoi-08-outline-va-muc-luc.html" class="top-link highlight">🌌 Mở Slide 3D Buổi 8</a>
+      <a href="https://docs.new" target="_blank" rel="noopener" class="top-link primary">📄 Tạo Google Docs Mới</a>
+      <button class="top-link" onclick="window.print()">🖨️ In Phiếu Học Tập</button>
+      <a href="index.html" class="top-link">🏠 Cổng Trung Tâm</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main class="page">
+
+    <!-- HERO BANNER -->
+    <div class="hero-banner">
+      <div class="eyebrow">HỌC LIỆU THỰC HÀNH &amp; RÈN LUYỆN · BUỔI 08</div>
+      <h1>Document Outline &amp; Table of Contents Tự Động</h1>
+      <p>
+        Học sinh tự tay xây dựng cây cấu trúc Heading 1, Heading 2 phân cấp rõ ràng, kích hoạt bản đồ số Document Outline để điều hướng tài liệu dài và xuất bản Bảng mục lục tự động (TOC) chuẩn chỉ từng số trang với nút làm mới 🔄 Update TOC.
+      </p>
+      <div class="hero-pills">
+        <span class="hero-pill">🎯 Tổng điểm: 30 Điểm</span>
+        <span class="hero-pill">⏱️ Thời lượng: 100 phút</span>
+        <span class="hero-pill">🧭 Document Outline</span>
+        <span class="hero-pill">🏷️ Heading 1 &amp; Heading 2</span>
+        <span class="hero-pill">📑 Table of Contents</span>
+        <span class="hero-pill">🔄 Update TOC Magic</span>
+      </div>
+    </div>
+
+    <!-- SECTION 1: BEFORE / AFTER COMPARISON -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>⚖️ Đối Chiếu Thực Tế: Báo Cáo Gõ Tay vs. Báo Cáo Khoa Học Tự Động</h2>
+          <p>Hiểu vì sao các báo cáo THCS và luận văn chuyên nghiệp bắt buộc phải có Outline và Mục lục tự động</p>
+        </div>
+        <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">Chuẩn Báo Cáo THCS</span>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-pane pane-before">
+          <div class="pane-title" style="color:#be123c">
+            <span>❌ BÁO CÁO THỦ CÔNG (CHƯA DÙNG HEADING)</span>
+            <span style="font-size:0.75rem;padding:3px 8px;border-radius:6px;background:#fee2e2">Sai lầm phổ biến</span>
+          </div>
+          <ul style="margin:0;padding-left:18px;font-size:0.85rem;color:#881337;line-height:1.7">
+            <li><b>Chỉ bôi đen (Bold) + tăng cỡ chữ:</b> Google Docs coi là Normal text, thanh Document Outline bên trái trống trơn.</li>
+            <li><b>Tự gõ dấu chấm làm mục lục:</b> <code>1. Mở đầu ........ 2</code> khiến số trang thụt thò lồi lõm, không thẳng hàng.</li>
+            <li><b>Lệch số trang khi sửa bài:</b> Chèn thêm 1 ảnh làm bài nhảy trang, phải ngồi sửa lại từng con số bằng tay!</li>
+            <li><b>Cuộn chuột hoa mắt:</b> Không có bản đồ số điều hướng nhanh khi tài liệu dài 10–20 trang.</li>
+          </ul>
+        </div>
+
+        <div class="compare-pane pane-after">
+          <div class="pane-title" style="color:#047857">
+            <span>✅ BÁO CÁO KHOA HỌC GOOGLE DOCS THCS</span>
+            <span style="font-size:0.75rem;padding:3px 8px;border-radius:6px;background:#d1fae5">Đẳng cấp 10/10</span>
+          </div>
+          <ul style="margin:0;padding-left:18px;font-size:0.85rem;color:#065f46;line-height:1.7">
+            <li><b>Cây Heading chuẩn hóa:</b> Heading 1 cho chương lớn, Heading 2 cho mục con, phân cấp bậc thang logic.</li>
+            <li><b>Document Outline hoạt động 100%:</b> Nhấp chuột vào bất kỳ mục nào trên thanh bên là bay ngay tới mục đó.</li>
+            <li><b>Mục lục có đường chấm dóng hàng:</b> Số trang thẳng tắp sát lề phải, tạo ra chỉ sau 2 click chuột.</li>
+            <li><b>Nút Cập Nhật Thần Kỳ 🔄:</b> Viết thêm bài chỉ cần bấm Refresh là tự đồng bộ toàn bộ số trang mới!</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: THREE MINI PRACTICES -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>🧩 Ba Bài Thực Hành Nhỏ Khởi Động (Mini Practices)</h2>
+          <p>Luyện tập từng thao tác cốt lõi trước khi bước vào dự án Báo cáo Môi trường lớn</p>
+        </div>
+        <span class="badge-step" style="background:var(--teal-soft);color:var(--teal)">Luyện Tập Cơ Bản</span>
+      </div>
+
+      <div class="step-grid">
+        <!-- Mini 1 -->
+        <div class="step-box" style="border-top:4px solid var(--blue)">
+          <b>THỰC HÀNH NHỎ 1 · CỨU TÀI LIỆU HỎNG</b>
+          <h4 style="margin:6px 0 10px;font-size:1.05rem;color:var(--navy)">Chuyển Bold Thành Heading</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">
+            Mở một tài liệu mới, gõ 3 dòng: <i>I. Mở đầu</i>, <i>II. Nội dung</i>, <i>III. Kết luận</i>. Mở thanh Document Outline (Xem ➔ Hiển thị cấu trúc tài liệu). Bôi đen từng dòng và nhấn <kbd>Ctrl + Alt + 1</kbd> để biến thành <b>Heading 1</b>.
+          </p>
+          <div style="background:var(--blue-soft);padding:8px 12px;border-radius:8px;font-size:0.8rem;color:var(--blue);font-weight:700">
+            Mục tiêu: Quan sát cây danh mục lập tức xuất hiện bên thanh Outline trái!
+          </div>
+        </div>
+
+        <!-- Mini 2 -->
+        <div class="step-box" style="border-top:4px solid var(--green)">
+          <b>THỰC HÀNH NHỎ 2 · CHÈN MỤC LỤC</b>
+          <h4 style="margin:6px 0 10px;font-size:1.05rem;color:var(--navy)">Tạo Bảng Mục Lục Độc Lập</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">
+            Đặt con trỏ ở đầu văn bản, nhấn <kbd>Ctrl + Enter</kbd> để đẩy nội dung sang trang 2. Ở trang 1 vừa tạo, vào <b>Chèn (Insert) ➔ Bảng mục lục ➔ Chọn kiểu có đường chấm dóng hàng</b>.
+          </p>
+          <div style="background:var(--green-soft);padding:8px 12px;border-radius:8px;font-size:0.8rem;color:var(--green);font-weight:700">
+            Mục tiêu: Bảng mục lục hiển thị đầy đủ 3 chương cùng số trang chính xác.
+          </div>
+        </div>
+
+        <!-- Mini 3 -->
+        <div class="step-box" style="border-top:4px solid var(--purple)">
+          <b>THỰC HÀNH NHỎ 3 · THỬ PHÉP THUẬT REFRESH</b>
+          <h4 style="margin:6px 0 10px;font-size:1.05rem;color:var(--navy)">Nút Cập Nhật Mục Lục 🔄</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">
+            Đến phần <i>II. Nội dung</i>, chèn thêm 1 mục mới gán <b>Heading 2</b>: <i>1. Thực trạng thực tế</i>. Quay lại Trang 1, nhấp chuột vào Mục lục và bấm <b>nút vòng tròn xoay 🔄</b>.
+          </p>
+          <div style="background:var(--purple-soft);padding:8px 12px;border-radius:8px;font-size:0.8rem;color:var(--purple);font-weight:700">
+            Mục tiêu: Mục Heading 2 mới tự động chèn vào mục lục và thụt lề chuẩn xác!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: COMPREHENSIVE PROJECT -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>🏆 Bài Thực Hành Tổng Hợp: Báo Cáo Nghiên Cứu Môi Trường</h2>
+          <p>Xây dựng báo cáo khoa học 2–3 trang có cấu trúc Heading phân cấp, Outline hoạt động và Mục lục tự động</p>
+        </div>
+        <span class="badge-step" style="background:#fef3c7;color:#b45309">Dự Án 30 Điểm</span>
+      </div>
+
+      <!-- Starter Text with Copy Button -->
+      <div style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <b style="font-size:0.9rem;color:var(--navy)">📄 Dữ liệu văn bản thô (Sao chép vào Google Docs của em):</b>
+          <span style="font-size:0.8rem;color:var(--muted)">Bấm nút sao chép để dán nhanh</span>
+        </div>
+
+        <div class="copy-box">
+          <button class="btn-copy" id="btnCopyRawText">📋 Sao chép văn bản thô</button>
+          <pre id="rawTextContent">BÁO CÁO KHOA HỌC: THỰC TRẠNG VÀ GIẢI PHÁP BẢO VỆ MÔI TRƯỜNG HỌC ĐƯỜNG
+Học sinh thực hiện: Nguyễn Minh Anh - Lớp 7A - Trường THCS Nguyễn Du
+
+I. ĐẶT VẤN ĐỀ
+Môi trường sống xung quanh chúng ta đang chịu áp lực rất lớn từ các hoạt động sinh hoạt và sản xuất của con người. Là những công dân trẻ tuổi, học sinh THCS cần nâng cao nhận thức, tìm hiểu nguyên nhân và đề xuất các hành động thiết thực ngay trong khuôn viên trường học và gia đình.
+
+II. THỰC TRẠNG Ô NHIỄM HIỆN NAY
+1. Ô nhiễm không khí đô thị
+Nồng độ bụi mịn PM2.5 tại các thành phố lớn vào giờ cao điểm thường vượt ngưỡng an toàn. Khí thải từ hàng triệu phương tiện giao thông xe máy, ô tô cùng khói bụi từ các công trình xây dựng chưa che chắn kỹ lưỡng là nguyên nhân hàng đầu gây ra các bệnh về hô hấp cho học sinh.
+
+2. Ô nhiễm nguồn nước sinh hoạt
+Nhiều dòng kênh, mương gần trường học và khu dân cư vẫn còn tình trạng xả rác thải bừa bãi. Nước thải sinh hoạt chưa qua xử lý đổ thẳng ra sông ngòi làm suy giảm hệ sinh thái thủy sinh và đe dọa trực tiếp nguồn nước ngọt sạch.
+
+3. Vấn nạn rác thải nhựa một lần
+Túi nilon, chai nhựa, ống hút và hộp xốp dùng một lần tại các cổng trường học sau giờ tan học chiếm tỷ lệ lớn trong thùng rác. Nhựa mất từ 400 đến 1000 năm mới phân hủy hoàn toàn, để lại vi nhựa nguy hiểm trong đất và nước.
+
+III. CÁC GIẢI PHÁP HÀNH ĐỘNG THIẾT THỰC
+1. Mô hình Trường học Xanh - Không rác thải nhựa
+- Khuyến khích mỗi học sinh mang theo bình nước cá nhân và hộp cơm tái sử dụng.
+- Đặt thùng rác phân loại 3 ngăn (Rác hữu cơ, Rác tái chế, Rác vô cơ) tại tất cả các hành lang lớp học.
+- Tổ chức ngày hội "Đổi rác lấy cây xanh" định kỳ hàng tháng.
+
+2. Lan tỏa thông điệp tuyên truyền số
+- Thành lập Câu lạc bộ Môi trường xanh của trường, viết bài tuyên truyền trên bảng tin và website.
+- Tổ chức các cuộc thi vẽ tranh cổ động và sáng chế đồ dùng học tập từ vật liệu tái chế.
+
+IV. KẾT LUẬN VÀ KIẾN NGHỊ
+Bảo vệ môi trường không phải là công việc to lớn xa vời mà bắt đầu từ những hành động nhỏ nhất của mỗi học sinh: vứt rác đúng nơi quy định, tắt thiết bị điện khi ra khỏi lớp và trân trọng từng mầm cây xanh. Chung tay hành động ngay hôm nay vì một tương lai trong lành, bền vững!</pre>
+        </div>
+      </div>
+
+      <!-- Step by step guidance -->
+      <h3 style="font-size:1.15rem;color:var(--navy);margin:24px 0 12px">🛠️ Các Bước Thực Hiện Chi Tiết:</h3>
+      <div style="display:grid;gap:12px">
+        <div style="background:#f8fafc;border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 1: Thiết lập cấu trúc phân cấp Heading</b><br>
+          • Dòng tên đề tài đầu bài: Gán kiểu <b>Title</b>.<br>
+          • Các mục la mã: <i>I. ĐẶT VẤN ĐỀ</i>, <i>II. THỰC TRẠNG Ô NHIỄM</i>, <i>III. CÁC GIẢI PHÁP</i>, <i>IV. KẾT LUẬN</i> ➔ Gán kiểu <b>Heading 1</b> (<kbd>Ctrl + Alt + 1</kbd>).<br>
+          • Các tiểu mục con: <i>1. Ô nhiễm không khí</i>, <i>2. Ô nhiễm nguồn nước</i>, <i>3. Vấn nạn rác thải nhựa</i>, <i>1. Mô hình Trường học Xanh</i>, <i>2. Lan tỏa thông điệp</i> ➔ Gán kiểu <b>Heading 2</b> (<kbd>Ctrl + Alt + 2</kbd>).
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid var(--teal);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 2: Bật và kiểm tra Document Outline</b><br>
+          Vào <i>Xem ➔ Hiển thị cấu trúc tài liệu</i>. Kiểm tra xem toàn bộ các mục H1 và H2 đã hiển thị thành cây phân cấp đẹp mắt bên trái chưa. Thử nhấp chuột vào từng mục để kiểm tra tính năng nhảy trang tức thì!
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid var(--purple);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 3: Tạo Trang 2 riêng biệt cho Bảng Mục Lục</b><br>
+          Đặt con trỏ trước chữ <i>I. ĐẶT VẤN ĐỀ</i>, nhấn <kbd>Ctrl + Enter</kbd> để đẩy toàn bộ nội dung sang trang sau. Ở khoảng trống trang 2, gõ tiêu đề: <b>MỤC LỤC</b> (Căn giữa, In đậm).
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid var(--green);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 4: Chèn Bảng mục lục tự động (TOC)</b><br>
+          Vào <i>Chèn ➔ Bảng mục lục ➔ Chọn kiểu có đường chấm dóng hàng (Dotted lines)</i>. Ngay sau bảng mục lục, nhấn tiếp <kbd>Ctrl + Enter</kbd> để đẩy phần Mở đầu sang Trang 3.
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid var(--amber);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 5: Chèn ảnh, bấm Cập Nhật (Update TOC 🔄) và xuất PDF</b><br>
+          Chèn 1–2 hình ảnh minh họa về môi trường. Sau đó nhấp chuột vào Bảng mục lục, bấm <b>nút vòng tròn xoay 🔄</b> để đồng bộ lại số trang. Cuối cùng tải file PDF về máy (<i>Tệp ➔ Tải xuống ➔ PDF</i>).
+        </div>
+      </div>
+
+      <!-- Interactive Checklist Tracker -->
+      <h3 style="font-size:1.15rem;color:var(--navy);margin:28px 0 14px">✅ Bảng Kiểm Tự Đánh Giá Tiến Độ (Checklist 30 Điểm):</h3>
+      <div class="check-list">
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>1. Gán đầy đủ Heading 1 và Heading 2 phân cấp</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Có đủ 4 mục Heading 1 và 5 tiểu mục Heading 2, không dùng Bold thủ công cho tiêu đề.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>2. Document Outline hoạt động hoàn hảo</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Thanh bên trái hiển thị đầy đủ cây danh mục bậc thang, nhấp chuột nhảy trang mượt mà.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>3. Trang Mục Lục đứng độc lập ở Trang 2</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Sử dụng phím tắt Ctrl + Enter ngắt trang trước và sau mục lục, không dính liền với nội dung khác.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>4. Table of Contents kiểu đường chấm dóng hàng</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Mục lục có đường chấm kết nối sang số trang ở mép phải thẳng tắp, thụt lề H2 đẹp mắt.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>5. Bấm nút Cập Nhật 🔄 và xuất bản PDF hoàn chỉnh</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Số trang trên mục lục khớp 100% với số trang thực tế của các chương, file PDF sắc nét.</div>
+          </div>
+        </label>
+      </div>
+
+      <!-- Live Score Summary Box -->
+      <div class="score-summary-box">
+        <div>
+          <span style="font-size:0.85rem;color:#c4b5fd;text-transform:uppercase;letter-spacing:0.05em;font-weight:700">Điểm Thực Hành Của Em</span>
+          <div style="font-size:1.8rem;font-weight:900;font-family:'Outfit',sans-serif">
+            <span id="liveScoreText">0</span> / 30 Điểm
+          </div>
+        </div>
+        <div id="scoreStatusBadge" style="padding:8px 16px;border-radius:10px;background:rgba(255,255,255,0.15);font-size:0.88rem;font-weight:700">
+          Hãy tích chọn các tiêu chí em đã hoàn thành!
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: HOMEWORK -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>🏠 Bài Tập Về Nhà: Báo Cáo Nghiên Cứu Môn Thể Thao Em Yêu Thích</h2>
+          <p>Tự mình xây dựng một bài báo cáo khoa học 2–3 trang từ con số 0</p>
+        </div>
+        <span class="badge-step" style="background:var(--green-soft);color:var(--green)">Thời lượng: 25 phút</span>
+      </div>
+
+      <div class="compare-grid">
+        <div style="background:#f8fafc;padding:20px;border-radius:14px;border:1px solid var(--line)">
+          <h4 style="margin:0 0 10px;color:var(--navy)">🎯 Yêu Cầu Đề Bài:</h4>
+          <p style="font-size:0.9rem;color:var(--ink-soft);line-height:1.7;margin:0 0 12px">
+            Chọn một môn thể thao em yêu thích (Bóng đá, Bóng rổ, Cầu lông, Bơi lội, Điền kinh...) và tạo tài liệu nghiên cứu gồm 5 phần lớn:
+          </p>
+          <ul style="padding-left:18px;font-size:0.88rem;color:var(--ink-soft);line-height:1.75;margin:0">
+            <li><b>1. Giới thiệu nguồn gốc:</b> Lịch sử hình thành môn thể thao.</li>
+            <li><b>2. Luật chơi cơ bản:</b> Quy định sân bãi, thời gian, cách ghi điểm (dùng Heading 2 cho từng luật).</li>
+            <li><b>3. Dụng cụ &amp; Trang phục:</b> Giày, bóng, vợt, trang bị an toàn.</li>
+            <li><b>4. Lợi ích sức khỏe &amp; Tinh thần:</b> Phát triển thể chất và tinh thần đồng đội.</li>
+            <li><b>5. Kết luận:</b> Lời khuyên tập luyện cho các bạn học sinh.</li>
+            <li><b>Kỹ thuật bắt buộc:</b> Có Trang bìa, Trang 2 là Bảng mục lục tự động, Document Outline hoạt động đầy đủ.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--teal-soft);padding:20px;border-radius:14px;border:1px solid var(--teal-border);display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <h4 style="margin:0 0 10px;color:var(--teal)">📦 Quy Cách Nộp Bài:</h4>
+            <p style="font-size:0.9rem;color:#0f766e;line-height:1.7;margin:0 0 14px">
+              1. <b>File PDF xuất bản:</b> Đặt tên file theo cú pháp: <br>
+              <code style="background:white;padding:4px 8px;border-radius:6px;color:#0f766e;font-weight:700">Buoi08_HoVaTen_TheThao.pdf</code><br><br>
+              2. <b>Link Google Docs:</b> Bật chế độ chia sẻ với quyền <b>Người nhận xét (Commenter)</b> hoặc <b>Người chỉnh sửa (Editor)</b> để thầy cô kiểm tra thanh Document Outline.
+            </p>
+          </div>
+          <div style="font-size:0.82rem;color:#115e59;background:white;padding:10px 14px;border-radius:10px;border:1px solid #99f6e4">
+            ⏰ <b>Hạn nộp:</b> Trước 20:00 ngày trước buổi học 09 tiếp theo.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: SCORING RUBRICS -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>📊 Thang Điểm Đánh Giá Chi Tiết (Rubric 30 Điểm)</h2>
+          <p>Bảng tiêu chuẩn đánh giá minh bạch của giáo viên dành cho học sinh</p>
+        </div>
+        <span class="badge-step" style="background:var(--purple-soft);color:var(--purple)">Thang Điểm 30</span>
+      </div>
+
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th style="width:25%">Tiêu Chí</th>
+            <th style="width:15%">Mức Điểm</th>
+            <th style="width:60%">Mô Tả Yêu Cầu Đạt Chuẩn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>1. Phân Cấp Heading</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Áp dụng đúng Heading 1 cho các phần lớn và Heading 2 cho các tiểu mục con. Tuyệt đối không dùng Bold thủ công.</td>
+          </tr>
+          <tr>
+            <td><b>2. Document Outline</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Thanh bên trái hiển thị cây tiêu đề chuẩn, nhấp chuột bay đến từng vị trí chính xác trong bài viết.</td>
+          </tr>
+          <tr>
+            <td><b>3. Bố Cục Trang Mục Lục</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Mục lục nằm riêng tại Trang 2, có ngắt trang Page Break (<kbd>Ctrl + Enter</kbd>) trước và sau bảng mục lục.</td>
+          </tr>
+          <tr>
+            <td><b>4. Kiểu Dáng TOC</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Sử dụng kiểu đường chấm dóng hàng thẳng tắp (Dotted lines), số trang căn lề phải thẳng đứng 100%.</td>
+          </tr>
+          <tr>
+            <td><b>5. Cập Nhật &amp; Xuất Bản</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Đã thực hiện thao tác Refresh 🔄 cập nhật số trang trước khi xuất file PDF. File nộp đạt độ sắc nét, không lỗi bố cục.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toastMessage">Đã sao chép!</div>
+
+  <!-- SCRIPT -->
+  <script>
+    // 1. COPY STARTER TEXT
+    const btnCopyRawText = document.getElementById('btnCopyRawText');
+    const rawTextContent = document.getElementById('rawTextContent');
+    const toastMessage = document.getElementById('toastMessage');
+
+    function showToast(msg) {
+      toastMessage.textContent = msg;
+      toastMessage.classList.add('show');
+      setTimeout(() => toastMessage.classList.remove('show'), 2500);
+    }
+
+    btnCopyRawText.onclick = () => {
+      navigator.clipboard.writeText(rawTextContent.textContent.trim()).then(() => {
+        btnCopyRawText.innerHTML = '✓ Đã sao chép vào bộ nhớ tạm!';
+        btnCopyRawText.style.background = '#d1fae5';
+        btnCopyRawText.style.color = '#065f46';
+        showToast('📋 Đã sao chép văn bản thô! Hãy mở Google Docs và dán (Ctrl + V)');
+        setTimeout(() => {
+          btnCopyRawText.innerHTML = '📋 Sao chép văn bản thô';
+          btnCopyRawText.style.background = 'white';
+          btnCopyRawText.style.color = 'inherit';
+        }, 3000);
+      });
+    };
+
+    // 2. INTERACTIVE CHECKLIST TRACKER
+    const checkboxes = document.querySelectorAll('.task-checkbox');
+    const liveScoreText = document.getElementById('liveScoreText');
+    const scoreStatusBadge = document.getElementById('scoreStatusBadge');
+
+    function calculateScore() {
+      let score = 0;
+      checkboxes.forEach(cb => {
+        const item = cb.closest('.check-item');
+        const pts = parseInt(item.getAttribute('data-points'), 10);
+        if (cb.checked) {
+          score += pts;
+          item.classList.add('checked');
+        } else {
+          item.classList.remove('checked');
+        }
+      });
+
+      liveScoreText.textContent = score;
+
+      if (score === 30) {
+        scoreStatusBadge.textContent = '🌟 Xuất sắc! Em đã hoàn thành 100% tiêu chí điểm 30/30!';
+        scoreStatusBadge.style.background = '#059669';
+        scoreStatusBadge.style.color = '#ffffff';
+        showToast('🎉 Đạt điểm tuyệt đối 30/30! Chúc mừng em!');
+      } else if (score >= 18) {
+        scoreStatusBadge.textContent = '👍 Rất tốt! Tiếp tục hoàn thiện các tiêu chí còn lại nhé!';
+        scoreStatusBadge.style.background = '#2563eb';
+        scoreStatusBadge.style.color = '#ffffff';
+      } else if (score > 0) {
+        scoreStatusBadge.textContent = '🚀 Khởi đầu tốt, cố gắng lên nhé!';
+        scoreStatusBadge.style.background = 'rgba(255,255,255,0.15)';
+        scoreStatusBadge.style.color = '#ffffff';
+      } else {
+        scoreStatusBadge.textContent = 'Hãy tích chọn các tiêu chí em đã hoàn thành!';
+        scoreStatusBadge.style.background = 'rgba(255,255,255,0.15)';
+        scoreStatusBadge.style.color = '#ffffff';
+      }
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', calculateScore);
+    });
+  </script>
+</body>
+</html>

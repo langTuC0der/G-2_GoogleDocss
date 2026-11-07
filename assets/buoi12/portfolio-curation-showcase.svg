@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%">
+  <defs>
+    <linearGradient id="portBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <filter id="portShadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect width="960" height="540" fill="url(#portBg)"/>
+
+  <!-- Title Badge -->
+  <rect x="230" y="20" width="500" height="42" rx="21" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="480" y="47" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#38bdf8" text-anchor="middle">
+    PORTFOLIO CÁ NHÂN CUỐI KHÓA: TUYỂN TẬP 3 TÁC PHẨM TỐT NHẤT
+  </text>
+
+  <!-- Left: Drive Folder Structure Mockup -->
+  <g transform="translate(60, 85)" filter="url(#portShadow)">
+    <rect width="400" height="420" rx="16" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    
+    <!-- Folder Tab -->
+    <path d="M20 20h100l20 20h240v360H20z" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+    
+    <g transform="translate(40, 50)">
+      <!-- Folder Icon -->
+      <path d="M0 4h16l4 4h20v28H0z" fill="#f59e0b"/>
+      <text x="50" y="24" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff">
+        📁 Portfolio_Docs_NguyenVanAn/
+      </text>
+
+      <!-- Sub-item 1: Trang Gioi Thieu -->
+      <g transform="translate(10, 45)">
+        <rect width="320" height="46" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1"/>
+        <circle cx="24" cy="23" r="10" fill="#3b82f6"/>
+        <text x="24" y="27" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">★</text>
+        <text x="44" y="22" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#38bdf8">00_Trang_Gioi_Thieu_Portfolio.gdoc</text>
+        <text x="44" y="38" font-family="Arial, sans-serif" font-size="10" fill="#94a3b8">Bìa cá nhân, mục tiêu học tập &amp; lời cảm ơn</text>
+      </g>
+
+      <!-- Sub-item 2: San Pham 1 -->
+      <g transform="translate(10, 100)">
+        <rect width="320" height="46" rx="8" fill="#1e293b"/>
+        <rect x="14" y="13" width="20" height="20" rx="4" fill="#2563eb"/>
+        <text x="44" y="22" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f1f5f9">SP1_ThoiKhoaBieu_Va_KeHoach.gdoc</text>
+        <text x="44" y="38" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Kèm file: SP1_ThoiKhoaBieu.pdf</text>
+      </g>
+
+      <!-- Sub-item 3: San Pham 2 -->
+      <g transform="translate(10, 155)">
+        <rect width="320" height="46" rx="8" fill="#1e293b"/>
+        <rect x="14" y="13" width="20" height="20" rx="4" fill="#2563eb"/>
+        <text x="44" y="22" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f1f5f9">SP2_BaoCao_MoiTruong_CoTOC.gdoc</text>
+        <text x="44" y="38" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Kèm file: SP2_BaoCao_MoiTruong.pdf</text>
+      </g>
+
+      <!-- Sub-item 4: San Pham 3 (Final) -->
+      <g transform="translate(10, 210)">
+        <rect width="320" height="46" rx="8" fill="#1e293b"/>
+        <rect x="14" y="13" width="20" height="20" rx="4" fill="#10b981"/>
+        <text x="44" y="22" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#a7f3d0">SP3_CamNang_HocTap_THCS.gdoc</text>
+        <text x="44" y="38" font-family="Arial, sans-serif" font-size="10" fill="#6ee7b7">Kèm file: SP3_CamNang_HocTap.pdf</text>
+      </g>
+
+      <!-- Folder summary badge -->
+      <rect x="10" y="275" width="320" height="40" rx="6" fill="#0f172a" stroke="#475569"/>
+      <text x="24" y="300" font-family="Arial, sans-serif" font-size="11" fill="#cbd5e1">
+        Tổng số: <strong>03 Docs + 03 PDF + 01 Trang Bìa</strong>
+      </text>
+    </g>
+  </g>
+
+  <!-- Right: Portfolio Cover Page Showcase -->
+  <g transform="translate(500, 85)" filter="url(#portShadow)">
+    <rect width="400" height="420" rx="16" fill="#ffffff"/>
+    
+    <!-- Document Header bar -->
+    <rect width="400" height="48" rx="16" fill="#f8fafc"/>
+    <text x="24" y="28" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Mẫu Trang Giới Thiệu Portfolio Cá Nhân</text>
+    <rect y="47" width="400" height="1" fill="#e2e8f0"/>
+
+    <!-- Document Content Preview -->
+    <g transform="translate(30, 65)">
+      <!-- Avatar mock -->
+      <circle cx="40" cy="40" r="30" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+      <text x="40" y="47" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#1d4ed8" text-anchor="middle">A</text>
+      
+      <text x="85" y="32" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#0f172a">NGUYỄN VĂN AN</text>
+      <text x="85" y="50" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Học sinh lớp 7A3 · THCS Cầu Giấy</text>
+      <text x="85" y="66" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#059669">Tốt nghiệp Khóa học Google Docs THCS (12 Buổi)</text>
+
+      <line x1="0" y1="85" x2="340" y2="85" stroke="#e2e8f0" stroke-width="1"/>
+
+      <text x="0" y="110" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">1. Lời Mở Đầu:</text>
+      <text x="0" y="130" font-family="Arial, sans-serif" font-size="11.5" fill="#475569">
+        "Sau 12 buổi học, em từ một bạn chưa biết căn lề đã có thể tự tay thiết kế cẩm nang học tập, chèn bảng biểu, mục lục tự động và làm việc nhóm hiệu quả."
+      </text>
+
+      <text x="0" y="170" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">2. Ba Tác Phẩm Tự Hào Nhất Của Em:</text>
+      
+      <rect x="0" y="185" width="340" height="42" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="12" y="204" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2563eb">1. Thời khóa biểu &amp; Kế hoạch tuần (Buổi 6 - Bảng biểu)</text>
+      <text x="12" y="218" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Biết phối màu ô bảng, gộp ô và căn giữa hoàn hảo.</text>
+
+      <rect x="0" y="235" width="340" height="42" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="12" y="254" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2563eb">2. Báo cáo Môi trường (Buổi 8 - Outline &amp; TOC)</text>
+      <text x="12" y="268" font-family="Arial, sans-serif" font-size="10" fill="#64748b">Cây phân cấp Heading 1, 2 và mục lục cập nhật tự động.</text>
+
+      <rect x="0" y="285" width="340" height="42" rx="6" fill="#f0fdf4" stroke="#86efac"/>
+      <text x="12" y="304" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#15803d">3. Cẩm nang học tập THCS (Buổi 12 - Final Project)</text>
+      <text x="12" y="318" font-family="Arial, sans-serif" font-size="10" fill="#166534">Vận dụng trọn vẹn 12 kỹ năng cùng nhóm 4 bạn.</text>
+    </g>
+  </g>
+</svg>

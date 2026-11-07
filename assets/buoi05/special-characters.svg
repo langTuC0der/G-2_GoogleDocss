@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <filter id="shadow4" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="920" height="460" rx="20" fill="url(#bgGrad4)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="460" y="44" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">KÝ TỰ ĐẶC BIỆT (SPECIAL CHARACTERS) &amp; CHÚ THÍCH FOOTNOTE</text>
+  <text x="460" y="70" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#94a3b8" text-anchor="middle">Trang hoàng nội dung với biểu tượng sinh động và dẫn nguồn uy tín bằng chú thích chân trang</text>
+
+  <!-- Left: Special Characters Dialog Mockup -->
+  <g transform="translate(45, 95)" filter="url(#shadow4)">
+    <rect width="405" height="325" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <rect x="0" y="0" width="405" height="48" rx="16" fill="#f8fafc"/>
+    <text x="202" y="30" font-family="'Outfit', sans-serif" font-size="14.5" font-weight="800" fill="#1e293b" text-anchor="middle">Chèn ký tự đặc biệt (Insert → Special characters)</text>
+
+    <!-- Category selectors -->
+    <rect x="20" y="60" width="175" height="30" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="30" y="80" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#334155">Biểu tượng (Symbol) ▾</text>
+    <rect x="210" y="60" width="175" height="30" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="220" y="80" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#334155">Mũi tên (Arrows) ▾</text>
+
+    <!-- Symbols grid -->
+    <g transform="translate(20, 104)">
+      <!-- Row 1 -->
+      <rect x="0" y="0" width="55" height="40" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+      <text x="27.5" y="27" font-size="18" text-anchor="middle">➜</text>
+      <rect x="65" y="0" width="55" height="40" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+      <text x="92.5" y="27" font-size="18" text-anchor="middle">⭐</text>
+      <rect x="130" y="0" width="55" height="40" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+      <text x="157.5" y="27" font-size="18" text-anchor="middle">✓</text>
+      <rect x="195" y="0" width="55" height="40" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+      <text x="222.5" y="27" font-size="18" text-anchor="middle">©</text>
+      <rect x="260" y="0" width="55" height="40" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+      <text x="287.5" y="27" font-size="18" text-anchor="middle">℃</text>
+      <rect x="325" y="0" width="40" height="40" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+      <text x="345" y="27" font-size="18" text-anchor="middle">π</text>
+
+      <!-- Row 2 -->
+      <rect x="0" y="48" width="55" height="40" rx="6" fill="#fdf4ff" stroke="#f0abfc"/>
+      <text x="27.5" y="75" font-size="18" text-anchor="middle">🌱</text>
+      <rect x="65" y="48" width="55" height="40" rx="6" fill="#fdf4ff" stroke="#f0abfc"/>
+      <text x="92.5" y="75" font-size="18" text-anchor="middle">💡</text>
+      <rect x="130" y="48" width="55" height="40" rx="6" fill="#fdf4ff" stroke="#f0abfc"/>
+      <text x="157.5" y="75" font-size="18" text-anchor="middle">🌍</text>
+      <rect x="195" y="48" width="55" height="40" rx="6" fill="#fdf4ff" stroke="#f0abfc"/>
+      <text x="222.5" y="75" font-size="18" text-anchor="middle">⚡</text>
+      <rect x="260" y="48" width="55" height="40" rx="6" fill="#fdf4ff" stroke="#f0abfc"/>
+      <text x="287.5" y="75" font-size="18" text-anchor="middle">🎯</text>
+      <rect x="325" y="48" width="40" height="40" rx="6" fill="#fdf4ff" stroke="#f0abfc"/>
+      <text x="345" y="75" font-size="18" text-anchor="middle">🔥</text>
+    </g>
+
+    <!-- Drawing pad feature tip -->
+    <rect x="20" y="206" width="365" height="100" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="35" y="228" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#0369a1">✨ Tính năng vẽ tay tìm ký tự (Draw symbol):</text>
+    <text x="35" y="248" font-family="'Inter', sans-serif" font-size="11" font-weight="400" fill="#475569">Nếu không nhớ tên ký tự tiếng Anh, học sinh có thể dùng chuột</text>
+    <text x="35" y="266" font-family="'Inter', sans-serif" font-size="11" font-weight="400" fill="#475569">vẽ hình dáng ký tự vào ô vẽ, Google Docs sẽ tự nhận diện ngay!</text>
+    <text x="35" y="286" font-family="'Inter', sans-serif" font-size="11" font-weight="700" fill="#10b981">✓ Rất nhanh chóng và thú vị cho học sinh THCS</text>
+  </g>
+
+  <!-- Right: Footnote Mechanism -->
+  <g transform="translate(470, 95)" filter="url(#shadow4)">
+    <rect width="405" height="325" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <rect x="0" y="0" width="405" height="48" rx="16" fill="#f8fafc"/>
+    <text x="202" y="30" font-family="'Outfit', sans-serif" font-size="14.5" font-weight="800" fill="#1e293b" text-anchor="middle">Chú thích cuối trang (Footnote — Ctrl + Alt + F)</text>
+
+    <!-- Simulated Page -->
+    <rect x="20" y="60" width="365" height="245" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+    
+    <!-- Paragraph with Footnote marker -->
+    <g transform="translate(36, 76)">
+      <rect x="0" y="0" width="330" height="7" rx="3.5" fill="#94a3b8"/>
+      <rect x="0" y="16" width="220" height="7" rx="3.5" fill="#94a3b8"/>
+      
+      <text x="228" y="21" font-family="'Inter', sans-serif" font-size="13" font-weight="800" fill="#2563eb">¹</text>
+      
+      <rect x="238" y="16" width="90" height="7" rx="3.5" fill="#94a3b8"/>
+      <rect x="0" y="32" width="300" height="7" rx="3.5" fill="#94a3b8"/>
+      <rect x="0" y="48" width="320" height="7" rx="3.5" fill="#94a3b8"/>
+    </g>
+
+    <!-- Footnote Separator Line -->
+    <line x1="36" y1="210" x2="130" y2="210" stroke="#0f172a" stroke-width="1.5"/>
+
+    <!-- Bottom Footnote citation text -->
+    <g transform="translate(36, 222)">
+      <text x="0" y="12" font-family="'Inter', sans-serif" font-size="11" font-weight="800" fill="#2563eb">¹</text>
+      <text x="14" y="12" font-family="'Inter', sans-serif" font-size="10" font-weight="500" fill="#334155">Theo Niên giám Thống kê Du lịch Việt Nam (2024).</text>
+      <text x="14" y="28" font-family="'Inter', sans-serif" font-size="9.5" font-weight="600" fill="#059669">Nguồn ảnh: Tổng cục Du lịch / Ban Quản lý Di sản.</text>
+    </g>
+
+    <!-- Tip tag -->
+    <rect x="20" y="268" width="365" height="38" rx="8" fill="#f0fdf4" stroke="#86efac"/>
+    <text x="202" y="292" font-family="'Inter', sans-serif" font-size="11" font-weight="700" fill="#15803d" text-anchor="middle">🎓 Giúp văn bản đạt chuẩn học thuật &amp; tôn trọng bản quyền</text>
+  </g>
+</svg>

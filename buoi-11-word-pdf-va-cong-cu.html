@@ -1,0 +1,1273 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bài giảng 3D tương tác Buổi 11: Word, PDF &amp; Công Cụ Hỗ Trợ (Google Docs THCS) — Khóa học chuyên sâu với Impress.js">
+  <title>Buổi 11 · Word, PDF &amp; Công Cụ Hỗ Trợ (25 Trạm 3D) | Docs Lab THCS</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-space: #070e20;
+      --navy-900: #0b152d;
+      --navy-800: #132448;
+      --blue-600: #2563eb;
+      --blue-500: #3b82f6;
+      --blue-100: #dbeafe;
+      --blue-50: #eff6ff;
+      --teal-600: #0d9488;
+      --teal-500: #14b8a6;
+      --teal-100: #ccfbf1;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-100: #d1fae5;
+      --amber-500: #f59e0b;
+      --amber-400: #fbbf24;
+      --amber-100: #fef3c7;
+      --rose-600: #e11d48;
+      --rose-500: #f43f5e;
+      --rose-100: #ffe4e6;
+      --purple-600: #7c3aed;
+      --purple-500: #8b5cf6;
+      --purple-100: #ede9fe;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --card-bg: rgba(255, 255, 255, 0.98);
+      --card-dark-bg: linear-gradient(145deg, #101e3d, #091226);
+      --shadow-step: 0 35px 80px -15px rgba(0, 7, 24, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.6);
+      --shadow-hover: 0 45px 95px -20px rgba(11, 26, 61, 0.65), 0 0 0 2px rgba(59, 130, 246, 0.4);
+      --radius-step: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 50% 20%, #15264c 0%, #070e20 60%, #030712 100%);
+      color: var(--ink);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Impress pointer events */
+    .impress-enabled { pointer-events: none; }
+    .impress-enabled #impress,
+    .impress-enabled .step,
+    .impress-enabled .hud,
+    .impress-enabled button,
+    .impress-enabled a,
+    .impress-enabled input,
+    .impress-enabled select,
+    .impress-enabled .modal,
+    .impress-enabled .interactive-box {
+      pointer-events: auto;
+    }
+
+    /* Step Card Base */
+    .step {
+      width: 1080px;
+      min-height: 640px;
+      padding: 44px 52px;
+      border-radius: var(--radius-step);
+      background: var(--card-bg);
+      box-shadow: var(--shadow-step);
+      opacity: 0.22;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.6s ease;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+    .step.active {
+      opacity: 1;
+      transform: scale(1.02);
+      box-shadow: var(--shadow-hover);
+    }
+    .step.dark {
+      background: var(--card-dark-bg);
+      color: #f8fafc;
+      box-shadow: 0 35px 85px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; margin-top: 0; line-height: 1.25; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      background: var(--blue-100);
+      color: var(--blue-600);
+    }
+    .step.dark .eyebrow {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .step-title {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+    .step.dark .step-title { color: #ffffff; }
+    .step-desc {
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin-bottom: 24px;
+    }
+    .step.dark .step-desc { color: #cbd5e1; }
+
+    /* Grids & Cards */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .feature-card {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+      transition: all 0.25s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px -8px rgba(0,0,0,0.08);
+      border-color: var(--blue-500);
+    }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+    .feature-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
+    .feature-desc { font-size: 14px; line-height: 1.55; color: var(--muted); }
+
+    /* SVG Showcase */
+    .svg-showcase {
+      width: 100%;
+      height: 380px;
+      border-radius: 18px;
+      background: #0f172a;
+      overflow: hidden;
+      border: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .svg-showcase img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Interactive Box */
+    .interactive-box {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    }
+
+    /* HUD Top Bar */
+    .hud-top {
+      position: fixed;
+      top: 18px;
+      left: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+    .hud-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(11, 21, 45, 0.85);
+      backdrop-filter: blur(14px);
+      padding: 8px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      pointer-events: auto;
+      text-decoration: none;
+    }
+    .hud-brand img { width: 24px; height: 24px; }
+    .hud-brand-title { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
+
+    .hud-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(11, 21, 45, 0.85);
+      backdrop-filter: blur(14px);
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      pointer-events: auto;
+    }
+    .hud-btn {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .hud-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-1px);
+    }
+    .hud-btn.primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: none;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+    .hud-btn.primary:hover {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    /* HUD Bottom Bar */
+    .hud-bottom {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(11, 21, 45, 0.9);
+      backdrop-filter: blur(14px);
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      pointer-events: auto;
+    }
+    .nav-arrow {
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .nav-arrow:hover { background: #2563eb; transform: scale(1.1); }
+    .step-counter {
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      min-width: 90px;
+      text-align: center;
+    }
+    .step-counter span { color: #ffffff; font-weight: 800; font-size: 15px; }
+
+    /* Teacher Guide Drawer */
+    #teacherDrawer {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 400px;
+      height: 100vh;
+      background: #0f172a;
+      border-left: 1px solid #334155;
+      color: #f8fafc;
+      z-index: 200;
+      transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -10px 0 30px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      pointer-events: auto;
+    }
+    #teacherDrawer.open { right: 0; }
+    .drawer-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1e293b;
+    }
+    .drawer-title { font-weight: 700; font-size: 16px; color: #38bdf8; }
+    .drawer-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Modal Shortcuts */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 250;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      width: 640px;
+      max-width: 92vw;
+      padding: 32px;
+      color: #f8fafc;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+    }
+    .shortcut-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #1e293b;
+    }
+    kbd {
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #38bdf8;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: monospace;
+      box-shadow: 0 2px 0 #000000;
+    }
+  </style>
+</head>
+<body class="impress-not-supported">
+
+  <!-- HUD Top -->
+  <header class="hud-top">
+    <a href="index.html" class="hud-brand" title="Quay về Danh mục GĐ2">
+      <img src="assets/buoi03/google-docs-icon.svg" alt="Docs Logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%232563eb%22><rect width=%2224%22 height=%2224%22 rx=%224%22/></svg>'">
+      <span class="hud-brand-title">Docs THCS · Buổi 11</span>
+    </a>
+
+    <div class="hud-controls">
+      <a href="buoi-11-bai-tap.html" class="hud-btn" target="_blank" title="Mở Phiếu bài tập">
+        📝 Phiếu Thực Hành
+      </a>
+      <button class="hud-btn" onclick="toggleTeacherDrawer()" title="Sổ tay giáo viên">
+        👨‍🏫 Hướng Dẫn GV
+      </button>
+      <button class="hud-btn" onclick="openShortcutsModal()" title="Phím tắt">
+        ⌨ Phím Tắt
+      </button>
+      <a href="#overview" class="hud-btn primary" title="Xem toàn cảnh 3D">
+        🪐 Toàn Cảnh
+      </a>
+    </div>
+  </header>
+
+  <!-- HUD Bottom -->
+  <footer class="hud-bottom">
+    <button class="nav-arrow" id="btnPrev" onclick="impress().prev()" title="Trạm trước (Phím Mũi tên Trái)">❮</button>
+    <div class="step-counter">
+      TRẠM <span id="currentStepNum">1</span> / 25
+    </div>
+    <button class="nav-arrow" id="btnNext" onclick="impress().next()" title="Trạm sau (Phím Space hoặc Mũi tên Phải)">❯</button>
+  </footer>
+
+  <!-- ============================================================
+       IMPRESS CONTAINER (25 SPATIAL 3D STATIONS)
+       ============================================================ -->
+  <div id="impress" data-transition-duration="850">
+
+    <!-- TRẠM 1: HERO INTRO (Dark) -->
+    <div id="step-intro" class="step dark" data-x="0" data-y="0" data-z="0" data-scale="1">
+      <div class="eyebrow">🚀 BUỔI 11 · GOOGLE DOCS THCS</div>
+      <h1 class="step-title" style="font-size: 46px; background: linear-gradient(135deg, #60a5fa, #38bdf8, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Một Tài Liệu – Nhiều Định Dạng &amp; Bộ Trợ Lực
+      </h1>
+      <p class="step-desc" style="max-width: 780px; font-size: 19px;">
+        Chinh phục cây cầu nối giữa Microsoft Word (.docx) và Google Docs! Làm chủ nghệ thuật xuất bản <strong>PDF chuẩn in ấn</strong> không bao giờ bị lệch trang, cùng bộ ba quyền năng: <strong>Voice Typing</strong> nói thành văn bản, <strong>Đếm từ</strong> chuẩn bài thi và <strong>Offline Mode</strong>.
+      </p>
+
+      <div class="grid-3" style="margin-top: 36px;">
+        <div class="feature-card" style="background: rgba(15, 23, 42, 0.8); border-color: #1e3a8a;">
+          <div class="feature-icon" style="background: #1e3a8a; color: #93c5fd;">🔄</div>
+          <div class="feature-title" style="color: #bfdbfe;">Word ⇄ Docs ⇄ PDF</div>
+          <div class="feature-desc" style="color: #94a3b8;">Chuyển đổi 2 chiều siêu mượt, mở file Word trực tiếp không cài Office.</div>
+        </div>
+        <div class="feature-card" style="background: rgba(15, 23, 42, 0.8); border-color: #831843;">
+          <div class="feature-icon" style="background: #831843; color: #fbcfe8;">🎙</div>
+          <div class="feature-title" style="color: #f472b6;">Voice Typing Tiếng Việt</div>
+          <div class="feature-desc" style="color: #94a3b8;">Nói đến đâu chữ chạy đến đó, tốc độ soạn thảo tăng gấp 3 lần!</div>
+        </div>
+        <div class="feature-card" style="background: rgba(15, 23, 42, 0.8); border-color: #064e3b;">
+          <div class="feature-icon" style="background: #064e3b; color: #6ee7b7;">🖨</div>
+          <div class="feature-title" style="color: #a7f3d0;">Print Preview &amp; PDF</div>
+          <div class="feature-desc" style="color: #94a3b8;">Căn lề chuẩn A4, xuất bản PDF khóa trang nộp thầy cô không bao giờ xô lệch.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 2: MỤC TIÊU BÀI HỌC -->
+    <div id="step-goals" class="step" data-x="1400" data-y="0" data-z="0">
+      <div class="eyebrow">🎯 MỤC TIÊU BÀI HỌC</div>
+      <h2 class="step-title">10 Năng Lực Cốt Lõi Buổi 11</h2>
+      <p class="step-desc">Học sinh thành thạo kỹ năng chuyển đổi tài liệu và công cụ trợ lực kỹ thuật số:</p>
+
+      <div class="grid-3" style="margin-top: 20px;">
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #eff6ff; color: #2563eb;">1</div>
+          <div class="feature-title">Upload DOCX</div>
+          <div class="feature-desc">Tải file Word từ máy tính lên Google Drive và mở trực tiếp bằng Docs.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #eff6ff; color: #2563eb;">2</div>
+          <div class="feature-title">Download DOCX</div>
+          <div class="feature-desc">Xuất tài liệu từ Google Docs về lại định dạng Word khi cần nộp USB.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #fff1f2; color: #e11d48;">3</div>
+          <div class="feature-title">Download PDF</div>
+          <div class="feature-desc">Xuất bản PDF chuẩn in ấn, khóa cứng định dạng không bị nhảy trang.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #f0fdf4; color: #059669;">4</div>
+          <div class="feature-title">Print &amp; Print Preview</div>
+          <div class="feature-desc">Phím tắt Ctrl+P: Cài đặt khổ giấy A4, hướng giấy, lề trang và máy in đích.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #f0fdf4; color: #059669;">5</div>
+          <div class="feature-title">Word Count (Đếm từ)</div>
+          <div class="feature-desc">Ctrl+Shift+C: Đếm số trang, số từ, ký tự phục vụ làm bài văn THCS.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #f0fdf4; color: #059669;">6</div>
+          <div class="feature-title">Spell Check (Chính tả)</div>
+          <div class="feature-desc">Rà soát lỗi chính tả tiếng Việt tự động, 1 click sửa từ sai.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #fdf2f8; color: #db2777;">7</div>
+          <div class="feature-title">Voice Typing (Nhập giọng nói)</div>
+          <div class="feature-desc">Ctrl+Shift+S: Đọc văn bản tiếng Việt cực nhạy kèm khẩu lệnh dấu câu.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #fffbeb; color: #d97706;">8</div>
+          <div class="feature-title">Offline Mode</div>
+          <div class="feature-desc">Soạn thảo ngay cả khi không có mạng Internet, tự động đồng bộ khi online.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #f5f3ff; color: #7c3aed;">9</div>
+          <div class="feature-title">Add-ons (Tiện ích)</div>
+          <div class="feature-desc">Làm quen với kho tiện ích mở rộng: gõ công thức toán, chèn icon, dịch thuật.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 3: SO SÁNH 3 ĐỊNH DẠNG -->
+    <div id="step-formats" class="step" data-x="2800" data-y="0" data-z="0">
+      <div class="eyebrow">⚖ SO SÁNH ĐỊNH DẠNG</div>
+      <h2 class="step-title">DOCX vs DOCS vs PDF: Khi Nào Dùng Gì?</h2>
+      <p class="step-desc">Mỗi định dạng sinh ra đều có một sứ mệnh đặc thù trong học tập và công việc:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card" style="border-top: 4px solid #2563eb;">
+          <h3 style="color: #1d4ed8; font-size: 20px;">.DOCX (Word)</h3>
+          <p style="font-size: 13.5px; color: #64748b; margin-bottom: 12px;">Định dạng truyền thống máy tính bàn</p>
+          <ul style="font-size: 13.5px; color: #334155; line-height: 1.7; padding-left: 18px;">
+            <li>Phù hợp khi thầy cô yêu cầu nộp file Word hoặc copy USB.</li>
+            <li>Nhược điểm: Mang sang máy khác dễ bị nhảy trang nếu thiếu font.</li>
+          </ul>
+        </div>
+        <div class="feature-card" style="border-top: 4px solid #10b981;">
+          <h3 style="color: #047857; font-size: 20px;">Google Docs</h3>
+          <p style="font-size: 13.5px; color: #64748b; margin-bottom: 12px;">Trung tâm soạn thảo đám mây</p>
+          <ul style="font-size: 13.5px; color: #334155; line-height: 1.7; padding-left: 18px;">
+            <li>Phù hợp khi làm việc nhóm, tự động lưu, nhập bằng giọng nói.</li>
+            <li>Chỉnh sửa mọi lúc mọi nơi trên điện thoại và máy tính.</li>
+          </ul>
+        </div>
+        <div class="feature-card" style="border-top: 4px solid #ef4444;">
+          <h3 style="color: #b91c1c; font-size: 20px;">.PDF (Bản in)</h3>
+          <p style="font-size: 13.5px; color: #64748b; margin-bottom: 12px;">Định dạng vàng khóa trang nộp bài</p>
+          <ul style="font-size: 13.5px; color: #334155; line-height: 1.7; padding-left: 18px;">
+            <li>Khóa cứng hình ảnh, font chữ, lề trang chuẩn xác 100%.</li>
+            <li>Thầy cô mở trên bất kỳ thiết bị nào cũng đẹp nguyên vẹn!</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 4: SVG SHOWCASE 1 - ECOSYSTEM -->
+    <div id="step-ecosystem-svg" class="step" data-x="4200" data-y="0" data-z="0">
+      <div class="eyebrow">🌐 HỆ SINH THÁI CHUYỂN ĐỔI</div>
+      <h2 class="step-title">Dòng Chảy Tài Liệu: Word ⇄ Docs ➔ PDF</h2>
+      <p class="step-desc">Quan sát mô hình chuyển đổi 2 chiều linh hoạt không giới hạn thiết bị.</p>
+
+      <div class="svg-showcase">
+        <img src="assets/buoi11/docx-docs-pdf-ecosystem.svg" alt="Docx Docs PDF Ecosystem">
+      </div>
+    </div>
+
+    <!-- TRẠM 5: UPLOAD & OPEN DOCX -->
+    <div id="step-upload-docx" class="step" data-x="4200" data-y="1200" data-z="0">
+      <div class="eyebrow">📤 TẢI LÊN &amp; MỞ WORD</div>
+      <h2 class="step-title">Cách Mở File .DOCX Trên Google Docs</h2>
+      <p class="step-desc">Không cần cài đặt Microsoft Office đắt tiền, em vẫn mở và chỉnh sửa file Word hoàn hảo:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="feature-title">Bước 1: Kéo Thả Lên Drive</div>
+          <p class="feature-desc">Mở drive.google.com ➔ Kéo file <code>.docx</code> từ máy tính thả thẳng vào màn hình Drive.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Bước 2: Mở Bằng Docs</div>
+          <p class="feature-desc">Nhấp đúp vào file ➔ Chọn <strong>"Mở bằng Google Tài liệu"</strong> trên đầu màn hình.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Bước 3: Chỉnh Sửa Trực Tiếp</div>
+          <p class="feature-desc">Google Docs tự động chuyển đổi sang giao diện trực tuyến mà vẫn giữ nguyên thẻ đuôi <code>.DOCX</code>!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 6: THỰC HÀNH NHỎ 1 -->
+    <div id="step-challenge-1" class="step" data-x="2800" data-y="1200" data-z="0">
+      <div class="eyebrow" style="background: #fef3c7; color: #d97706;">⚡ THỰC HÀNH NHỎ 1 (5 PHÚT)</div>
+      <h2 class="step-title">Word ➔ Google Docs: Mở Và Chỉnh Sửa</h2>
+      <p class="step-desc">Thực hiện thao tác nhận và giải cứu file Word từ thầy cô:</p>
+
+      <div class="interactive-box">
+        <p style="font-size: 15px; line-height: 1.7; color: #1e293b;">
+          <strong>Tình huống:</strong> Thầy giáo gửi file <code>baitap.docx</code> qua Zalo/Email lớp.<br>
+          <strong>Học sinh thao tác:</strong><br>
+          1. Tải file về máy ➔ Tải lên Google Drive.<br>
+          2. Mở file bằng Google Docs.<br>
+          3. Sửa câu: <em>"Hôm nay trời nhiều mây."</em> thành <em>"Hôm nay trời thu Hà Nội rất trong xanh."</em><br>
+          4. Quan sát: Biểu tượng <code>.DOCX</code> màu xanh dương xuất hiện cạnh tên tài liệu báo hiệu tương thích chuẩn!
+        </p>
+      </div>
+    </div>
+
+    <!-- TRẠM 7: DOWNLOAD FORMATS -->
+    <div id="step-download-formats" class="step" data-x="1400" data-y="1200" data-z="0">
+      <div class="eyebrow">📥 TẢI XUỐNG ĐA ĐỊNH DẠNG</div>
+      <h2 class="step-title">Menu Tệp ➔ Tải Xuống (Download)</h2>
+      <p class="step-desc">Google Docs hỗ trợ xuất ra nhiều định dạng chuyên dụng tùy mục đích sử dụng:</p>
+
+      <div class="grid-4" style="margin-top: 24px;">
+        <div class="feature-card">
+          <h4 style="color: #2563eb; margin: 0 0 6px;">.docx</h4>
+          <p style="font-size: 12.5px; color: #64748b;">Microsoft Word để gửi người chỉ dùng Office.</p>
+        </div>
+        <div class="feature-card">
+          <h4 style="color: #dc2626; margin: 0 0 6px;">.pdf</h4>
+          <p style="font-size: 12.5px; color: #64748b;">Tài liệu PDF khóa trang chuẩn in ấn và nộp bài.</p>
+        </div>
+        <div class="feature-card">
+          <h4 style="color: #059669; margin: 0 0 6px;">.epub</h4>
+          <p style="font-size: 12.5px; color: #64748b;">Sách điện tử đọc trên máy Kindle, iPad.</p>
+        </div>
+        <div class="feature-card">
+          <h4 style="color: #7c3aed; margin: 0 0 6px;">.txt / .html</h4>
+          <p style="font-size: 12.5px; color: #64748b;">Văn bản thuần hoặc trang web nén dạng zip.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 8: PDF DEEP DIVE -->
+    <div id="step-pdf-deepdive" class="step" data-x="0" data-y="1200" data-z="0">
+      <div class="eyebrow" style="background: #ffe4e6; color: #e11d48;">📄 ĐỊNH DẠNG VÀNG PDF</div>
+      <h2 class="step-title">Vì Sao Thầy Cô Luôn Khuyên Nộp Bằng File PDF?</h2>
+      <p class="step-desc">Hiểu được bí quyết này sẽ giúp bài báo cáo của em luôn đạt điểm tối đa phần trình bày:</p>
+
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="feature-card" style="background: #fff5f5; border-color: #fecdd3;">
+          <h3 style="color: #b91c1c; font-size: 18px;">Rủi ro khi nộp file Word (.docx):</h3>
+          <ul style="font-size: 14px; color: #7f1d1d; line-height: 1.7;">
+            <li>Máy thầy cô dùng phiên bản Office cũ làm nhảy bảng biểu ra ngoài lề.</li>
+            <li>Font chữ lạ em tải trên mạng bị biến thành ô vuông dấu hỏi chấm.</li>
+            <li>Thầy cô vô tình gõ nhầm bàn phím làm mất dòng chữ của em.</li>
+          </ul>
+        </div>
+        <div class="feature-card" style="background: #f0fdf4; border-color: #bbf7d0;">
+          <h3 style="color: #15803d; font-size: 18px;">Lợi ích tuyệt đối của file PDF:</h3>
+          <ul style="font-size: 14px; color: #14532d; line-height: 1.7;">
+            <li><strong>Bất biến (Locked Layout):</strong> Giống như tờ giấy in ra chụp ảnh lại, vị trí từng chữ, từng ảnh được đóng băng 100%.</li>
+            <li>Xem được tức thì trên điện thoại phụ huynh, máy tính trường, máy in quán photocopy.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 9: THỰC HÀNH NHỎ 2 -->
+    <div id="step-challenge-2" class="step" data-x="-1400" data-y="1200" data-z="0">
+      <div class="eyebrow" style="background: #fef3c7; color: #d97706;">⚡ THỰC HÀNH NHỎ 2 (5 PHÚT)</div>
+      <h2 class="step-title">Docs ➔ PDF: Xuất Bản &amp; So Sánh</h2>
+      <p class="step-desc">Trải nghiệm xuất bản tài liệu chuẩn công nghiệp:</p>
+
+      <div class="interactive-box">
+        <p style="font-size: 15px; line-height: 1.7; color: #1e293b;">
+          1. Trên Google Docs, bấm <strong>Tệp ➔ Tải xuống ➔ Tài liệu PDF (.pdf)</strong>.<br>
+          2. Mở file PDF vừa tải về trong trình duyệt Chrome.<br>
+          3. Đặt cửa sổ Google Docs và cửa sổ PDF cạnh nhau:<br>
+          • Thử bôi đen, xóa chữ trên PDF ➔ <em>Không xóa được!</em><br>
+          • Cuộn trang quan sát: Hình ảnh và ngắt trang giữ chuẩn xác đến từng milimet!
+        </p>
+      </div>
+    </div>
+
+    <!-- TRẠM 10: VOICE TYPING -->
+    <div id="step-voice-typing" class="step" data-x="-1400" data-y="2400" data-z="0">
+      <div class="eyebrow" style="background: #fdf2f8; color: #db2777;">🎙 NHẬP BẰNG GIỌNG NÓI</div>
+      <h2 class="step-title">Voice Typing: Nhập Liệu Thần Tốc Bằng Giọng Nói</h2>
+      <p class="step-desc">Được Google hỗ trợ AI nhận diện tiếng Việt cực kỳ chính xác. Phím tắt: <kbd>Ctrl + Shift + S</kbd>.</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="feature-title">1. Bật Micro</div>
+          <p class="feature-desc">Vào <strong>Công cụ ➔ Nhập liệu bằng giọng nói</strong> hoặc bấm <kbd>Ctrl + Shift + S</kbd>. Chọn ngôn ngữ <strong>Tiếng Việt</strong>.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">2. Cho Phép Quyền Mic</div>
+          <p class="feature-desc">Bấm vào biểu tượng Micro, chọn <strong>"Cho phép" (Allow)</strong> khi trình duyệt hỏi quyền sử dụng micro máy tính.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">3. Khẩu Lệnh Dấu Câu</div>
+          <p class="feature-desc">Đọc rõ ràng: Nói <em>"Dấu phẩy"</em> ra dấu <code>,</code>; nói <em>"Dấu chấm"</em> ra dấu <code>.</code>; nói <em>"Xuống dòng"</em> để qua đoạn mới!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 11: THỰC HÀNH NHỎ 3 -->
+    <div id="step-challenge-3" class="step" data-x="0" data-y="2400" data-z="0">
+      <div class="eyebrow" style="background: #fef3c7; color: #d97706;">⚡ THỰC HÀNH NHỎ 3 (5 PHÚT)</div>
+      <h2 class="step-title">Voice Typing Thực Chiến: Đọc Câu Mẫu</h2>
+      <p class="step-desc">Khám phá tốc độ gõ bài bằng giọng nói của em:</p>
+
+      <div class="interactive-box">
+        <p style="font-size: 16px; margin-bottom: 12px; color: #1e293b;">
+          <strong>Thao tác:</strong> Nhấn <kbd>Ctrl + Shift + S</kbd>, thấy icon mic chuyển sang màu đỏ rực thì đọc câu sau:
+        </p>
+        <blockquote style="font-size: 18px; font-style: italic; color: #2563eb; border-left: 4px solid #3b82f6; padding-left: 16px; margin: 16px 0;">
+          "Hôm nay em đang học cách sử dụng Google Docs dấu chấm Thật là kỳ diệu xuống dòng Em có thể đọc bài văn dài mà không hề mỏi tay dấu chấm"
+        </blockquote>
+        <p style="font-size: 14px; color: #64748b;">
+          💡 Quan sát màn hình xem Google Docs tự ngắt dấu chấm và xuống dòng chuẩn xác thế nào nhé!
+        </p>
+      </div>
+    </div>
+
+    <!-- TRẠM 12: SVG SHOWCASE 2 - TOOLS -->
+    <div id="step-tools-svg" class="step" data-x="1400" data-y="2400" data-z="0">
+      <div class="eyebrow">🛠 BỘ TRỢ LỰC KỸ THUẬT SỐ</div>
+      <h2 class="step-title">Voice Typing, Word Count &amp; Spell Check</h2>
+      <p class="step-desc">Bộ 3 công cụ giúp học sinh THCS hoàn thiện bài viết nhanh hơn và chuẩn mực hơn.</p>
+
+      <div class="svg-showcase">
+        <img src="assets/buoi11/voice-typing-and-tools.svg" alt="Voice Typing and Docs Tools">
+      </div>
+    </div>
+
+    <!-- TRẠM 13: WORD COUNT -->
+    <div id="step-word-count" class="step" data-x="2800" data-y="2400" data-z="0">
+      <div class="eyebrow">📊 ĐẾM TỪ THẦN TỐC</div>
+      <h2 class="step-title">Word Count: Quản Lý Độ Dài Bài Viết</h2>
+      <p class="step-desc">Đề bài yêu cầu: <em>"Viết bài văn nghị luận xã hội khoảng 400 đến 600 từ"</em>. Làm sao để biết chính xác?</p>
+
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="feature-card">
+          <h3 style="color: #2563eb; font-size: 18px;">Phím tắt vàng: Ctrl + Shift + C</h3>
+          <p style="font-size: 14px; color: #334155; line-height: 1.7;">
+            Bấm <kbd>Ctrl + Shift + C</kbd> (trên Mac: <code>Cmd + Shift + C</code>). Bảng thống kê lập tức hiện ra:
+          </p>
+          <ul style="font-size: 13.5px; color: #475569;">
+            <li><strong>Số trang (Pages):</strong> Biết bài viết đã chiếm bao nhiêu trang A4.</li>
+            <li><strong>Số từ (Words):</strong> Số từ chuẩn xác không cần đếm tay.</li>
+            <li><strong>Ký tự:</strong> Có tính hoặc không tính khoảng trắng.</li>
+          </ul>
+        </div>
+        <div class="feature-card" style="background: #f0fdf4;">
+          <h3 style="color: #15803d; font-size: 18px;">Tính năng ghim số từ khi đang gõ:</h3>
+          <p style="font-size: 14px; color: #166534; line-height: 1.6;">
+            Tick vào ô <strong>"Hiển thị số từ khi nhập" (Display word count while typing)</strong>. Một đồng hồ đếm từ nhỏ sẽ gắn ở góc dưới bên trái màn hình, tự động nhảy số theo từng chữ em gõ!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 14: SPELL CHECK -->
+    <div id="step-spell-check" class="step" data-x="4200" data-y="2400" data-z="0">
+      <div class="eyebrow">🔍 SOÁT LỖI CHÍNH TẢ</div>
+      <h2 class="step-title">Spell Check: Không Còn Nỗi Lo Sai Lỗi Ngớ Ngẩn</h2>
+      <p class="step-desc">Tự động phát hiện lỗi đánh máy, lỗi thiếu dấu và gợi ý sửa chỉ với 1 click chuột:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="feature-title">Đường Gợn Sóng Đỏ</div>
+          <p class="feature-desc">Khi em gõ sai chính tả (ví dụ: <em>"học xinh"</em>), Google Docs sẽ gạch chân gợn sóng màu đỏ cảnh báo.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Đường Gợn Sóng Xanh</div>
+          <p class="feature-desc">Cảnh báo lỗi ngữ pháp hoặc dùng từ chưa chuẩn trong ngữ cảnh câu (ví dụ: lặp từ quá nhiều).</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Phím Tắt Soát Cả Bài: F7</div>
+          <p class="feature-desc">Nhấn phím <kbd>F7</kbd> hoặc vào <strong>Công cụ ➔ Chính tả và ngữ pháp</strong> để duyệt sửa từng từ một.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 15: PRINT PREVIEW -->
+    <div id="step-print-preview" class="step" data-x="4200" data-y="3600" data-z="0">
+      <div class="eyebrow">🖨 IN ẤN &amp; XEM TRƯỚC</div>
+      <h2 class="step-title">Print &amp; Print Preview: Căn Chỉnh Trước Khi Ra Giấy</h2>
+      <p class="step-desc">Đừng bao giờ bấm In ngay khi chưa xem trước! Phím tắt kinh điển: <kbd>Ctrl + P</kbd>.</p>
+
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="feature-card">
+          <h4 style="color: #2563eb; font-size: 17px;">4 Cài Đặt Quan Trọng Khi Bấm Ctrl + P:</h4>
+          <ol style="font-size: 13.5px; color: #334155; line-height: 1.8;">
+            <li><strong>Máy in đích (Destination):</strong> Chọn máy in Canon/HP hoặc chọn <em>"Lưu dưới dạng PDF"</em>.</li>
+            <li><strong>Khổ giấy (Paper size):</strong> Luôn đảm bảo chọn <strong>A4</strong> (chuẩn Việt Nam).</li>
+            <li><strong>Lề trang (Margins):</strong> Chọn <em>Mặc định</em> (Default) hoặc <em>Tùy chỉnh</em> để không bị mất chữ.</li>
+            <li><strong>Đồ họa nền (Background graphics):</strong> Tick chọn nếu muốn in cả màu nền của bảng hoặc ảnh nền.</li>
+          </ol>
+        </div>
+        <div class="feature-card" style="background: #f8fafc;">
+          <h4 style="color: #059669; font-size: 17px;">Mẹo Tiết Kiệm Mực &amp; Giấy In THCS:</h4>
+          <p style="font-size: 13.5px; color: #475569; line-height: 1.6;">
+            Nếu chỉ cần in bản nháp đọc thử, em có thể chọn in <strong>2 trang trên 1 mặt giấy (2 pages per sheet)</strong> hoặc in hai mặt (Print on both sides) để bảo vệ môi trường!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 16: SVG SHOWCASE 3 - PRINT -->
+    <div id="step-print-svg" class="step" data-x="2800" data-y="3600" data-z="0">
+      <div class="eyebrow">🖨 BẢNG ĐIỀU KHIỂN IN</div>
+      <h2 class="step-title">Giao Diện Cài Đặt Print Preview (Ctrl + P)</h2>
+      <p class="step-desc">Xem trước từng trang và xuất bản file PDF bằng tính năng máy in ảo.</p>
+
+      <div class="svg-showcase">
+        <img src="assets/buoi11/print-preview-settings.svg" alt="Print Preview Settings Interface">
+      </div>
+    </div>
+
+    <!-- TRẠM 17: OFFLINE MODE -->
+    <div id="step-offline-mode" class="step" data-x="1400" data-y="3600" data-z="0">
+      <div class="eyebrow">📶 LÀM BÀI NGOẠI TUYẾN</div>
+      <h2 class="step-title">Offline Mode: Soạn Thảo Ngay Cả Khi Mất Mạng</h2>
+      <p class="step-desc">Nhiều bạn nghĩ Google Docs không có mạng Internet là vô dụng — Đó là một hiểu lầm lớn!</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="feature-title">1. Cài Tiện Ích Drive Offline</div>
+          <p class="feature-desc">Cài extension <em>Google Tài liệu Ngoại tuyến</em> trên trình duyệt Chrome.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">2. Bật Tính Năng Ngoại Tuyến</div>
+          <p class="feature-desc">Vào <strong>Tệp ➔ Cho phép sử dụng khi không có mạng</strong> trên tài liệu của em.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">3. Tự Động Đồng Bộ</div>
+          <p class="feature-desc">Em cứ gõ bài bình thường khi mất mạng. Vừa có lại wifi, mọi thay đổi tự động đồng bộ lên Drive!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 18: ADD-ONS INTRO -->
+    <div id="step-addons-intro" class="step" data-x="0" data-y="3600" data-z="0">
+      <div class="eyebrow" style="background: #ede9fe; color: #7c3aed;">🧩 TIỆN ÍCH MỞ RỘNG</div>
+      <h2 class="step-title">Add-ons: Cài Thêm "Siêu Năng Lực" Cho Docs</h2>
+      <p class="step-desc">Giới thiệu kho tiện ích phong phú từ Google Workspace Marketplace:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #eff6ff; color: #2563eb;">📐</div>
+          <div class="feature-title">MathType / Hypatia</div>
+          <p class="feature-desc">Gõ công thức Toán học, Vật lý phức tạp như căn bậc hai, tích phân, phân số cực đẹp.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #fdf2f8; color: #db2777;">🎨</div>
+          <div class="feature-title">Flaticon / Icons8</div>
+          <p class="feature-desc">Chèn hàng ngàn biểu tượng icon sinh động trực tiếp vào tài liệu mà không cần tải về máy.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: #f0fdf4; color: #059669;">🌐</div>
+          <div class="feature-title">Google Translate</div>
+          <p class="feature-desc">Dịch toàn bộ bài báo cáo sang tiếng Anh hoặc dịch ngược lại chỉ sau đúng 1 giây.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 19: SIMULATOR TƯƠNG TÁC -->
+    <div id="step-simulator" class="step" data-x="-1400" data-y="3600" data-z="0">
+      <div class="eyebrow" style="background: #eff6ff; color: #2563eb;">🎮 PHÒNG THÍ NGHIỆM ĐỊNH DẠNG &amp; CÔNG CỤ</div>
+      <h2 class="step-title">Thử Nghiệm Trực Tiếp Các Tính Năng Buổi 11</h2>
+      <p class="step-desc">Bấm các nút bên dưới để trải nghiệm chuyển đổi định dạng và công cụ trợ lực:</p>
+
+      <div class="interactive-box" style="background: #f8fafc;">
+        <div style="display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap;">
+          <button class="hud-btn primary" onclick="simUploadWord()">1. Upload &amp; Mở Word</button>
+          <button class="hud-btn" style="background: #dc2626; color: #fff;" onclick="simVoice()">2. Giả lập Voice Typing</button>
+          <button class="hud-btn" style="background: #059669; color: #fff;" onclick="simCount()">3. Đếm số từ (Ctrl+Shift+C)</button>
+          <button class="hud-btn" style="background: #7c3aed; color: #fff;" onclick="simExportPDF()">4. Xuất file PDF</button>
+        </div>
+
+        <div id="simScreen" style="background: #ffffff; padding: 20px; border-radius: 10px; border: 1px solid #cbd5e1; min-height: 110px; font-size: 15px; line-height: 1.7;">
+          <div id="simContent">Chưa có file nào được mở. Bấm các nút phía trên để thử nghiệm!</div>
+        </div>
+        <div id="simStatus" style="margin-top: 12px; font-size: 13px; color: #0284c7; font-weight: 600;">
+          Trạng thái: Sẵn sàng thực nghiệm.
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 20: SVG SHOWCASE 4 - BEFORE & AFTER -->
+    <div id="step-before-after-svg" class="step" data-x="-1400" data-y="4800" data-z="0">
+      <div class="eyebrow">🌟 BEFORE &amp; AFTER</div>
+      <h2 class="step-title">Chuyển Biến Toàn Diện: Word Offline ➔ Cloud ➔ PDF</h2>
+      <p class="step-desc">So sánh quy trình làm bài lạc hậu và chu trình công nghệ số hiện đại.</p>
+
+      <div class="svg-showcase">
+        <img src="assets/buoi11/before-after-document-conversion.svg" alt="Before and After Document Conversion">
+      </div>
+    </div>
+
+    <!-- TRẠM 21: BÀI THỰC HÀNH TỔNG HỢP -->
+    <div id="step-final-practice" class="step" data-x="0" data-y="4800" data-z="0">
+      <div class="eyebrow" style="background: #dbeafe; color: #1d4ed8;">🏆 THỰC HÀNH TỔNG HỢP (30 ĐIỂM)</div>
+      <h2 class="step-title">Quy Trình: Word ➔ Docs ➔ Bổ Sung Ảnh ➔ Xuất PDF</h2>
+      <p class="step-desc">Học sinh hoàn thiện toàn diện chu trình xử lý đa định dạng trong 25 phút:</p>
+
+      <div class="grid-2" style="margin-top: 20px;">
+        <div class="feature-card">
+          <h4 style="color: #2563eb; font-size: 17px;">6 Bước Bắt Buộc:</h4>
+          <ol style="font-size: 13.5px; line-height: 1.8; color: #334155;">
+            <li>Nhận file <code>baitap_khoahoc.docx</code> từ giáo viên.</li>
+            <li>Tải lên Google Drive và mở bằng Google Docs.</li>
+            <li>Sửa tiêu đề thành <strong>Title</strong>, nội dung thành <strong>Heading 1, Heading 2</strong>.</li>
+            <li>Chèn thêm 01 hình ảnh minh họa phù hợp (Wrap text hoặc In line).</li>
+            <li>Dùng Voice Typing đọc thêm 1 đoạn kết luận 2 câu.</li>
+            <li>Tải xuống dạng <strong>PDF</strong> và nộp cả 2 sản phẩm.</li>
+          </ol>
+        </div>
+        <div class="feature-card" style="background: #f0fdf4;">
+          <h4 style="color: #166534; font-size: 17px;">Tiêu Chí Chấm Điểm (30đ):</h4>
+          <ul style="font-size: 13.5px; line-height: 1.8; color: #15803d;">
+            <li>Upload &amp; mở Word bằng Docs chuẩn xác: 5 điểm</li>
+            <li>Định dạng Heading &amp; căn chỉnh đẹp mắt: 5 điểm</li>
+            <li>Chèn ảnh có viền/chú thích hợp lý: 5 điểm</li>
+            <li>Áp dụng thành công Voice Typing: 5 điểm</li>
+            <li>Kiểm tra số từ (Word Count) và lỗi chính tả: 5 điểm</li>
+            <li>Xuất bản file PDF hoàn hảo không lỗi dòng: 5 điểm</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 22: BÀI TẬP VỀ NHÀ -->
+    <div id="step-homework" class="step" data-x="1400" data-y="4800" data-z="0">
+      <div class="eyebrow" style="background: #ede9fe; color: #6d28d9;">🏠 BÀI TẬP VỀ NHÀ</div>
+      <h2 class="step-title">Chuyển Đổi Tài Liệu: Thử Thách Kép DOCX &amp; PDF</h2>
+      <p class="step-desc">Giáo viên cung cấp một file văn bản mẫu <code>vanban_thcs.docx</code>:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card">
+          <div class="feature-title">1. Upload &amp; Chỉnh Sửa</div>
+          <p class="feature-desc">Mở trên Docs, chỉnh sửa câu chữ, định dạng lại font Arial/Roboto cỡ 12, cách dòng 1.25.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">2. Thêm Hình Ảnh</div>
+          <p class="feature-desc">Chèn thêm 1 hình ảnh chất lượng cao minh họa cho nội dung bài viết.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">3. Xuất 2 File Nộp Bài</div>
+          <p class="feature-desc">Tải xuống 01 file <code>.docx</code> và 01 file <code>.pdf</code>. Nộp cả 2 file lên hệ thống học tập của lớp.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 23: BẢNG PHÍM TẮT -->
+    <div id="step-shortcuts" class="step" data-x="2800" data-y="4800" data-z="0">
+      <div class="eyebrow">⌨ BẢNG PHÍM TẮT SIÊU ĐẲNG</div>
+      <h2 class="step-title">Phím Tắt Kỹ Năng Buổi 11</h2>
+      <p class="step-desc">3 tổ hợp phím giúp em tiết kiệm hàng chục phút mỗi ngày:</p>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="feature-card" style="text-align: center;">
+          <h3 style="color: #2563eb; font-size: 20px;">In / Xuất PDF</h3>
+          <p style="margin: 16px 0;"><kbd>Ctrl + P</kbd></p>
+          <p style="font-size: 13px; color: #64748b;">Mở hộp thoại Print Preview</p>
+        </div>
+        <div class="feature-card" style="text-align: center;">
+          <h3 style="color: #059669; font-size: 20px;">Đếm Số Từ</h3>
+          <p style="margin: 16px 0;"><kbd>Ctrl + Shift + C</kbd></p>
+          <p style="font-size: 13px; color: #64748b;">Xem số trang, số từ tức thì</p>
+        </div>
+        <div class="feature-card" style="text-align: center;">
+          <h3 style="color: #db2777; font-size: 20px;">Nhập Giọng Nói</h3>
+          <p style="margin: 16px 0;"><kbd>Ctrl + Shift + S</kbd></p>
+          <p style="font-size: 13px; color: #64748b;">Bật Micro Voice Typing</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 24: QUIZ 10 CÂU -->
+    <div id="step-quiz" class="step" data-x="4200" data-y="4800" data-z="0">
+      <div class="eyebrow" style="background: #fdf2f8; color: #be185d;">🧠 TRẮC NGHIỆM CỦNG CỐ</div>
+      <h2 class="step-title">Quiz Buổi 11: Word, PDF &amp; Công Cụ Hỗ Trợ</h2>
+      <p class="step-desc">10 câu hỏi kiểm tra độ am hiểu công nghệ của em:</p>
+
+      <div class="interactive-box" id="quizContainer">
+        <div id="quizQuestion" style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 16px;">
+          Đang tải câu hỏi...
+        </div>
+        <div id="quizOptions" style="display: flex; flex-direction: column; gap: 10px;">
+          <!-- Options rendered via JS -->
+        </div>
+        <div id="quizFeedback" style="margin-top: 16px; font-weight: 600; font-size: 14px;"></div>
+        <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+          <span id="quizScoreTracker" style="font-size: 13px; color: #64748b;">Câu 1 / 10 • Điểm: 0</span>
+          <button id="btnNextQuiz" class="hud-btn primary" onclick="nextQuizQuestion()" style="display: none;">Câu tiếp theo ❯</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẠM 25: OVERVIEW 3D BIG PICTURE -->
+    <div id="overview" class="step" data-x="1800" data-y="2400" data-z="3800" data-scale="4.8">
+      <!-- 3D Cosmos Overview of all 25 stations -->
+    </div>
+
+  </div>
+
+  <!-- TEACHER GUIDE DRAWER -->
+  <aside id="teacherDrawer">
+    <div class="drawer-header">
+      <span class="drawer-title">👨‍🏫 SỔ TAY GIÁO VIÊN · BUỔI 11</span>
+      <button class="nav-arrow" onclick="toggleTeacherDrawer()" style="width:28px; height:28px; font-size:12px;">✕</button>
+    </div>
+    <div class="drawer-body">
+      <h4 style="color: #38bdf8; margin-top: 0;">Mục tiêu trọng tâm:</h4>
+      <p>Học sinh hiểu bản chất tương thích giữa Word (.docx), Google Docs và PDF, đồng thời ứng dụng thành thạo Voice Typing, Word Count và Print Preview.</p>
+
+      <h4 style="color: #38bdf8;">Kịch bản 90 phút:</h4>
+      <ul>
+        <li><strong>0-15':</strong> Khởi động &amp; Hệ sinh thái định dạng DOCX - DOCS - PDF.</li>
+        <li><strong>15-35':</strong> Thực hành Upload Word &amp; Xuất PDF không lỗi font.</li>
+        <li><strong>35-50':</strong> Khám phá Voice Typing (Ctrl+Shift+S) &amp; Đếm từ (Ctrl+Shift+C).</li>
+        <li><strong>50-75':</strong> Thực hành tổng hợp: Chuyển đổi và xuất PDF hoàn thiện.</li>
+        <li><strong>75-85':</strong> Đố vui trắc nghiệm &amp; phản xạ nhanh.</li>
+        <li><strong>85-90':</strong> Hướng dẫn nộp file bài tập về nhà kép.</li>
+      </ul>
+
+      <h4 style="color: #38bdf8;">Lỗi HS thường gặp:</h4>
+      <p>1. Chưa bật quyền Micro cho trình duyệt khiến Voice Typing báo lỗi.<br>
+      2. Nhầm lẫn giữa khổ giấy Letter và A4 khi in ấn.<br>
+      3. Quên không chọn "Lưu dưới dạng PDF" khi xuất bản file.</p>
+    </div>
+  </aside>
+
+  <!-- SHORTCUTS MODAL -->
+  <div id="shortcutsModal" class="modal-overlay" onclick="closeShortcutsModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="margin: 0; color: #38bdf8; font-size: 22px;">⌨ Bảng Phím Tắt Buổi 11</h3>
+        <button class="nav-arrow" onclick="closeShortcutsModal()" style="width:28px; height:28px; font-size:12px;">✕</button>
+      </div>
+      <div class="shortcut-row"><span>In / Lưu PDF:</span> <kbd>Ctrl + P</kbd></div>
+      <div class="shortcut-row"><span>Đếm số từ (Word Count):</span> <kbd>Ctrl + Shift + C</kbd></div>
+      <div class="shortcut-row"><span>Nhập liệu bằng giọng nói:</span> <kbd>Ctrl + Shift + S</kbd></div>
+      <div class="shortcut-row"><span>Kiểm tra chính tả (Spell check):</span> <kbd>F7</kbd></div>
+      <div class="shortcut-row"><span>Tìm kiếm &amp; thay thế:</span> <kbd>Ctrl + H</kbd></div>
+      <div class="shortcut-row"><span>Bật/Tắt Toàn cảnh 3D:</span> <kbd>O</kbd> hoặc <kbd>Esc</kbd></div>
+    </div>
+  </div>
+
+  <!-- IMPRESS JS -->
+  <script src="assets/js/impress.js"></script>
+  <script>
+    // Init Impress
+    impress().init();
+
+    // Track Step Numbers
+    const stepIds = [
+      "step-intro", "step-goals", "step-formats", "step-ecosystem-svg",
+      "step-upload-docx", "step-challenge-1", "step-download-formats",
+      "step-pdf-deepdive", "step-challenge-2", "step-voice-typing",
+      "step-challenge-3", "step-tools-svg", "step-word-count",
+      "step-spell-check", "step-print-preview", "step-print-svg",
+      "step-offline-mode", "step-addons-intro", "step-simulator",
+      "step-before-after-svg", "step-final-practice", "step-homework",
+      "step-shortcuts", "step-quiz", "overview"
+    ];
+
+    document.addEventListener("impress:stepenter", function(event) {
+      const id = event.target.id;
+      const idx = stepIds.indexOf(id);
+      const counter = document.getElementById("currentStepNum");
+      if (counter && idx !== -1) {
+        counter.textContent = (idx + 1);
+      }
+    });
+
+    // Teacher Drawer Toggle
+    function toggleTeacherDrawer() {
+      document.getElementById("teacherDrawer").classList.toggle("open");
+    }
+
+    // Shortcuts Modal
+    function openShortcutsModal() {
+      document.getElementById("shortcutsModal").classList.add("open");
+    }
+    function closeShortcutsModal(e) {
+      if (!e || e.target.id === 'shortcutsModal' || e.target.tagName === 'BUTTON') {
+        document.getElementById("shortcutsModal").classList.remove("open");
+      }
+    }
+
+    // Simulator Logic
+    function simUploadWord() {
+      const screen = document.getElementById("simContent");
+      screen.innerHTML = `
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span style="background:#2563eb; color:#fff; font-size:11px; font-weight:bold; padding:2px 6px; border-radius:4px;">.DOCX</span>
+          <strong>baitap_khoahoc.docx (Mở bằng Google Docs)</strong>
+        </div>
+        <p style="margin:0; color:#334155;">Đã chuyển đổi thành công từ file Word! Các định dạng bảng biểu và chữ gốc vẫn nguyên vẹn.</p>
+      `;
+      document.getElementById("simStatus").innerHTML = '<span style="color:#2563eb;">✔ Đã mở file DOCX trên Google Docs mượt mà!</span>';
+    }
+
+    function simVoice() {
+      const screen = document.getElementById("simContent");
+      screen.innerHTML += `
+        <p style="margin-top:10px; color:#dc2626; font-style:italic;">
+          🎙 <em>[Giọng nói AI ghi nhận]: "Hôm nay chúng em thực hành chuyển đổi Word sang PDF rất thú vị và bổ ích."</em>
+        </p>
+      `;
+      document.getElementById("simStatus").innerHTML = '<span style="color:#dc2626;">✔ Voice Typing đã chuyển âm thanh thành văn bản tiếng Việt!</span>';
+    }
+
+    function simCount() {
+      alert("📊 THỐNG KÊ SỐ TỪ (WORD COUNT - Ctrl+Shift+C):\n• Số trang: 2 trang\n• Số từ: 486 từ\n• Ký tự (có khoảng trắng): 2.650 ký tự\n• Ký tự (không khoảng trắng): 2.180 ký tự");
+      document.getElementById("simStatus").innerHTML = '<span style="color:#059669;">✔ Đã hiển thị hộp thoại thống kê Word Count.</span>';
+    }
+
+    function simExportPDF() {
+      const screen = document.getElementById("simContent");
+      screen.innerHTML = `
+        <div style="background:#fef2f2; border:1px solid #fecdd3; padding:12px; border-radius:8px;">
+          <strong style="color:#b91c1c;">📄 FILE XUẤT BẢN: baocao_hoanthien.pdf</strong>
+          <p style="margin:6px 0 0; font-size:13px; color:#7f1d1d;">Định dạng PDF đã khóa trang cứng 100%. Sẵn sàng gửi giáo viên chấm điểm hoặc in ấn!</p>
+        </div>
+      `;
+      document.getElementById("simStatus").innerHTML = '<span style="color:#059669;">✔ Đã xuất bản file PDF thành công!</span>';
+    }
+
+    // Quiz 10 Questions Engine
+    const quizData = [
+      {
+        q: "1. Để mở một file Word (.docx) bằng Google Docs, cách làm đúng nhất là gì?",
+        options: [
+          "Tải file lên Google Drive rồi nhấp chọn 'Mở bằng Google Tài liệu'",
+          "Đổi đuôi file thành .mp3",
+          "Phải mua phần mềm Microsoft Word mới mở được",
+          "Copy nội dung bằng tay từng chữ một"
+        ],
+        correct: 0,
+        exp: "Google Drive cho phép mở và chỉnh sửa trực tiếp file .docx qua Google Tài liệu."
+      },
+      {
+        q: "2. Vì sao file PDF thường được ưu tiên khi nộp bài cho giáo viên hoặc in ấn?",
+        options: [
+          "Vì PDF khóa cứng định dạng, không bị nhảy dòng, lệch ảnh hay lỗi font khi mở trên máy khác",
+          "Vì PDF tự động xóa nội dung sau 1 ngày",
+          "Vì PDF không xem được chữ",
+          "Vì PDF dung lượng nặng nhất"
+        ],
+        correct: 0,
+        exp: "PDF bảo toàn 100% bố cục trang trên mọi thiết bị và hệ điều hành."
+      },
+      {
+        q: "3. Tổ hợp phím tắt nào giúp kích hoạt tính năng Nhập liệu bằng giọng nói (Voice Typing)?",
+        options: ["Ctrl + Shift + S", "Ctrl + V", "Ctrl + Alt + V", "Ctrl + S"],
+        correct: 0,
+        exp: "Ctrl + Shift + S là phím tắt mở công cụ Voice Typing trên Google Docs."
+      },
+      {
+        q: "4. Khi sử dụng Voice Typing bằng tiếng Việt, muốn gõ dấu chấm câu em cần đọc khẩu lệnh gì?",
+        options: ["Nói 'Dấu chấm'", "Bấm chuột 3 lần", "Nói 'Dừng lại'", "Nói 'Enter'"],
+        correct: 0,
+        exp: "Nói rõ 'Dấu chấm' thì Google Docs sẽ tự chèn dấu chấm câu."
+      },
+      {
+        q: "5. Để đếm số từ (Word Count) và số trang của bài viết, em bấm phím tắt nào?",
+        options: ["Ctrl + Shift + C", "Ctrl + C", "Ctrl + W", "Ctrl + F"],
+        correct: 0,
+        exp: "Ctrl + Shift + C mở hộp thoại Word Count thống kê chi tiết số từ và trang."
+      },
+      {
+        q: "6. Dấu gạch chân lượn sóng màu đỏ dưới một từ biểu thị điều gì?",
+        options: [
+          "Hệ thống phát hiện từ đó có khả năng sai chính tả",
+          "Từ đó rất quan trọng cần in đậm",
+          "Từ đó đã bị xóa",
+          "Từ đó là liên kết web"
+        ],
+        correct: 0,
+        exp: "Gạch đỏ biểu thị lỗi chính tả tiềm ẩn cần xem xét."
+      },
+      {
+        q: "7. Trong hộp thoại In ấn (Ctrl + P), khổ giấy chuẩn tại Việt Nam cần chọn là gì?",
+        options: ["A4 (210 x 297 mm)", "Letter", "Legal", "Khổ báo lớn"],
+        correct: 0,
+        exp: "A4 là tiêu chuẩn kích thước giấy in ấn và văn phòng phẩm tại Việt Nam."
+      },
+      {
+        q: "8. Nếu không có máy in thật kết nối, làm thế nào để xuất file PDF từ lệnh In (Ctrl + P)?",
+        options: [
+          "Chọn máy in đích là 'Lưu dưới dạng PDF' (Save as PDF)",
+          "Tắt máy in đi là xong",
+          "Bấm nút Hủy bỏ",
+          "Không thể xuất PDF từ lệnh In"
+        ],
+        correct: 0,
+        exp: "Chọn 'Lưu dưới dạng PDF' giúp máy in ảo xuất trang xem trước thành tệp .pdf."
+      },
+      {
+        q: "9. Chế độ Ngoại tuyến (Offline Mode) mang lại lợi ích gì?",
+        options: [
+          "Cho phép em soạn thảo bình thường khi mất mạng, tự động đồng bộ khi có Internet lại",
+          "Làm máy tính chạy không cần pin",
+          "Tự động viết bài văn hộ học sinh",
+          "Chỉ xem được chứ không sửa được"
+        ],
+        correct: 0,
+        exp: "Offline Mode giúp học sinh làm bài không gián đoạn ngay cả khi mạng bị rớt."
+      },
+      {
+        q: "10. Mục đích chính của việc cài đặt Add-ons (Tiện ích mở rộng) trong Docs là gì?",
+        options: [
+          "Bổ sung thêm tính năng nâng cao như gõ công thức Toán, kho icon, dịch thuật tự động",
+          "Làm tài liệu nặng hơn để khoe bạn bè",
+          "Xóa tài khoản Google",
+          "Để máy tính tự tắt sau 5 phút"
+        ],
+        correct: 0,
+        exp: "Add-ons mở rộng khả năng xử lý chuyên sâu cho tài liệu của em."
+      }
+    ];
+
+    let currentQ = 0;
+    let quizScore = 0;
+
+    function renderQuiz() {
+      const q = quizData[currentQ];
+      document.getElementById("quizQuestion").textContent = q.q;
+      const opts = document.getElementById("quizOptions");
+      opts.innerHTML = "";
+      document.getElementById("quizFeedback").textContent = "";
+      document.getElementById("btnNextQuiz").style.display = "none";
+      document.getElementById("quizScoreTracker").textContent = `Câu ${currentQ + 1} / ${quizData.length} • Điểm: ${quizScore}`;
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "hud-btn";
+        btn.style.textAlign = "left";
+        btn.style.padding = "12px 18px";
+        btn.style.fontSize = "14px";
+        btn.style.color = "#1e293b";
+        btn.style.background = "#f1f5f9";
+        btn.style.border = "1px solid #cbd5e1";
+        btn.innerHTML = `<strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}`;
+        btn.onclick = () => selectQuizAnswer(idx);
+        opts.appendChild(btn);
+      });
+    }
+
+    function selectQuizAnswer(chosenIdx) {
+      const q = quizData[currentQ];
+      const buttons = document.getElementById("quizOptions").querySelectorAll("button");
+      buttons.forEach(b => b.disabled = true);
+
+      const feedback = document.getElementById("quizFeedback");
+      if (chosenIdx === q.correct) {
+        buttons[chosenIdx].style.background = "#dcfce7";
+        buttons[chosenIdx].style.borderColor = "#10b981";
+        feedback.innerHTML = `<span style="color:#059669;">✔ Chính xác! ${q.exp}</span>`;
+        quizScore += 10;
+      } else {
+        buttons[chosenIdx].style.background = "#fee2e2";
+        buttons[chosenIdx].style.borderColor = "#ef4444";
+        buttons[q.correct].style.background = "#dcfce7";
+        feedback.innerHTML = `<span style="color:#dc2626;">✖ Chưa đúng. ${q.exp}</span>`;
+      }
+
+      document.getElementById("quizScoreTracker").textContent = `Câu ${currentQ + 1} / ${quizData.length} • Điểm: ${quizScore}`;
+      document.getElementById("btnNextQuiz").style.display = "inline-flex";
+    }
+
+    function nextQuizQuestion() {
+      currentQ++;
+      if (currentQ < quizData.length) {
+        renderQuiz();
+      } else {
+        document.getElementById("quizContainer").innerHTML = `
+          <div style="text-align: center; padding: 24px;">
+            <h3 style="color:#059669; font-size: 26px; margin-bottom: 12px;">🎉 Chúc Mừng Em Đã Hoàn Thành Quiz Buổi 11!</h3>
+            <p style="font-size: 18px; color: #1e293b;">Tổng điểm đạt được: <strong>${quizScore} / 100</strong></p>
+            <p style="font-size: 14px; color: #64748b; margin-top: 10px;">${quizScore >= 80 ? 'Xuất sắc! Em đã thành thạo xuất bản đa định dạng và các công cụ trợ lực!' : 'Em hãy ôn lại bài và thử làm lại nhé!'}</p>
+            <button class="hud-btn primary" onclick="location.reload()" style="margin-top: 18px;">Làm lại Quiz</button>
+          </div>
+        `;
+      }
+    }
+
+    // Initial Quiz Load
+    renderQuiz();
+  </script>
+</body>
+</html>

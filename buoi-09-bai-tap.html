@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Phiếu bài tập thực hành & bài tập về nhà Buổi 9: Sharing & Permission — Ai Được Làm Gì Với Tài Liệu Của Em? (Google Docs THCS). Kèm dữ liệu mẫu, Before/After, gợi ý và thang điểm 30 điểm.">
+  <title>Bài tập &amp; Thực hành Buổi 9 · Chia Sẻ &amp; Phân Quyền An Toàn (Docs Lab THCS)</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='10' y='6' width='44' height='52' rx='6' fill='%232563eb'/%3E%3Cpath d='M32 20a6 6 0 100 12 6 6 0 000-12zM22 42c0-5 5-8 10-8s10 3 10 8' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #0b152d;
+      --navy-light: #162a54;
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --blue-soft: #eff6ff;
+      --blue-border: #bfdbfe;
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --teal-soft: #f0fdfa;
+      --teal-border: #99f6e4;
+      --amber: #f59e0b;
+      --amber-soft: #fffbeb;
+      --green: #10b981;
+      --green-soft: #ecfdf5;
+      --red: #ef4444;
+      --red-soft: #fff1f2;
+      --purple: #8b5cf6;
+      --purple-soft: #f5f3ff;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --soft: #f8fafc;
+      --paper: #ffffff;
+      --shadow: 0 16px 45px rgba(11, 21, 45, 0.08);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.08), transparent 30rem), #f8fafc;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    button, a { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid rgba(37, 99, 235, 0.4); outline-offset: 3px; }
+
+    /* Topbar */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: 18px;
+      min-height: 70px; padding: 10px clamp(16px, 4vw, 48px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-family: 'Outfit', sans-serif; font-size: 1.15rem; }
+    .mark {
+      display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px;
+      color: white; background: linear-gradient(135deg, var(--blue), var(--green)); font-weight: 900;
+    }
+    .crumb { color: var(--muted); font-size: 0.85rem; }
+    .crumb b { color: var(--ink); }
+    .top-actions { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+    .top-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 38px; padding: 0 14px;
+      border: 1px solid var(--line); border-radius: 11px;
+      background: white; font-size: 0.82rem; font-weight: 700;
+      transition: all 0.18s ease;
+    }
+    .top-link:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+    .top-link.highlight { background: var(--blue-soft); border-color: var(--blue-border); color: var(--blue); }
+    .top-link.primary { background: var(--blue); border-color: var(--blue); color: white; }
+
+    /* Page Container */
+    .page { width: min(1200px, 100%); margin: auto; padding: 28px clamp(16px, 4vw, 40px) 70px; }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #0b152d 0%, #132448 55%, #059669 100%);
+      border-radius: 24px; padding: clamp(28px, 4vw, 42px);
+      color: white; margin-bottom: 26px;
+      box-shadow: 0 20px 50px rgba(11, 21, 45, 0.25);
+      position: relative; overflow: hidden;
+    }
+    .hero-banner::after {
+      content: ""; position: absolute; right: -40px; bottom: -40px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #6ee7b7; margin-bottom: 8px;
+    }
+    .hero-banner h1 {
+      font-family: 'Outfit', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      margin: 0 0 12px; line-height: 1.15;
+    }
+    .hero-banner p { margin: 0 0 20px; color: #cbd5e1; max-width: 740px; font-size: 1rem; }
+    .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 99px;
+      background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px);
+      font-size: 0.8rem; font-weight: 700; color: white;
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--paper); border-radius: var(--radius);
+      border: 1px solid var(--line); box-shadow: var(--shadow);
+      padding: clamp(22px, 3vw, 34px); margin-bottom: 26px;
+    }
+    .card-head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 20px; gap: 16px; flex-wrap: wrap;
+    }
+    .card-head h2 {
+      font-family: 'Outfit', sans-serif; font-size: 1.45rem; margin: 0;
+      color: var(--navy); display: flex; align-items: center; gap: 10px;
+    }
+    .card-head p { margin: 4px 0 0; color: var(--muted); font-size: 0.9rem; }
+    .badge-step {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 800;
+    }
+
+    /* Compare Grid */
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px;
+    }
+    @media (max-width: 768px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+    .compare-pane {
+      border-radius: 14px; padding: 18px; border: 1.5px solid;
+    }
+    .pane-before { background: var(--red-soft); border-color: #fecdd3; }
+    .pane-after { background: var(--green-soft); border-color: #a7f3d0; }
+    .pane-title {
+      font-weight: 800; font-size: 0.88rem; margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* Copy Box */
+    .copy-box {
+      background: #f1f5f9; border-radius: 12px; padding: 16px 20px;
+      border: 1px solid #cbd5e1; position: relative; margin: 14px 0;
+    }
+    .copy-box pre {
+      margin: 0; font-family: inherit; font-size: 0.88rem; white-space: pre-wrap; color: var(--ink); line-height: 1.7;
+    }
+    .btn-copy {
+      position: absolute; top: 12px; right: 12px;
+      padding: 6px 14px; border-radius: 8px; border: 1px solid #cbd5e1;
+      background: white; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s ease;
+    }
+    .btn-copy:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* Rubric Table */
+    .rubric-table {
+      width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 14px;
+    }
+    .rubric-table th, .rubric-table td {
+      padding: 12px 16px; border: 1px solid var(--line); text-align: left;
+    }
+    .rubric-table th { background: #f8fafc; font-weight: 800; color: var(--navy); }
+    .rubric-table tr:nth-child(even) td { background: #fafbfc; }
+
+    /* Interactive Checklist */
+    .check-list { display: grid; gap: 10px; margin-top: 14px; }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 18px; border-radius: 12px; border: 1.5px solid var(--line);
+      background: #fafbfc; cursor: pointer; transition: all 0.2s ease;
+    }
+    .check-item:hover { border-color: var(--blue); background: #eff6ff; }
+    .check-item input[type="checkbox"] {
+      width: 20px; height: 20px; border-radius: 6px; accent-color: var(--blue);
+      margin-top: 2px; cursor: pointer;
+    }
+    .check-item.checked {
+      border-color: var(--blue); background: #eff6ff;
+    }
+    .check-content { flex: 1; }
+    .check-title { font-weight: 700; font-size: 0.92rem; color: var(--navy); display: flex; align-items: center; justify-content: space-between; }
+    .check-desc { font-size: 0.82rem; color: var(--muted); margin-top: 3px; }
+
+    .score-summary-box {
+      margin-top: 20px; padding: 18px 24px; border-radius: 14px;
+      background: linear-gradient(135deg, #0b152d, #132448);
+      color: white; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+    }
+
+    /* Step Grid */
+    .step-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px;
+    }
+    .step-box {
+      background: #f8fafc; border: 1px solid var(--line); border-radius: 14px; padding: 18px;
+    }
+    .step-box b { color: var(--blue); font-size: 0.88rem; display: block; margin-bottom: 6px; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 30px; right: 30px; z-index: 100;
+      background: var(--navy); color: white; padding: 12px 24px; border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-size: 0.88rem; font-weight: 700;
+      opacity: 0; transform: translateY(20px); transition: all 0.3s ease; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       TOPBAR
+       ============================================================ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark">09</div>
+      <div>
+        Docs Lab THCS
+        <div class="crumb">GĐ2 &gt; <b>Buổi 09 · Sharing &amp; Permission</b></div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <a href="buoi-09-chia-se-va-phan-quyen.html" class="top-link highlight">🌌 Mở Slide 3D Buổi 9</a>
+      <a href="https://docs.new" target="_blank" rel="noopener" class="top-link primary">📄 Tạo Google Docs Mới</a>
+      <button class="top-link" onclick="window.print()">🖨️ In Phiếu Học Tập</button>
+      <a href="index.html" class="top-link">🏠 Cổng Trung Tâm</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main class="page">
+
+    <!-- HERO BANNER -->
+    <div class="hero-banner">
+      <div class="eyebrow">HỌC LIỆU THỰC HÀNH &amp; RÈN LUYỆN · BUỔI 09</div>
+      <h1>Chia Sẻ &amp; Phân Quyền An Toàn (Sharing &amp; Permissions)</h1>
+      <p>
+        Ai được phép làm gì với tài liệu của em? Làm chủ nghệ thuật phân vai Viewer, Commenter, Editor, cài đặt chế độ Restricted bảo mật, khóa quyền sao chép/tải xuống và áp dụng nguyên tắc cấp quyền tối thiểu trong học tập.
+      </p>
+      <div class="hero-pills">
+        <span class="hero-pill">🎯 Tổng điểm: 30 Điểm</span>
+        <span class="hero-pill">⏱️ Thời lượng: 100 phút</span>
+        <span class="hero-pill">👁️ Viewer</span>
+        <span class="hero-pill">💬 Commenter</span>
+        <span class="hero-pill">✏️ Editor</span>
+        <span class="hero-pill">🔒 Restricted</span>
+        <span class="hero-pill">🛡️ An Toàn Số</span>
+      </div>
+    </div>
+
+    <!-- SECTION 1: BEFORE / AFTER COMPARISON -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>⚖️ Đối Chiếu Thực Tế: Chia Sẻ Tùy Tiện vs. Phân Quyền An Toàn</h2>
+          <p>Hiểu vì sao học sinh thông minh trên không gian mạng luôn cẩn trọng với từng đường liên kết</p>
+        </div>
+        <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">An Toàn Số Học Đường</span>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-pane pane-before">
+          <div class="pane-title" style="color:#be123c">
+            <span>❌ CHIA SẺ BỪA BÃI (MẤT KIỂM SOÁT)</span>
+            <span style="font-size:0.75rem;padding:3px 8px;border-radius:6px;background:#fee2e2">Nguy hiểm</span>
+          </div>
+          <ul style="margin:0;padding-left:18px;font-size:0.85rem;color:#881337;line-height:1.7">
+            <li><b>Anyone with link + Editor:</b> Đăng lên nhóm Zalo lớp, bị người lạ xóa mất 3 trang kế hoạch.</li>
+            <li><b>Lộ thông tin nhạy cảm:</b> Để lộ số điện thoại bố mẹ và địa chỉ nhà trong tài liệu mở.</li>
+            <li><b>Không khóa quyền sao chép:</b> Bài làm văn công phu bị bạn khác copy mang đi nộp trước!</li>
+            <li><b>Bỏ quên quyền Editor mãi mãi:</b> Kết thúc kỳ học vẫn không thu hồi quyền truy cập.</li>
+          </ul>
+        </div>
+
+        <div class="compare-pane pane-after">
+          <div class="pane-title" style="color:#047857">
+            <span>✅ PHÂN QUYỀN CHUẨN GOOGLE DOCS THCS</span>
+            <span style="font-size:0.75rem;padding:3px 8px;border-radius:6px;background:#d1fae5">Chuẩn 10/10</span>
+          </div>
+          <ul style="margin:0;padding-left:18px;font-size:0.85rem;color:#065f46;line-height:1.7">
+            <li><b>Chế độ Restricted mặc định:</b> Chỉ những tài khoản Gmail được mời mới mở được bài.</li>
+            <li><b>Phân vai chuẩn xác:</b> Thầy cô (Viewer), Bạn bè góp ý (Commenter), Bạn cùng nhóm (Editor).</li>
+            <li><b>Khóa tải xuống &amp; in ấn:</b> Bật tùy chọn chống copy trong bánh răng Cài đặt ⚙️.</li>
+            <li><b>Thu hồi quyền khi xong việc:</b> Xóa quyền Editor khi dự án kết thúc để chốt bài nộp.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: THREE MINI PRACTICES -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>🧩 Ba Bài Thực Hành Nhỏ Khởi Động (Mini Practices)</h2>
+          <p>Luyện tập từng thao tác phân quyền cốt lõi trước khi bước vào dự án lớn</p>
+        </div>
+        <span class="badge-step" style="background:var(--teal-soft);color:var(--teal)">Luyện Tập Cơ Bản</span>
+      </div>
+
+      <div class="step-grid">
+        <!-- Mini 1 -->
+        <div class="step-box" style="border-top:4px solid var(--blue)">
+          <b>THỰC HÀNH NHỎ 1 · CẤP ĐÚNG VAI TRÒ</b>
+          <h4 style="margin:6px 0 10px;font-size:1.05rem;color:var(--navy)">Thực Hành Chọn Quyền</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">
+            Mở hộp thoại Share, nhập email 1 bạn cùng lớp. Nhấp vào menu bên cạnh và lần lượt quan sát 3 lựa chọn: <b>Người xem (Viewer)</b>, <b>Người nhận xét (Commenter)</b> và <b>Người chỉnh sửa (Editor)</b>.
+          </p>
+          <div style="background:var(--blue-soft);padding:8px 12px;border-radius:8px;font-size:0.8rem;color:var(--blue);font-weight:700">
+            Mục tiêu: Viết lời nhắn lịch sự và cấp quyền Commenter.
+          </div>
+        </div>
+
+        <!-- Mini 2 -->
+        <div class="step-box" style="border-top:4px solid var(--green)">
+          <b>THỰC HÀNH NHỎ 2 · RESTRICTED VS LINK</b>
+          <h4 style="margin:6px 0 10px;font-size:1.05rem;color:var(--navy)">Chuyển Đổi Quyền Truy Cập</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">
+            Tại mục <i>Truy cập chung (General access)</i>, chuyển từ <b>Bị hạn chế (Restricted)</b> sang <b>Bất kỳ ai có đường liên kết (Anyone with link)</b>. Sao chép link và mở thử trên tab Ẩn danh.
+          </p>
+          <div style="background:var(--green-soft);padding:8px 12px;border-radius:8px;font-size:0.8rem;color:var(--green);font-weight:700">
+            Mục tiêu: Đảm bảo quyền bên cạnh luôn là Người xem (Viewer)!
+          </div>
+        </div>
+
+        <!-- Mini 3 -->
+        <div class="step-box" style="border-top:4px solid var(--purple)">
+          <b>THỰC HÀNH NHỎ 3 · KHÓA BẢN QUYỀN ⚙️</b>
+          <h4 style="margin:6px 0 10px;font-size:1.05rem;color:var(--navy)">Chống Tải Xuống &amp; Sao Chép</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">
+            Bấm vào biểu tượng <b>Bánh răng ⚙️</b> ở góc trên hộp thoại Share. Bỏ tích ô <i>"Người xem và người nhận xét có thể tải xuống, in và sao chép"</i>.
+          </p>
+          <div style="background:var(--purple-soft);padding:8px 12px;border-radius:8px;font-size:0.8rem;color:var(--purple);font-weight:700">
+            Mục tiêu: Bảo vệ 100% nội dung bài viết không bị copy trộm.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: COMPREHENSIVE PROJECT -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>🏆 Bài Thực Hành Tổng Hợp: Kế Hoạch Trực Nhật Lớp 7A</h2>
+          <p>Tạo tài liệu phân công trực nhật và cấu hình phân quyền bảo mật gửi giáo viên và ban cán sự</p>
+        </div>
+        <span class="badge-step" style="background:#fef3c7;color:#b45309">Dự Án 30 Điểm</span>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <b style="font-size:0.9rem;color:var(--navy)">📄 Dữ liệu văn bản thô (Sao chép vào Google Docs của em):</b>
+          <span style="font-size:0.8rem;color:var(--muted)">Bấm nút sao chép để dán nhanh</span>
+        </div>
+
+        <div class="copy-box">
+          <button class="btn-copy" id="btnCopyRawText">📋 Sao chép văn bản thô</button>
+          <pre id="rawTextContent">CHI ĐỘI 7A - TRƯỜNG THCS NGUYỄN DU
+KẾ HOẠCH PHÂN CÔNG TRỰC NHẬT VÀ BẢO VỆ PHÒNG HỌC HỌC KỲ I
+
+Kính gửi: Cô giáo Chủ nhiệm và toàn thể các bạn học sinh Chi đội 7A,
+Nhằm duy trì phòng học luôn sạch đẹp, thoáng mát và bảo quản tốt cơ sở vật chất (máy chiếu, quạt, bàn ghế), Ban Cán sự lớp xin thông báo lịch phân công trực nhật từ Thứ Hai đến Thứ Sáu như sau:
+
+I. LỊCH PHÂN CÔNG THEO TỔ
+• Thứ Hai (Tổ 1): Quét lớp, lau bảng, giặt giẻ lau và đổ rác trước 07:15 sáng.
+• Thứ Ba (Tổ 2): Quét hành lang, lau bục giảng và sắp xếp lại bàn ghế ngay ngắn.
+• Thứ Tư (Tổ 3): Chăm sóc chậu cây xanh ban công, lau cửa sổ kính.
+• Thứ Năm (Tổ 4): Quét dọn phòng học, kiểm tra tắt toàn bộ thiết bị điện sau buổi học.
+• Thứ Sáu (Ban Cán sự & Luân phiên): Tổng vệ sinh cuối tuần, khóa cửa phòng học cẩn thận.
+
+II. TIÊU CHUẨN ĐÁNH GIÁ THI ĐUA
+- Hoàn thành trước giờ truy bài (07:15): +10 điểm thi đua cho Tổ.
+- Bỏ trực nhật không có lý do: -20 điểm thi đua và trực bù vào tuần kế tiếp.
+- Giữ gìn bảng lớp sạch sẽ, bàn giáo viên có khăn trải và lọ hoa: Khen thưởng cuối tháng.
+
+Mọi ý kiến đóng góp xin gửi nhận xét (Comment) trực tiếp trên tài liệu này cho Lớp trưởng.
+BAN CÁN SỰ CHI ĐỘI 7A</pre>
+        </div>
+      </div>
+
+      <h3 style="font-size:1.15rem;color:var(--navy);margin:24px 0 12px">🛠️ Các Bước Thực Hiện Chi Tiết:</h3>
+      <div style="display:grid;gap:12px">
+        <div style="background:#f8fafc;border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 1: Soạn thảo và trình bày bảng biểu</b><br>
+          Dán nội dung thô vào Google Docs. Kẻ bảng 5 ngày trong tuần cho Lịch phân công và áp dụng kỹ thuật màu nền Pastel (đã học ở Buổi 6).
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid var(--teal);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 2: Cấp quyền Viewer cho Thầy Cô Chủ Nhiệm</b><br>
+          Bấm Share, nhập email giáo viên chủ nhiệm. Chọn quyền <b>Người xem (Viewer)</b> kèm lời nhắn báo cáo kế hoạch.
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid var(--green);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 3: Cấp quyền Commenter cho Bạn Cùng Lớp</b><br>
+          Thêm email của 1-2 bạn tổ trưởng/bạn thân với quyền <b>Người nhận xét (Commenter)</b> để nhờ các bạn đọc và bình luận góp ý.
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid var(--purple);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 4: Kiểm tra an toàn số &amp; Khóa quyền sao chép</b><br>
+          Vào bánh răng ⚙️, bỏ tích quyền tải xuống và sao chép của Viewer/Commenter. Đảm bảo chế độ chung là <b>Restricted</b>.
+        </div>
+      </div>
+
+      <h3 style="font-size:1.15rem;color:var(--navy);margin:28px 0 14px">✅ Bảng Kiểm Tự Đánh Giá Tiến Độ (Checklist 30 Điểm):</h3>
+      <div class="check-list">
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>1. Soạn thảo tài liệu chuẩn đẹp, có bảng phân công 5 ngày</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Định dạng tiêu đề rõ ràng, bảng phân công trực nhật có màu nền trang nhã.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>2. Thêm đúng email giáo viên với quyền Viewer</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Chỉ định quyền Người xem cho thầy cô, có gửi kèm lời nhắn kính gửi lễ phép.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>3. Thêm bạn học với quyền Commenter</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Cấp đúng quyền Người nhận xét cho bạn học để góp ý, không cấp nhầm Editor.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>4. An toàn số: Không lộ SĐT hay thông tin cá nhân</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Tài liệu không chứa số điện thoại phụ huynh, mật khẩu hay dữ liệu riêng tư.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>5. Bật Restricted và khóa sao chép/tải xuống</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Bảo mật tài liệu trong bánh răng cài đặt, kiểm tra link mở mượt mà trên tab ẩn danh.</div>
+          </div>
+        </label>
+      </div>
+
+      <div class="score-summary-box">
+        <div>
+          <span style="font-size:0.85rem;color:#6ee7b7;text-transform:uppercase;letter-spacing:0.05em;font-weight:700">Điểm Thực Hành Của Em</span>
+          <div style="font-size:1.8rem;font-weight:900;font-family:'Outfit',sans-serif">
+            <span id="liveScoreText">0</span> / 30 Điểm
+          </div>
+        </div>
+        <div id="scoreStatusBadge" style="padding:8px 16px;border-radius:10px;background:rgba(255,255,255,0.15);font-size:0.88rem;font-weight:700">
+          Hãy tích chọn các tiêu chí em đã hoàn thành!
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: HOMEWORK -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>🏠 Bài Tập Về Nhà: Chia Sẻ Đúng Người – Đúng Quyền</h2>
+          <p>Thực hành phân quyền tài liệu cho 3 đối tượng cụ thể kèm giải thích lý do</p>
+        </div>
+        <span class="badge-step" style="background:var(--green-soft);color:var(--green)">Thời lượng: 20 phút</span>
+      </div>
+
+      <div class="compare-grid">
+        <div style="background:#f8fafc;padding:20px;border-radius:14px;border:1px solid var(--line)">
+          <h4 style="margin:0 0 10px;color:var(--navy)">🎯 Yêu Cầu Đề Bài:</h4>
+          <p style="font-size:0.9rem;color:var(--ink-soft);line-height:1.7;margin:0 0 12px">
+            Tạo một tài liệu ngắn (1 trang) chia sẻ cảm nghĩ của em về học kỳ vừa qua. Sau đó thực hiện chia sẻ cho 3 người:
+          </p>
+          <ul style="padding-left:18px;font-size:0.88rem;color:var(--ink-soft);line-height:1.75;margin:0">
+            <li><b>Người 1 (Giáo viên):</b> Cấp quyền Viewer.</li>
+            <li><b>Người 2 (Bạn rà soát):</b> Cấp quyền Commenter.</li>
+            <li><b>Người 3 (Bạn cùng nhóm):</b> Cấp quyền Editor.</li>
+            <li>Chụp ảnh màn hình danh sách người nhận trong hộp thoại Share.</li>
+            <li>Ghi 3 dòng giải thích ngắn: Vì sao người 1 là Viewer, người 2 là Commenter, người 3 là Editor?</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--teal-soft);padding:20px;border-radius:14px;border:1px solid var(--teal-border);display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <h4 style="margin:0 0 10px;color:var(--teal)">📦 Quy Cách Nộp Bài:</h4>
+            <p style="font-size:0.9rem;color:#0f766e;line-height:1.7;margin:0 0 14px">
+              Nộp link Google Docs kèm lời giải thích vào phần ghi chú nộp bài trên Google Classroom hoặc nhóm lớp.
+            </p>
+          </div>
+          <div style="font-size:0.82rem;color:#115e59;background:white;padding:10px 14px;border-radius:10px;border:1px solid #99f6e4">
+            ⏰ <b>Hạn nộp:</b> Trước 20:00 ngày trước buổi học 10 tiếp theo.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: SCORING RUBRICS -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>📊 Thang Điểm Đánh Giá Chi Tiết (Rubric 30 Điểm)</h2>
+          <p>Bảng tiêu chuẩn đánh giá minh bạch của giáo viên dành cho học sinh</p>
+        </div>
+        <span class="badge-step" style="background:var(--purple-soft);color:var(--purple)">Thang Điểm 30</span>
+      </div>
+
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th style="width:25%">Tiêu Chí</th>
+            <th style="width:15%">Mức Điểm</th>
+            <th style="width:60%">Mô Tả Yêu Cầu Đạt Chuẩn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>1. Bảng Kế Hoạch Trực Nhật</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Nội dung bảng phân công 5 ngày sạch đẹp, có tiêu đề và màu sắc hài hòa.</td>
+          </tr>
+          <tr>
+            <td><b>2. Cấp Quyền Viewer</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Cấp đúng quyền Người xem cho giáo viên, không nhầm sang Editor.</td>
+          </tr>
+          <tr>
+            <td><b>3. Cấp Quyền Commenter</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Cấp đúng quyền Người nhận xét cho bạn học để xin góp ý văn minh.</td>
+          </tr>
+          <tr>
+            <td><b>4. An Toàn Dữ Liệu</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Không để lộ số điện thoại, địa chỉ hay thông tin nhạy cảm.</td>
+          </tr>
+          <tr>
+            <td><b>5. Khóa Sao Chép &amp; Nộp Link</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Bật khóa chống copy trong cài đặt và nộp link mở mượt mà trên tab ẩn danh.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toastMessage">Đã sao chép!</div>
+
+  <script>
+    const btnCopyRawText = document.getElementById('btnCopyRawText');
+    const rawTextContent = document.getElementById('rawTextContent');
+    const toastMessage = document.getElementById('toastMessage');
+
+    function showToast(msg) {
+      toastMessage.textContent = msg;
+      toastMessage.classList.add('show');
+      setTimeout(() => toastMessage.classList.remove('show'), 2500);
+    }
+
+    btnCopyRawText.onclick = () => {
+      navigator.clipboard.writeText(rawTextContent.textContent.trim()).then(() => {
+        btnCopyRawText.innerHTML = '✓ Đã sao chép vào bộ nhớ tạm!';
+        btnCopyRawText.style.background = '#d1fae5';
+        btnCopyRawText.style.color = '#065f46';
+        showToast('📋 Đã sao chép văn bản thô! Hãy mở Google Docs và dán (Ctrl + V)');
+        setTimeout(() => {
+          btnCopyRawText.innerHTML = '📋 Sao chép văn bản thô';
+          btnCopyRawText.style.background = 'white';
+          btnCopyRawText.style.color = 'inherit';
+        }, 3000);
+      });
+    };
+
+    const checkboxes = document.querySelectorAll('.task-checkbox');
+    const liveScoreText = document.getElementById('liveScoreText');
+    const scoreStatusBadge = document.getElementById('scoreStatusBadge');
+
+    function calculateScore() {
+      let score = 0;
+      checkboxes.forEach(cb => {
+        const item = cb.closest('.check-item');
+        const pts = parseInt(item.getAttribute('data-points'), 10);
+        if (cb.checked) {
+          score += pts;
+          item.classList.add('checked');
+        } else {
+          item.classList.remove('checked');
+        }
+      });
+
+      liveScoreText.textContent = score;
+
+      if (score === 30) {
+        scoreStatusBadge.textContent = '🌟 Xuất sắc! Em đã hoàn thành 100% tiêu chí điểm 30/30!';
+        scoreStatusBadge.style.background = '#059669';
+        scoreStatusBadge.style.color = '#ffffff';
+        showToast('🎉 Đạt điểm tuyệt đối 30/30! Chúc mừng em!');
+      } else if (score >= 18) {
+        scoreStatusBadge.textContent = '👍 Rất tốt! Tiếp tục hoàn thiện các tiêu chí còn lại nhé!';
+        scoreStatusBadge.style.background = '#2563eb';
+        scoreStatusBadge.style.color = '#ffffff';
+      } else if (score > 0) {
+        scoreStatusBadge.textContent = '🚀 Khởi đầu tốt, cố gắng lên nhé!';
+        scoreStatusBadge.style.background = 'rgba(255,255,255,0.15)';
+        scoreStatusBadge.style.color = '#ffffff';
+      } else {
+        scoreStatusBadge.textContent = 'Hãy tích chọn các tiêu chí em đã hoàn thành!';
+        scoreStatusBadge.style.background = 'rgba(255,255,255,0.15)';
+        scoreStatusBadge.style.color = '#ffffff';
+      }
+    }
+
+    checkboxes.forEach(cb => cb.addEventListener('change', calculateScore));
+  </script>
+</body>
+</html>

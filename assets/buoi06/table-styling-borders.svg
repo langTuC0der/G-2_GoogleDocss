@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <filter id="shadow4" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="920" height="460" rx="20" fill="url(#bgGrad4)"/>
+
+  <text x="460" y="44" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">THẨM MỸ BẢNG BIỂU: MÀU NỀN PASTEL &amp; ĐƯỜNG VIỀN THẦN THÁNH</text>
+  <text x="460" y="70" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#cbd5e1" text-anchor="middle">Nguyên tắc phối màu khoa học &amp; Tuyệt kỹ Viền 0pt (Ẩn viền) tạo bố cục 2 cột song song</text>
+
+  <g transform="translate(60, 95)" filter="url(#shadow4)">
+    <rect width="800" height="325" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+
+    <!-- Left Box: Pastel Palette rules -->
+    <g transform="translate(35, 25)">
+      <rect width="345" height="185" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+      <text x="18" y="26" font-family="'Outfit', sans-serif" font-size="13.5" font-weight="800" fill="#1e293b">🎨 BẢNG MÀU PASTEL CHUẨN GOOGLE DOCS</text>
+      <text x="18" y="46" font-family="'Inter', sans-serif" font-size="11" font-weight="500" fill="#64748b">Tránh dùng màu neon chói lòa làm nhức mắt người đọc</text>
+
+      <!-- 4 Swatches -->
+      <g transform="translate(18, 60)">
+        <!-- Swatch 1: Blue -->
+        <rect x="0" y="0" width="70" height="48" rx="8" fill="#dbeafe" stroke="#bfdbfe"/>
+        <text x="35" y="24" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#1e40af" text-anchor="middle">Xanh lam</text>
+        <text x="35" y="38" font-family="'Inter', sans-serif" font-size="9" fill="#3b82f6" text-anchor="middle">Toán / KHTN</text>
+
+        <!-- Swatch 2: Amber -->
+        <rect x="78" y="0" width="70" height="48" rx="8" fill="#fef3c7" stroke="#fde68a"/>
+        <text x="113" y="24" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#92400e" text-anchor="middle">Vàng kem</text>
+        <text x="113" y="38" font-family="'Inter', sans-serif" font-size="9" fill="#f59e0b" text-anchor="middle">Ngữ văn</text>
+
+        <!-- Swatch 3: Green -->
+        <rect x="156" y="0" width="70" height="48" rx="8" fill="#d1fae5" stroke="#a7f3d0"/>
+        <text x="191" y="24" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#065f46" text-anchor="middle">Xanh bạc hà</text>
+        <text x="191" y="38" font-family="'Inter', sans-serif" font-size="9" fill="#10b981" text-anchor="middle">Ngoại ngữ</text>
+
+        <!-- Swatch 4: Purple -->
+        <rect x="234" y="0" width="70" height="48" rx="8" fill="#ede9fe" stroke="#ddd6fe"/>
+        <text x="269" y="24" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#5b21b6" text-anchor="middle">Tím nhạt</text>
+        <text x="269" y="38" font-family="'Inter', sans-serif" font-size="9" fill="#8b5cf6" text-anchor="middle">Tin học</text>
+      </g>
+
+      <g transform="translate(18, 126)">
+        <rect width="310" height="44" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="12" y="18" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#1d4ed8">💡 Cách tô màu nền ô (Cell Background Color):</text>
+        <text x="12" y="34" font-family="'Inter', sans-serif" font-size="10" fill="#1e40af">Click vào ô → Biểu tượng Thùng sơn <tspan font-weight="800">🪣</tspan> trên thanh công cụ</text>
+      </g>
+    </g>
+
+    <!-- Right Box: 0pt Invisible Border Magic -->
+    <g transform="translate(420, 25)">
+      <rect width="345" height="185" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+      <text x="18" y="26" font-family="'Outfit', sans-serif" font-size="13.5" font-weight="800" fill="#0f172a">🪄 TUYỆT CHIÊU: BẢNG VIỀN 0PT (ẨN VIỀN)</text>
+      <text x="18" y="46" font-family="'Inter', sans-serif" font-size="11" font-weight="500" fill="#64748b">Tạo bố cục 2 cột song song (Ảnh 1 bên, chữ 1 bên)</text>
+
+      <!-- Mock 2-column invisible table -->
+      <g transform="translate(18, 60)">
+        <rect width="310" height="65" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-dasharray="4 3" stroke-width="1"/>
+        <line x1="155" y1="0" x2="155" y2="65" stroke="#94a3b8" stroke-dasharray="4 3" stroke-width="1"/>
+        
+        <!-- Left column content -->
+        <rect x="15" y="12" width="40" height="40" rx="4" fill="#3b82f6"/>
+        <text x="35" y="36" font-family="'Inter', sans-serif" font-size="18" fill="#fff" text-anchor="middle">📷</text>
+        <text x="65" y="28" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#1e293b">Ảnh bên trái</text>
+        <text x="65" y="44" font-family="'Inter', sans-serif" font-size="8.5" fill="#64748b">Căn giữa ô</text>
+
+        <!-- Right column content -->
+        <text x="170" y="25" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#1e293b">Đoạn văn bên phải</text>
+        <text x="170" y="40" font-family="'Inter', sans-serif" font-size="8.5" fill="#475569">Không lo bị nhảy dòng</text>
+        <text x="170" y="52" font-family="'Inter', sans-serif" font-size="8.5" fill="#475569">như khi gõ Space!</text>
+      </g>
+
+      <text x="18" y="145" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#059669">✨ Khi in hoặc xem tài liệu: Không hề thấy khung kẻ bảng!</text>
+      <text x="18" y="162" font-family="'Inter', sans-serif" font-size="9.5" fill="#334155">Thao tác: Định dạng bảng → Chiều rộng đường viền → Chọn 0pt</text>
+    </g>
+
+    <!-- Bottom summary row -->
+    <g transform="translate(35, 230)">
+      <rect width="730" height="75" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+      <text x="20" y="26" font-family="'Outfit', sans-serif" font-size="13" font-weight="800" fill="#1e40af">🎯 3 NGUYÊN TẮC THẨM MỸ SỐNG CÒN CỦA BẢNG BIỂU THCS:</text>
+      <text x="20" y="48" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#1e3a8a">
+        1. <tspan font-weight="800">Độ dày viền:</tspan> Ưu tiên 0.5pt đến 1pt mảnh mai, viền màu xám trung tính (#cbd5e1), tránh viền đen sì 3pt cục mịch.
+      </text>
+      <text x="20" y="66" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#1e3a8a">
+        2. <tspan font-weight="800">Căn lề dọc (Vertical Alignment):</tspan> Luôn đặt "Ở giữa" (Middle) để chữ nằm cân đối giữa ô, không bị dính sát mép trên.
+      </text>
+    </g>
+  </g>
+</svg>

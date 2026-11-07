@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 480" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#142852"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="920" height="480" rx="20" fill="url(#bgGrad)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="460" y="46" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">3 CHẾ ĐỘ HÒA TRỘN HÌNH ẢNH TRONG GOOGLE DOCS</text>
+  <text x="460" y="74" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#93c5fd" text-anchor="middle">Hiểu rõ cách ảnh tương tác với dòng chữ để trình bày bài viết như một biên tập viên chuyên nghiệp</text>
+
+  <!-- Card 1: In line with text -->
+  <g transform="translate(35, 105)" filter="url(#dropShadow)">
+    <rect width="260" height="330" rx="16" fill="url(#cardGrad)" stroke="#e2e8f0" stroke-width="1.5"/>
+    <rect x="0" y="0" width="260" height="52" rx="16" fill="#eff6ff"/>
+    <text x="130" y="32" font-family="'Outfit', sans-serif" font-size="15" font-weight="800" fill="#1d4ed8" text-anchor="middle">1. Cùng dòng (In line)</text>
+
+    <!-- Visual Box -->
+    <rect x="18" y="68" width="224" height="150" rx="10" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+    
+    <!-- Text lines -->
+    <rect x="28" y="86" width="204" height="7" rx="3.5" fill="#94a3b8"/>
+    <rect x="28" y="103" width="70" height="7" rx="3.5" fill="#94a3b8"/>
+    <!-- Inline Image acting like a giant letter -->
+    <rect x="105" y="98" width="50" height="40" rx="6" fill="#3b82f6" stroke="#1d4ed8" stroke-width="1.5"/>
+    <circle cx="120" cy="110" r="4" fill="#fbbf24"/>
+    <polygon points="112,132 125,118 135,127 142,120 150,132" fill="#dbeafe"/>
+    
+    <rect x="162" y="131" width="70" height="7" rx="3.5" fill="#94a3b8"/>
+    <rect x="28" y="152" width="204" height="7" rx="3.5" fill="#94a3b8"/>
+    <rect x="28" y="169" width="160" height="7" rx="3.5" fill="#94a3b8"/>
+    <rect x="28" y="186" width="190" height="7" rx="3.5" fill="#94a3b8"/>
+
+    <!-- Gap Alert Line -->
+    <line x1="28" y1="145" x2="232" y2="145" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <text x="130" y="210" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#dc2626" text-anchor="middle">⚠️ Tạo khoảng hở dọc rất lớn</text>
+
+    <!-- Description -->
+    <rect x="18" y="230" width="224" height="84" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="28" y="250" font-family="'Inter', sans-serif" font-size="11.5" font-weight="700" fill="#0f172a">📌 Đặc điểm:</text>
+    <text x="28" y="268" font-family="'Inter', sans-serif" font-size="11" font-weight="400" fill="#475569">• Ảnh coi như 1 chữ cái to.</text>
+    <text x="28" y="285" font-family="'Inter', sans-serif" font-size="11" font-weight="400" fill="#475569">• Thường chỉ dùng cho Icon nhỏ.</text>
+    <text x="28" y="302" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#dc2626">❌ Không nên dùng cho ảnh to!</text>
+  </g>
+
+  <!-- Card 2: Wrap text (Champion) -->
+  <g transform="translate(330, 95)" filter="url(#dropShadow)">
+    <!-- Highlight Badge -->
+    <rect x="40" y="-12" width="180" height="24" rx="12" fill="#10b981"/>
+    <text x="130" y="4" font-family="'Outfit', sans-serif" font-size="11" font-weight="800" fill="#ffffff" text-anchor="middle">★ ĐẸP NHẤT CHO BÁO CHÍ</text>
+
+    <rect width="260" height="340" rx="16" fill="url(#cardGrad)" stroke="#10b981" stroke-width="2.5"/>
+    <rect x="0" y="0" width="260" height="52" rx="16" fill="#ecfdf5"/>
+    <text x="130" y="32" font-family="'Outfit', sans-serif" font-size="15" font-weight="800" fill="#065f46" text-anchor="middle">2. Bao quanh (Wrap text)</text>
+
+    <!-- Visual Box -->
+    <rect x="18" y="68" width="224" height="150" rx="10" fill="#f1f5f9" stroke="#a7f3d0" stroke-width="1"/>
+    
+    <!-- Left Wrapped Image -->
+    <rect x="28" y="84" width="76" height="66" rx="8" fill="#10b981" stroke="#047857" stroke-width="1.5"/>
+    <circle cx="48" cy="99" r="6" fill="#fef08a"/>
+    <polygon points="34,136 50,115 65,130 75,120 95,142 34,142" fill="#d1fae5"/>
+    
+    <!-- Text wrapping gracefully around image -->
+    <rect x="114" y="88" width="118" height="7" rx="3.5" fill="#047857"/>
+    <rect x="114" y="104" width="118" height="7" rx="3.5" fill="#047857"/>
+    <rect x="114" y="120" width="118" height="7" rx="3.5" fill="#047857"/>
+    <rect x="114" y="136" width="100" height="7" rx="3.5" fill="#047857"/>
+    
+    <!-- Full lines below -->
+    <rect x="28" y="160" width="204" height="7" rx="3.5" fill="#64748b"/>
+    <rect x="28" y="177" width="204" height="7" rx="3.5" fill="#64748b"/>
+    <rect x="28" y="194" width="150" height="7" rx="3.5" fill="#64748b"/>
+
+    <!-- Margin indicator -->
+    <rect x="25" y="81" width="82" height="72" rx="10" fill="none" stroke="#10b981" stroke-width="1" stroke-dasharray="2,2"/>
+    <text x="130" y="210" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#059669" text-anchor="middle">✓ Chữ uốn quanh gọn gàng, tự nhiên</text>
+
+    <!-- Description -->
+    <rect x="18" y="226" width="224" height="96" rx="8" fill="#f0fdf4" stroke="#bbf7d0"/>
+    <text x="28" y="246" font-family="'Inter', sans-serif" font-size="11.5" font-weight="700" fill="#065f46">📌 Ưu điểm vượt trội:</text>
+    <text x="28" y="264" font-family="'Inter', sans-serif" font-size="11" font-weight="500" fill="#14532d">• Tận dụng tối đa diện tích trang.</text>
+    <text x="28" y="281" font-family="'Inter', sans-serif" font-size="11" font-weight="500" fill="#14532d">• Có thể tùy chỉnh Margin (lề lượn).</text>
+    <text x="28" y="298" font-family="'Inter', sans-serif" font-size="11" font-weight="500" fill="#14532d">• Cho phép di chuyển ảnh tự do!</text>
+    <text x="28" y="315" font-family="'Inter', sans-serif" font-size="11" font-weight="700" fill="#059669">⭐ Lựa chọn số 1 cho bài thuyết minh!</text>
+  </g>
+
+  <!-- Card 3: Break text -->
+  <g transform="translate(625, 105)" filter="url(#dropShadow)">
+    <rect width="260" height="330" rx="16" fill="url(#cardGrad)" stroke="#e2e8f0" stroke-width="1.5"/>
+    <rect x="0" y="0" width="260" height="52" rx="16" fill="#fef3c7"/>
+    <text x="130" y="32" font-family="'Outfit', sans-serif" font-size="15" font-weight="800" fill="#b45309" text-anchor="middle">3. Ngắt dòng (Break text)</text>
+
+    <!-- Visual Box -->
+    <rect x="18" y="68" width="224" height="150" rx="10" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+    
+    <!-- Top Text Lines -->
+    <rect x="28" y="82" width="204" height="7" rx="3.5" fill="#94a3b8"/>
+    <rect x="28" y="96" width="160" height="7" rx="3.5" fill="#94a3b8"/>
+    
+    <!-- Standalone Centered Image -->
+    <rect x="65" y="112" width="130" height="52" rx="8" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+    <circle cx="85" cy="126" r="5" fill="#ffffff"/>
+    <polygon points="72,156 95,135 115,150 135,138 175,158 72,158" fill="#fef3c7"/>
+
+    <!-- Bottom Text Lines -->
+    <rect x="28" y="176" width="204" height="7" rx="3.5" fill="#94a3b8"/>
+    <rect x="28" y="191" width="180" height="7" rx="3.5" fill="#94a3b8"/>
+
+    <text x="130" y="210" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#b45309" text-anchor="middle">Ảnh đứng độc lập một hàng riêng</text>
+
+    <!-- Description -->
+    <rect x="18" y="230" width="224" height="84" rx="8" fill="#fffbeb" stroke="#fef3c7"/>
+    <text x="28" y="250" font-family="'Inter', sans-serif" font-size="11.5" font-weight="700" fill="#92400e">📌 Ứng dụng:</text>
+    <text x="28" y="268" font-family="'Inter', sans-serif" font-size="11" font-weight="400" fill="#78350f">• Biểu đồ, sơ đồ lớn trải rộng.</text>
+    <text x="28" y="285" font-family="'Inter', sans-serif" font-size="11" font-weight="400" fill="#78350f">• Ảnh chụp toàn cảnh cần nổi bật.</text>
+    <text x="28" y="302" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#b45309">Không có chữ nào nằm 2 bên ảnh.</text>
+  </g>
+</svg>

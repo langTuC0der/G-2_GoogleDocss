@@ -1,0 +1,1989 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bài giảng 3D tương tác Buổi 8: Document Outline & Table of Contents (Google Docs THCS) — Khóa học chuyên sâu với Impress.js">
+  <title>Buổi 8 · Document Outline &amp; Mục Lục Tự Động (25 Trạm 3D) | Docs Lab THCS</title>
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       1. CORE DESIGN TOKENS & RESET
+       ============================================================ */
+    :root {
+      --bg-space: #070e20;
+      --navy-900: #0b152d;
+      --navy-800: #132448;
+      --blue-600: #2563eb;
+      --blue-500: #3b82f6;
+      --blue-100: #dbeafe;
+      --blue-50: #eff6ff;
+      --cyan-600: #0284c7;
+      --cyan-500: #06b6d4;
+      --cyan-100: #cffafe;
+      --teal-600: #0d9488;
+      --teal-500: #14b8a6;
+      --teal-100: #ccfbf1;
+      --amber-500: #f59e0b;
+      --amber-400: #fbbf24;
+      --amber-100: #fef3c7;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-100: #d1fae5;
+      --rose-600: #e11d48;
+      --rose-500: #f43f5e;
+      --rose-100: #ffe4e6;
+      --purple-600: #7c3aed;
+      --purple-500: #8b5cf6;
+      --purple-100: #ede9fe;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --card-bg: rgba(255, 255, 255, 0.98);
+      --card-dark-bg: linear-gradient(145deg, #101e3d, #091226);
+      --shadow-step: 0 35px 80px -15px rgba(0, 7, 24, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.6);
+      --shadow-hover: 0 45px 95px -20px rgba(11, 26, 61, 0.65), 0 0 0 2px rgba(59, 130, 246, 0.4);
+      --radius-step: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 18% 18%, #16366f 0%, #070e20 48%, #030713 100%);
+      background-attachment: fixed;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid var(--blue-500); outline-offset: 3px; }
+
+    /* ============================================================
+       2. IMPRESS.JS 3D CANVAS & STEP STYLES
+       ============================================================ */
+    .impress-enabled { pointer-events: none; }
+    .impress-enabled #impress,
+    .impress-enabled .step,
+    .impress-enabled .hud,
+    .impress-enabled button,
+    .impress-enabled a,
+    .impress-enabled input,
+    .impress-enabled select,
+    .impress-enabled .modal,
+    .impress-enabled .interactive-box {
+      pointer-events: auto;
+    }
+
+    #impress {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .step {
+      position: relative;
+      width: 1120px;
+      min-height: 660px;
+      padding: 44px 50px;
+      margin: 0 auto;
+      border-radius: var(--radius-step);
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-step);
+      opacity: 0.18;
+      filter: blur(1.5px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: default;
+    }
+
+    .step.active {
+      opacity: 1;
+      filter: none;
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Cosmic Overview Mode */
+    #impress.step-overview .step {
+      opacity: 0.88 !important;
+      filter: none !important;
+      cursor: pointer !important;
+    }
+    #impress.step-overview .step:hover {
+      transform: scale(1.05);
+      border-color: var(--amber-400);
+      box-shadow: 0 0 45px rgba(245, 158, 11, 0.5);
+    }
+
+    #overview.step {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      min-height: auto !important;
+      padding: 0 !important;
+      opacity: 1 !important;
+      filter: none !important;
+      cursor: default !important;
+      pointer-events: none !important;
+    }
+    #impress.step-overview #overview.step {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      cursor: default !important;
+    }
+    #impress.step-overview #overview.step:hover {
+      transform: none !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+    .overview-hero-capsule {
+      pointer-events: auto !important;
+      text-align: center;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 38px 48px;
+      border-radius: 28px;
+      background: rgba(11, 21, 45, 0.94);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 50px rgba(37, 99, 235, 0.4);
+      backdrop-filter: blur(20px);
+      color: white;
+    }
+
+    /* Step Dark Theme */
+    .step.dark {
+      background: var(--card-dark-bg);
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 35px 85px rgba(0, 0, 0, 0.7);
+    }
+    .step.dark h1, .step.dark h2, .step.dark h3 { color: #ffffff; }
+    .step.dark p { color: #cbd5e1; }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+      margin-top: 0;
+      line-height: 1.18;
+      letter-spacing: -0.025em;
+    }
+    h1 { font-size: 2.75rem; font-weight: 900; }
+    h2 { font-size: 2.15rem; font-weight: 800; color: var(--navy-900); }
+    h3 { font-size: 1.45rem; font-weight: 700; color: var(--navy-800); }
+    p { margin-top: 0; line-height: 1.6; color: var(--ink-soft); font-size: 1.05rem; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--blue-600);
+      margin-bottom: 10px;
+    }
+    .step.dark .eyebrow { color: var(--cyan-500); }
+    .eyebrow::before {
+      content: "";
+      width: 18px;
+      height: 4px;
+      border-radius: 4px;
+      background: currentColor;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .badge-blue { background: var(--blue-50); color: var(--blue-600); border: 1px solid var(--blue-100); }
+    .badge-amber { background: var(--amber-100); color: #b45309; }
+    .badge-green { background: var(--emerald-100); color: var(--emerald-600); }
+    .badge-purple { background: var(--purple-100); color: var(--purple-600); }
+    .badge-rose { background: var(--rose-100); color: var(--rose-600); }
+    .badge-teal { background: var(--teal-100); color: var(--teal-600); }
+
+    /* Grid Layouts */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.08);
+      border-color: var(--blue-500);
+    }
+    .step.dark .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #f1f5f9;
+    }
+
+    /* Substep Animations */
+    #impress .step .substep {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    #impress .step .substep.substep-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Diagram & Visual Guide Frames */
+    .visual-guide {
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.08);
+      background: #0b152d;
+      cursor: zoom-in;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .visual-guide:hover {
+      transform: scale(1.01);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16);
+    }
+    .visual-guide img, .visual-guide svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Simulator / Sandbox Elements */
+    .simulator-box {
+      background: #ffffff;
+      border: 2px solid #bfdbfe;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.08);
+    }
+
+    /* ============================================================
+       3. FIXED HUD (CONTROLS, TOPBAR & DOCK)
+       ============================================================ */
+    .hud {
+      position: fixed;
+      z-index: 1000;
+      pointer-events: auto;
+    }
+
+    .hud-top {
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: rgba(7, 14, 32, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      color: white;
+    }
+    .hud-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+    }
+    .hud-brand-badge {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue-600), var(--purple-600));
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+    .hud-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-hud {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-hud:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: white;
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
+    .btn-hud.active {
+      background: var(--blue-600);
+      border-color: var(--blue-500);
+      color: white;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+
+    /* ============================================================
+       4. QUIZ, CHALLENGES & MODALS
+       ============================================================ */
+    .quiz-card {
+      background: white;
+      border-radius: 22px;
+      padding: 26px 32px;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--line);
+    }
+    .quiz-question-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      margin-bottom: 20px;
+      line-height: 1.35;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .quiz-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      background: #f8fafc;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .quiz-btn:hover {
+      background: #eff6ff;
+      border-color: var(--blue-500);
+      transform: translateY(-2px);
+    }
+    .quiz-btn.correct {
+      background: #ecfdf5 !important;
+      border-color: var(--emerald-500) !important;
+      color: #065f46 !important;
+    }
+    .quiz-btn.wrong {
+      background: #fff1f2 !important;
+      border-color: var(--rose-500) !important;
+      color: #9f1239 !important;
+    }
+    .letter-badge {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #e2e8f0;
+      color: var(--navy-900);
+      font-weight: 800;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .quiz-btn.correct .letter-badge { background: var(--emerald-500); color: white; }
+    .quiz-btn.wrong .letter-badge { background: var(--rose-500); color: white; }
+
+    .quiz-feedback {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-top: 14px;
+    }
+    .quiz-dots {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 14px;
+    }
+    .quiz-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: grid;
+      place-items: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #64748b;
+    }
+    .quiz-dot.done { background: var(--emerald-500); color: white; }
+
+    /* Modals & Drawers */
+    .drawer {
+      position: fixed;
+      top: 64px;
+      bottom: 0;
+      width: 420px;
+      background: rgba(11, 21, 45, 0.96);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.7);
+      border-left: 1px solid rgba(255, 255, 255, 0.15);
+      z-index: 2000;
+      transform: translateX(105%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      color: white;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-right { right: 0; }
+    .drawer-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .drawer-header h3 { margin: 0; font-size: 1.15rem; color: #fff; }
+    .drawer-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    .drawer-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .teaching-box {
+      background: rgba(255, 255, 255, 0.06);
+      border-left: 4px solid var(--blue-500);
+      padding: 14px 18px;
+      border-radius: 0 12px 12px 0;
+      font-size: 0.9rem;
+    }
+    .teaching-box b { display: block; margin-bottom: 6px; font-size: 0.95rem; }
+
+    /* Keyboard Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      place-items: center;
+    }
+    .modal.open { display: grid; }
+    .modal-box {
+      background: white;
+      border-radius: 24px;
+      padding: 32px 36px;
+      max-width: 620px;
+      width: 90%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    /* Lightbox Zoom Modal */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 4000;
+      background: rgba(3, 7, 19, 0.92);
+      backdrop-filter: blur(14px);
+      place-items: center;
+      padding: 40px;
+    }
+    .lightbox-modal.show { display: grid; }
+    .lightbox-modal img {
+      max-width: 92vw;
+      max-height: 86vh;
+      border-radius: 16px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.2);
+    }
+    .lightbox-caption {
+      margin-top: 14px;
+      text-align: center;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%) translateY(30px);
+      background: rgba(15, 23, 42, 0.94);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 99px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 5000;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    kbd {
+      display: inline-block;
+      padding: 2px 7px;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #334155;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-bottom-width: 2px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body class="impress-not-supported">
+
+  <!-- ============================================================
+       TOPBAR HUD
+       ============================================================ -->
+  <header class="hud hud-top">
+    <div class="hud-brand">
+      <div class="hud-brand-badge">📑</div>
+      <div>
+        <span>GĐ2 · Buổi 08: Document Outline &amp; Mục Lục Tự Động</span>
+        <small style="display:block;font-size:0.72rem;color:#94a3b8;font-weight:500">Khóa học Google Docs THCS · Docs Lab 1:1</small>
+      </div>
+    </div>
+
+    <div class="hud-top-actions">
+      <!-- Station Jump Dropdown -->
+      <select id="stationJumpSelect" class="btn-hud" style="color:white;background:#132448;border-color:#2563eb">
+        <option value="step-intro">Trạm 1: Khởi động Buổi 8</option>
+        <option value="step-goals">Trạm 2: 5 Mục tiêu cốt lõi</option>
+        <option value="step-bold-trap">Trạm 3: Cơn ác mộng cuộn chuột</option>
+        <option value="step-bold-vs-heading-svg">Trạm 4: Google Docs nghĩ gì?</option>
+        <option value="step-heading-tree">Trạm 5: Cây phân cấp Heading</option>
+        <option value="step-document-outline-view">Trạm 6: Document Outline là gì?</option>
+        <option value="step-outline-navigation">Trạm 7: Bí kíp điều hướng 1-chạm</option>
+        <option value="step-challenge-1">Trạm 8: Thử thách 1 (Cứu tài liệu)</option>
+        <option value="step-outline-vs-toc-svg">Trạm 9: Outline vs Table of Contents</option>
+        <option value="step-insert-toc">Trạm 10: Chèn Mục Lục Tự Động</option>
+        <option value="step-toc-styles-svg">Trạm 11: 3 Kiểu Mục Lục</option>
+        <option value="step-update-toc-magic">Trạm 12: Phép thuật nút Refresh 🔄</option>
+        <option value="step-customize-toc">Trạm 13: Tùy biến mức Heading</option>
+        <option value="step-page-break-placement">Trạm 14: Vị trí vàng đặt Mục lục</option>
+        <option value="step-common-mistakes">Trạm 15: 4 Lỗi thường gặp</option>
+        <option value="step-pro-tips">Trạm 16: Phím tắt gán Heading vàng</option>
+        <option value="step-outline-studio">Trạm 17: Outline &amp; TOC Live Studio</option>
+        <option value="step-challenge-2">Trạm 18: Thử thách 2 (Cây mục lục)</option>
+        <option value="step-challenge-3">Trạm 19: Thử thách 3 (Bắt lỗi)</option>
+        <option value="step-before-after-svg">Trạm 20: So sánh Before / After</option>
+        <option value="step-final-project">Trạm 21: Báo cáo Môi trường 30đ</option>
+        <option value="step-homework">Trạm 22: Bài tập về nhà</option>
+        <option value="step-quiz">Trạm 23: Đấu trường Quiz 10 câu</option>
+        <option value="step-summary">Trạm 24: Tổng kết &amp; Phím tắt vàng</option>
+        <option value="overview">Trạm 25: Toàn cảnh không gian 3D</option>
+      </select>
+
+      <button class="btn-hud" id="btnToggleOverview" title="Xem sơ đồ 3D (O)">🌌 Toàn cảnh 3D</button>
+      <button class="btn-hud" id="btnTeacherGuide">📋 Sư phạm</button>
+      <button class="btn-hud" id="btnHelpShortcuts">⌨️ ?</button>
+      <a href="buoi-08-bai-tap.html" class="btn-hud" style="background:#059669;border-color:#10b981;color:white">📝 Phiếu bài tập</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       IMPRESS.JS 3D UNIVERSE CANVAS
+       ============================================================ -->
+  <div id="impress" data-transition-duration="950">
+
+    <!-- STEP 1: HERO INTRO (Dark) -->
+    <div id="step-intro" class="step dark"
+         data-x="0" data-y="0" data-z="0">
+      <span class="eyebrow">CHẶNG 02 · TRÌNH BÀY VĂN BẢN CHUYÊN NGHIỆP</span>
+      <h1>Buổi 08: Document Outline &amp; Mục Lục Tự Động</h1>
+      <p style="font-size:1.35rem;max-width:850px;color:#cbd5e1;margin-bottom:28px">
+        Tạm biệt thói quen cuộn chuột tìm bài và gõ dấu chấm <code>......</code> thủ công! Làm chủ <b>Bản đồ số Document Outline</b> và xuất bản <b>Bảng mục lục tự động (Table of Contents)</b> chuẩn chỉ từng số trang chỉ trong 3 giây.
+      </p>
+
+      <div class="grid-4" style="margin-top:20px">
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">🧠</div>
+          <h4 style="margin:0 0 6px;color:#fff">Bộ Xương Tài Liệu</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Google Docs hiểu cấu trúc qua Heading 1, 2, 3 chứ không phải Bold.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">🧭</div>
+          <h4 style="margin:0 0 6px;color:#fff">Document Outline</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Bản đồ số thanh bên trái: nhấp chuột là bay ngay đến mục cần đọc.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">📖</div>
+          <h4 style="margin:0 0 6px;color:#fff">Mục Lục Tự Động</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Tự động lấy tiêu đề và số trang, đường chấm dóng hàng thẳng tắp.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">🔄</div>
+          <h4 style="margin:0 0 6px;color:#fff">Update TOC Magic</h4>
+          <p style="font-size:0.88rem;margin:0;color:#94a3b8">Viết thêm bài hoặc sửa tiêu đề? Bấm 1 nút là đồng bộ số trang mới!</p>
+        </div>
+      </div>
+
+      <div style="margin-top:26px;display:flex;gap:12px;align-items:center">
+        <span class="badge badge-teal">⏱️ 100 Phút</span>
+        <span class="badge badge-blue">🚀 25 Trạm 3D</span>
+        <span class="badge badge-amber">🎯 3 Thử thách + 10 Quiz</span>
+        <span class="badge badge-purple">🏆 Sản phẩm: Báo cáo Môi trường 2-3 trang</span>
+      </div>
+    </div>
+
+    <!-- STEP 2: LEARNING GOALS -->
+    <div id="step-goals" class="step"
+         data-x="1400" data-y="0" data-z="0">
+      <span class="eyebrow">CHUẨN ĐẦU RA BUỔI 08</span>
+      <h2>Năm Năng Lực Cốt Lõi Em Sẽ Làm Chủ Hôm Nay</h2>
+      <p>Sau bài học này, em sẽ tự tin xử lý bất kỳ báo cáo khoa học dài 10–50 trang nào:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:20px">
+        <div class="card" style="border-left:5px solid var(--blue-600)">
+          <span class="badge badge-blue" style="margin-bottom:8px">NĂNG LỰC 1</span>
+          <h3>Hiểu Cơ Chế "Bộ Não" Google Docs</h3>
+          <p style="font-size:0.95rem">Phân biệt rạch ròi giữa việc bôi đen thủ công (Bold/Size) và việc gắn nhãn ngữ nghĩa (Semantic Styles: Title, Heading 1, 2, 3).</p>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--cyan-600)">
+          <span class="badge badge-teal" style="margin-bottom:8px">NĂNG LỰC 2</span>
+          <h3>Điều Hướng Với Document Outline</h3>
+          <p style="font-size:0.95rem">Bật/tắt thanh Document Outline bên trái màn hình, sử dụng nó như bản đồ số để chuyển trang tức thì và quản lý danh mục.</p>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--emerald-600)">
+          <span class="badge badge-green" style="margin-bottom:8px">NĂNG LỰC 3</span>
+          <h3>Chèn Table of Contents 3 Kiểu Dáng</h3>
+          <p style="font-size:0.95rem">Chèn mục lục trang trọng (có đường chấm nối, có số trang hoặc link xanh cho web) chỉ trong 3 giây.</p>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--purple-600)">
+          <span class="badge badge-purple" style="margin-bottom:8px">NĂNG LỰC 4 &amp; 5</span>
+          <h3>Cập Nhật Nhanh (Update TOC) &amp; Hoàn Thiện Báo Cáo</h3>
+          <p style="font-size:0.95rem">Bấm nút Refresh 🔄 để cập nhật toàn bộ mục lục khi thêm trang, và hoàn thành Báo cáo Môi trường 2–3 trang có cấu trúc mẫu mực.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: THE MANUAL TRAP -->
+    <div id="step-bold-trap" class="step"
+         data-x="2800" data-y="0" data-z="100" data-rotate-y="-10">
+      <span class="eyebrow">TÌNH HUỐNG THỰC TẾ</span>
+      <h2>Cơn Ác Mộng Của Học Sinh Khi Làm Báo Cáo Dài</h2>
+      <p>Quan sát hai tình huống dở khóc dở cười mà rất nhiều bạn học sinh THCS gặp phải:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="background:#fff1f2;border-color:#fecdd3">
+          <div style="font-size:2.2rem;margin-bottom:10px">🏃‍♂️ 🖱️</div>
+          <h3 style="color:#be123c">Tình Huống 1: Cuộn Chuột Đến Mỏi Tay</h3>
+          <p style="font-size:0.92rem;color:#881337">
+            Bài báo cáo khoa học dài 15 trang. Muốn tìm đến mục <i>"3. Giải pháp giảm rác thải nhựa"</i>, học sinh phải lăn chuột từ trang 1 qua trang 2, 3, 4... hoa cả mắt và cực kỳ tốn thời gian.
+          </p>
+          <div style="background:white;padding:10px;border-radius:8px;font-size:0.85rem;color:#9f1239;font-weight:700">
+            👉 Nguyên nhân: Không dùng Document Outline nên tài liệu không có mục lục số bên cạnh!
+          </div>
+        </div>
+
+        <div class="card" style="background:#fffbeb;border-color:#fde68a">
+          <div style="font-size:2.2rem;margin-bottom:10px">⌨️ 💥</div>
+          <h3 style="color:#b45309">Tình Huống 2: Gõ Dấu Chấm Bằng Tay</h3>
+          <p style="font-size:0.92rem;color:#78350f">
+            Học sinh tự tạo trang mục lục bằng cách gõ: <br>
+            <code>I. Mở đầu ....................... 2</code><br>
+            <code>II. Thực trạng ................... 3</code><br>
+            Kết quả: Các con số thụt thò lồi lõm. Và khi chèn thêm 1 tấm ảnh, toàn bộ số trang phía sau sai bét, phải ngồi gõ sửa lại từng số một!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: BOLD VS HEADING BRAIN SVG -->
+    <div id="step-bold-vs-heading-svg" class="step"
+         data-x="4200" data-y="0" data-z="200" data-rotate-y="-15">
+      <span class="eyebrow">SƠ ĐỒ TƯ DUY KHÔNG GIAN</span>
+      <h2>Google Docs "Nhìn Thấy" Cấu Trúc Tài Liệu Như Thế Nào?</h2>
+      <p>Hiểu sự khác biệt bản chất giữa trang trí mắt nhìn và cấu trúc ngữ nghĩa cho máy tính:</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi08/bold-vs-heading-brain.svg" alt="Google Docs hiểu cấu trúc tài liệu như thế nào">
+        <figcaption style="display:none">Sơ đồ so sánh bôi đen thủ công Bold vs Heading</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-blue">Nguyên tắc: Chỉ Heading mới được nhận diện vào Mục Lục!</span>
+      </div>
+    </div>
+
+    <!-- STEP 5: HEADING TREE HIERARCHY -->
+    <div id="step-heading-tree" class="step"
+         data-x="5600" data-y="0" data-z="100">
+      <span class="eyebrow">CẤU TRÚC PHÂN CẤP</span>
+      <h2>Cây Phân Cấp Heading: Cha, Con Và Cháu</h2>
+      <p>Một tài liệu khoa học luôn được tổ chức theo các tầng nấc logic chặt chẽ:</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card" style="border-top:4px solid var(--blue-600)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span class="badge badge-blue">CẤP 1 (CHA)</span>
+            <kbd>Ctrl + Alt + 1</kbd>
+          </div>
+          <h3 style="color:var(--blue-600)">Heading 1</h3>
+          <p style="font-size:0.9rem">
+            Dành cho các <b>Chương lớn / Phần lớn</b> của báo cáo.<br>
+            Ví dụ: <i>I. MỞ ĐẦU</i>, <i>II. NỘI DUNG NGHIÊN CỨU</i>, <i>III. KẾT LUẬN</i>.
+          </p>
+          <small style="color:var(--muted)">Trong mục lục: Nằm sát lề trái nhất.</small>
+        </div>
+
+        <div class="card" style="border-top:4px solid var(--teal-600)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span class="badge badge-teal">CẤP 2 (CON)</span>
+            <kbd>Ctrl + Alt + 2</kbd>
+          </div>
+          <h3 style="color:var(--teal-600)">Heading 2</h3>
+          <p style="font-size:0.9rem">
+            Dành cho các <b>Mục con nằm bên trong Heading 1</b>.<br>
+            Ví dụ: <i>1. Ô nhiễm không khí</i>, <i>2. Ô nhiễm nguồn nước</i>.
+          </p>
+          <small style="color:var(--muted)">Trong mục lục: Tự động thụt lề vào 1 khoảng.</small>
+        </div>
+
+        <div class="card" style="border-top:4px solid var(--purple-600)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span class="badge badge-purple">CẤP 3 (CHÁU)</span>
+            <kbd>Ctrl + Alt + 3</kbd>
+          </div>
+          <h3 style="color:var(--purple-600)">Heading 3</h3>
+          <p style="font-size:0.9rem">
+            Dành cho các <b>Ý chi tiết nhỏ bên trong Heading 2</b>.<br>
+            Ví dụ: <i>a) Khí thải xe máy</i>, <i>b) Khói bụi nhà máy</i>.
+          </p>
+          <small style="color:var(--muted)">Trong mục lục: Thụt lề sâu hơn nữa.</small>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;background:#fef3c7;padding:12px 18px;border-radius:12px;font-size:0.9rem;color:#b45309">
+        ⚠️ <b>Quy tắc vàng:</b> Không bao giờ nhảy cóc cấp độ (Ví dụ: Đang Heading 1 không được nhảy thẳng xuống Heading 3 mà phải qua Heading 2)!
+      </div>
+    </div>
+
+    <!-- STEP 6: DOCUMENT OUTLINE VIEW -->
+    <div id="step-document-outline-view" class="step"
+         data-x="5600" data-y="1100" data-z="0" data-rotate-z="90">
+      <span class="eyebrow">CÔNG CỤ ĐIỀU HƯỚNG MÀN HÌNH</span>
+      <h2>Document Outline: Bản Đồ Số Nằm Ở Đâu?</h2>
+      <p>Document Outline là thanh bên thông minh hiển thị toàn bộ cây tiêu đề tài liệu:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card">
+          <span class="badge badge-blue" style="margin-bottom:10px">CÁCH BẬT / TẮT</span>
+          <h3>Menu: Xem ➔ Hiển thị cấu trúc tài liệu</h3>
+          <p style="font-size:0.95rem">
+            (Tiếng Anh: <b>View ➔ Show document outline</b>).
+          </p>
+          <p style="font-size:0.9rem;color:var(--ink-soft)">
+            Hoặc nhấp vào <b>biểu tượng danh sách nhỏ có mũi tên 📑</b> ở sát mép trên cùng bên trái của trang soạn thảo!
+          </p>
+          <div style="background:#eff6ff;padding:10px 14px;border-radius:10px;font-size:0.85rem;color:var(--blue-600);font-weight:700">
+            💡 Khi mở ra, nó sẽ chiếm một dải nhỏ khoảng 200px bên trái màn hình.
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-green" style="margin-bottom:10px">LỢI ÍCH KHI LÀM VIỆC</span>
+          <h3>Quan Sát Tiến Độ &amp; Tính Mạch Lạc</h3>
+          <p style="font-size:0.95rem">
+            Vừa gõ bài, em vừa liếc mắt sang trái để kiểm tra xem bài viết của mình đã đủ ý chưa, các mục có bị lặp lại hoặc đặt sai cấp độ hay không.
+          </p>
+          <div style="background:#ecfdf5;padding:10px 14px;border-radius:10px;font-size:0.85rem;color:var(--emerald-600);font-weight:700">
+            ✨ Khi đóng lại (thu nhỏ), tài liệu lại mở rộng diện tích tối đa!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 7: OUTLINE NAVIGATION & REMOVE -->
+    <div id="step-outline-navigation" class="step"
+         data-x="4200" data-y="1100" data-z="-100" data-rotate-z="90">
+      <span class="eyebrow">KỸ NĂNG THAO TÁC OUTLINE</span>
+      <h2>Điều Hướng 1 Chạm &amp; Tính Năng Ẩn Khỏi Outline</h2>
+      <p>Hai tính năng đắt giá trên Document Outline mà ít bạn học sinh để ý:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="border-left:5px solid var(--blue-600)">
+          <div style="font-size:2rem;margin-bottom:8px">⚡</div>
+          <h3 style="color:var(--blue-600)">1. Nhấp Chuột Bay Tới (Instant Jump)</h3>
+          <p style="font-size:0.92rem">
+            Dù tài liệu dài 50 trang, em chỉ cần <b>nhấp chuột 1 cái vào tên mục trên Outline</b>, màn hình sẽ lập tức cuộn mượt mà đưa con trỏ đến đúng đầu dòng tiêu đề đó trong chớp mắt!
+          </p>
+        </div>
+
+        <div class="card" style="border-left:5px solid var(--rose-500)">
+          <div style="font-size:2rem;margin-bottom:8px">✕</div>
+          <h3 style="color:var(--rose-600)">2. Nút Xóa Mục Khỏi Outline</h3>
+          <p style="font-size:0.92rem">
+            Khi rê chuột lên một mục trên Outline, em sẽ thấy <b>dấu [✕] (Xóa khỏi bản phác thảo)</b>. Bấm vào nút này, mục đó sẽ biến mất khỏi thanh Outline nhưng <b>vẫn giữ nguyên văn bản trong bài</b>!
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px;background:#f8fafc">
+        <b style="color:var(--navy-900)">📌 Phục hồi mục bị xóa khỏi outline:</b>
+        <span style="font-size:0.92rem;color:var(--ink-soft)">
+          Nếu lỡ tay bấm [✕], chỉ cần bôi đen lại dòng tiêu đề đó trong bài, chuyển tạm về Normal text rồi chọn lại Heading, mục đó sẽ lập tức xuất hiện trở lại trên Outline.
+        </span>
+      </div>
+    </div>
+
+    <!-- STEP 8: MINI CHALLENGE 1 (Fix Broken Document) -->
+    <div id="step-challenge-1" class="step"
+         data-x="2800" data-y="1100" data-z="-100">
+      <span class="eyebrow">MINI CHALLENGE 1 · BÁC SĨ TÀI LIỆU</span>
+      <h2>Cứu Nguy Tài Liệu Bị "Hỏng Cấu Trúc"!</h2>
+      <p>Bạn Minh nộp tài liệu nhưng phàn nàn rằng: <i>"Thanh Document Outline của tớ trống trơn không có gì!"</i>. Em hãy chuẩn đoán nguyên nhân:</p>
+
+      <div class="card" style="padding:26px">
+        <div style="display:flex;flex-direction:column;gap:12px;margin:16px 0">
+          <button class="quiz-btn" id="btnCh1OptA">
+            <span class="letter-badge">A</span>
+            <span>Do Minh dùng phông chữ Arial nên Google Docs không hỗ trợ Outline.</span>
+          </button>
+          <button class="quiz-btn" id="btnCh1OptB">
+            <span class="letter-badge">B</span>
+            <span>Do Minh chỉ bôi đen chữ rồi bấm phím In đậm (Bold) và chỉnh cỡ 20pt, chứ chưa hề gắn kiểu Heading 1, 2!</span>
+          </button>
+          <button class="quiz-btn" id="btnCh1OptC">
+            <span class="letter-badge">C</span>
+            <span>Do máy tính của Minh bị mất kết nối Internet nên không tải được Outline.</span>
+          </button>
+        </div>
+
+        <div id="ch1Feedback" style="display:none;padding:14px 18px;border-radius:12px;font-size:0.95rem;font-weight:600"></div>
+      </div>
+    </div>
+
+    <!-- STEP 9: OUTLINE VS TOC ANATOMY (SVG) -->
+    <div id="step-outline-vs-toc-svg" class="step"
+         data-x="1400" data-y="1100" data-z="0">
+      <span class="eyebrow">SƠ ĐỒ SO SÁNH TRỰC QUAN</span>
+      <h2>Document Outline (Bản Đồ Số) vs Table of Contents (Mục Lục)</h2>
+      <p>Cùng hỗ trợ điều hướng nhưng hai công cụ này phục vụ hai mục đích hoàn toàn khác biệt:</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi08/document-outline-vs-toc.svg" alt="So sánh Document Outline và Table of Contents">
+        <figcaption style="display:none">Sơ đồ so sánh Document Outline và Table of Contents</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-teal">Outline để đọc trên máy · Table of Contents để in ra giấy!</span>
+      </div>
+    </div>
+
+    <!-- STEP 10: INSERT TABLE OF CONTENTS -->
+    <div id="step-insert-toc" class="step"
+         data-x="0" data-y="1100" data-z="100">
+      <span class="eyebrow">THAO TÁC CỐT LÕI</span>
+      <h2>Cách Chèn Bảng Mục Lục (Table of Contents)</h2>
+      <p>Sau khi văn bản đã được gán Heading đầy đủ, tạo mục lục chỉ mất 2 bước cực nhanh:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="border-top:4px solid var(--blue-600)">
+          <span class="badge badge-blue" style="margin-bottom:8px">BƯỚC 1 · ĐẶT CON TRỎ CHUỘT</span>
+          <h3>Chọn Vị Trí Muốn Xuất Hiện Mục Lục</h3>
+          <p style="font-size:0.92rem">
+            Thông thường trong sách và báo cáo học đường, mục lục luôn nằm ở <b>Trang 2</b> (ngay sau Trang Bìa và trước Nội dung mở đầu).
+          </p>
+          <div style="background:#eff6ff;padding:8px 12px;border-radius:8px;font-size:0.85rem;color:var(--blue-600)">
+            💡 Nhấn <kbd>Ctrl + Enter</kbd> để tạo một trang trắng riêng cho Mục lục!
+          </div>
+        </div>
+
+        <div class="card" style="border-top:4px solid var(--emerald-600)">
+          <span class="badge badge-green" style="margin-bottom:8px">BƯỚC 2 · RA LỆNH CHÈN MỤC LỤC</span>
+          <h3>Chèn ➔ Bảng mục lục (Insert ➔ Table of contents)</h3>
+          <p style="font-size:0.92rem">
+            Trên thanh menu bấm: <b>Chèn (Insert) ➔ Bảng mục lục</b>. Google Docs sẽ mở ra menu chọn 1 trong 3 kiểu hiển thị.
+          </p>
+          <div style="background:#ecfdf5;padding:8px 12px;border-radius:8px;font-size:0.85rem;color:var(--emerald-600)">
+            ✨ Bùm! Toàn bộ Heading cùng số trang chuẩn xác lập tức xuất hiện ngay!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 11: TOC STYLES & REFRESH SVG -->
+    <div id="step-toc-styles-svg" class="step"
+         data-x="0" data-y="2200" data-z="200" data-rotate-x="15">
+      <span class="eyebrow">SƠ ĐỒ TRỰC QUAN KHÔNG GIAN</span>
+      <h2>Ba Kiểu Dáng Mục Lục &amp; Nút Cập Nhật Thần Kỳ</h2>
+      <p>Tìm hiểu các phong cách mục lục khác nhau và cách kích hoạt nút làm mới:</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi08/toc-styles-and-update.svg" alt="Ba kiểu mục lục và nút cập nhật">
+        <figcaption style="display:none">Sơ đồ 3 kiểu mục lục và nút Update TOC</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-green">Kiểu đường chấm (Dotted lines) là kiểu chuẩn nhất cho học sinh!</span>
+      </div>
+    </div>
+
+    <!-- STEP 12: UPDATE TOC MAGIC -->
+    <div id="step-update-toc-magic" class="step"
+         data-x="1400" data-y="2200" data-z="100">
+      <span class="eyebrow">VŨ KHÍ ĐỒNG BỘ TỰ ĐỘNG</span>
+      <h2>Phép Thuật Của Nút "Cập Nhật Bảng Mục Lục" (Update TOC 🔄)</h2>
+      <p>Khi em viết thêm 3 trang bài hoặc sửa tên một chương, điều gì sẽ xảy ra?</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px;align-items:center">
+        <div>
+          <div class="card" style="background:#f0fdf4;border-color:#bbf7d0;margin-bottom:16px">
+            <h3 style="color:#15803d;margin-top:0">🔄 1 Click Chuột Cứu Cả Ngày Làm Việc</h3>
+            <p style="font-size:0.92rem;color:#14532d;margin:0">
+              Nhấp chuột trái vào bất kỳ vị trí nào trong Bảng mục lục, một <b>vòng tròn mũi tên xoay 🔄</b> sẽ xuất hiện ở góc trên bên trái của bảng.
+              <br><br>
+              Chỉ cần nhấp vào nút đó, Google Docs sẽ tự động quét lại toàn bộ tài liệu:
+              <br>• Cập nhật các câu chữ tiêu đề mới sửa.
+              <br>• Tự động nhảy lại số trang chính xác 100%.
+              <br>• Bổ sung các Heading mới chèn thêm!
+            </p>
+          </div>
+        </div>
+
+        <div class="card" style="text-align:center;padding:32px">
+          <div style="font-size:3.5rem;margin-bottom:12px">📝 ➔ 🔄 ➔ 📑</div>
+          <h4 style="margin:0 0 8px;color:var(--navy-900)">Quy Tắc Vàng</h4>
+          <p style="font-size:0.9rem;color:var(--muted)">
+            Trước khi bấm <b>In ra giấy</b> hoặc <b>Tải xuống file PDF</b> để nộp bài, luôn luôn làm một việc cuối cùng: <b>BẤM NÚT CẬP NHẬT MỤC LỤC 🔄!</b>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 13: CUSTOMIZE TOC -->
+    <div id="step-customize-toc" class="step"
+         data-x="2800" data-y="2200" data-z="0">
+      <span class="eyebrow">TÙY BIẾN CHUYÊN SÂU</span>
+      <h2>Tùy Chọn Mục Lục (Table of Contents Options)</h2>
+      <p>Em hoàn toàn có quyền kiểm soát những cấp độ Heading nào được phép xuất hiện:</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">🔢</div>
+          <h4>Giới Hạn Cấp Độ Heading</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft)">
+            Nếu bài viết có quá nhiều mục nhỏ, em có thể chọn chỉ hiển thị đến <b>Heading 2</b> và ẩn Heading 3 để mục lục gọn gàng, thoáng mắt.
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">📏</div>
+          <h4>Độ Thụt Lề (Indent)</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft)">
+            Tùy chỉnh khoảng cách thụt đầu dòng của Heading 2 và Heading 3 so với Heading 1 cha để tạo cấu trúc bậc thang đẹp mắt.
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="font-size:2rem;margin-bottom:8px">🔘</div>
+          <h4>Kiểu Dáng Dấu Chấm Dóng</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft)">
+            Lựa chọn giữa dấu chấm tròn, đường gạch ngang nét đứt hoặc ẩn hoàn toàn đường dóng tùy theo phong cách tài liệu.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;background:#eff6ff;padding:12px 18px;border-radius:12px;font-size:0.88rem;color:var(--blue-600)">
+        Cách mở: Nhấp chuột vào Mục lục ➔ Bấm dấu <b>3 chấm dọc (⋮)</b> ➔ Chọn <b>Tùy chọn khác (More options)</b>.
+      </div>
+    </div>
+
+    <!-- STEP 14: PAGE BREAK PLACEMENT -->
+    <div id="step-page-break-placement" class="step"
+         data-x="4200" data-y="2200" data-z="-100">
+      <span class="eyebrow">NGHỆ THUẬT BỐ CỤC</span>
+      <h2>Vị Trí Vàng Đặt Mục Lục &amp; Ngắt Trang (Ctrl + Enter)</h2>
+      <p>Một tài liệu chuyên nghiệp cần có vị trí phân bổ trang mục lục rõ ràng:</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card" style="text-align:center">
+          <span class="badge badge-amber" style="margin-bottom:8px">TRANG 1</span>
+          <div style="font-size:2.5rem;margin:10px 0">📘</div>
+          <h4>Trang Bìa (Cover)</h4>
+          <p style="font-size:0.85rem;color:var(--muted)">Tên đề tài báo cáo, tên học sinh, lớp, năm học, ảnh minh họa lớn.</p>
+        </div>
+
+        <div class="card" style="text-align:center;border:2px solid var(--emerald-500);background:#f0fdf4">
+          <span class="badge badge-green" style="margin-bottom:8px">TRANG 2 ⭐</span>
+          <div style="font-size:2.5rem;margin:10px 0">📑</div>
+          <h4 style="color:#047857">Trang Mục Lục (TOC)</h4>
+          <p style="font-size:0.85rem;color:#14532d">Đứng độc lập 1 trang riêng! Sau mục lục, nhấn ngay <kbd>Ctrl + Enter</kbd> để sang trang 3.</p>
+        </div>
+
+        <div class="card" style="text-align:center">
+          <span class="badge badge-blue" style="margin-bottom:8px">TRANG 3 TRỞ ĐI</span>
+          <div style="font-size:2.5rem;margin:10px 0">📄</div>
+          <h4>Nội Dung Báo Cáo</h4>
+          <p style="font-size:0.85rem;color:var(--muted)">Bắt đầu với <i>I. MỞ ĐẦU</i> và các chương nội dung nghiên cứu.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 15: COMMON MISTAKES -->
+    <div id="step-common-mistakes" class="step"
+         data-x="5600" data-y="2200" data-z="-200" data-rotate-y="15">
+      <span class="eyebrow">CẢNH BÁO BẪY THƯỜNG GẶP</span>
+      <h2>Bốn Sai Lầm Học Sinh Hay Mắc Phải</h2>
+      <p>Hãy ghi nhớ để không bị trừ điểm oan uổng trong bài kiểm tra:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:20px">
+        <div class="card" style="border-left:4px solid var(--rose-500)">
+          <h4 style="color:var(--rose-600);margin:0 0 6px">1. Nhầm Lẫn Giữa Title Và Heading 1</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft);margin:0">
+            <b>Title</b> chỉ dùng 1 lần duy nhất cho Tên bài báo cáo ở trang bìa. Đừng đặt Title cho các chương bên trong, vì mặc định Title sẽ không hiện trên Mục lục!
+          </p>
+        </div>
+
+        <div class="card" style="border-left:4px solid var(--rose-500)">
+          <h4 style="color:var(--rose-600);margin:0 0 6px">2. Tự Tiện Gõ Chữ Thêm Vào Mục Lục</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft);margin:0">
+            Nhiều bạn gõ trực tiếp chữ vào Bảng mục lục. Khi bấm nút 🔄 Cập nhật, toàn bộ chữ gõ thêm sẽ bị xóa sạch! Muốn sửa mục nào, hãy sửa ngay tại dòng Heading trong bài viết.
+          </p>
+        </div>
+
+        <div class="card" style="border-left:4px solid var(--rose-500)">
+          <h4 style="color:var(--rose-600);margin:0 0 6px">3. Đặt Mục Lục Dính Chung Với Thân Bài</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft);margin:0">
+            Không dùng ngắt trang (<kbd>Ctrl + Enter</kbd>), khiến mục lục và phần Mở đầu dính chung vào 1 trang, trông rất thiếu chuyên nghiệp.
+          </p>
+        </div>
+
+        <div class="card" style="border-left:4px solid var(--rose-500)">
+          <h4 style="color:var(--rose-600);margin:0 0 6px">4. Quên Bấm Nút Làm Mới (Refresh)</h4>
+          <p style="font-size:0.88rem;color:var(--ink-soft);margin:0">
+            Sửa bài xong vội vàng in ngay mà quên bấm nút 🔄 khiến số trang trên mục lục bị lệch so với bài in thực tế.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 16: PRO TIPS & SHORTCUTS -->
+    <div id="step-pro-tips" class="step"
+         data-x="5600" data-y="3300" data-z="-100" data-rotate-z="-90">
+      <span class="eyebrow">BÍ QUYẾT GIA TĂNG TỐC ĐỘ</span>
+      <h2>Phím Tắt Gán Heading Nhanh Như Chớp</h2>
+      <p>Không cần mở chuột bấm chọn menu Styles, hãy dùng 3 tổ hợp phím này:</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card" style="text-align:center">
+          <kbd style="font-size:1.1rem;padding:8px 16px">Ctrl + Alt + 1</kbd>
+          <h3 style="margin:14px 0 8px;color:var(--blue-600)">Gán Heading 1</h3>
+          <p style="font-size:0.88rem;color:var(--muted)">Chuyển ngay dòng hiện tại thành Tiêu đề cấp 1.</p>
+        </div>
+
+        <div class="card" style="text-align:center">
+          <kbd style="font-size:1.1rem;padding:8px 16px">Ctrl + Alt + 2</kbd>
+          <h3 style="margin:14px 0 8px;color:var(--teal-600)">Gán Heading 2</h3>
+          <p style="font-size:0.88rem;color:var(--muted)">Chuyển ngay dòng hiện tại thành Tiêu đề cấp 2 con.</p>
+        </div>
+
+        <div class="card" style="text-align:center">
+          <kbd style="font-size:1.1rem;padding:8px 16px">Ctrl + Alt + 0</kbd>
+          <h3 style="margin:14px 0 8px;color:var(--navy-900)">Về Normal Text</h3>
+          <p style="font-size:0.88rem;color:var(--muted)">Xóa kiểu Heading và quay về văn bản thường.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;text-align:center;font-size:0.95rem;color:var(--ink-soft)">
+        💡 <b>Mẹo macOS:</b> Thay phím <kbd>Ctrl</kbd> bằng <kbd>Cmd (⌘)</kbd> (Ví dụ: <kbd>Cmd + Option + 1</kbd>).
+      </div>
+    </div>
+
+    <!-- STEP 17: OUTLINE & TOC LIVE STUDIO (Simulator) -->
+    <div id="step-outline-studio" class="step"
+         data-x="4200" data-y="3300" data-z="0" data-scale="1.1">
+      <span class="eyebrow">PHÒNG THÍ NGHIỆM TƯƠNG TÁC THỜI GIAN THỰC</span>
+      <h2>Phòng Thí Nghiệm: Document Outline &amp; TOC Studio</h2>
+      <p>Thử thêm mục mới, thay đổi nội dung trang và bấm nút 🔄 Cập nhật để trải nghiệm sự thần kỳ:</p>
+
+      <div class="grid-2 simulator-box" style="margin-top:16px;gap:24px">
+        <!-- Controls Panel -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <label style="font-weight:700;font-size:0.85rem;color:var(--navy-900);display:block;margin-bottom:6px">1. Thêm Tiêu Đề Mới Vào Báo Cáo:</label>
+            <div style="display:flex;gap:8px">
+              <button class="btn-hud" id="simBtnAddH1" style="flex:1;justify-content:center;background:#2563eb;color:white">+ Thêm Heading 1</button>
+              <button class="btn-hud" id="simBtnAddH2" style="flex:1;justify-content:center;background:#0d9488;color:white">+ Thêm Heading 2</button>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-weight:700;font-size:0.85rem;color:var(--navy-900);display:block;margin-bottom:6px">2. Thay Đổi Số Trang (Mô Phỏng Viết Thêm Bài):</label>
+            <div style="display:flex;gap:8px">
+              <button class="btn-hud" id="simBtnAddPage" style="flex:1;justify-content:center;background:#f59e0b;color:white">📄 Viết thêm 2 trang bài</button>
+              <button class="btn-hud" id="simBtnReset" style="flex:1;justify-content:center;background:#64748b;color:white">↺ Đặt lại từ đầu</button>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-weight:700;font-size:0.85rem;color:var(--navy-900);display:block;margin-bottom:6px">3. Vũ Khí Đồng Bộ:</label>
+            <button class="btn-hud active" id="simBtnRefreshTOC" style="width:100%;justify-content:center;padding:12px;background:#10b981;font-size:1rem">
+              🔄 Bấm Để Cập Nhật Mục Lục (Update TOC)
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Visual Frame -->
+        <div style="display:flex;gap:12px;background:#e2e8f0;padding:16px;border-radius:14px;min-height:360px">
+          <!-- Mini Outline Sidebar -->
+          <div style="width:130px;background:#ffffff;border-radius:8px;padding:10px;box-shadow:0 4px 12px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:7.5px;font-weight:800;color:#0284c7;text-transform:uppercase">🧭 OUTLINE</span>
+            <div id="simOutlineList" style="display:flex;flex-direction:column;gap:4px;font-size:7.5px">
+              <div style="font-weight:800;color:#1e293b">• 1. Khởi động</div>
+              <div style="font-weight:800;color:#1e293b">• 2. Thực trạng</div>
+              <div style="padding-left:8px;color:#475569">└ Không khí</div>
+            </div>
+          </div>
+
+          <!-- Mini Document Page with TOC -->
+          <div style="flex:1;background:#ffffff;border-radius:8px;padding:14px;box-shadow:0 8px 24px rgba(0,0,0,0.1);display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2e8f0;padding-bottom:6px;margin-bottom:10px">
+              <span style="font-size:9px;font-weight:900;color:#0f172a">MỤC LỤC TỰ ĐỘNG</span>
+              <span id="simStatusPill" style="font-size:7px;padding:2px 6px;border-radius:4px;background:#d1fae5;color:#065f46;font-weight:700">Đã đồng bộ</span>
+            </div>
+            <div id="simTOCList" style="display:flex;flex-direction:column;gap:6px;font-size:8px">
+              <div style="display:flex;justify-content:space-between;font-weight:700">
+                <span>1. Khởi động</span>
+                <span>.......... 2</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-weight:700">
+                <span>2. Thực trạng môi trường</span>
+                <span>.......... 3</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding-left:10px;color:#475569">
+                <span>2.1. Ô nhiễm không khí</span>
+                <span>.......... 3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 18: MINI CHALLENGE 2 (Build Heading Tree) -->
+    <div id="step-challenge-2" class="step"
+         data-x="2800" data-y="3300" data-z="100">
+      <span class="eyebrow">MINI CHALLENGE 2 · SẮP XẾP CÂY MỤC LỤC</span>
+      <h2>Sắp Xếp Heading Hợp Lý Cho Báo Cáo "Môi Trường"</h2>
+      <p>Em cần trình bày 3 mục sau trong báo cáo. Đâu là cách gán Heading chuẩn xác nhất?</p>
+
+      <div class="card" style="padding:26px">
+        <div style="background:#f1f5f9;padding:12px;border-radius:10px;margin-bottom:16px;font-size:0.92rem">
+          Mục A: <b>"CÁC NGUYÊN NHÂN GÂY Ô NHIỄM"</b><br>
+          Mục B: <b>"Khí thải từ phương tiện giao thông"</b><br>
+          Mục C: <b>"Rác thải nhựa sinh hoạt"</b>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <button class="quiz-btn" id="btnCh2OptA">
+            <span class="letter-badge">A</span>
+            <span>Mục A là Title, Mục B là Title, Mục C là Title.</span>
+          </button>
+          <button class="quiz-btn" id="btnCh2OptB">
+            <span class="letter-badge">B</span>
+            <span>Mục A là Heading 1; Mục B và C đều là Heading 2 (mục con của A).</span>
+          </button>
+          <button class="quiz-btn" id="btnCh2OptC">
+            <span class="letter-badge">C</span>
+            <span>Mục A là Heading 3; Mục B là Heading 1; Mục C là Heading 2.</span>
+          </button>
+        </div>
+
+        <div id="ch2Feedback" style="display:none;padding:14px 18px;border-radius:12px;font-size:0.95rem;font-weight:600;margin-top:16px"></div>
+      </div>
+    </div>
+
+    <!-- STEP 19: MINI CHALLENGE 3 (Bug Hunt) -->
+    <div id="step-challenge-3" class="step"
+         data-x="1400" data-y="3300" data-z="200">
+      <span class="eyebrow">MINI CHALLENGE 3 · THÁM TỬ MỤC LỤC</span>
+      <h2>Bắt 3 Lỗi Trong Báo Cáo Của Bạn Hoàng</h2>
+      <p>Bạn Hoàng vừa hoàn thành báo cáo nhưng mắc 3 lỗi sai nghiêm trọng về mục lục:</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card" id="cardBug1" style="cursor:pointer;border:2px dashed #cbd5e1;transition:all 0.25s ease">
+          <span class="badge badge-amber" style="margin-bottom:8px">LỖI 1 ?</span>
+          <h4 style="margin:0 0 6px">Gõ tay dấu chấm lồi lõm</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Hoàng gõ phím dấu chấm liên tục để dóng hàng số trang thay vì dùng Table of Contents tự động.</p>
+          <button class="btn-hud" style="margin-top:10px;width:100%;justify-content:center">Nhấp để bắt lỗi này!</button>
+        </div>
+
+        <div class="card" id="cardBug2" style="cursor:pointer;border:2px dashed #cbd5e1;transition:all 0.25s ease">
+          <span class="badge badge-amber" style="margin-bottom:8px">LỖI 2 ?</span>
+          <h4 style="margin:0 0 6px">Chèn thêm 2 trang nhưng quên Refresh</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Hoàng chèn thêm biểu đồ làm bài dài thêm 2 trang nhưng không bấm nút 🔄 Update TOC.</p>
+          <button class="btn-hud" style="margin-top:10px;width:100%;justify-content:center">Nhấp để bắt lỗi này!</button>
+        </div>
+
+        <div class="card" id="cardBug3" style="cursor:pointer;border:2px dashed #cbd5e1;transition:all 0.25s ease">
+          <span class="badge badge-amber" style="margin-bottom:8px">LỖI 3 ?</span>
+          <h4 style="margin:0 0 6px">Đặt mục lục dính liền với trang bìa</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Không ngắt trang bằng Ctrl + Enter khiến mục lục dính sát vào tên đề tài ở trang bìa.</p>
+          <button class="btn-hud" style="margin-top:10px;width:100%;justify-content:center">Nhấp để bắt lỗi này!</button>
+        </div>
+      </div>
+
+      <div id="bugHuntScoreBox" style="margin-top:20px;text-align:center;font-weight:800;color:var(--emerald-600);font-size:1.1rem;display:none">
+        🎉 Tuyệt vời! Em đã tìm thấy toàn bộ 3 lỗi và sẵn sàng thực hiện dự án hoàn hảo!
+      </div>
+    </div>
+
+    <!-- STEP 20: BEFORE & AFTER FLYER (SVG) -->
+    <div id="step-before-after-svg" class="step"
+         data-x="0" data-y="3300" data-z="100">
+      <span class="eyebrow">ĐỐI CHIẾU TRỰC QUAN</span>
+      <h2>So Sánh Before vs After Báo Cáo Môi Trường</h2>
+      <p>Cùng chiêm ngưỡng sự chuyển mình từ một tài liệu thô thành báo cáo chuẩn mực:</p>
+
+      <figure class="visual-guide" style="margin-top:14px">
+        <img src="assets/buoi08/before-after-environmental-report.svg" alt="So sánh trực quan Before và After báo cáo">
+        <figcaption style="display:none">So sánh trực quan Before và After Báo cáo môi trường</figcaption>
+      </figure>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.85rem;color:var(--muted)">💡 Nhấp chuột vào sơ đồ để phóng to toàn màn hình.</span>
+        <span class="badge badge-teal">Chỉ tiêu: Heading 1, 2 phân cấp rõ · TOC tự động trang 2 · Outline hoạt động</span>
+      </div>
+    </div>
+
+    <!-- STEP 21: FINAL PROJECT IN CLASS -->
+    <div id="step-final-project" class="step"
+         data-x="0" data-y="4400" data-z="0">
+      <span class="eyebrow">BÀI THỰC HÀNH TỔNG HỢP (30 ĐIỂM)</span>
+      <h2>Dự Án: Báo Cáo Bảo Vệ Môi Trường (Độ Dài 2–3 Trang)</h2>
+      <p>Em đóng vai trò Nhà nghiên cứu môi trường học đường, soạn thảo báo cáo hoàn chỉnh:</p>
+
+      <div class="grid-2" style="margin-top:20px;gap:24px">
+        <div class="card" style="border-left:5px solid var(--blue-600)">
+          <h3 style="color:var(--blue-600);margin-top:0">📋 Tiêu Chí Kỹ Thuật (30đ)</h3>
+          <ul style="padding-left:20px;line-height:1.75;font-size:0.92rem;color:var(--ink-soft);margin-bottom:0">
+            <li><b>Phân Cấp Heading (6đ):</b> Có tối thiểu 3 mục Heading 1 và 3 mục Heading 2.</li>
+            <li><b>Trang Mục Lục Riêng (6đ):</b> Mục lục nằm ở Trang 2, có ngắt trang <kbd>Ctrl + Enter</kbd>.</li>
+            <li><b>Định Dạng TOC Chuẩn (6đ):</b> Sử dụng kiểu đường chấm dóng hàng thẳng tắp.</li>
+            <li><b>Document Outline (6đ):</b> Thanh bên trái hiển thị đầy đủ cây danh mục, nhảy được đến từng phần.</li>
+            <li><b>Nút Cập Nhật &amp; Xuất PDF (6đ):</b> Đã bấm 🔄 Update TOC và tải xuống file PDF hoàn chỉnh.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;background:#f8fafc">
+          <div>
+            <span class="badge badge-green" style="margin-bottom:10px">SẢN PHẨM BÀN GIAO</span>
+            <h3 style="margin-top:0">Quy Cách Nộp Bài</h3>
+            <p style="font-size:0.92rem;color:var(--ink-soft)">
+              1. <b>File PDF xuất bản:</b> Kiểm tra độ thẳng hàng của số trang trên mục lục.<br>
+              2. <b>Link Google Docs:</b> Để giáo viên kiểm tra trực tiếp Document Outline bên trái!
+            </p>
+          </div>
+          <a href="buoi-08-bai-tap.html" class="btn-hud" style="background:var(--blue-600);color:white;justify-content:center;padding:12px">
+            📝 Mở Phiếu Thực Hành Chi Tiết ➔
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 22: HOMEWORK -->
+    <div id="step-homework" class="step"
+         data-x="1400" data-y="4400" data-z="-100">
+      <span class="eyebrow">BÀI TẬP VỀ NHÀ · RÈN LUYỆN ĐỘC LẬP</span>
+      <h2>Nhiệm Vụ Về Nhà: Báo Cáo Về Môn Thể Thao Yêu Thích</h2>
+      <p>Tự tay tạo một tài liệu nghiên cứu 2–3 trang về môn thể thao em đam mê (Bóng đá, Cầu lông, Bơi lội...):</p>
+
+      <div class="grid-3" style="margin-top:20px">
+        <div class="card">
+          <span class="badge badge-amber" style="margin-bottom:8px">CẤU TRÚC 5 PHẦN</span>
+          <h4>Heading 1 Đầy Đủ</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">1. Giới thiệu · 2. Luật chơi · 3. Dụng cụ · 4. Lợi ích sức khỏe · 5. Kết luận.</p>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-blue" style="margin-bottom:8px">MỤC LỤC TỰ ĐỘNG</span>
+          <h4>TOC &amp; Outline</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Chèn Table of Contents tự động ở trang 2 và kiểm tra Document Outline hoạt động.</p>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-teal" style="margin-bottom:8px">HÌNH ẢNH MINH HỌA</span>
+          <h4>Ảnh &amp; Định Dạng</h4>
+          <p style="font-size:0.88rem;color:var(--muted)">Chèn ít nhất 2 hình ảnh minh họa dụng cụ thi đấu hoặc sân tập chuẩn.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px;background:#f0fdf4;border-color:#bbf7d0">
+        <b style="color:#15803d">📦 Sản phẩm nộp:</b>
+        <span style="font-size:0.92rem;color:#14532d">
+          Nộp file PDF và link Google Docs trước buổi học tiếp theo.
+        </span>
+      </div>
+    </div>
+
+    <!-- STEP 23: QUIZ 10 QUESTIONS -->
+    <div id="step-quiz" class="step"
+         data-x="2800" data-y="4400" data-z="-200" data-scale="1.05">
+      <span class="eyebrow">ĐẤU TRƯỜNG TRÍ TUỆ · KIỂM TRA NHANH</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <h2 style="margin:0">Trắc Nghiệm Kiến Thức Buổi 08 (10 Câu)</h2>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span class="badge badge-blue" id="quizCounterBadge">Câu hỏi 1 / 10</span>
+          <span class="badge badge-green">Điểm: <b id="quizScoreNumber">0</b> / 10</span>
+        </div>
+      </div>
+
+      <div class="quiz-card">
+        <div class="quiz-question-title" id="quizQuestionText">1. Google Docs dựa vào yếu tố nào để tự động xây dựng Document Outline và Mục lục?</div>
+        <div class="quiz-options" id="quizOptionsWrap"></div>
+
+        <div class="quiz-feedback" id="quizFeedbackBox">
+          <span style="font-size:1.3rem">💡</span>
+          <span id="quizFeedbackText">Giải thích chi tiết sẽ hiện ở đây.</span>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+          <div class="quiz-dots" id="quizDotsWrap"></div>
+          <button class="btn-hud" id="quizNextBtn" style="background:var(--blue-600);color:white;padding:10px 20px">
+            Câu tiếp theo ➔
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 24: SUMMARY & CHEATSHEET (Dark) -->
+    <div id="step-summary" class="step dark"
+         data-x="4200" data-y="4400" data-z="0">
+      <span class="eyebrow">TỔNG KẾT BÀI HỌC</span>
+      <h1>Gói Gọn Kiến Thức Buổi 08 &amp; Cẩm Nang Phím Tắt</h1>
+      <p style="font-size:1.2rem;color:#cbd5e1;margin-bottom:24px">
+        Chúc mừng em đã hoàn thành xuất sắc Chặng 2 về Trình Bày Chuyên Nghiệp! Ghi nhớ các thói quen vàng:
+      </p>
+
+      <div class="grid-2" style="gap:24px">
+        <div class="card">
+          <h3 style="color:#fff;margin-top:0">⚡ 4 Phím Tắt Thần Thánh</h3>
+          <table style="width:100%;font-size:0.92rem;color:#cbd5e1;line-height:2">
+            <tr><td><kbd>Ctrl + Alt + 1</kbd></td><td>Gán Heading 1 cho chương lớn</td></tr>
+            <tr><td><kbd>Ctrl + Alt + 2</kbd></td><td>Gán Heading 2 cho mục con</td></tr>
+            <tr><td><kbd>Ctrl + Alt + 0</kbd></td><td>Trả về văn bản thường (Normal text)</td></tr>
+            <tr><td><kbd>Ctrl + Enter</kbd></td><td>Ngắt trang riêng cho Mục lục</td></tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3 style="color:#fff;margin-top:0">⭐ 3 Thói Quen Của Dân Chuyên Nghiệp</h3>
+          <ul style="padding-left:18px;font-size:0.92rem;color:#cbd5e1;line-height:1.75;margin:0">
+            <li><b>Không bao giờ gõ dấu chấm thủ công</b> để làm mục lục.</li>
+            <li><b>Luôn bật Document Outline</b> khi soạn thảo tài liệu trên 3 trang.</li>
+            <li><b>Luôn bấm nút 🔄 Cập nhật mục lục</b> trước khi xuất file PDF nộp bài.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top:28px;display:flex;gap:14px;align-items:center">
+        <a href="buoi-08-bai-tap.html" class="btn-hud" style="background:#059669;padding:10px 20px;font-size:0.95rem">📝 Mở Phiếu Bài Tập Ngay</a>
+        <button class="btn-hud" onclick="impress().goto('overview')">🌌 Chiêm Ngưỡng Toàn Cảnh 3D</button>
+      </div>
+    </div>
+
+    <!-- STEP 25: COSMIC 3D OVERVIEW -->
+    <div id="overview" class="step"
+         data-x="2800" data-y="2200" data-z="7500" data-scale="8.5">
+      <div class="overview-hero-capsule">
+        <span class="badge badge-teal" style="margin-bottom:12px">SƠ ĐỒ TỔNG THỂ 25 TRẠM KHÔNG GIAN</span>
+        <h2 style="font-size:2.2rem;color:white;margin-bottom:8px">Toàn Cảnh Hành Trình Buổi 08 · Document Outline &amp; Mục Lục</h2>
+        <p style="font-size:1.05rem;color:#94a3b8;max-width:700px;margin:0 auto 20px">
+          Nhấp chuột trực tiếp vào bất kỳ thẻ trạm nào trên không gian 3D để phi thuyền camera phóng to vào trạm đó!
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn-hud active" onclick="impress().goto('step-intro')">Trạm 1: Khởi động</button>
+          <button class="btn-hud" onclick="impress().goto('step-bold-vs-heading-svg')">Trạm 4: Tư duy Heading</button>
+          <button class="btn-hud" onclick="impress().goto('step-outline-vs-toc-svg')">Trạm 9: Outline vs TOC</button>
+          <button class="btn-hud" onclick="impress().goto('step-toc-styles-svg')">Trạm 11: 3 Kiểu Mục Lục</button>
+          <button class="btn-hud" onclick="impress().goto('step-outline-studio')">Trạm 17: Studio Sandbox</button>
+          <button class="btn-hud" onclick="impress().goto('step-quiz')">Trạm 23: Trắc nghiệm</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================================
+       TEACHER'S GUIDE DRAWER
+       ============================================================ -->
+  <div class="drawer drawer-right" id="teachingDrawer">
+    <div class="drawer-header">
+      <h3>📋 Hướng Dẫn Sư Phạm Dành Cho Giáo Viên</h3>
+      <button class="drawer-close-btn" id="drawerCloseBtn">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="teaching-box" style="background:#eff6ff;border-color:var(--blue-600)">
+        <b style="color:var(--blue-600)">⏱️ Phân bổ thời lượng 100 phút (Buổi 8)</b>
+        <p>• 15 phút: Tình huống cuộn chuột mỏi tay &amp; Giải phẫu tư duy Heading.<br>
+        • 20 phút: Document Outline bên trái &amp; Bí kíp nhảy trang 1-chạm.<br>
+        • 20 phút: Chèn Table of Contents, 3 kiểu dáng &amp; Nút Refresh 🔄.<br>
+        • 30 phút: Thực hành tổng hợp Báo cáo Bảo vệ Môi trường 30đ.<br>
+        • 15 phút: Quiz 10 câu &amp; Giao nhiệm vụ về nhà.</p>
+      </div>
+
+      <div class="teaching-box" style="background:#ecfdf5;border-color:var(--emerald-600)">
+        <b style="color:var(--emerald-600)">💡 Câu hỏi tương tác gợi mở</b>
+        <p>"Tại sao khi em bôi đen chữ rồi bấm phím In đậm (Bold), mắt em thấy chữ to nhưng thanh Document Outline bên trái vẫn trống trơn?"</p>
+      </div>
+
+      <div class="teaching-box" style="background:#fffbeb;border-color:var(--amber-500)">
+        <b style="color:var(--amber-500)">⚠️ Lưu ý khi học sinh thao tác</b>
+        <p>Học sinh thường hay tự gõ chữ vào trong khung Bảng mục lục rồi ngạc nhiên khi bấm nút Refresh 🔄 chữ bị mất. Hãy giải thích rõ: Mục lục chỉ là gương phản chiếu của Heading trong bài!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       KEYBOARD SHORTCUTS MODAL
+       ============================================================ -->
+  <div class="modal" id="shortcutsModal">
+    <div class="modal-box">
+      <button class="modal-close-btn" id="modalCloseBtn">✕</button>
+      <h3 style="margin-top:0;font-size:1.4rem;color:var(--navy-900)">⌨️ Phím Tắt Điều Khiển Bài Giảng 3D</h3>
+      <table style="width:100%;border-collapse:collapse;margin-top:16px;font-size:0.95rem">
+        <tr style="border-bottom:1px solid #e2e8f0">
+          <td style="padding:10px 0"><kbd>Space</kbd> / <kbd>→</kbd></td>
+          <td style="padding:10px 0;font-weight:600">Chuyển sang trạm tiếp theo</td>
+        </tr>
+        <tr style="border-bottom:1px solid #e2e8f0">
+          <td style="padding:10px 0"><kbd>←</kbd></td>
+          <td style="padding:10px 0;font-weight:600">Lùi về trạm trước đó</td>
+        </tr>
+        <tr style="border-bottom:1px solid #e2e8f0">
+          <td style="padding:10px 0"><kbd>O</kbd></td>
+          <td style="padding:10px 0;font-weight:600">Xem sơ đồ không gian 3D (Overview)</td>
+        </tr>
+        <tr style="border-bottom:1px solid #e2e8f0">
+          <td style="padding:10px 0"><kbd>Escape</kbd></td>
+          <td style="padding:10px 0;font-weight:600">Đóng phóng to hình ảnh hoặc đóng cửa sổ trợ giúp</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 0"><kbd>?</kbd></td>
+          <td style="padding:10px 0;font-weight:600">Bật/tắt hộp thoại trợ giúp này</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       LIGHTBOX ZOOM MODAL
+       ============================================================ -->
+  <div class="lightbox-modal" id="zoomLightbox">
+    <div>
+      <img id="lightboxImg" src="" alt="Zoomed Graphic">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toastBox">Thông báo</div>
+
+  <!-- ============================================================
+       SCRIPTS: IMPRESS.JS & APP ORCHESTRATION
+       ============================================================ -->
+  <script src="assets/js/impress.js"></script>
+  <script>
+    // ------------------------------------------------------------
+    // 1. DATA: 10 SCENARIO-BASED QUIZ QUESTIONS
+    // ------------------------------------------------------------
+    const quizQuestions = [
+      {
+        question: "Google Docs dựa vào yếu tố nào để tự động tạo Document Outline và Mục lục?",
+        options: [
+          "Màu sắc chữ và độ đậm (Bold)",
+          "Hệ thống kiểu định dạng Heading (H1, H2, H3)",
+          "Kích thước cỡ chữ (Font size)",
+          "Số lượng dòng trong đoạn văn"
+        ],
+        answer: 1,
+        explain: "Chỉ các văn bản được gán nhãn Heading (Heading 1, 2, 3...) mới được Google Docs nhận diện vào cây cấu trúc tài liệu."
+      },
+      {
+        question: "Đường dẫn trên thanh menu để mở thanh Document Outline (Khung tài liệu) là gì?",
+        options: [
+          "Tệp ➔ Mở",
+          "Xem (View) ➔ Hiển thị cấu trúc tài liệu (Show document outline)",
+          "Chèn ➔ Bảng mục lục",
+          "Định dạng ➔ Cột"
+        ],
+        answer: 1,
+        explain: "Vào menu Xem (View) ➔ Hiển thị cấu trúc tài liệu (hoặc nhấp biểu tượng mục lục nhỏ góc trên bên trái)."
+      },
+      {
+        question: "Nếu em muốn chuyển đến đọc một chương ở trang 30 ngay lập tức, cách nhanh nhất là gì?",
+        options: [
+          "Lăn bánh xe chuột liên tục qua 30 trang",
+          "Nhấp chuột trực tiếp vào tên chương đó trên Document Outline bên trái",
+          "Nhấn phím Page Down 50 lần",
+          "Tắt file đi mở lại"
+        ],
+        answer: 1,
+        explain: "Document Outline đóng vai trò là bản đồ số: nhấp vào bất kỳ mục nào, con trỏ sẽ bay ngay tới mục đó tức thì!"
+      },
+      {
+        question: "Khi rê chuột lên một mục trên Document Outline và bấm dấu [✕], điều gì sẽ xảy ra?",
+        options: [
+          "Toàn bộ đoạn văn bản đó trong bài sẽ bị xóa vĩnh viễn",
+          "Mục đó bị ẩn khỏi Outline nhưng nội dung trong bài viết vẫn còn nguyên",
+          "Tài liệu sẽ bị đóng lại",
+          "Font chữ của mục đó bị đổi sang màu đỏ"
+        ],
+        answer: 1,
+        explain: "Dấu [✕] chỉ loại bỏ tiêu đề đó khỏi khung Outline bên trái mà không hề làm mất câu chữ nào trong bài viết."
+      },
+      {
+        question: "Tổ hợp phím tắt nhanh để gán kiểu Heading 1 cho dòng đang chọn là gì?",
+        options: [
+          "Ctrl + Alt + 1 (macOS: Cmd + Option + 1)",
+          "Ctrl + Shift + 1",
+          "Alt + 1",
+          "Ctrl + 1"
+        ],
+        answer: 0,
+        explain: "Ctrl + Alt + 1 là phím tắt vàng để gán Heading 1. Tương tự, Ctrl + Alt + 2 là Heading 2, Ctrl + Alt + 0 là về văn bản thường."
+      },
+      {
+        question: "Vị trí chuẩn mực nhất để đặt Bảng mục lục (Table of Contents) trong báo cáo học đường là ở đâu?",
+        options: [
+          "Ngay đầu trang bìa đè lên tên đề tài",
+          "Ở Trang 2, độc lập 1 trang riêng ngay sau trang bìa",
+          "Ở trang cuối cùng sau phần tài liệu tham khảo",
+          "Dưới chân trang của tất cả mọi trang"
+        ],
+        answer: 1,
+        explain: "Mục lục luôn nằm ở Trang 2, sau đó ngắt trang bằng Ctrl + Enter để bắt đầu nội dung báo cáo từ Trang 3."
+      },
+      {
+        question: "Kiểu dáng Mục lục nào được khuyên dùng cho các bài báo cáo khoa học và in ấn sách giáo khoa?",
+        options: [
+          "Kiểu liên kết xanh không có số trang",
+          "Kiểu có đường chấm dóng hàng (Dotted lines) nối sang số trang",
+          "Kiểu chỉ có số trang trơn",
+          "Kiểu không có tiêu đề"
+        ],
+        answer: 1,
+        explain: "Kiểu đường chấm dóng hàng giúp mắt dễ dàng đối chiếu từ tên mục sang số trang ở mép phải một cách chính xác."
+      },
+      {
+        question: "Sau khi viết thêm 3 trang bài làm số trang bị thay đổi, em cần làm gì để Mục lục tự động cập nhật số trang mới?",
+        options: [
+          "Xóa mục lục đi và tạo lại từ đầu",
+          "Nhấp chuột vào Mục lục và bấm nút vòng tròn xoay 🔄 (Update table of contents)",
+          "Tự gõ lại số trang bằng tay",
+          "Khởi động lại máy tính"
+        ],
+        answer: 1,
+        explain: "Chỉ cần nhấp chuột vào mục lục và bấm nút Refresh 🔄 ở góc trên bên trái, toàn bộ số trang sẽ tự động đồng bộ trong 1 giây!"
+      },
+      {
+        question: "Nếu em tự gõ thêm chữ trực tiếp vào Bảng mục lục tự động, điều gì sẽ xảy ra khi bấm nút 🔄 Cập nhật?",
+        options: [
+          "Chữ gõ thêm sẽ được lưu vĩnh viễn",
+          "Chữ gõ thêm sẽ bị xóa sạch vì Mục lục được tạo tự động từ Heading trong bài",
+          "Google Docs sẽ báo lỗi",
+          "Toàn bộ tài liệu bị khóa"
+        ],
+        answer: 1,
+        explain: "Mục lục chỉ là tấm gương phản chiếu Heading trong bài. Muốn sửa chữ, em phải sửa ngay tại dòng Heading trong thân bài."
+      },
+      {
+        question: "Trong cấu trúc bài viết, mối quan hệ giữa Heading 1 và Heading 2 là gì?",
+        options: [
+          "Heading 1 và Heading 2 hoàn toàn ngang hàng nhau",
+          "Heading 2 là mục con nằm bên trong phần lớn Heading 1",
+          "Heading 1 luôn nằm dưới Heading 2",
+          "Heading 2 chỉ dùng cho tiêu đề trang bìa"
+        ],
+        answer: 1,
+        explain: "Heading 1 là cấp độ cha (chương lớn), Heading 2 là cấp độ con (tiểu mục thuộc chương đó)."
+      }
+    ];
+
+    // ------------------------------------------------------------
+    // 2. IMPRESS.JS LIFECYCLE & NAVIGATION
+    // ------------------------------------------------------------
+    const impressApi = impress();
+    impressApi.init();
+
+    const toastBox = document.getElementById('toastBox');
+    function showToast(msg) {
+      toastBox.textContent = msg;
+      toastBox.classList.add('show');
+      setTimeout(() => toastBox.classList.remove('show'), 2600);
+    }
+
+    const stationJumpSelect = document.getElementById('stationJumpSelect');
+    stationJumpSelect.onchange = (e) => {
+      impressApi.goto(e.target.value);
+    };
+
+    document.getElementById('btnToggleOverview').onclick = () => {
+      impressApi.goto('overview');
+    };
+
+    document.addEventListener('impress:stepenter', (event) => {
+      const stepId = event.target.id;
+      stationJumpSelect.value = stepId;
+
+      if (stepId === 'overview') {
+        document.getElementById('impress').classList.add('step-overview');
+      } else {
+        document.getElementById('impress').classList.remove('step-overview');
+      }
+    });
+
+    // Overview direct click
+    document.querySelectorAll('#impress .step').forEach(step => {
+      step.addEventListener('click', () => {
+        if (document.getElementById('impress').classList.contains('step-overview') && step.id !== 'overview') {
+          impressApi.goto(step.id);
+        }
+      });
+    });
+
+    // ------------------------------------------------------------
+    // 3. TEACHER'S DRAWER & MODALS
+    // ------------------------------------------------------------
+    const teachingDrawer = document.getElementById('teachingDrawer');
+    document.getElementById('btnTeacherGuide').onclick = () => teachingDrawer.classList.add('open');
+    document.getElementById('drawerCloseBtn').onclick = () => teachingDrawer.classList.remove('open');
+
+    const shortcutsModal = document.getElementById('shortcutsModal');
+    document.getElementById('btnHelpShortcuts').onclick = () => shortcutsModal.classList.add('open');
+    document.getElementById('modalCloseBtn').onclick = () => shortcutsModal.classList.remove('open');
+    shortcutsModal.onclick = (e) => {
+      if (e.target === shortcutsModal) shortcutsModal.classList.remove('open');
+    };
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        shortcutsModal.classList.toggle('open');
+      }
+      if (e.key.toLowerCase() === 'o') {
+        impressApi.goto('overview');
+      }
+      if (e.key === 'Escape') {
+        shortcutsModal.classList.remove('open');
+        teachingDrawer.classList.remove('open');
+        zoomLightbox.classList.remove('show');
+      }
+    });
+
+    // ------------------------------------------------------------
+    // 4. MINI CHALLENGES
+    // ------------------------------------------------------------
+    const ch1Feedback = document.getElementById('ch1Feedback');
+    document.getElementById('btnCh1OptB').onclick = () => {
+      ch1Feedback.style.display = 'block';
+      ch1Feedback.style.background = '#ecfdf5';
+      ch1Feedback.style.color = '#065f46';
+      ch1Feedback.innerHTML = '🎉 <b>Chính xác 100%!</b> Bold và Size chỉ là trang trí mắt nhìn. Phải gắn kiểu Heading (H1, H2) thì Document Outline mới nhận diện được bộ khung!';
+      showToast('Đạt điểm tối đa Challenge 1!');
+    };
+    const wrongCh1 = () => {
+      ch1Feedback.style.display = 'block';
+      ch1Feedback.style.background = '#fff1f2';
+      ch1Feedback.style.color = '#9f1239';
+      ch1Feedback.innerHTML = '❌ Chưa đúng! Nhớ rằng Google Docs chỉ hiểu cấu trúc qua hệ thống Styles (Heading), không phụ thuộc vào font chữ hay mạng internet.';
+    };
+    document.getElementById('btnCh1OptA').onclick = wrongCh1;
+    document.getElementById('btnCh1OptC').onclick = wrongCh1;
+
+    // Challenge 2:
+    const ch2Feedback = document.getElementById('ch2Feedback');
+    document.getElementById('btnCh2OptB').onclick = () => {
+      ch2Feedback.style.display = 'block';
+      ch2Feedback.style.background = '#ecfdf5';
+      ch2Feedback.style.color = '#065f46';
+      ch2Feedback.innerHTML = '🎉 <b>Chuẩn xác tuyệt đối!</b> "CÁC NGUYÊN NHÂN" là phần lớn (Heading 1), còn Khí thải và Rác thải là 2 nguyên nhân con (Heading 2).';
+      showToast('Đạt điểm tối đa Challenge 2!');
+    };
+    const wrongCh2 = () => {
+      ch2Feedback.style.display = 'block';
+      ch2Feedback.style.background = '#fff1f2';
+      ch2Feedback.style.color = '#9f1239';
+      ch2Feedback.innerHTML = '❌ Sai cấu trúc! Title chỉ dùng cho tên bài ở bìa, còn các phần nội dung phải xếp theo thứ tự cha - con: Heading 1 rồi đến Heading 2.';
+    };
+    document.getElementById('btnCh2OptA').onclick = wrongCh2;
+    document.getElementById('btnCh2OptC').onclick = wrongCh2;
+
+    // Challenge 3: Bug Hunt
+    let bugsFound = 0;
+    function handleBugClick(card) {
+      if (!card.classList.contains('found')) {
+        card.classList.add('found');
+        card.style.background = '#ecfdf5';
+        card.style.borderColor = '#10b981';
+        card.querySelector('button').textContent = '✓ Đã tóm gọn lỗi!';
+        card.querySelector('button').style.background = '#10b981';
+        card.querySelector('button').style.color = '#fff';
+        bugsFound++;
+        showToast(`🎯 Đã bắt được ${bugsFound}/3 lỗi!`);
+        if (bugsFound === 3) {
+          document.getElementById('bugHuntScoreBox').style.display = 'block';
+        }
+      }
+    }
+    document.getElementById('cardBug1').onclick = () => handleBugClick(document.getElementById('cardBug1'));
+    document.getElementById('cardBug2').onclick = () => handleBugClick(document.getElementById('cardBug2'));
+    document.getElementById('cardBug3').onclick = () => handleBugClick(document.getElementById('cardBug3'));
+
+    // ------------------------------------------------------------
+    // 5. LIVE SIMULATOR SANDBOX (Step 17)
+    // ------------------------------------------------------------
+    const simOutlineList = document.getElementById('simOutlineList');
+    const simTOCList = document.getElementById('simTOCList');
+    const simStatusPill = document.getElementById('simStatusPill');
+
+    let simItems = [
+      { text: "1. Khởi động dự án", type: "H1", page: 2 },
+      { text: "2. Thực trạng môi trường", type: "H1", page: 3 },
+      { text: "2.1. Ô nhiễm không khí", type: "H2", page: 3 }
+    ];
+    let pageOffset = 0;
+
+    function renderSimulator() {
+      // Outline
+      simOutlineList.innerHTML = simItems.map(item => {
+        if (item.type === 'H1') {
+          return `<div style="font-weight:800;color:#1e293b">• ${item.text}</div>`;
+        } else {
+          return `<div style="padding-left:8px;color:#475569">└ ${item.text}</div>`;
+        }
+      }).join('');
+
+      // TOC
+      simTOCList.innerHTML = simItems.map(item => {
+        const indent = item.type === 'H2' ? 'padding-left:10px;color:#475569;' : 'font-weight:700;';
+        return `
+          <div style="display:flex;justify-content:space-between;${indent}">
+            <span>${item.text}</span>
+            <span>.......... ${item.page + pageOffset}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('simBtnAddH1').onclick = () => {
+      const idx = simItems.filter(i => i.type === 'H1').length + 1;
+      simItems.push({ text: `${idx}. Giải pháp hành động`, type: "H1", page: 4 });
+      renderSimulator();
+      showToast('Đã thêm 1 Heading 1 vào Outline & TOC!');
+    };
+
+    document.getElementById('simBtnAddH2').onclick = () => {
+      simItems.push({ text: `2.2. Rác thải nhựa đại dương`, type: "H2", page: 4 });
+      renderSimulator();
+      showToast('Đã thêm 1 Heading 2 con vào Outline & TOC!');
+    };
+
+    document.getElementById('simBtnAddPage').onclick = () => {
+      pageOffset += 2;
+      simStatusPill.textContent = "Cần bấm Refresh ⚠️";
+      simStatusPill.style.background = "#fee2e2";
+      simStatusPill.style.color = "#991b1b";
+      showToast('Đã viết thêm 2 trang! Số trang thực tế đã thay đổi, hãy bấm nút Cập nhật!');
+    };
+
+    document.getElementById('simBtnRefreshTOC').onclick = () => {
+      renderSimulator();
+      simStatusPill.textContent = "Đã đồng bộ ✓";
+      simStatusPill.style.background = "#d1fae5";
+      simStatusPill.style.color = "#065f46";
+      showToast('🔄 Phép thuật thành công: Toàn bộ số trang mục lục đã đồng bộ chuẩn 100%!');
+    };
+
+    document.getElementById('simBtnReset').onclick = () => {
+      simItems = [
+        { text: "1. Khởi động dự án", type: "H1", page: 2 },
+        { text: "2. Thực trạng môi trường", type: "H1", page: 3 },
+        { text: "2.1. Ô nhiễm không khí", type: "H2", page: 3 }
+      ];
+      pageOffset = 0;
+      renderSimulator();
+      simStatusPill.textContent = "Đã đồng bộ ✓";
+      simStatusPill.style.background = "#d1fae5";
+      simStatusPill.style.color = "#065f46";
+      showToast('Đã đặt lại dữ liệu phòng thí nghiệm');
+    };
+
+    // ------------------------------------------------------------
+    // 6. QUIZ ENGINE (10 QUESTIONS)
+    // ------------------------------------------------------------
+    let quizIndex = 0;
+    let quizScore = 0;
+    let quizAnsweredStatus = Array(quizQuestions.length).fill(false);
+
+    const quizDotsWrap = document.getElementById('quizDotsWrap');
+    quizDotsWrap.innerHTML = quizQuestions.map((_, i) => `<div class="quiz-dot" id="qDot${i}">${i+1}</div>`).join('');
+
+    function renderQuizStep() {
+      const q = quizQuestions[quizIndex];
+      document.getElementById('quizCounterBadge').textContent = `Câu hỏi ${quizIndex + 1} / ${quizQuestions.length}`;
+      document.getElementById('quizQuestionText').textContent = `${quizIndex + 1}. ${q.question}`;
+
+      const optionsWrap = document.getElementById('quizOptionsWrap');
+      optionsWrap.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-btn';
+        btn.innerHTML = `<span class="letter-badge">${letters[idx]}</span> <span>${opt}</span>`;
+        btn.onclick = () => handleAnswer(idx);
+        optionsWrap.appendChild(btn);
+      });
+
+      document.getElementById('quizFeedbackBox').style.display = 'none';
+    }
+
+    function handleAnswer(chosenIdx) {
+      if (quizAnsweredStatus[quizIndex]) return;
+      quizAnsweredStatus[quizIndex] = true;
+
+      const q = quizQuestions[quizIndex];
+      const buttons = document.querySelectorAll('.quiz-options .quiz-btn');
+
+      if (chosenIdx === q.answer) {
+        buttons[chosenIdx].classList.add('correct');
+        quizScore++;
+        document.getElementById('quizScoreNumber').textContent = quizScore;
+        document.getElementById(`qDot${quizIndex}`).classList.add('done');
+        showToast('🎉 Chính xác! Tuyệt vời!');
+      } else {
+        buttons[chosenIdx].classList.add('wrong');
+        buttons[q.answer].classList.add('correct');
+        document.getElementById(`qDot${quizIndex}`).style.background = '#f43f5e';
+        document.getElementById(`qDot${quizIndex}`).style.color = '#fff';
+        showToast('Chưa chính xác, hãy xem giải thích bên dưới nhé!');
+      }
+
+      buttons.forEach(b => b.style.pointerEvents = 'none');
+      const feedbackBox = document.getElementById('quizFeedbackBox');
+      const feedbackText = document.getElementById('quizFeedbackText');
+      feedbackText.textContent = `💡 Giải thích: ${q.explain}`;
+      feedbackBox.style.display = 'flex';
+      feedbackBox.style.background = (chosenIdx === q.answer) ? '#ecfdf5' : '#fff1f2';
+      feedbackBox.style.color = (chosenIdx === q.answer) ? '#065f46' : '#9f1239';
+    }
+
+    document.getElementById('quizNextBtn').onclick = () => {
+      if (quizIndex < quizQuestions.length - 1) {
+        quizIndex++;
+        renderQuizStep();
+      } else {
+        showToast(`🎉 Xuất sắc! Em hoàn thành bài quiz với ${quizScore}/${quizQuestions.length} điểm!`);
+      }
+    };
+    renderQuizStep();
+
+    // ------------------------------------------------------------
+    // 7. LIGHTBOX ZOOM
+    // ------------------------------------------------------------
+    const zoomLightbox = document.getElementById('zoomLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+
+    document.querySelectorAll('.visual-guide img').forEach(img => {
+      img.onclick = () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxCaption.textContent = img.closest('figure')?.querySelector('figcaption')?.textContent || '';
+        zoomLightbox.classList.add('show');
+      };
+    });
+
+    zoomLightbox.onclick = (e) => {
+      if (e.target === zoomLightbox || e.target === lightboxImg) {
+        zoomLightbox.classList.remove('show');
+      }
+    };
+  </script>
+</body>
+</html>

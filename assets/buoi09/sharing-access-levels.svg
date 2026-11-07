@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#162a54"/>
+    </linearGradient>
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <rect width="920" height="460" rx="20" fill="url(#bgGrad)"/>
+  <text x="460" y="42" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">BA CẤP ĐỘ PHÂN QUYỀN (PERMISSIONS) TRONG GOOGLE DOCS</text>
+  <text x="460" y="68" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#93c5fd" text-anchor="middle">Viewer (Người xem) · Commenter (Người nhận xét) · Editor (Người chỉnh sửa)</text>
+
+  <g transform="translate(40, 88)" filter="url(#shadow)">
+    <rect width="840" height="344" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+
+    <!-- Viewer Card -->
+    <g transform="translate(25, 20)">
+      <rect width="245" height="295" rx="12" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+      <rect x="15" y="15" width="215" height="36" rx="8" fill="#2563eb"/>
+      <text x="122" y="38" font-family="'Outfit', sans-serif" font-size="13" font-weight="800" fill="#ffffff" text-anchor="middle">👁️ VIEWER (NGƯỜI XEM)</text>
+
+      <g transform="translate(20, 68)" font-family="'Inter', sans-serif" font-size="10.5">
+        <text x="0" y="15" font-weight="700" fill="#1e40af">✅ Được phép làm:</text>
+        <text x="10" y="35" fill="#334155">• Đọc nội dung toàn bài</text>
+        <text x="10" y="55" fill="#334155">• In &amp; Tải file (nếu không chặn)</text>
+        <text x="10" y="75" fill="#334155">• Sao chép văn bản (Copy)</text>
+
+        <text x="0" y="110" font-weight="700" fill="#dc2626">❌ Bị cấm hoàn toàn:</text>
+        <text x="10" y="130" fill="#881337">• Không thể sửa, xóa chữ</text>
+        <text x="10" y="150" fill="#881337">• Không thể viết nhận xét</text>
+
+        <rect x="0" y="175" width="205" height="42" rx="6" fill="#ffffff" stroke="#bfdbfe" stroke-width="1"/>
+        <text x="10" y="193" font-size="9" font-weight="800" fill="#2563eb">🎯 Khi nào nên cấp:</text>
+        <text x="10" y="207" font-size="8.5" fill="#475569">Gửi bài làm nộp cho thầy cô chấm.</text>
+      </g>
+    </g>
+
+    <!-- Commenter Card -->
+    <g transform="translate(295, 20)">
+      <rect width="250" height="295" rx="12" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+      <rect x="15" y="15" width="220" height="36" rx="8" fill="#10b981"/>
+      <text x="125" y="38" font-family="'Outfit', sans-serif" font-size="13" font-weight="800" fill="#ffffff" text-anchor="middle">💬 COMMENTER (GÓP Ý)</text>
+
+      <g transform="translate(20, 68)" font-family="'Inter', sans-serif" font-size="10.5">
+        <text x="0" y="15" font-weight="700" fill="#047857">✅ Được phép làm:</text>
+        <text x="10" y="35" fill="#334155">• Mọi quyền của Viewer</text>
+        <text x="10" y="55" fill="#334155">• Thêm bình luận (Comment)</text>
+        <text x="10" y="75" fill="#334155">• Đề xuất sửa bài (Suggesting)</text>
+
+        <text x="0" y="110" font-weight="700" fill="#dc2626">❌ Bị cấm hoàn toàn:</text>
+        <text x="10" y="130" fill="#881337">• Không tự ý sửa thẳng nội dung</text>
+        <text x="10" y="150" fill="#881337">• Chủ bài phải đồng ý mới sửa!</text>
+
+        <rect x="0" y="175" width="210" height="42" rx="6" fill="#ffffff" stroke="#bbf7d0" stroke-width="1"/>
+        <text x="10" y="193" font-size="9" font-weight="800" fill="#047857">🎯 Khi nào nên cấp:</text>
+        <text x="10" y="207" font-size="8.5" fill="#475569">Nhờ bạn bè đọc thử và nhận xét.</text>
+      </g>
+    </g>
+
+    <!-- Editor Card -->
+    <g transform="translate(570, 20)">
+      <rect width="245" height="295" rx="12" fill="#fffbeb" stroke="#fde68a" stroke-width="1.5"/>
+      <rect x="15" y="15" width="215" height="36" rx="8" fill="#f59e0b"/>
+      <text x="122" y="38" font-family="'Outfit', sans-serif" font-size="13" font-weight="800" fill="#ffffff" text-anchor="middle">✏️ EDITOR (CHỈNH SỬA)</text>
+
+      <g transform="translate(20, 68)" font-family="'Inter', sans-serif" font-size="10.5">
+        <text x="0" y="15" font-weight="700" fill="#b45309">⚡ Toàn quyền tối thượng:</text>
+        <text x="10" y="35" fill="#334155">• Sửa, viết, xóa trực tiếp</text>
+        <text x="10" y="55" fill="#334155">• Đổi tên và thay màu chữ</text>
+        <text x="10" y="75" fill="#334155">• Chia sẻ tiếp cho người khác</text>
+
+        <text x="0" y="110" font-weight="700" fill="#b91c1c">⚠️ Cảnh báo rủi ro:</text>
+        <text x="10" y="130" fill="#881337">• Có thể vô tình xóa sạch bài!</text>
+        <text x="10" y="150" fill="#881337">• Chỉ cấp cho bạn cùng làm bài.</text>
+
+        <rect x="0" y="175" width="205" height="42" rx="6" fill="#ffffff" stroke="#fef08a" stroke-width="1"/>
+        <text x="10" y="193" font-size="9" font-weight="800" fill="#b45309">🎯 Khi nào nên cấp:</text>
+        <text x="10" y="207" font-size="8.5" fill="#475569">Bạn cùng nhóm trực tiếp viết nội dung.</text>
+      </g>
+    </g>
+  </g>
+</svg>

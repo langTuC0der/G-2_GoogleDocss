@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Phiếu bài tập thực hành &amp; bài tập về nhà Buổi 10: Collaboration, Comment, Suggesting &amp; Version History (Google Docs THCS). Kèm dữ liệu mẫu, Before/After, gợi ý và thang điểm 30 điểm.">
+  <title>Bài tập &amp; Thực hành Buổi 10 · Làm Việc Nhóm &amp; Lịch Sử Phiên Bản | Docs Lab THCS</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='10' y='6' width='44' height='52' rx='6' fill='%232563eb'/%3E%3Ccircle cx='32' cy='26' r='8' fill='white'/%3E%3Cpath d='M20 46c0-6 6-9 12-9s12 3 12 9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #0b152d;
+      --navy-light: #162a54;
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --blue-soft: #eff6ff;
+      --blue-border: #bfdbfe;
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --teal-soft: #f0fdfa;
+      --teal-border: #99f6e4;
+      --green: #10b981;
+      --green-soft: #ecfdf5;
+      --amber: #f59e0b;
+      --amber-soft: #fffbeb;
+      --red: #ef4444;
+      --red-soft: #fff1f2;
+      --purple: #8b5cf6;
+      --purple-soft: #f5f3ff;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --soft: #f8fafc;
+      --paper: #ffffff;
+      --shadow: 0 16px 45px rgba(11, 21, 45, 0.08);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(180deg, #f0f4fd 0%, #f8fafc 400px, #ffffff 100%);
+      line-height: 1.6;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--navy);
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .nav-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-btn.primary {
+      background: var(--blue);
+      color: #ffffff;
+    }
+    .nav-btn.primary:hover { background: #1d4ed8; }
+    .nav-btn.secondary {
+      background: var(--blue-soft);
+      color: var(--blue);
+      border: 1px solid var(--blue-border);
+    }
+    .nav-btn.secondary:hover { background: #dbeafe; }
+
+    /* Container */
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 36px 20px 80px;
+    }
+
+    /* Header Box */
+    .hero-card {
+      background: linear-gradient(135deg, #0b152d 0%, #172554 100%);
+      border-radius: var(--radius);
+      padding: 40px;
+      color: #ffffff;
+      box-shadow: 0 20px 50px rgba(11, 21, 45, 0.25);
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+    .hero-sub {
+      color: #94a3b8;
+      font-size: 16px;
+      max-width: 720px;
+      margin-bottom: 24px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .stat-chip {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Section Card */
+    .section-card {
+      background: var(--paper);
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--soft);
+    }
+    .section-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--ink);
+    }
+
+    /* Starter Template Copy Box */
+    .copy-box {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      margin: 20px 0;
+      position: relative;
+    }
+    .copy-box pre {
+      margin: 0;
+      font-family: 'Inter', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--ink-soft);
+      white-space: pre-wrap;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--blue);
+      color: #ffffff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { background: #1d4ed8; }
+
+    /* Interactive Checklist */
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      padding: 14px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .check-item:hover {
+      border-color: var(--blue-border);
+      background: var(--soft);
+    }
+    .check-item.done {
+      background: var(--green-soft);
+      border-color: #a7f3d0;
+    }
+    .check-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      cursor: pointer;
+      accent-color: var(--green);
+    }
+    .check-label {
+      flex: 1;
+      font-size: 14px;
+      color: var(--ink);
+    }
+    .check-points {
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--blue-soft);
+      color: var(--blue);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    /* Score Summary Bar */
+    .score-bar {
+      position: sticky;
+      bottom: 20px;
+      background: var(--navy);
+      color: #ffffff;
+      padding: 14px 24px;
+      border-radius: 999px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 12px 30px rgba(11, 21, 45, 0.4);
+      z-index: 40;
+    }
+    .score-text { font-size: 14px; font-weight: 600; }
+    .score-value { font-size: 20px; font-weight: 800; color: #38bdf8; }
+
+    /* Rubric Table */
+    .rubric-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 13.5px;
+    }
+    .rubric-table th, .rubric-table td {
+      border: 1px solid var(--line);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .rubric-table th {
+      background: var(--soft);
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    /* Visual Embed */
+    .visual-box {
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      margin: 16px 0;
+      background: #0f172a;
+    }
+    .visual-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Bar -->
+  <header class="top-nav">
+    <a href="index.html" class="brand">
+      <img src="assets/buoi03/google-docs-icon.svg" width="24" height="24" alt="Docs Logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%232563eb%22><rect width=%2224%22 height=%2224%22 rx=%224%22/></svg>'">
+      <span>DOCS LAB THCS</span>
+    </a>
+    <div class="nav-links">
+      <a href="buoi-10-cong-tac-va-lich-su.html" class="nav-btn secondary">
+        🪐 Mở Slide 3D Buổi 10
+      </a>
+      <a href="#main-project" class="nav-btn primary">
+        📝 Bài Thực Hành (30đ)
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO HEADER -->
+    <div class="hero-card">
+      <span class="hero-badge">BUỔI 10 · LÀM VIỆC NHÓM VÀ LỊCH SỬ PHIÊN BẢN</span>
+      <h1 class="hero-title">Phiếu Thực Hành: Kế Hoạch Tham Quan &amp; Review Bài Của Bạn</h1>
+      <p class="hero-sub">
+        Thực hành cộng tác thời gian thực: phân công viết bài không đè nhau, trao đổi bằng <strong>Comment</strong>, đề xuất với <strong>Suggesting</strong> và điều tra khôi phục với <strong>Version History</strong>.
+      </p>
+      <div class="hero-stats">
+        <span class="stat-chip">⏱ Thời lượng: 90 phút</span>
+        <span class="stat-chip">👥 Hình thức: Nhóm 3–4 học sinh</span>
+        <span class="stat-chip">🎯 Điểm thực hành: 30 điểm</span>
+        <span class="stat-chip">🔑 Phím tắt: Ctrl+Alt+M &amp; Ctrl+Alt+Shift+H</span>
+      </div>
+    </div>
+
+    <!-- BEFORE / AFTER SHOWCASE -->
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-icon" style="background: #eff6ff; color: #2563eb;">🌟</div>
+        <h2 class="section-title">Minh Họa Before &amp; After: Sức Mạnh Của Kỹ Năng Buổi 10</h2>
+      </div>
+      <p style="color: var(--ink-soft); font-size: 14.5px;">
+        Trước khi học Buổi 10, học sinh thường sửa đè lên bài của nhau hoặc tranh cãi khi ai đó lỡ tay xóa đoạn văn quan trọng. Sau Buổi 10, mọi trao đổi đều qua Comment văn minh và Suggesting mực xanh an toàn:
+      </p>
+      <div class="visual-box">
+        <img src="assets/buoi10/before-after-teamwork-review.svg" alt="Before After Collaboration Preview">
+      </div>
+    </section>
+
+    <!-- 3 MINI CHALLENGES -->
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-icon" style="background: #fef3c7; color: #d97706;">⚡</div>
+        <h2 class="section-title">3 Bài Thực Hành Nhỏ Khởi Động (15 phút)</h2>
+      </div>
+
+      <!-- Mini 1 -->
+      <div style="background: #f8fafc; border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 16px;">
+        <h3 style="margin: 0 0 8px; font-size: 16px; color: #1e3a8a;">Thực hành nhỏ 1: Comment &amp; Phản hồi cho bạn</h3>
+        <p style="margin: 0 0 10px; font-size: 14px; color: #334155;">
+          • <strong>Bạn A viết:</strong> <em>"Lớp mình sẽ đi tham quan vào Chủ nhật."</em><br>
+          • <strong>Bạn B comment (<kbd>Ctrl + Alt + M</kbd>):</strong> <em>"Chúng ta nên ghi rõ ngày cụ thể."</em><br>
+          • <strong>Bạn A thao tác:</strong> Nhấn <strong>Reply</strong> trả lời <em>"Đã sửa thành Chủ nhật 28/11"</em> ➔ Nhấn <strong>Resolve (✔)</strong> để hoàn tất.
+        </p>
+      </div>
+
+      <!-- Mini 2 -->
+      <div style="background: #f8fafc; border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 16px;">
+        <h3 style="margin: 0 0 8px; font-size: 16px; color: #065f46;">Thực hành nhỏ 2: Đề xuất với Suggesting</h3>
+        <p style="margin: 0 0 10px; font-size: 14px; color: #334155;">
+          • <strong>Câu ban đầu:</strong> <em>"Chúng ta sẽ xuất phát lúc 9 giờ."</em><br>
+          • <strong>Bạn khác bật Suggesting:</strong> Bôi đen "9 giờ" sửa thành <em>"7 giờ 30"</em> (hiện chữ gạch ngang đỏ và chữ xanh lá).<br>
+          • <strong>Owner thao tác:</strong> Thử nhấn <strong>Reject (✖)</strong> để thấy câu hoàn về ban đầu ➔ Gõ lại đề xuất và nhấn <strong>Accept (✔)</strong> để chính thức sửa.
+        </p>
+      </div>
+
+      <!-- Mini 3 -->
+      <div style="background: #f8fafc; border: 1px solid var(--line); border-radius: 12px; padding: 18px;">
+        <h3 style="margin: 0 0 8px; font-size: 16px; color: #6b21a8;">Thực hành nhỏ 3: Điều tra Lịch sử (Version History)</h3>
+        <p style="margin: 0 0 10px; font-size: 14px; color: #334155;">
+          • Cả nhóm 3 bạn cùng sửa tài liệu. Sau đó nhấn <kbd>Ctrl + Alt + Shift + H</kbd> để trả lời 3 câu hỏi:<br>
+          1. <strong>Ai sửa?</strong> (Nhận diện qua màu sắc và avatar của ai)<br>
+          2. <strong>Sửa lúc nào?</strong> (Xem dấu mốc thời gian chi tiết bên cột phải)<br>
+          3. <strong>Có thể quay lại bản cũ không?</strong> (Bấm nút "Khôi phục phiên bản này").
+        </p>
+      </div>
+    </section>
+
+    <!-- MAIN COMPREHENSIVE PROJECT -->
+    <section class="section-card" id="main-project">
+      <div class="section-header">
+        <div class="section-icon" style="background: #eff6ff; color: #2563eb;">🏆</div>
+        <h2 class="section-title">Bài Thực Hành Tổng Hợp: Kế Hoạch Chuyến Tham Quan Của Lớp</h2>
+      </div>
+      <p style="color: var(--ink-soft); font-size: 14.5px;">
+        Nhóm 3–4 học sinh cùng tạo một bản Google Docs duy nhất. Mỗi thành viên phụ trách một phần nội dung, tiến hành trao đổi bằng comment, sửa đổi bằng đề xuất và đánh dấu lịch sử phiên bản hoàn chỉnh.
+      </p>
+
+      <!-- Starter Content Box -->
+      <div class="copy-box">
+        <button class="copy-btn" onclick="copyStarterText()">📋 Sao Chép Khung Mẫu</button>
+        <pre id="starterContent">KẾ HOẠCH DÃ NGOẠI HỌC TẬP NGOÀI TRỜI LỚP 7A
+Địa điểm dự kiến: Làng gốm Bát Tràng - Hà Nội
+Thời gian: Chủ nhật, ngày 28 tháng 11 năm 2026
+
+I. MỤC ĐÍCH & Ý NGHĨA CHUYẾN ĐI (Bạn An phụ trách)
+- Giúp học sinh tìm hiểu về làng nghề truyền thống và lịch sử phát triển gốm sứ Việt Nam.
+- Tăng cường tinh thần gắn kết tập thể qua hoạt động tự tay vuốt gốm và nung sản phẩm.
+
+II. LỊCH TRÌNH CHI TIẾT TRONG NGÀY (Bạn Bình phụ trách)
+- 07:00 - 07:30: Tập trung tại cổng trường THCS, kiểm diện sĩ số và phổ biến nội quy an toàn xe buýt.
+- 07:30 - 08:30: Di chuyển đến làng gốm Bát Tràng bằng xe 45 chỗ đời mới.
+- 08:30 - 11:30: Tham quan bảo tàng gốm, nghe nghệ nhân thuyết minh và trải nghiệm nặn gốm.
+- 11:30 - 13:30: Ăn trưa tập thể tại nhà hàng địa phương và nghỉ ngơi tự do trong khuôn viên bóng mát.
+- 13:30 - 15:30: Tổ chức trò chơi teambuilding tìm hiểu di sản văn hóa.
+- 15:30 - 16:30: Lên xe khởi hành về lại trường, phụ huynh đón con tại cổng số 1.
+
+III. DỰ TRÙ KINH PHÍ & THỰC ĐƠN (Bạn Chi phụ trách)
+- Tiền xe ô tô khứ hồi: 2.200.000 VNĐ / xe.
+- Vé trải nghiệm làm gốm: 60.000 VNĐ / học sinh (đã bao gồm đất sét và nung men).
+- Suất ăn trưa dinh dưỡng: 70.000 VNĐ / học sinh (cơm sườn, canh rau, tráng miệng hoa quả).
+- Nước uống đóng chai Lavie: 2 chai 500ml / học sinh do ban phụ huynh tài trợ.
+
+IV. PHÂN CÔNG NHIỆM VỤ & ĐỒ DÙNG MANG THEO (Bạn Dũng phụ trách)
+- Lớp trưởng: Quản lý danh sách sĩ số, liên lạc bác tài xế.
+- Lớp phó đời sống: Chuẩn bị túi sơ cứu y tế (băng gạc cá nhân, thuốc đau bụng, xịt chống muỗi).
+- Mỗi cá nhân chuẩn bị: Mũ tai bèo, bình nước cá nhân, bút sổ ghi chép, khăn lau tay.</pre>
+      </div>
+
+      <!-- Live Checklist 30 Points -->
+      <h3 style="font-family: 'Outfit', sans-serif; font-size: 18px; margin: 24px 0 12px;">
+        Bảng Kiểm Kỹ Năng Thực Hành (30 Điểm)
+      </h3>
+      <div class="checklist">
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk1">
+          <span class="check-label">
+            <strong>1. Phân quyền và con trỏ cộng tác:</strong> Chia sẻ cho 3-4 bạn trong nhóm quyền Chỉnh sửa (Editor), thấy đủ con trỏ màu của các bạn.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk2">
+          <span class="check-label">
+            <strong>2. Phân chia nội dung độc lập:</strong> Mỗi thành viên viết một mục (I, II, III, IV) không bị đè chữ nhau.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk3">
+          <span class="check-label">
+            <strong>3. Tạo ít nhất 02 Comment có ý nghĩa:</strong> Góp ý về giờ giấc hoặc kinh phí, có dùng @ nhắc tên bạn bè.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk4">
+          <span class="check-label">
+            <strong>4. Reply &amp; Resolve chuẩn quy trình:</strong> Tác giả phản hồi lịch sự và bấm dấu tích xanh Resolve hoàn tất.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk5">
+          <span class="check-label">
+            <strong>5. Tạo ít nhất 02 Suggestion và duyệt:</strong> Bật chế độ bút xanh đề xuất sửa câu từ; Owner thực hiện Accept (✔) hoặc Reject (✖).
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk6">
+          <span class="check-label">
+            <strong>6. Đặt tên phiên bản trong Version History:</strong> Nhấn Ctrl+Alt+Shift+H, đặt tên: <em>"Bản nộp cuối của nhóm [Tên nhóm]"</em>.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- HOMEWORK -->
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-icon" style="background: #ede9fe; color: #7c3aed;">🏠</div>
+        <h2 class="section-title">Bài Tập Về Nhà: Review Bài Của Bạn</h2>
+      </div>
+      <p style="color: var(--ink-soft); font-size: 14.5px;">
+        Giáo viên ghép cặp 2 học sinh. Mỗi em nhận link Google Docs bài viết của bạn cùng cặp:
+      </p>
+      <div style="background: var(--soft); padding: 18px 22px; border-radius: 12px; border: 1px solid var(--line);">
+        <h4 style="margin-top: 0; color: #1e293b; font-size: 15px;">Nhiệm vụ cụ thể:</h4>
+        <ol style="margin-bottom: 0; padding-left: 20px; font-size: 14px; color: #334155; line-height: 1.8;">
+          <li>Đọc kỹ toàn bộ văn bản của bạn, tìm những điểm làm tốt và điểm cần bổ sung.</li>
+          <li>Thêm <strong>ít nhất 02 Comment</strong> (1 lời khen và 1 câu hỏi/góp ý cải thiện).</li>
+          <li>Tạo <strong>ít nhất 01 Suggestion</strong> sửa lỗi chính tả hoặc diễn đạt mượt mà hơn (dùng chế độ bút xanh Đề xuất).</li>
+          <li><strong>Nguyên tắc vàng:</strong> Tuyệt đối không tự ý gõ sửa đè trực tiếp lên bài của bạn!</li>
+          <li>Mở Version History kiểm tra lại để chắc chắn hệ thống đã ghi nhận lịch sử cộng tác của em.</li>
+        </ol>
+      </div>
+      <p style="font-size: 13.5px; color: var(--muted); margin-top: 14px;">
+        <strong>Sản phẩm nộp:</strong> Link Google Docs đã có đầy đủ comment và đề xuất của cả hai bạn.
+      </p>
+    </section>
+
+    <!-- RUBRIC TABLE -->
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-icon" style="background: #f0fdf4; color: #16a34a;">📊</div>
+        <h2 class="section-title">Thang Điểm Đánh Giá Chi Tiết (Rubric 30 Điểm)</h2>
+      </div>
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th>Tiêu chí</th>
+            <th>Mức Đạt (4-5đ)</th>
+            <th>Mức Khá (2-3đ)</th>
+            <th>Cần Cải Thiện (0-1đ)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Phân quyền &amp; Phân công</strong></td>
+            <td>Chia sẻ đúng quyền Editor, 3-4 bạn viết độc lập trên cùng 1 file trơn tru.</td>
+            <td>Chia sẻ được nhưng các bạn viết đè lên nhau, con trỏ va chạm.</td>
+            <td>Chưa chia sẻ được hoặc mỗi người làm 1 file rời.</td>
+          </tr>
+          <tr>
+            <td><strong>Kỹ năng Comment</strong></td>
+            <td>Tối thiểu 2 comment sâu sắc, có @ tag tên, lời lẽ lịch sự văn minh.</td>
+            <td>Có comment nhưng cụt ngủn hoặc không tag tên liên quan.</td>
+            <td>Không tạo được comment nào qua phím tắt Ctrl+Alt+M.</td>
+          </tr>
+          <tr>
+            <td><strong>Reply &amp; Resolve</strong></td>
+            <td>Có thảo luận qua lại, hiểu đúng ý nghĩa và bấm dấu tích Resolve khi xong.</td>
+            <td>Có reply nhưng quên không bấm Resolve làm rối mắt trang.</td>
+            <td>Không phản hồi bình luận của bạn.</td>
+          </tr>
+          <tr>
+            <td><strong>Kỹ năng Suggesting</strong></td>
+            <td>Đề xuất chuẩn xác bằng bút xanh, gạch chữ cũ thêm chữ mới rõ ràng.</td>
+            <td>Dùng gợi ý nhưng đề xuất sai mục đích hoặc làm hỏng câu gốc.</td>
+            <td>Tự ý xóa thẳng tay không qua chế độ Suggesting.</td>
+          </tr>
+          <tr>
+            <td><strong>Accept / Reject</strong></td>
+            <td>Owner hiểu rõ quyền lực của mình, thực hiện thao tác duyệt chuẩn xác.</td>
+            <td>Để nguyên hàng loạt đề xuất treo lơ lửng không duyệt.</td>
+            <td>Không biết bấm nút duyệt ở đâu.</td>
+          </tr>
+          <tr>
+            <td><strong>Version History</strong></td>
+            <td>Mở được lịch sử bằng phím tắt, chỉ rõ ai sửa lúc nào, đã đặt tên phiên bản.</td>
+            <td>Mở được lịch sử nhưng chưa biết cách đặt tên phiên bản.</td>
+            <td>Không biết mở Lịch sử phiên bản.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- STICKY SCORE BAR -->
+    <div class="score-bar">
+      <div class="score-text">
+        🎯 TỔNG ĐIỂM CHECKLIST THỰC HÀNH:
+      </div>
+      <div class="score-value">
+        <span id="liveScore">0</span> / 30 ĐIỂM
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    function copyStarterText() {
+      const text = document.getElementById("starterContent").innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("✔ Đã sao chép khung mẫu Kế hoạch dã ngoại! Em hãy dán vào Google Docs và chia sẻ cho các bạn trong nhóm nhé.");
+      }).catch(err => {
+        console.error("Lỗi copy: ", err);
+      });
+    }
+
+    function updateLiveScore() {
+      let score = 0;
+      for (let i = 1; i <= 6; i++) {
+        const chk = document.getElementById(`chk${i}`);
+        if (chk && chk.checked) {
+          score += 5;
+          chk.closest('.check-item').classList.add('done');
+        } else if (chk) {
+          chk.closest('.check-item').classList.remove('done');
+        }
+      }
+      document.getElementById("liveScore").textContent = score;
+    }
+  </script>
+</body>
+</html>

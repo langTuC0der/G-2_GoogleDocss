@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <filter id="shadow2" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="920" height="460" rx="20" fill="url(#bgGrad2)"/>
+
+  <text x="460" y="44" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">KỸ THUẬT GỘP Ô (MERGE CELLS) TRONG GOOGLE DOCS</text>
+  <text x="460" y="70" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#c4b5fd" text-anchor="middle">Hô biến nhiều ô lân cận thành một ô lớn duy nhất để làm Tiêu đề bảng biểu hoặc Gộp tiết học</text>
+
+  <g transform="translate(60, 95)" filter="url(#shadow2)">
+    <rect width="800" height="325" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+
+    <!-- Left Box: BEFORE (Separate cells) -->
+    <g transform="translate(40, 30)">
+      <rect width="330" height="215" rx="10" fill="#fff1f2" stroke="#fecdd3" stroke-width="1.5"/>
+      <rect x="0" y="0" width="330" height="36" rx="10 10 0 0" fill="#fee2e2"/>
+      <text x="165" y="24" font-family="'Outfit', sans-serif" font-size="13" font-weight="800" fill="#be123c" text-anchor="middle">❌ CHƯA GỘP (RỜI RẠC - VƯỚNG VÁCH)</text>
+
+      <!-- Mock Table (4 columns x 3 rows) -->
+      <g transform="translate(25, 55)">
+        <!-- Row 1: Separate Header Cells with dividers -->
+        <rect x="0" y="0" width="70" height="36" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="35" y="22" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#64748b" text-anchor="middle">THỜI</text>
+
+        <rect x="70" y="0" width="70" height="36" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="105" y="22" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#64748b" text-anchor="middle">KHÓA</text>
+
+        <rect x="140" y="0" width="70" height="36" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="175" y="22" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#64748b" text-anchor="middle">BIỂU</text>
+
+        <rect x="210" y="0" width="70" height="36" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="245" y="22" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#64748b" text-anchor="middle">LỚP 7</text>
+
+        <!-- Red Warning Marker indicating the divider lines that break the title -->
+        <circle cx="70" cy="18" r="8" fill="#ef4444"/>
+        <line x1="66" y1="18" x2="74" y2="18" stroke="#fff" stroke-width="2"/>
+        <circle cx="140" cy="18" r="8" fill="#ef4444"/>
+        <line x1="136" y1="18" x2="144" y2="18" stroke="#fff" stroke-width="2"/>
+        <circle cx="210" cy="18" r="8" fill="#ef4444"/>
+        <line x1="206" y1="18" x2="214" y2="18" stroke="#fff" stroke-width="2"/>
+
+        <!-- Row 2 -->
+        <rect x="0" y="36" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="35" y="58" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Thứ 2</text>
+        <rect x="70" y="36" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="105" y="58" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Thứ 3</text>
+        <rect x="140" y="36" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="175" y="58" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Thứ 4</text>
+        <rect x="210" y="36" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="245" y="58" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Thứ 5</text>
+
+        <!-- Row 3 -->
+        <rect x="0" y="72" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="35" y="94" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Chào cờ</text>
+        <rect x="70" y="72" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="105" y="94" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Toán</text>
+        <rect x="140" y="72" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="175" y="94" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Văn</text>
+        <rect x="210" y="72" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="245" y="94" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Tin học</text>
+      </g>
+      <text x="165" y="195" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#9f1239" text-anchor="middle">Tiêu đề bị chia cắt, không thể căn giữa cả bảng!</text>
+    </g>
+
+    <!-- Center Arrow -->
+    <g transform="translate(385, 115)">
+      <circle cx="15" cy="15" r="22" fill="#7c3aed" filter="url(#shadow2)"/>
+      <path d="M7 15h16M17 9l6 6-6 6" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="15" y="55" font-family="'Inter', sans-serif" font-size="10" font-weight="800" fill="#7c3aed" text-anchor="middle">GỘP Ô</text>
+      <text x="15" y="68" font-family="'Inter', sans-serif" font-size="9" font-weight="600" fill="#64748b" text-anchor="middle">Chuột phải</text>
+    </g>
+
+    <!-- Right Box: AFTER (Merged cells banner) -->
+    <g transform="translate(430, 30)">
+      <rect width="330" height="215" rx="10" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.5"/>
+      <rect x="0" y="0" width="330" height="36" rx="10 10 0 0" fill="#d1fae5"/>
+      <text x="165" y="24" font-family="'Outfit', sans-serif" font-size="13" font-weight="800" fill="#047857" text-anchor="middle">✅ ĐÃ GỘP Ô (MERGED — LIỀN MẠCH, ĐẸP MẮT)</text>
+
+      <g transform="translate(25, 55)">
+        <!-- Merged Single Header Cell spanning all 4 columns -->
+        <rect x="0" y="0" width="280" height="36" fill="#1e3a8a" stroke="#1d4ed8" stroke-width="1.5" rx="4 4 0 0"/>
+        <text x="140" y="23" font-family="'Outfit', sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">📅 THỜI KHÓA BIỂU LỚP 7A — HỌC KỲ II</text>
+
+        <!-- Row 2 -->
+        <rect x="0" y="36" width="70" height="36" fill="#eff6ff" stroke="#cbd5e1"/>
+        <text x="35" y="58" font-family="'Inter', sans-serif" font-size="10.5" font-weight="700" fill="#1e40af" text-anchor="middle">Thứ 2</text>
+        <rect x="70" y="36" width="70" height="36" fill="#eff6ff" stroke="#cbd5e1"/>
+        <text x="105" y="58" font-family="'Inter', sans-serif" font-size="10.5" font-weight="700" fill="#1e40af" text-anchor="middle">Thứ 3</text>
+        <rect x="140" y="36" width="70" height="36" fill="#eff6ff" stroke="#cbd5e1"/>
+        <text x="175" y="58" font-family="'Inter', sans-serif" font-size="10.5" font-weight="700" fill="#1e40af" text-anchor="middle">Thứ 4</text>
+        <rect x="210" y="36" width="70" height="36" fill="#eff6ff" stroke="#cbd5e1"/>
+        <text x="245" y="58" font-family="'Inter', sans-serif" font-size="10.5" font-weight="700" fill="#1e40af" text-anchor="middle">Thứ 5</text>
+
+        <!-- Row 3 -->
+        <rect x="0" y="72" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="35" y="94" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Chào cờ</text>
+        <rect x="70" y="72" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="105" y="94" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Toán</text>
+        <rect x="140" y="72" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="175" y="94" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Văn</text>
+        <rect x="210" y="72" width="70" height="36" fill="#fff" stroke="#cbd5e1"/>
+        <text x="245" y="94" font-family="'Inter', sans-serif" font-size="10.5" fill="#334155" text-anchor="middle">Tin học</text>
+      </g>
+      <text x="165" y="195" font-family="'Inter', sans-serif" font-size="11" font-weight="700" fill="#047857" text-anchor="middle">Tiêu đề trải rộng 100%, căn giữa hoàn hảo!</text>
+    </g>
+
+    <!-- Bottom 3-step action bar -->
+    <g transform="translate(40, 260)">
+      <rect width="720" height="50" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="20" y="20" font-family="'Outfit', sans-serif" font-size="12" font-weight="800" fill="#7c3aed">3 BƯỚC THAO TÁC:</text>
+      <text x="20" y="38" font-family="'Inter', sans-serif" font-size="11.5" font-weight="600" fill="#334155">
+        <tspan fill="#2563eb" font-weight="700">①</tspan> Quét chọn (bôi đen) các ô cần gộp → 
+        <tspan fill="#2563eb" font-weight="700">②</tspan> Nhấp chuột phải (Right click) → 
+        <tspan fill="#2563eb" font-weight="700">③</tspan> Chọn lệnh <tspan fill="#7c3aed" font-weight="800">"Gộp ô" (Merge cells)</tspan> (Muốn hoàn tác: chọn ô đã gộp → Chuột phải → "Hủy gộp ô")
+      </text>
+    </g>
+  </g>
+</svg>

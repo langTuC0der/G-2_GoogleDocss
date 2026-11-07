@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#162a54"/>
+    </linearGradient>
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="920" height="460" rx="20" fill="url(#bgGrad)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="460" y="42" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">GOOGLE DOCS HIỂU CẤU TRÚC TÀI LIỆU NHƯ THẾ NÀO?</text>
+  <text x="460" y="68" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#93c5fd" text-anchor="middle">Sự khác biệt cốt tử: Bôi đen thủ công (Bold) vs Hệ thống định kiểu Heading (H1, H2, H3)</text>
+
+  <!-- Main Container Card -->
+  <g transform="translate(40, 88)" filter="url(#shadow)">
+    <rect width="840" height="344" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+
+    <!-- Left Side: Bold Manual (The Wrong Way) -->
+    <g transform="translate(30, 20)">
+      <rect width="365" height="30" rx="8" fill="#ffe4e6" stroke="#f43f5e" stroke-width="1.2"/>
+      <text x="182" y="19" font-family="'Outfit', sans-serif" font-size="11" font-weight="800" fill="#be123c" text-anchor="middle">❌ BÔI ĐEN THỦ CÔNG: BOLD + TĂNG CỠ CHỮ</text>
+
+      <!-- Simulated Document Pane -->
+      <g transform="translate(15, 42)">
+        <rect width="335" height="205" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+        
+        <rect x="15" y="14" width="160" height="12" rx="3" fill="#1e293b"/>
+        <text x="18" y="24" font-family="'Inter', sans-serif" font-size="9" font-weight="900" fill="#ffffff">1. Ô NHIỄM KHÔNG KHÍ (B, 18pt)</text>
+        
+        <rect x="15" y="34" width="305" height="5" rx="1" fill="#cbd5e1"/>
+        <rect x="15" y="43" width="290" height="5" rx="1" fill="#cbd5e1"/>
+        <rect x="15" y="52" width="260" height="5" rx="1" fill="#cbd5e1"/>
+
+        <!-- The Invisible outline indicator -->
+        <g transform="translate(15, 75)">
+          <rect width="305" height="115" rx="6" fill="#fff1f2" stroke="#fecdd3" stroke-width="1"/>
+          <text x="152" y="24" font-family="'Outfit', sans-serif" font-size="12" font-weight="800" fill="#be123c" text-anchor="middle">🧠 GOOGLE DOCS NGHĨ GÌ?</text>
+          <text x="15" y="46" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#9f1239">• Phân loại:</text>
+          <text x="80" y="46" font-family="'Inter', sans-serif" font-size="9.5" font-weight="500" fill="#881337">Văn bản thường (Normal text)</text>
+          <text x="15" y="66" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#9f1239">• Document Outline:</text>
+          <text x="135" y="66" font-family="'Inter', sans-serif" font-size="9.5" font-weight="800" fill="#dc2626">Trống trơn (0 mục)!</text>
+          <text x="15" y="86" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#9f1239">• Mục lục (TOC):</text>
+          <text x="105" y="86" font-family="'Inter', sans-serif" font-size="9.5" font-weight="800" fill="#dc2626">Không thể tạo tự động!</text>
+          <text x="15" y="103" font-family="'Inter', sans-serif" font-size="8" font-weight="600" fill="#9f1239">"Mắt người nhìn thấy to, nhưng máy tính hoàn toàn mù!"</text>
+        </g>
+      </g>
+
+      <text x="182" y="278" font-family="'Inter', sans-serif" font-size="9.5" font-weight="600" fill="#e11d48" text-anchor="middle">Hậu quả: Tài liệu dài 20 trang nhưng phải cuộn chuột thủ công</text>
+    </g>
+
+    <!-- Right Side: Heading Semantic Styles (The Right Way) -->
+    <g transform="translate(440, 20)">
+      <rect width="365" height="30" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="1.2"/>
+      <text x="182" y="19" font-family="'Outfit', sans-serif" font-size="11" font-weight="800" fill="#065f46" text-anchor="middle">✓ DÙNG STYLES: TIÊU ĐỀ HEADING 1, 2, 3</text>
+
+      <!-- Simulated Document Pane -->
+      <g transform="translate(15, 42)">
+        <rect width="335" height="205" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="1.5"/>
+
+        <rect x="15" y="14" width="160" height="14" rx="3" fill="#2563eb"/>
+        <text x="18" y="25" font-family="'Inter', sans-serif" font-size="9" font-weight="900" fill="#ffffff">🏷️ HEADING 1: Ô NHIỄM KHÔNG KHÍ</text>
+
+        <rect x="15" y="34" width="305" height="5" rx="1" fill="#cbd5e1"/>
+        <rect x="15" y="43" width="290" height="5" rx="1" fill="#cbd5e1"/>
+
+        <!-- The Smart Heading indicator -->
+        <g transform="translate(15, 60)">
+          <rect width="305" height="130" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+          <text x="152" y="20" font-family="'Outfit', sans-serif" font-size="12" font-weight="800" fill="#047857" text-anchor="middle">🚀 GOOGLE DOCS THẤY BỘ XƯƠNG CẤU TRÚC!</text>
+          
+          <rect x="12" y="30" width="135" height="90" rx="4" fill="#ffffff" stroke="#86efac" stroke-width="1"/>
+          <text x="20" y="45" font-family="'Inter', sans-serif" font-size="8" font-weight="800" fill="#15803d">📑 Document Outline:</text>
+          <text x="25" y="60" font-family="'Inter', sans-serif" font-size="7.5" font-weight="700" fill="#2563eb">• 1. Ô nhiễm không khí</text>
+          <text x="35" y="75" font-family="'Inter', sans-serif" font-size="7" font-weight="600" fill="#0284c7">└ Nguyên nhân</text>
+          <text x="35" y="88" font-family="'Inter', sans-serif" font-size="7" font-weight="600" fill="#0284c7">└ Hậu quả</text>
+          <text x="25" y="103" font-family="'Inter', sans-serif" font-size="7.5" font-weight="700" fill="#2563eb">• 2. Ô nhiễm nguồn nước</text>
+
+          <rect x="155" y="30" width="140" height="90" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+          <text x="162" y="45" font-family="'Inter', sans-serif" font-size="8" font-weight="800" fill="#1d4ed8">⚡ Table of Contents:</text>
+          <text x="162" y="60" font-family="'Inter', sans-serif" font-size="7" font-weight="600" fill="#334155">1. Ô nhiễm không khí ... 2</text>
+          <text x="162" y="75" font-family="'Inter', sans-serif" font-size="7" font-weight="600" fill="#334155">2. Ô nhiễm nguồn nước ... 3</text>
+          <text x="162" y="92" font-family="'Inter', sans-serif" font-size="7.5" font-weight="800" fill="#059669">✓ Tự động 100%!</text>
+          <text x="162" y="106" font-family="'Inter', sans-serif" font-size="7" font-weight="600" fill="#0284c7">Cập nhật 1 chạm (Refresh)</text>
+        </g>
+      </g>
+
+      <text x="182" y="278" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#047857" text-anchor="middle">Ưu điểm: Điều hướng tức thì &amp; Xuất bản mục lục chuyên nghiệp</text>
+    </g>
+  </g>
+</svg>

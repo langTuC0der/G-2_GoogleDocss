@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="920" height="460" rx="20" fill="url(#bgGrad)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="460" y="45" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">GIẢI PHẪU CẤU TRÚC BẢNG (TABLE ANATOMY) TRONG GOOGLE DOCS</text>
+  <text x="460" y="72" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#93c5fd" text-anchor="middle">Ba thành tố cốt lõi: Hàng (Row) · Cột (Column) · Ô giao nhau (Cell)</text>
+
+  <!-- Main Illustration Area -->
+  <g transform="translate(60, 95)" filter="url(#cardShadow)">
+    <!-- Document Card Background -->
+    <rect width="800" height="325" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+
+    <!-- Left side: The Table Grid (4 columns x 5 rows) -->
+    <g transform="translate(35, 30)">
+      <!-- Table Header (Row 1) -->
+      <rect x="0" y="0" width="440" height="44" fill="#2563eb" rx="6 6 0 0"/>
+      <text x="50" y="27" font-family="'Inter', sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">STT</text>
+      <text x="160" y="27" font-family="'Inter', sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">Môn học</text>
+      <text x="270" y="27" font-family="'Inter', sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">Thời lượng</text>
+      <text x="375" y="27" font-family="'Inter', sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">Đánh giá</text>
+
+      <!-- Row 2 -->
+      <rect x="0" y="44" width="440" height="42" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+      <text x="50" y="70" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">01</text>
+      <text x="160" y="70" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">Toán học</text>
+      <text x="270" y="70" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">4 tiết/tuần</text>
+      <text x="375" y="70" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#059669" text-anchor="middle">Tốt</text>
+
+      <!-- Row 3 (Highlighted Row) -->
+      <rect x="0" y="86" width="440" height="42" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+      <text x="50" y="112" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">02</text>
+      <text x="160" y="112" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">Tin học 7</text>
+      <text x="270" y="112" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">2 tiết/tuần</text>
+      <text x="375" y="112" font-family="'Inter', sans-serif" font-size="12" font-weight="800" fill="#b45309" text-anchor="middle">Xuất sắc</text>
+
+      <!-- Row 4 -->
+      <rect x="0" y="128" width="440" height="42" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+      <text x="50" y="154" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">03</text>
+      <text x="160" y="154" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">Ngữ văn</text>
+      <text x="270" y="154" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">4 tiết/tuần</text>
+      <text x="375" y="154" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#059669" text-anchor="middle">Đạt</text>
+
+      <!-- Row 5 (Column Highlight Overlay on Column 2) -->
+      <rect x="0" y="170" width="440" height="42" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" rx="0 0 6 6"/>
+      <text x="50" y="196" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">04</text>
+      <text x="160" y="196" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">Ngoại ngữ</text>
+      <text x="270" y="196" font-family="'Inter', sans-serif" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">3 tiết/tuần</text>
+      <text x="375" y="196" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#059669" text-anchor="middle">Tốt</text>
+
+      <!-- Column Grid Divider Lines -->
+      <line x1="100" y1="0" x2="100" y2="212" stroke="#cbd5e1" stroke-width="1.2"/>
+      <line x1="220" y1="0" x2="220" y2="212" stroke="#cbd5e1" stroke-width="1.2"/>
+      <line x1="320" y1="0" x2="320" y2="212" stroke="#cbd5e1" stroke-width="1.2"/>
+
+      <!-- Specific Single Cell Highlight (Row 3, Col 2: "Tin học 7") -->
+      <rect x="100" y="86" width="120" height="42" fill="#3b82f6" fill-opacity="0.18" stroke="#2563eb" stroke-width="2.5" stroke-dasharray="4 2"/>
+    </g>
+
+    <!-- Right side: Explanatory Callout Cards -->
+    <g transform="translate(505, 25)">
+      <!-- Card 1: HÀNG (ROW) -->
+      <g transform="translate(0, 0)">
+        <rect width="260" height="68" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="14" y="24" font-family="'Outfit', sans-serif" font-size="13" font-weight="800" fill="#b45309">👉 HÀNG (ROW) — Ngang</text>
+        <text x="14" y="44" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#78350f">Tập hợp các ô theo phương nằm ngang.</text>
+        <text x="14" y="58" font-family="'Inter', sans-serif" font-size="10.5" font-weight="500" fill="#92400e">Ví dụ: Toàn bộ thông tin môn Tin học 7.</text>
+      </g>
+
+      <!-- Card 2: CỘT (COLUMN) -->
+      <g transform="translate(0, 80)">
+        <rect width="260" height="68" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+        <text x="14" y="24" font-family="'Outfit', sans-serif" font-size="13" font-weight="800" fill="#1d4ed8">👉 CỘT (COLUMN) — Dọc</text>
+        <text x="14" y="44" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#1e3a8a">Tập hợp các ô theo phương thẳng đứng.</text>
+        <text x="14" y="58" font-family="'Inter', sans-serif" font-size="10.5" font-weight="500" fill="#2563eb">Ví dụ: Cột danh sách các Môn học.</text>
+      </g>
+
+      <!-- Card 3: Ô (CELL) -->
+      <g transform="translate(0, 160)">
+        <rect width="260" height="85" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+        <text x="14" y="24" font-family="'Outfit', sans-serif" font-size="13" font-weight="800" fill="#047857">👉 Ô (CELL) — Đơn vị nhỏ nhất</text>
+        <text x="14" y="44" font-family="'Inter', sans-serif" font-size="11" font-weight="600" fill="#065f46">Điểm giao nhau giữa 1 Hàng và 1 Cột.</text>
+        <text x="14" y="60" font-family="'Inter', sans-serif" font-size="10.5" font-weight="500" fill="#047857">Chứa: Chữ, số, ảnh, link, danh sách.</text>
+        <text x="14" y="74" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#059669">Mỗi ô có thể định dạng màu &amp; lề riêng biệt!</text>
+      </g>
+    </g>
+
+    <!-- Bottom Guidance Bar inside Card -->
+    <g transform="translate(35, 275)">
+      <rect width="730" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="365" y="22" font-family="'Inter', sans-serif" font-size="12" font-weight="700" fill="#334155" text-anchor="middle">
+        💡 Cách chèn trong Google Docs: Vào menu <tspan fill="#2563eb" font-weight="800">Chèn (Insert)</tspan> → <tspan fill="#2563eb" font-weight="800">Bảng (Table)</tspan> → Kéo chọn số Hàng × số Cột mong muốn
+      </text>
+    </g>
+  </g>
+</svg>

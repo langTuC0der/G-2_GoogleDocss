@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Phiếu bài tập thực hành & bài tập về nhà Buổi 7: Page Layout, Header & Footer — Khổ A4, 4 Lề Chuẩn, Portrait vs Landscape, 2 Cột Báo Chí & Số Trang Tự Động (Google Docs THCS). Kèm dữ liệu mẫu, Before/After, gợi ý và thang điểm 30 điểm.">
+  <title>Bài tập &amp; Thực hành Buổi 7 · Page Layout, Header &amp; Footer (Docs Lab THCS)</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='10' y='6' width='44' height='52' rx='6' fill='%232563eb'/%3E%3Cpath d='M18 16h28M18 24h28M18 32h18' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='46' cy='46' r='6' fill='%2310b981'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #0b152d;
+      --navy-light: #162a54;
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --blue-soft: #eff6ff;
+      --blue-border: #bfdbfe;
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --teal-soft: #f0fdfa;
+      --teal-border: #99f6e4;
+      --amber: #f59e0b;
+      --amber-soft: #fffbeb;
+      --green: #10b981;
+      --green-soft: #ecfdf5;
+      --red: #ef4444;
+      --red-soft: #fff1f2;
+      --purple: #8b5cf6;
+      --purple-soft: #f5f3ff;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --soft: #f8fafc;
+      --paper: #ffffff;
+      --shadow: 0 16px 45px rgba(11, 21, 45, 0.08);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.08), transparent 30rem), #f8fafc;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    button, a { font-family: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid rgba(37, 99, 235, 0.4); outline-offset: 3px; }
+
+    /* Topbar */
+    .topbar {
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: 18px;
+      min-height: 70px; padding: 10px clamp(16px, 4vw, 48px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-family: 'Outfit', sans-serif; font-size: 1.15rem; }
+    .mark {
+      display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px;
+      color: white; background: linear-gradient(135deg, var(--blue), var(--teal)); font-weight: 900;
+    }
+    .crumb { color: var(--muted); font-size: 0.85rem; }
+    .crumb b { color: var(--ink); }
+    .top-actions { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+    .top-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      min-height: 38px; padding: 0 14px;
+      border: 1px solid var(--line); border-radius: 11px;
+      background: white; font-size: 0.82rem; font-weight: 700;
+      transition: all 0.18s ease;
+    }
+    .top-link:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+    .top-link.highlight { background: var(--blue-soft); border-color: var(--blue-border); color: var(--blue); }
+    .top-link.primary { background: var(--blue); border-color: var(--blue); color: white; }
+
+    /* Page Container */
+    .page { width: min(1200px, 100%); margin: auto; padding: 28px clamp(16px, 4vw, 40px) 70px; }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #0b152d 0%, #132448 55%, #1d4ed8 100%);
+      border-radius: 24px; padding: clamp(28px, 4vw, 42px);
+      color: white; margin-bottom: 26px;
+      box-shadow: 0 20px 50px rgba(11, 21, 45, 0.25);
+      position: relative; overflow: hidden;
+    }
+    .hero-banner::after {
+      content: ""; position: absolute; right: -40px; bottom: -40px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.1em; color: #93c5fd; margin-bottom: 8px;
+    }
+    .hero-banner h1 {
+      font-family: 'Outfit', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      margin: 0 0 12px; line-height: 1.15;
+    }
+    .hero-banner p { margin: 0 0 20px; color: #cbd5e1; max-width: 740px; font-size: 1rem; }
+    .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 99px;
+      background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px);
+      font-size: 0.8rem; font-weight: 700; color: white;
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--paper); border-radius: var(--radius);
+      border: 1px solid var(--line); box-shadow: var(--shadow);
+      padding: clamp(22px, 3vw, 34px); margin-bottom: 26px;
+    }
+    .card-head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 20px; gap: 16px; flex-wrap: wrap;
+    }
+    .card-head h2 {
+      font-family: 'Outfit', sans-serif; font-size: 1.45rem; margin: 0;
+      color: var(--navy); display: flex; align-items: center; gap: 10px;
+    }
+    .card-head p { margin: 4px 0 0; color: var(--muted); font-size: 0.9rem; }
+    .badge-step {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 800;
+    }
+
+    /* Compare Grid */
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px;
+    }
+    @media (max-width: 768px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+    .compare-pane {
+      border-radius: 14px; padding: 18px; border: 1.5px solid;
+    }
+    .pane-before { background: var(--red-soft); border-color: #fecdd3; }
+    .pane-after { background: var(--green-soft); border-color: #a7f3d0; }
+    .pane-title {
+      font-weight: 800; font-size: 0.88rem; margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* Copy Box */
+    .copy-box {
+      background: #f1f5f9; border-radius: 12px; padding: 16px 20px;
+      border: 1px solid #cbd5e1; position: relative; margin: 14px 0;
+    }
+    .copy-box pre {
+      margin: 0; font-family: inherit; font-size: 0.88rem; white-space: pre-wrap; color: var(--ink); line-height: 1.7;
+    }
+    .btn-copy {
+      position: absolute; top: 12px; right: 12px;
+      padding: 6px 14px; border-radius: 8px; border: 1px solid #cbd5e1;
+      background: white; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s ease;
+    }
+    .btn-copy:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* Rubric Table */
+    .rubric-table {
+      width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 14px;
+    }
+    .rubric-table th, .rubric-table td {
+      padding: 12px 16px; border: 1px solid var(--line); text-align: left;
+    }
+    .rubric-table th { background: #f8fafc; font-weight: 800; color: var(--navy); }
+    .rubric-table tr:nth-child(even) td { background: #fafbfc; }
+
+    /* Interactive Checklist */
+    .check-list { display: grid; gap: 10px; margin-top: 14px; }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 18px; border-radius: 12px; border: 1.5px solid var(--line);
+      background: #fafbfc; cursor: pointer; transition: all 0.2s ease;
+    }
+    .check-item:hover { border-color: var(--blue); background: #eff6ff; }
+    .check-item input[type="checkbox"] {
+      width: 20px; height: 20px; border-radius: 6px; accent-color: var(--blue);
+      margin-top: 2px; cursor: pointer;
+    }
+    .check-item.checked {
+      border-color: var(--blue); background: #eff6ff;
+    }
+    .check-content { flex: 1; }
+    .check-title { font-weight: 700; font-size: 0.92rem; color: var(--navy); display: flex; align-items: center; justify-content: space-between; }
+    .check-desc { font-size: 0.82rem; color: var(--muted); margin-top: 3px; }
+
+    .score-summary-box {
+      margin-top: 20px; padding: 18px 24px; border-radius: 14px;
+      background: linear-gradient(135deg, #0b152d, #132448);
+      color: white; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+    }
+
+    /* Step Grid */
+    .step-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px;
+    }
+    .step-box {
+      background: #f8fafc; border: 1px solid var(--line); border-radius: 14px; padding: 18px;
+    }
+    .step-box b { color: var(--blue); font-size: 0.88rem; display: block; margin-bottom: 6px; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 30px; right: 30px; z-index: 100;
+      background: var(--navy); color: white; padding: 12px 24px; border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-size: 0.88rem; font-weight: 700;
+      opacity: 0; transform: translateY(20px); transition: all 0.3s ease; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       TOPBAR
+       ============================================================ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark">07</div>
+      <div>
+        Docs Lab THCS
+        <div class="crumb">GĐ2 &gt; <b>Buổi 07 · Page Layout, Header &amp; Footer</b></div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <a href="buoi-07-page-layout-header-footer.html" class="top-link highlight">🌌 Mở Slide 3D Buổi 7</a>
+      <a href="https://docs.new" target="_blank" rel="noopener" class="top-link primary">📄 Tạo Google Docs Mới</a>
+      <button class="top-link" onclick="window.print()">🖨️ In Phiếu Học Tập</button>
+      <a href="index.html" class="top-link">🏠 Cổng Trung Tâm</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main class="page">
+
+    <!-- HERO BANNER -->
+    <div class="hero-banner">
+      <div class="eyebrow">HỌC LIỆU THỰC HÀNH &amp; RÈN LUYỆN · BUỔI 07</div>
+      <h1>Page Layout, Header, Footer &amp; Số Trang Tự Động</h1>
+      <p>
+        Làm chủ kỹ thuật thiết lập khổ A4 chuẩn Việt Nam, 4 lề trang theo Nghị định 30/2020, tạo đầu trang trường học đồng bộ, tùy chọn Different first page cho bìa báo cáo, đánh số trang thông minh và dàn trang 2 cột báo chí sắc sảo.
+      </p>
+      <div class="hero-pills">
+        <span class="hero-pill">🎯 Tổng điểm: 30 Điểm</span>
+        <span class="hero-pill">⏱️ Thời lượng: 100 phút</span>
+        <span class="hero-pill">📐 Khổ A4 (210×297mm)</span>
+        <span class="hero-pill">📏 4 Lề 2-2-3-2 cm</span>
+        <span class="hero-pill">📑 Header &amp; Footer</span>
+        <span class="hero-pill">📰 2 Cột &amp; Column Break</span>
+      </div>
+    </div>
+
+    <!-- SECTION 1: BEFORE / AFTER COMPARISON -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>⚖️ Đối Chiếu Thực Tế: Bản Nháp Thô vs. Văn Bản Xuất Bản A4</h2>
+          <p>Quan sát sự khác biệt vượt bậc khi tài liệu được thiết lập trang và chia cột chuẩn mực</p>
+        </div>
+        <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">Chuẩn Mực Xuất Bản</span>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-pane pane-before">
+          <div class="pane-title" style="color:#be123c">
+            <span>❌ BẢN NHÁP THÔ SƠ (CHƯA SETUP)</span>
+            <span style="font-size:0.75rem;padding:3px 8px;border-radius:6px;background:#fee2e2">Lỗi thường gặp</span>
+          </div>
+          <ul style="margin:0;padding-left:18px;font-size:0.85rem;color:#881337;line-height:1.7">
+            <li><b>Khổ Letter mặc định:</b> Ngắn hơn A4 gần 2cm, khi in tại Việt Nam bị cắt mép hoặc méo tỷ lệ.</li>
+            <li><b>Lề trái quá hẹp:</b> Khi kẹp bìa hoặc bấm kim sẽ kẹp mất chữ đầu dòng.</li>
+            <li><b>Không có Header/Footer:</b> Rơi giấy không biết tài liệu của ai, thuộc trường lớp nào.</li>
+            <li><b>Spam phím Enter:</b> Gõ 15 phím Enter để dạt chữ sang cột 2, sửa 1 dòng là vỡ cả bài!</li>
+            <li><b>Gõ tay số "1" vào chân trang:</b> Làm tất cả các trang đều hiển thị số 1.</li>
+          </ul>
+        </div>
+
+        <div class="compare-pane pane-after">
+          <div class="pane-title" style="color:#047857">
+            <span>✅ ẤN PHẨM CHUẨN GOOGLE DOCS THCS</span>
+            <span style="font-size:0.75rem;padding:3px 8px;border-radius:6px;background:#d1fae5">Đẳng cấp 10/10</span>
+          </div>
+          <ul style="margin:0;padding-left:18px;font-size:0.85rem;color:#065f46;line-height:1.7">
+            <li><b>Khổ A4 (210×297 mm):</b> Tương thích 100% với toàn bộ máy in và sách vở học đường.</li>
+            <li><b>Lề chuẩn Nghị định 30:</b> Trên 2cm, Dưới 2cm, Trái 3cm (đóng gáy), Phải 2cm.</li>
+            <li><b>Header trang trọng:</b> "TRƯỜNG THCS NGUYỄN DU · TIN HỌC 7" lặp lại tinh tế.</li>
+            <li><b>Bố cục 2 Cột báo chí:</b> Dễ đọc, tiết kiệm diện tích, có đường kẻ giữa thanh lịch.</li>
+            <li><b>Ngắt cột Column Break &amp; Đánh số trang tự động:</b> Ổn định và chuyên nghiệp.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: THREE MINI PRACTICES -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>🧩 Ba Bài Thực Hành Nhỏ Khởi Động (Mini Practices)</h2>
+          <p>Hoàn thành từng thao tác nhỏ để làm chủ các kỹ năng cốt lõi trước khi vào dự án lớn</p>
+        </div>
+        <span class="badge-step" style="background:var(--teal-soft);color:var(--teal)">Luyện Tập Cơ Bản</span>
+      </div>
+
+      <div class="step-grid">
+        <!-- Mini 1 -->
+        <div class="step-box" style="border-top:4px solid var(--blue)">
+          <b>THỰC HÀNH NHỎ 1 · HƯỚNG TRANG</b>
+          <h4 style="margin:6px 0 10px;font-size:1.05rem;color:var(--navy)">Portrait hay Landscape?</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">
+            Mở một tài liệu Google Docs mới, vào <b>Tệp (File) ➔ Thiết lập trang (Page setup)</b>. Thử chuyển qua lại giữa <b>Khổ Dọc (Portrait)</b> và <b>Khổ Ngang (Landscape)</b>. Quan sát thước đo (Ruler) trên màn hình thay đổi kích thước.
+          </p>
+          <div style="background:var(--blue-soft);padding:8px 12px;border-radius:8px;font-size:0.8rem;color:var(--blue);font-weight:700">
+            Mục tiêu: Đổi về A4 Khổ Dọc và đặt làm mặc định (Set as default).
+          </div>
+        </div>
+
+        <!-- Mini 2 -->
+        <div class="step-box" style="border-top:4px solid var(--green)">
+          <b>THỰC HÀNH NHỎ 2 · HEADER &amp; FOOTER</b>
+          <h4 style="margin:6px 0 10px;font-size:1.05rem;color:var(--navy)">Đầu Trang &amp; Chân Trang</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">
+            Nhấp đúp vào mép trên trang, nhập Header: <code>TRƯỜNG THCS NGUYỄN DU</code>, căn trái, in đậm, chữ xanh. Nhấp đúp mép dưới, vào <b>Chèn ➔ Số trang ➔ Chọn mẫu góc dưới bên phải</b>.
+          </p>
+          <div style="background:var(--green-soft);padding:8px 12px;border-radius:8px;font-size:0.8rem;color:var(--green);font-weight:700">
+            Mục tiêu: Nhấn <kbd>Ctrl + Enter</kbd> sang trang 2 để kiểm chứng số tự tăng lên 2!
+          </div>
+        </div>
+
+        <!-- Mini 3 -->
+        <div class="step-box" style="border-top:4px solid var(--purple)">
+          <b>THỰC HÀNH NHỎ 3 · CHIA CỘT BÁO CHÍ</b>
+          <h4 style="margin:6px 0 10px;font-size:1.05rem;color:var(--navy)">Định Dạng 2 Cột &amp; Break</h4>
+          <p style="font-size:0.85rem;color:var(--ink-soft);line-height:1.6">
+            Bôi đen một đoạn văn 10 dòng, vào <b>Định dạng (Format) ➔ Cột (Columns) ➔ Chọn 2 Cột</b>. Đặt con trỏ trước câu số 5, vào <b>Chèn ➔ Ngắt ➔ Ngắt cột (Column break)</b>.
+          </p>
+          <div style="background:var(--purple-soft);padding:8px 12px;border-radius:8px;font-size:0.8rem;color:var(--purple);font-weight:700">
+            Mục tiêu: Câu số 5 lập tức bay sang đầu cột thứ 2 chuẩn xác!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: COMPREHENSIVE PROJECT -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>🏆 Bài Thực Hành Tổng Hợp: Tờ Thông Báo Ngày Hội Thể Thao</h2>
+          <p>Đóng vai trò Trưởng ban Truyền thông học sinh, tạo ấn phẩm thông báo chính thức gửi toàn trường</p>
+        </div>
+        <span class="badge-step" style="background:#fef3c7;color:#b45309">Dự Án 30 Điểm</span>
+      </div>
+
+      <!-- Starter Text with Copy Button -->
+      <div style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <b style="font-size:0.9rem;color:var(--navy)">📄 Dữ liệu văn bản thô (Sao chép vào Google Docs của em):</b>
+          <span style="font-size:0.8rem;color:var(--muted)">Bấm nút sao chép để dán nhanh</span>
+        </div>
+
+        <div class="copy-box">
+          <button class="btn-copy" id="btnCopyRawText">📋 Sao chép văn bản thô</button>
+          <pre id="rawTextContent">TRƯỜNG THCS NGUYỄN DU
+BAN TỔ CHỨC OLYMPIC THỂ THAO HỌC ĐƯỜNG 2026
+
+THÔNG BÁO KHỞI TRANH NGÀY HỘI THỂ THAO HỌC ĐƯỜNG
+
+Kính gửi: Toàn thể thầy cô giáo và các bạn học sinh thân mến,
+Nhằm nâng cao sức khỏe, tạo sân chơi lành mạnh và gắn kết tinh thần đoàn kết giữa các khối lớp, Ban Tổ chức chính thức phát động Ngày hội Thể thao Học đường năm 2026.
+
+Thời gian tổ chức: Khai mạc lúc 07:30 ngày 26 tháng 03 năm 2026.
+Địa điểm: Khu Liên hợp Thể thao & Sân bóng Trường THCS Nguyễn Du.
+
+LỊCH THI ĐẤU CÁC MÔN
+1. Bóng đá nam mini (Sân cỏ nhân tạo): Khởi tranh lúc 08:00 sáng Thứ Bảy. Mỗi trận gồm 2 hiệp, mỗi hiệp 20 phút.
+2. Bóng rổ 3x3 nữ (Sân bóng rổ ngoài trời): Khởi tranh lúc 09:30 sáng Thứ Bảy. Thi đấu theo thể thức vòng tròn tính điểm.
+3. Cầu lông đơn nam & nữ (Nhà tập đa năng): Diễn ra từ 14:00 chiều Thứ Bảy.
+4. Kéo co đồng đội (Sân trung tâm): Mỗi đội gồm 10 thành viên (5 nam, 5 nữ), tranh tài vào sáng Chủ nhật.
+
+ĐIỀU LỆ & CƠ CẤU GIẢI THƯỞNG
+• Tiêu chuẩn vận động viên: Là học sinh đang theo học tại trường, có sức khỏe tốt và đăng ký với giáo viên chủ nhiệm.
+• Trang phục thi đấu: Đồng phục thể dục của trường, đi giày thể thao bắt buộc.
+• Tinh thần thi đấu: Đoàn kết, trung thực, cao thượng, tuân thủ tuyệt đối quyết định của tổ trọng tài.
+
+CƠ CẤU GIẢI THƯỞNG HẤP DẪN
+- 01 Giải Nhất toàn đoàn: Cúp Vàng luân lưu + Cờ lưu niệm + Tiền thưởng.
+- 02 Giải Nhì toàn đoàn: Cúp Bạc + Cờ giải Nhì.
+- 03 Giải Ba toàn đoàn: Cờ giải Ba + Huy chương đồng đội.
+- Các giải Phong cách và Vua phá lưới cho từng cá nhân xuất sắc.
+
+Mọi thắc mắc xin liên hệ Văn phòng Đoàn Đội trước ngày 20/03/2026.
+BAN TỔ CHỨC THỂ DỤC THỂ THAO TRƯỜNG THCS NGUYỄN DU</pre>
+        </div>
+      </div>
+
+      <!-- Step by step guidance -->
+      <h3 style="font-size:1.15rem;color:var(--navy);margin:24px 0 12px">🛠️ Các Bước Thực Hiện Chi Tiết:</h3>
+      <div style="display:grid;gap:12px">
+        <div style="background:#f8fafc;border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 1: Thiết lập trang chuẩn A4</b><br>
+          Vào <i>Tệp ➔ Thiết lập trang</i>. Đổi khổ giấy sang <b>A4</b>. Đặt lề: <b>Trên 2cm, Dưới 2cm, Trái 3cm, Phải 2cm</b>. Hướng giấy <b>Khổ Dọc (Portrait)</b>.
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid var(--teal);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 2: Cài đặt Header &amp; Footer</b><br>
+          Nhấp đúp mép trên, gõ: <code>TRƯỜNG THCS NGUYỄN DU · NGÀY HỘI THỂ THAO 2026</code> (Căn lề phải, phông chữ 9pt, màu xanh xám). Nhấp đúp mép dưới, chèn Số trang tự động ở góc phải dạng <code>Trang 1</code>.
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid var(--purple);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 3: Chia 2 Cột báo chí nghệ thuật</b><br>
+          Bôi đen từ đoạn <i>"LỊCH THI ĐẤU CÁC MÔN"</i> cho đến hết <i>"CƠ CẤU GIẢI THƯỞNG HẤP DẪN"</i>. Vào <i>Định dạng ➔ Cột ➔ Chọn 2 Cột</i> (Bật đường kẻ Line between ở Tùy chọn khác).
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid var(--green);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 4: Điều khiển dòng chảy với Column Break</b><br>
+          Đặt con trỏ trước chữ <i>"ĐIỀU LỆ &amp; CƠ CẤU GIẢI THƯỞNG"</i>, vào <i>Chèn ➔ Ngắt ➔ Ngắt cột (Column break)</i> để đẩy toàn bộ phần Điều lệ sang đỉnh cột thứ hai!
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid var(--amber);padding:14px 18px;border-radius:0 12px 12px 0;font-size:0.92rem">
+          <b>Bước 5: Chèn ảnh minh họa và xuất bản PDF</b><br>
+          Chèn 1 hình ảnh minh họa thể thao (Bóng đá / Cúp vàng) căn giữa. Sau đó vào <i>Tệp ➔ Tải xuống ➔ Tài liệu PDF (.pdf)</i> để nộp sản phẩm hoàn thiện.
+        </div>
+      </div>
+
+      <!-- Interactive Checklist Tracker -->
+      <h3 style="font-size:1.15rem;color:var(--navy);margin:28px 0 14px">✅ Bảng Kiểm Tự Đánh Giá Tiến Độ (Checklist 30 Điểm):</h3>
+      <div class="check-list">
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>1. Khổ giấy A4 &amp; 4 Lề trang chuẩn Nghị định 30</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Đã chuyển sang A4 (210×297mm), lề Trên 2cm, Dưới 2cm, Trái 3cm, Phải 2cm.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>2. Header trường học trang trọng &amp; đồng bộ</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Có dòng chữ Header hiển thị ở đầu trang, định dạng chữ thanh lịch và có đường ngăn cách nhẹ.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>3. Footer &amp; Đánh số trang tự động (Page Number)</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Chèn số trang tự động bằng Insert ➔ Page numbers, không gõ số thủ công bằng tay.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>4. Bố cục 2 Cột báo chí &amp; Đường kẻ phân cách</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Nội dung Lịch thi đấu và Điều lệ được chia 2 cột cân đối, có đường line between ở giữa.</div>
+          </div>
+        </label>
+
+        <label class="check-item" data-points="6">
+          <input type="checkbox" class="task-checkbox">
+          <div class="check-content">
+            <div class="check-title">
+              <span>5. Ngắt cột thông minh (Column Break) &amp; Xuất bản PDF</span>
+              <span class="badge-step" style="background:var(--blue-soft);color:var(--blue)">+6 Điểm</span>
+            </div>
+            <div class="check-desc">Sử dụng lệnh Column Break thay vì phím Enter, tài liệu sạch đẹp và đã tải xuống file PDF.</div>
+          </div>
+        </label>
+      </div>
+
+      <!-- Live Score Summary Box -->
+      <div class="score-summary-box">
+        <div>
+          <span style="font-size:0.85rem;color:#93c5fd;text-transform:uppercase;letter-spacing:0.05em;font-weight:700">Điểm Thực Hành Của Em</span>
+          <div style="font-size:1.8rem;font-weight:900;font-family:'Outfit',sans-serif">
+            <span id="liveScoreText">0</span> / 30 Điểm
+          </div>
+        </div>
+        <div id="scoreStatusBadge" style="padding:8px 16px;border-radius:10px;background:rgba(255,255,255,0.15);font-size:0.88rem;font-weight:700">
+          Hãy tích chọn các tiêu chí em đã hoàn thành!
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: HOMEWORK -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>🏠 Bài Tập Về Nhà: Thông Báo Họp Đại Hội Chi Đội 7A</h2>
+          <p>Nhiệm vụ rèn luyện độc lập tại nhà để củng cố kỹ năng thiết lập trang và chia cột</p>
+        </div>
+        <span class="badge-step" style="background:var(--green-soft);color:var(--green)">Thời lượng: 25 phút</span>
+      </div>
+
+      <div class="compare-grid">
+        <div style="background:#f8fafc;padding:20px;border-radius:14px;border:1px solid var(--line)">
+          <h4 style="margin:0 0 10px;color:var(--navy)">🎯 Yêu Cầu Đề Bài:</h4>
+          <p style="font-size:0.9rem;color:var(--ink-soft);line-height:1.7;margin:0 0 12px">
+            Tạo một tài liệu Google Docs mới thông báo về buổi <b>Đại hội Chi đội năm học 2026–2027</b> của lớp em.
+          </p>
+          <ul style="padding-left:18px;font-size:0.88rem;color:var(--ink-soft);line-height:1.75;margin:0">
+            <li><b>Page Setup:</b> Khổ A4, lề chuẩn Nghị định 30 (Lề trái 3cm).</li>
+            <li><b>Header:</b> <code>CHI ĐỘI 7A · LIÊN ĐỘI THCS NGUYỄN DU</code>.</li>
+            <li><b>Footer:</b> <code>Ban Chỉ Huy Chi Đội 7A</code> kèm số trang tự động ở góc phải.</li>
+            <li><b>Hình ảnh:</b> Chèn huy hiệu Đội Thiếu niên Tiền phong hoặc ảnh sinh hoạt lớp.</li>
+            <li><b>Bố cục 2 cột:</b> Cột 1 (Thời gian, Địa điểm, Thành phần mời) và Cột 2 (Nội dung chương trình đại hội).</li>
+            <li><b>Column Break:</b> Bắt buộc dùng ngắt cột để tách 2 phần nội dung rõ ràng.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--teal-soft);padding:20px;border-radius:14px;border:1px solid var(--teal-border);display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <h4 style="margin:0 0 10px;color:var(--teal)">📦 Quy Cách Nộp Bài:</h4>
+            <p style="font-size:0.9rem;color:#0f766e;line-height:1.7;margin:0 0 14px">
+              1. <b>File PDF xuất bản:</b> Đặt tên file theo cú pháp: <br>
+              <code style="background:white;padding:4px 8px;border-radius:6px;color:#0f766e;font-weight:700">Buoi07_HoVaTen_Lop7A.pdf</code><br><br>
+              2. <b>Link Google Docs:</b> Bật chế độ chia sẻ với quyền <b>Người nhận xét (Commenter)</b> hoặc <b>Người chỉnh sửa (Editor)</b> để thầy cô chấm điểm và góp ý trực tiếp.
+            </p>
+          </div>
+          <div style="font-size:0.82rem;color:#115e59;background:white;padding:10px 14px;border-radius:10px;border:1px solid #99f6e4">
+            ⏰ <b>Hạn nộp:</b> Trước 20:00 ngày trước buổi học 08 tiếp theo.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: SCORING RUBRICS -->
+    <section class="section-card">
+      <div class="card-head">
+        <div>
+          <h2>📊 Thang Điểm Đánh Giá Chi Tiết (Rubric 30 Điểm)</h2>
+          <p>Bảng tiêu chí chấm điểm minh bạch của giáo viên dành cho học sinh</p>
+        </div>
+        <span class="badge-step" style="background:var(--purple-soft);color:var(--purple)">Thang Điểm 30</span>
+      </div>
+
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th style="width:25%">Tiêu Chí</th>
+            <th style="width:15%">Mức Điểm</th>
+            <th style="width:60%">Mô Tả Yêu Cầu Đạt Chuẩn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>1. Page Setup &amp; Lề</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Khổ giấy A4 chuẩn xác (210×297mm). Đặt 4 lề đúng chuẩn Nghị định 30: Trên 2cm, Dưới 2cm, Trái 3cm, Phải 2cm.</td>
+          </tr>
+          <tr>
+            <td><b>2. Header Đầu Trang</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Tạo Header chứa tên trường học và tên sự kiện, phông chữ trang nhã, kích thước nhỏ hơn thân bài (8–10pt).</td>
+          </tr>
+          <tr>
+            <td><b>3. Footer &amp; Số Trang</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Dùng tính năng Insert ➔ Page numbers tự động. Số trang nằm ở góc phải hoặc chính giữa chân trang, không gõ tay.</td>
+          </tr>
+          <tr>
+            <td><b>4. Bố Cục 2 Cột</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Chia 2 cột cân đối, có đường kẻ phân cách ở giữa (Line between), khoảng cách lề cột (Spacing) hợp lý.</td>
+          </tr>
+          <tr>
+            <td><b>5. Ngắt Cột &amp; File PDF</b></td>
+            <td><b style="color:var(--blue)">6 Điểm</b></td>
+            <td>Dùng lệnh Column Break để chuyển cột mượt mà, không spam phím Enter. Xuất bản và nộp file PDF chuẩn không vỡ lề.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toastMessage">Đã sao chép!</div>
+
+  <!-- SCRIPT -->
+  <script>
+    // 1. COPY STARTER TEXT
+    const btnCopyRawText = document.getElementById('btnCopyRawText');
+    const rawTextContent = document.getElementById('rawTextContent');
+    const toastMessage = document.getElementById('toastMessage');
+
+    function showToast(msg) {
+      toastMessage.textContent = msg;
+      toastMessage.classList.add('show');
+      setTimeout(() => toastMessage.classList.remove('show'), 2500);
+    }
+
+    btnCopyRawText.onclick = () => {
+      navigator.clipboard.writeText(rawTextContent.textContent.trim()).then(() => {
+        btnCopyRawText.innerHTML = '✓ Đã sao chép vào bộ nhớ tạm!';
+        btnCopyRawText.style.background = '#d1fae5';
+        btnCopyRawText.style.color = '#065f46';
+        showToast('📋 Đã sao chép văn bản thô! Hãy mở Google Docs và dán (Ctrl + V)');
+        setTimeout(() => {
+          btnCopyRawText.innerHTML = '📋 Sao chép văn bản thô';
+          btnCopyRawText.style.background = 'white';
+          btnCopyRawText.style.color = 'inherit';
+        }, 3000);
+      });
+    };
+
+    // 2. INTERACTIVE CHECKLIST TRACKER
+    const checkboxes = document.querySelectorAll('.task-checkbox');
+    const liveScoreText = document.getElementById('liveScoreText');
+    const scoreStatusBadge = document.getElementById('scoreStatusBadge');
+
+    function calculateScore() {
+      let score = 0;
+      checkboxes.forEach(cb => {
+        const item = cb.closest('.check-item');
+        const pts = parseInt(item.getAttribute('data-points'), 10);
+        if (cb.checked) {
+          score += pts;
+          item.classList.add('checked');
+        } else {
+          item.classList.remove('checked');
+        }
+      });
+
+      liveScoreText.textContent = score;
+
+      if (score === 30) {
+        scoreStatusBadge.textContent = '🌟 Xuất sắc! Em đã hoàn thành 100% tiêu chí điểm 30/30!';
+        scoreStatusBadge.style.background = '#059669';
+        scoreStatusBadge.style.color = '#ffffff';
+        showToast('🎉 Đạt điểm tuyệt đối 30/30! Chúc mừng em!');
+      } else if (score >= 18) {
+        scoreStatusBadge.textContent = '👍 Rất tốt! Tiếp tục hoàn thiện các tiêu chí còn lại nhé!';
+        scoreStatusBadge.style.background = '#2563eb';
+        scoreStatusBadge.style.color = '#ffffff';
+      } else if (score > 0) {
+        scoreStatusBadge.textContent = '🚀 Khởi đầu tốt, cố gắng lên nhé!';
+        scoreStatusBadge.style.background = 'rgba(255,255,255,0.15)';
+        scoreStatusBadge.style.color = '#ffffff';
+      } else {
+        scoreStatusBadge.textContent = 'Hãy tích chọn các tiêu chí em đã hoàn thành!';
+        scoreStatusBadge.style.background = 'rgba(255,255,255,0.15)';
+        scoreStatusBadge.style.color = '#ffffff';
+      }
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', calculateScore);
+    });
+  </script>
+</body>
+</html>
+

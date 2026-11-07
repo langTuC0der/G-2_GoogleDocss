@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b152d"/>
+      <stop offset="100%" stop-color="#162a54"/>
+    </linearGradient>
+    <filter id="shadow" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="920" height="460" rx="20" fill="url(#bgGrad)"/>
+
+  <!-- Title & Subtitle -->
+  <text x="460" y="42" font-family="'Outfit', sans-serif" font-size="22" font-weight="800" fill="#ffffff" text-anchor="middle">BỘ ĐÔI ĐIỀU HƯỚNG: DOCUMENT OUTLINE VÀ TABLE OF CONTENTS</text>
+  <text x="460" y="68" font-family="'Inter', sans-serif" font-size="13" font-weight="500" fill="#93c5fd" text-anchor="middle">Khung tài liệu thanh bên (Bản đồ số) vs Mục lục in ấn chính thức (Bảng mục lục)</text>
+
+  <!-- Main Container Card -->
+  <g transform="translate(40, 88)" filter="url(#shadow)">
+    <rect width="840" height="344" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+
+    <!-- Left: Document Outline (Sidebar) -->
+    <g transform="translate(30, 20)">
+      <rect width="365" height="30" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.2"/>
+      <text x="182" y="19" font-family="'Outfit', sans-serif" font-size="11" font-weight="800" fill="#1d4ed8" text-anchor="middle">🧭 1. DOCUMENT OUTLINE (KHUNG TÀI LIỆU)</text>
+
+      <g transform="translate(15, 42)">
+        <rect width="335" height="215" rx="8" fill="#f8fafc" stroke="#bfdbfe" stroke-width="1.5"/>
+        
+        <!-- Sidebar simulated header -->
+        <rect x="0" y="0" width="335" height="32" rx="8 8 0 0" fill="#e0f2fe"/>
+        <text x="16" y="20" font-family="'Inter', sans-serif" font-size="9" font-weight="800" fill="#0369a1">CẤU TRÚC TÀI LIỆU (OUTLINE)</text>
+        <circle cx="315" cy="16" r="8" fill="#bae6fd"/>
+        <text x="315" y="20" font-family="'Inter', sans-serif" font-size="9" font-weight="800" fill="#0369a1" text-anchor="middle">◀</text>
+
+        <!-- Outline tree items -->
+        <g transform="translate(16, 44)">
+          <!-- Item 1 -->
+          <rect x="0" y="0" width="300" height="26" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="10" y="17" font-family="'Inter', sans-serif" font-size="8.5" font-weight="800" fill="#1e293b">I. MỞ ĐẦU (Heading 1)</text>
+          <text x="285" y="17" font-family="'Inter', sans-serif" font-size="9" fill="#94a3b8">✕</text>
+
+          <!-- Item 2 -->
+          <rect x="0" y="32" width="300" height="26" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+          <text x="10" y="49" font-family="'Inter', sans-serif" font-size="8.5" font-weight="800" fill="#1d4ed8">II. THỰC TRẠNG Ô NHIỄM (H1) ➔ Đang xem</text>
+          <text x="285" y="49" font-family="'Inter', sans-serif" font-size="9" fill="#94a3b8">✕</text>
+
+          <!-- Item 2.1 (Sub-item H2) -->
+          <rect x="18" y="64" width="282" height="24" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="28" y="79" font-family="'Inter', sans-serif" font-size="8" font-weight="600" fill="#475569">1. Ô nhiễm không khí (Heading 2)</text>
+          <text x="270" y="79" font-family="'Inter', sans-serif" font-size="8.5" fill="#94a3b8">✕</text>
+
+          <!-- Item 2.2 (Sub-item H2) -->
+          <rect x="18" y="93" width="282" height="24" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="28" y="108" font-family="'Inter', sans-serif" font-size="8" font-weight="600" fill="#475569">2. Rác thải nhựa đại dương (H2)</text>
+          <text x="270" y="108" font-family="'Inter', sans-serif" font-size="8.5" fill="#94a3b8">✕</text>
+
+          <!-- Item 3 -->
+          <rect x="0" y="122" width="300" height="26" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="10" y="139" font-family="'Inter', sans-serif" font-size="8.5" font-weight="800" fill="#1e293b">III. GIẢI PHÁP HÀNH ĐỘNG (H1)</text>
+          <text x="285" y="139" font-family="'Inter', sans-serif" font-size="9" fill="#94a3b8">✕</text>
+        </g>
+      </g>
+
+      <text x="182" y="285" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#1d4ed8" text-anchor="middle">Đặc tính: Hiện bên lề trái · Nhấp là bay tới · KHÔNG in ra giấy</text>
+    </g>
+
+    <!-- Right: Table of Contents (TOC) -->
+    <g transform="translate(440, 20)">
+      <rect width="365" height="30" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="1.2"/>
+      <text x="182" y="19" font-family="'Outfit', sans-serif" font-size="11" font-weight="800" fill="#047857" text-anchor="middle">📖 2. TABLE OF CONTENTS (MỤC LỤC TỰ ĐỘNG)</text>
+
+      <g transform="translate(15, 42)">
+        <rect width="335" height="215" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="1.5"/>
+
+        <!-- Header of TOC with refresh button -->
+        <g transform="translate(16, 12)">
+          <text x="0" y="18" font-family="'Outfit', sans-serif" font-size="13" font-weight="900" fill="#0f172a">MỤC LỤC TỰ ĐỘNG</text>
+          <!-- Update button -->
+          <rect x="230" y="0" width="75" height="24" rx="6" fill="#10b981"/>
+          <text x="267" y="16" font-family="'Inter', sans-serif" font-size="8" font-weight="800" fill="#ffffff" text-anchor="middle">🔄 Cập nhật</text>
+        </g>
+        <line x1="16" y1="42" x2="319" y2="42" stroke="#e2e8f0" stroke-width="1.5"/>
+
+        <!-- TOC list with dotted lines and page numbers -->
+        <g transform="translate(16, 56)">
+          <!-- Entry 1 -->
+          <text x="0" y="14" font-family="'Inter', sans-serif" font-size="8.5" font-weight="800" fill="#0f172a">I. MỞ ĐẦU</text>
+          <line x1="60" y1="12" x2="280" y2="12" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2 3"/>
+          <text x="295" y="14" font-family="'Inter', sans-serif" font-size="9" font-weight="800" fill="#2563eb" text-anchor="end">1</text>
+
+          <!-- Entry 2 -->
+          <text x="0" y="38" font-family="'Inter', sans-serif" font-size="8.5" font-weight="800" fill="#0f172a">II. THỰC TRẠNG Ô NHIỄM</text>
+          <line x1="140" y1="36" x2="280" y2="36" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2 3"/>
+          <text x="295" y="38" font-family="'Inter', sans-serif" font-size="9" font-weight="800" fill="#2563eb" text-anchor="end">2</text>
+
+          <!-- Entry 2.1 -->
+          <text x="14" y="60" font-family="'Inter', sans-serif" font-size="8" font-weight="600" fill="#475569">1. Ô nhiễm không khí</text>
+          <line x1="130" y1="58" x2="280" y2="58" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2 3"/>
+          <text x="295" y="60" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" fill="#2563eb" text-anchor="end">2</text>
+
+          <!-- Entry 2.2 -->
+          <text x="14" y="82" font-family="'Inter', sans-serif" font-size="8" font-weight="600" fill="#475569">2. Rác thải nhựa đại dương</text>
+          <line x1="150" y1="80" x2="280" y2="80" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2 3"/>
+          <text x="295" y="82" font-family="'Inter', sans-serif" font-size="8.5" font-weight="700" fill="#2563eb" text-anchor="end">3</text>
+
+          <!-- Entry 3 -->
+          <text x="0" y="106" font-family="'Inter', sans-serif" font-size="8.5" font-weight="800" fill="#0f172a">III. GIẢI PHÁP HÀNH ĐỘNG</text>
+          <line x1="155" y1="104" x2="280" y2="104" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2 3"/>
+          <text x="295" y="106" font-family="'Inter', sans-serif" font-size="9" font-weight="800" fill="#2563eb" text-anchor="end">4</text>
+        </g>
+      </g>
+
+      <text x="182" y="285" font-family="'Inter', sans-serif" font-size="9.5" font-weight="700" fill="#047857" text-anchor="middle">Đặc tính: Nằm trên trang giấy · Có số trang · ĐƯỢC in ra giấy và PDF</text>
+    </g>
+  </g>
+</svg>

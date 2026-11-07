@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Phiếu hướng dẫn Final Project &amp; Portfolio Cuối Khóa Buổi 12: Cẩm Nang Học Tập Dành Cho Học Sinh THCS (Google Docs THCS). Kèm dữ liệu mẫu, Before/After, gợi ý và thang điểm 40 điểm.">
+  <title>Final Project Buổi 12 · Cẩm Nang Học Tập THCS &amp; Portfolio | Docs Lab THCS</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='10' y='6' width='44' height='52' rx='6' fill='%23f59e0b'/%3E%3Cpath d='M32 18l4 8 9 1-6.5 6 1.5 9-8-4-8 4 1.5-9-6.5-6 9-1z' fill='white'/%3E%3C/svg%3E">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #0b152d;
+      --navy-light: #162a54;
+      --amber: #f59e0b;
+      --amber-dark: #d97706;
+      --amber-soft: #fffbeb;
+      --amber-border: #fde68a;
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --blue-border: #bfdbfe;
+      --teal: #0d9488;
+      --green: #10b981;
+      --green-soft: #ecfdf5;
+      --purple: #8b5cf6;
+      --purple-soft: #f5f3ff;
+      --ink: #0f172a;
+      --ink-soft: #334155;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --soft: #f8fafc;
+      --paper: #ffffff;
+      --shadow: 0 16px 45px rgba(11, 21, 45, 0.08);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(180deg, #fdf8eb 0%, #f8fafc 400px, #ffffff 100%);
+      line-height: 1.6;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--navy);
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .nav-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-btn.primary {
+      background: var(--amber-dark);
+      color: #ffffff;
+    }
+    .nav-btn.primary:hover { background: #b45309; }
+    .nav-btn.secondary {
+      background: var(--amber-soft);
+      color: var(--amber-dark);
+      border: 1px solid var(--amber-border);
+    }
+    .nav-btn.secondary:hover { background: #fef3c7; }
+
+    /* Container */
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 36px 20px 80px;
+    }
+
+    /* Header Box */
+    .hero-card {
+      background: linear-gradient(135deg, #0b152d 0%, #311042 50%, #451a03 100%);
+      border-radius: var(--radius);
+      padding: 40px;
+      color: #ffffff;
+      box-shadow: 0 20px 50px rgba(11, 21, 45, 0.25);
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(251, 191, 36, 0.2);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      color: #fbbf24;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      margin: 0 0 12px;
+      line-height: 1.25;
+    }
+    .hero-sub {
+      color: #e2e8f0;
+      font-size: 16px;
+      max-width: 720px;
+      margin-bottom: 24px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .stat-chip {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #fde68a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Section Card */
+    .section-card {
+      background: var(--paper);
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--soft);
+    }
+    .section-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--ink);
+    }
+
+    /* Starter Template Copy Box */
+    .copy-box {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      margin: 20px 0;
+      position: relative;
+    }
+    .copy-box pre {
+      margin: 0;
+      font-family: 'Inter', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--ink-soft);
+      white-space: pre-wrap;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--amber-dark);
+      color: #ffffff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { background: #b45309; }
+
+    /* Interactive Checklist */
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      padding: 14px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .check-item:hover {
+      border-color: var(--amber-border);
+      background: var(--amber-soft);
+    }
+    .check-item.done {
+      background: var(--green-soft);
+      border-color: #a7f3d0;
+    }
+    .check-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      cursor: pointer;
+      accent-color: var(--green);
+    }
+    .check-label {
+      flex: 1;
+      font-size: 14px;
+      color: var(--ink);
+    }
+    .check-points {
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--amber-soft);
+      color: var(--amber-dark);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    /* Score Summary Bar */
+    .score-bar {
+      position: sticky;
+      bottom: 20px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 24px;
+      border-radius: 999px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 12px 30px rgba(11, 21, 45, 0.4);
+      z-index: 40;
+      border: 1px solid rgba(251, 191, 36, 0.4);
+    }
+    .score-text { font-size: 14px; font-weight: 600; color: #cbd5e1; }
+    .score-value { font-size: 20px; font-weight: 800; color: #fbbf24; }
+
+    /* Rubric Table */
+    .rubric-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 13.5px;
+    }
+    .rubric-table th, .rubric-table td {
+      border: 1px solid var(--line);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .rubric-table th {
+      background: var(--soft);
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    /* Visual Embed */
+    .visual-box {
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      margin: 16px 0;
+      background: #0f172a;
+    }
+    .visual-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Bar -->
+  <header class="top-nav">
+    <a href="index.html" class="brand">
+      <img src="assets/buoi03/google-docs-icon.svg" width="24" height="24" alt="Docs Logo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23f59e0b%22><rect width=%2224%22 height=%2224%22 rx=%224%22/></svg>'">
+      <span>DOCS LAB THCS</span>
+    </a>
+    <div class="nav-links">
+      <a href="buoi-12-do-an-cuoi-khoa.html" class="nav-btn secondary">
+        🪐 Mở Slide 3D Buổi 12
+      </a>
+      <a href="#final-project" class="nav-btn primary">
+        🏆 Final Project (40đ)
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO HEADER -->
+    <div class="hero-card">
+      <span class="hero-badge">BUỔI 12 · FINAL PROJECT &amp; PORTFOLIO CUỐI KHÓA</span>
+      <h1 class="hero-title">Đồ Án: Cẩm Nang Học Tập Dành Cho Học Sinh THCS</h1>
+      <p class="hero-sub">
+        Đỉnh cao hội tụ 12 buổi học! Cùng đồng đội thiết kế một cuốn cẩm nang học tập hoàn chỉnh, tích hợp đầy đủ <strong>Trang bìa, Mục lục tự động, Bảng biểu, Hình ảnh bọc chữ, Comment, Suggesting, Version History</strong> và xuất bản <strong>PDF</strong>.
+      </p>
+      <div class="hero-stats">
+        <span class="stat-chip">⏱ Thời lượng: 100 phút</span>
+        <span class="stat-chip">👥 Hình thức: Nhóm 3–4 thành viên</span>
+        <span class="stat-chip">🎯 Điểm đồ án: 40 điểm</span>
+        <span class="stat-chip">📁 Sản phẩm: 01 Docs + 01 PDF</span>
+      </div>
+    </div>
+
+    <!-- BEFORE / AFTER SHOWCASE -->
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-icon" style="background: #fffbeb; color: #d97706;">🌟</div>
+        <h2 class="section-title">Minh Họa Before &amp; After: Hành Trình Lột Xác Toàn Khóa</h2>
+      </div>
+      <p style="color: var(--ink-soft); font-size: 14.5px;">
+        Trước khóa học, văn bản thường được gõ rời rạc, không cấu trúc và dễ cãi vã khi làm nhóm. Sau 12 buổi, nhóm em tự tin xuất bản một cuốn cẩm nang chuẩn mực xuất bản sách với mục lục tự động và đồ họa bắt mắt:
+      </p>
+      <div class="visual-box">
+        <img src="assets/buoi12/before-after-final-handbook.svg" alt="Before After Final Project Handbook">
+      </div>
+    </section>
+
+    <!-- 100 MIN ROADMAP SHOWCASE -->
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-icon" style="background: #eff6ff; color: #2563eb;">⏳</div>
+        <h2 class="section-title">Lộ Trình Phân Bổ 100 Phút Tại Lớp</h2>
+      </div>
+      <div class="visual-box">
+        <img src="assets/buoi12/final-project-roadmap-100min.svg" alt="100 Minute Roadmap">
+      </div>
+    </section>
+
+    <!-- 2 MINI CHALLENGES -->
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-icon" style="background: #fef3c7; color: #d97706;">⚡</div>
+        <h2 class="section-title">2 Thực Hành Nhỏ Khởi Động Dự Án (20 phút)</h2>
+      </div>
+
+      <!-- Mini 1 -->
+      <div style="background: #f8fafc; border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 16px;">
+        <h3 style="margin: 0 0 8px; font-size: 16px; color: #1e3a8a;">Thực hành nhỏ 1: Phân công 4 vai trò &amp; Tạo file chung</h3>
+        <p style="margin: 0 0 10px; font-size: 14px; color: #334155;">
+          • <strong>Bạn A (Trưởng nhóm):</strong> Tạo file Google Docs mới đặt tên: <code>CamNang_HocTap_NhomX_Lop7A</code> ➔ Chia sẻ quyền <strong>Chỉnh sửa (Editor)</strong> cho cả nhóm và thầy cô.<br>
+          • <strong>Bạn B:</strong> Phụ trách Hình ảnh minh họa &amp; Bảng biểu thời gian biểu.<br>
+          • <strong>Bạn C:</strong> Phụ trách Định dạng Styles, Căn lề, Giãn dòng &amp; Header/Footer số trang.<br>
+          • <strong>Bạn D:</strong> Phụ trách Mục lục tự động TOC, Soát lỗi chính tả &amp; Xuất bản PDF.
+        </p>
+      </div>
+
+      <!-- Mini 2 -->
+      <div style="background: #f8fafc; border: 1px solid var(--line); border-radius: 12px; padding: 18px;">
+        <h3 style="margin: 0 0 8px; font-size: 16px; color: #065f46;">Thực hành nhỏ 2: Review chéo giữa các nhóm (Phút 70–80)</h3>
+        <p style="margin: 0 0 10px; font-size: 14px; color: #334155;">
+          • Nhóm 1 và Nhóm 2 trao đổi link xem bài.<br>
+          • Kiểm tra checklist: Có Title chưa? Có ngắt trang bìa không? Có Mục lục TOC chưa? Bảng biểu có phối màu không?<br>
+          • Mỗi nhóm gửi <strong>ít nhất 02 Comment góp ý</strong> (<kbd>Ctrl+Alt+M</kbd>) và <strong>01 Suggesting</strong> giúp bạn hoàn thiện bài viết.
+        </p>
+      </div>
+    </section>
+
+    <!-- MAIN COMPREHENSIVE FINAL PROJECT -->
+    <section class="section-card" id="final-project">
+      <div class="section-header">
+        <div class="section-icon" style="background: #fef3c7; color: #d97706;">🏆</div>
+        <h2 class="section-title">Đồ Án Chính Thức: Cẩm Nang Học Tập Dành Cho Học Sinh THCS</h2>
+      </div>
+      <p style="color: var(--ink-soft); font-size: 14.5px;">
+        Nhóm 3–4 thành viên cùng hoàn thiện một ấn phẩm cẩm nang dài từ 3 đến 5 trang A4. Sử dụng khung mẫu bên dưới để bắt đầu:
+      </p>
+
+      <!-- Starter Content Box -->
+      <div class="copy-box">
+        <button class="copy-btn" onclick="copyStarterText()">📋 Sao Chép Khung Mẫu Cẩm Nang</button>
+        <pre id="starterContent">CẨM NANG HỌC TẬP DÀNH CHO HỌC SINH THCS
+Ấn phẩm hướng dẫn phương pháp học thông minh & an toàn số
+Nhóm tác giả: Nhóm 3 - Chi đội 7A2 | Năm học: 2026 - 2027
+
+[NGẮT TRANG - CTRL + ENTER]
+
+MỤC LỤC
+(Chèn Table of Contents tự động tại đây: Chèn > Mục lục > Chọn kiểu có số trang)
+
+[NGẮT TRANG - CTRL + ENTER]
+
+I. LỜI MỞ ĐẦU
+Chào các bạn học sinh THCS thân mến! Bước vào cấp 2 với nhiều môn học mới mẻ và khối lượng kiến thức phong phú, chắc hẳn không ít bạn từng cảm thấy bỡ ngỡ hoặc quá tải. Cuốn cẩm nang này được biên soạn bởi chính các bạn học sinh lớp 7 nhằm chia sẻ những bí quyết học tập thực tế, mẹo quản lý thời gian và kỹ năng sử dụng máy tính hiệu quả nhất.
+
+II. BÍ QUYẾT HỌC HIỆU QUẢ CÁC MÔN HỌC
+1. Phương pháp ghi chép thông minh Cornell
+- Chia trang vở thành 3 phần: Cột từ khóa bên trái, Cột ghi chép chi tiết bên phải và Phần tóm tắt cuối trang.
+2. Phương pháp ngắt quãng Pomodoro
+- Tập trung học liên tục 25 phút, sau đó nghỉ ngơi thư giãn mắt 5 phút trước khi bắt đầu chu kỳ mới.
+
+III. KẾ HOẠCH & QUẢN LÝ THỜI GIAN TRONG TUẦN
+(Chèn một bảng Table thời khóa biểu hoặc lịch sinh hoạt khoa học có Header row nổi bật)
+
+IV. NGUYÊN TẮC AN TOÀN TRÊN KHÔNG GIAN MẠNG
+- Luôn đặt mật khẩu mạnh (trên 8 ký tự gồm chữ hoa, số và ký tự đặc biệt).
+- Tuyệt đối không chia sẻ địa chỉ nhà riêng, mật khẩu tài khoản cho người lạ trên mạng xã hội.
+- Kiểm tra kỹ quyền chia sẻ (Viewer/Commenter/Editor) khi gửi tài liệu học tập.
+
+V. BẢNG MẸO PHÍM TẮT DÀNH CHO HỌC SINH THCS
+(Chèn bảng tổng hợp các phím tắt vàng Google Docs: Ctrl+Enter, Ctrl+K, Ctrl+Alt+M, Ctrl+Shift+C...)
+
+VI. LỜI KẾT & THÔNG ĐIỆP
+Học tập là một hành trình dài đầy thú vị. Chúc tất cả các bạn luôn giữ vững niềm đam mê khám phá và đạt kết quả cao trong năm học!</pre>
+      </div>
+
+      <!-- Live Checklist 40 Points (8 items x 5pts) -->
+      <h3 style="font-family: 'Outfit', sans-serif; font-size: 18px; margin: 24px 0 12px;">
+        Bảng Kiểm Kỹ Năng Đồ Án Final Project (40 Điểm)
+      </h3>
+      <div class="checklist">
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk1">
+          <span class="check-label">
+            <strong>1. Trang bìa và phân cấp Styles chuẩn:</strong> Bìa có Title to rõ, thông tin nhóm tác giả; các chương dùng Heading 1, mục con dùng Heading 2 chuẩn mực.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk2">
+          <span class="check-label">
+            <strong>2. Định dạng đoạn văn chuyên nghiệp:</strong> Căn đều 2 bên (Justified), giãn dòng 1.25 dòng, ngắt trang hợp lý bằng phím tắt Ctrl+Enter.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk3">
+          <span class="check-label">
+            <strong>3. Bảng biểu Table phối màu đẹp:</strong> Có ít nhất 1 bảng biểu (Thời khóa biểu hoặc Phím tắt) có hàng tiêu đề tô màu nền, căn lề số liệu chuẩn xác.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk4">
+          <span class="check-label">
+            <strong>4. Hình ảnh bọc chữ (Wrap text) &amp; Hyperlink:</strong> Có ít nhất 02 hình ảnh minh họa bọc chữ đẹp mắt kèm chú thích nguồn ảnh có liên kết web Ctrl+K.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk5">
+          <span class="check-label">
+            <strong>5. Header/Footer &amp; Số trang tự động:</strong> Có tên cẩm nang ở đầu trang và số trang tự động ở chân trang, tick chọn <em>Khác biệt trang đầu tiên</em>.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk6">
+          <span class="check-label">
+            <strong>6. Mục lục tự động Table of Contents:</strong> Có mục lục tự động chứa số trang, đã bấm nút Cập nhật đồng bộ sau khi chèn ảnh và nội dung.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk7">
+          <span class="check-label">
+            <strong>7. Lịch sử cộng tác, Comment &amp; Suggesting:</strong> Thể hiện dấu vết 3-4 bạn cùng làm, có ít nhất 2 comment trao đổi, 1 đề xuất và Version History được đặt tên.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+
+        <label class="check-item" onclick="updateLiveScore()">
+          <input type="checkbox" id="chk8">
+          <span class="check-label">
+            <strong>8. Xuất bản file PDF &amp; Thuyết trình 2 phút:</strong> File PDF sắc nét khóa trang không lỗi lề, nhóm trình bày tự tin 2 phút trước lớp.
+          </span>
+          <span class="check-points">5đ</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- HOMEWORK: PORTFOLIO -->
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-icon" style="background: #ede9fe; color: #7c3aed;">📁</div>
+        <h2 class="section-title">Bài Tập Về Nhà Sau Buổi 12: Hoàn Thiện Portfolio Cá Nhân</h2>
+      </div>
+      <p style="color: var(--ink-soft); font-size: 14.5px;">
+        Mỗi học sinh tự chọn <strong>03 sản phẩm tốt nhất</strong> đã làm trong suốt khóa học 12 buổi để tạo một bộ hồ sơ Portfolio học tập trên Google Drive:
+      </p>
+      
+      <div class="visual-box" style="margin-bottom: 20px;">
+        <img src="assets/buoi12/portfolio-curation-showcase.svg" alt="Portfolio Showcase">
+      </div>
+
+      <div style="background: var(--soft); padding: 18px 22px; border-radius: 12px; border: 1px solid var(--line);">
+        <h4 style="margin-top: 0; color: #1e293b; font-size: 15px;">Thư mục nộp gồm có:</h4>
+        <ul style="margin-bottom: 0; padding-left: 20px; font-size: 14px; color: #334155; line-height: 1.8;">
+          <li><strong>03 file Google Docs</strong> của 3 sản phẩm em tự hào nhất.</li>
+          <li><strong>03 file PDF</strong> xuất bản tương ứng của 3 sản phẩm đó.</li>
+          <li><strong>01 trang Google Docs Bìa &amp; Giới thiệu Portfolio:</strong> Giới thiệu bản thân, lý do chọn 3 sản phẩm và cảm nghĩ sau khóa học.</li>
+        </ul>
+      </div>
+      <p style="font-size: 13.5px; color: var(--muted); margin-top: 14px;">
+        <strong>Sản phẩm nộp:</strong> Link thư mục Google Drive (đặt quyền: Bất kỳ ai có đường liên kết đều có thể Xem).
+      </p>
+    </section>
+
+    <!-- RUBRIC TABLE 40 POINTS -->
+    <section class="section-card">
+      <div class="section-header">
+        <div class="section-icon" style="background: #f0fdf4; color: #16a34a;">📊</div>
+        <h2 class="section-title">Ma Trận Đánh Giá Rubric 360° (Thang Điểm 40)</h2>
+      </div>
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th>Trụ Cột Đánh Giá</th>
+            <th>Mức Xuất Sắc (9-10đ)</th>
+            <th>Mức Đạt (7-8đ)</th>
+            <th>Cần Bổ Sung (0-6đ)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>I. Bố Cục &amp; Mục Lục TOC (10đ)</strong></td>
+            <td>Trang bìa trang trọng, ngắt trang bằng Ctrl+Enter, Heading 1 &amp; 2 mạch lạc, TOC có số trang đã cập nhật.</td>
+            <td>Có bìa và mục lục nhưng ngắt trang bằng Enter thủ công hoặc chưa cập nhật số trang.</td>
+            <td>Không có trang bìa, không có mục lục tự động TOC.</td>
+          </tr>
+          <tr>
+            <td><strong>II. Kỹ Thuật Docs Toàn Diện (10đ)</strong></td>
+            <td>Căn đều 2 bên, bảng biểu có Header row phối màu đẹp, ảnh bọc chữ Wrap text có link nguồn, có Header/Footer.</td>
+            <td>Có đủ các thành phần nhưng căn lề chưa đều hoặc ảnh bị đẩy lệch trang.</td>
+            <td>Thiếu bảng biểu hoặc không chèn ảnh, văn bản thô sơ.</td>
+          </tr>
+          <tr>
+            <td><strong>III. Tinh Thần Cộng Tác Nhóm (10đ)</strong></td>
+            <td>4 thành viên đều có con trỏ gõ, có comment góp ý phản hồi và Version History được đặt tên bản nộp rõ ràng.</td>
+            <td>Làm nhóm nhưng chỉ 1-2 bạn gõ chính, ít comment trao đổi hoặc quên đặt tên phiên bản.</td>
+            <td>Một người tự làm từ đầu đến cuối, không có lịch sử cộng tác.</td>
+          </tr>
+          <tr>
+            <td><strong>IV. Xuất Bản PDF &amp; Báo Cáo (10đ)</strong></td>
+            <td>File PDF chuẩn A4 không lỗi dòng mồ côi, nhóm báo cáo tự tin 2 phút, trả lời tốt câu hỏi giáo viên.</td>
+            <td>Xuất được PDF nhưng bị 1 trang trắng thừa; báo cáo còn ấp úng.</td>
+            <td>Không xuất được file PDF, không tham gia báo cáo trước lớp.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- STICKY SCORE BAR -->
+    <div class="score-bar">
+      <div class="score-text">
+        🏆 TỔNG ĐIỂM CHECKLIST FINAL PROJECT:
+      </div>
+      <div class="score-value">
+        <span id="liveScore">0</span> / 40 ĐIỂM
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    function copyStarterText() {
+      const text = document.getElementById("starterContent").innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("✔ Đã sao chép khung mẫu Cẩm nang học tập THCS! Nhóm hãy mở Google Docs, dán vào và phân công các bạn cùng viết nhé.");
+      }).catch(err => {
+        console.error("Lỗi copy: ", err);
+      });
+    }
+
+    function updateLiveScore() {
+      let score = 0;
+      for (let i = 1; i <= 8; i++) {
+        const chk = document.getElementById(`chk${i}`);
+        if (chk && chk.checked) {
+          score += 5;
+          chk.closest('.check-item').classList.add('done');
+        } else if (chk) {
+          chk.closest('.check-item').classList.remove('done');
+        }
+      }
+      document.getElementById("liveScore").textContent = score;
+    }
+  </script>
+</body>
+</html>
